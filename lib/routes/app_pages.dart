@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:pingaksh_mobile/view/bottombar/bottombar_screen.dart';
 
 import '../view/dashboard/dashboard_screen.dart';
 import '../view/splash/splash_screen.dart';
@@ -21,6 +22,7 @@ class AppPages {
     _getPage(name: AppRoutes.splashScreen, page: () => SplashScreen()),
     // _getPage(name: AppRoutes.loginScreen, page: () => LoginScreen()),
     _getPage(name: AppRoutes.dashboardScreen, page: () => DashboardScreen()),
+    _getPage(name: AppRoutes.bottomBarScreen, page: () => BottomBarScreen()),
 
     // // _getPage(name: AppRoutes.navigationBarScreen, page: () => NavigationBarScreen()),
     // // _getPage(name: AppRoutes.registerScreen, page: () => RegisterScreen()),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../exports.dart';
 
@@ -349,11 +348,11 @@ class _AppTextFieldState extends State<AppTextField> {
 
       case TextFieldType.date:
         return onTapWrapWidget(
-          child: widget.suffixIcon ??
-              SvgPicture.asset(
+          child: widget.suffixIcon /*SvgPicture.asset(
                 AppAssets.calenderIcon,
                 color: isFieldActive ? Theme.of(context).primaryColor : null, // ignore: deprecated_member_use
-              ),
+              )*/
+          ,
         );
 
       case TextFieldType.time:
@@ -363,13 +362,14 @@ class _AppTextFieldState extends State<AppTextField> {
 
       case TextFieldType.search:
         return onTapWrapWidget(
-          child: widget.suffixIcon ??
+          child: widget.suffixIcon /*??
               SvgPicture.asset(
                 AppAssets.searchIcon,
                 height: 24,
                 width: 24,
                 color: isFieldActive ? Theme.of(context).primaryColor : Colors.grey.shade400, // ignore: deprecated_member_use
-              ),
+              )*/
+          ,
         );
     }
   }

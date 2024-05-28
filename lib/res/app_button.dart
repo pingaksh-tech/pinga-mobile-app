@@ -96,7 +96,7 @@ class _AppButtonState extends State<AppButton> {
             child: AnimatedContainer(
               duration: widget.duration ?? defaultDuration,
               width: widget.flexibleWidth == false ? (widget.width?.w ?? Get.width + (widget.margin?.horizontal ?? 0)) : null,
-              height: widget.flexibleHeight == false ? (widget.height?.w ?? appButtonHight + (widget.margin?.vertical ?? 0)) : null,
+              height: widget.flexibleHeight == false ? (widget.height?.w ?? appButtonHeight + (widget.margin?.vertical ?? 0)) : null,
               margin: widget.padding ?? EdgeInsets.zero,
               decoration: BoxDecoration(
                 borderRadius: widget.borderRadius ?? commonBorderRadius,
