@@ -23,7 +23,7 @@ class ApiUtils {
       const Duration(milliseconds: 100),
       () async {
         if (!LocalStorage.accessToken.isNotEmpty) {
-          Get.offAllNamed(AppRoutes.dashboardScreen);
+          Get.offAllNamed(AppRoutes.bottomBarScreen);
         } else {
           Get.offAllNamed(AppRoutes.loginScreen);
         }

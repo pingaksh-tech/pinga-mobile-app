@@ -124,21 +124,21 @@ class UiUtils {
   /// ***********************************************************************************
   ///                                 SECURE PASSWORD EYE
   /// ***********************************************************************************
-  static Widget securePasswordEye(String svgIconPath, {double? width, double? imageHeight, bool isPassShow = true}) {
-    return SizedBox(
-      width: width ?? 40,
-      child: UiUtils.fadeSwitcherWidget(
-        child: Center(
-          key: ValueKey<bool>(isPassShow),
-          child: SvgPicture.asset(
-            isPassShow ? AppAssets.unlockEyeIcon : AppAssets.lockEyeIcon,
-            height: imageHeight ?? 20,
-            colorFilter: ColorFilter.mode(AppColors.secondary.withOpacity(.25), BlendMode.srcIn),
-          ),
-        ),
-      ),
-    );
-  }
+  // static Widget securePasswordEye(String svgIconPath, {double? width, double? imageHeight, bool isPassShow = true}) {
+  //   return SizedBox(
+  //     width: width ?? 40,
+  //     child: UiUtils.fadeSwitcherWidget(
+  //       child: Center(
+  //         key: ValueKey<bool>(isPassShow),
+  //         child: SvgPicture.asset(
+  //           isPassShow ? AppAssets.unlockEyeIcon : AppAssets.lockEyeIcon,
+  //           height: imageHeight ?? 20,
+  //           colorFilter: ColorFilter.mode(AppColors.secondary.withOpacity(.25), BlendMode.srcIn),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   /// ***********************************************************************************
   ///                                 SYSTEM UI OVERLAY STYLE

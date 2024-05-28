@@ -12,7 +12,7 @@ class AppTheme {
     return base.copyWith(
       primaryColor: kPrimaryColor,
       visualDensity: VisualDensity.comfortable,
-      scaffoldBackgroundColor: const Color(0xffffffff),
+      scaffoldBackgroundColor: kBackgroundColor,
       shadowColor: const Color(0xFFdedcdc),
       indicatorColor: kPrimaryColor,
       splashColor: kPrimaryColor?.withOpacity(0.2),

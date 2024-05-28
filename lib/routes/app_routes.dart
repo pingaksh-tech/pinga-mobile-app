@@ -31,7 +31,7 @@ class AppRoutes {
   /// ***********************************************************************************
   /// *                                COMMON PAGES                                     *
   /// ***********************************************************************************
-  static const String navigationBarScreen = '/navigation-bar-screen';
+  static const String bottomBarScreen = '/bottom-bar-screen';
 
   /// ***********************************************************************************
   /// *                         AUTH AND ONBOARDING PAGES                               *
