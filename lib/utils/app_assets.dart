@@ -35,6 +35,9 @@ class AppAssets {
   static String basketShoppingSimple = '${svgPath}basket-shopping-simple.svg';
   static String basketShopping = '${svgPath}basket-shopping.svg';
 
+  static String homeFilledSVG = '${svgPath}home_filled.svg';
+  static String homeOutlinedSVG = '${svgPath}home_outlined.svg';
+
   /// ***********************************************************************************
   ///                                   JSON
   /// ***********************************************************************************

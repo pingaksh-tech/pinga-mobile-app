@@ -22,13 +22,23 @@ class BottomBarController extends GetxController {
       BottomBarModel(
         screenName: "Home",
         bottomItem: BottomItem(
-          selectedImage: AppAssets.home,
+          selectedImage: AppAssets.homeOutlinedSVG,
         ),
         screenWidget: Container(),
       ),
     );
     bottomBarDataList.insert(
       1,
+      BottomBarModel(
+        screenName: "Wishlist",
+        bottomItem: BottomItem(
+          selectedImage: AppAssets.like,
+        ),
+        screenWidget: Container(),
+      ),
+    );
+    bottomBarDataList.insert(
+      2,
       BottomBarModel(
         screenName: "Cart",
         bottomItem: BottomItem(
@@ -38,7 +48,7 @@ class BottomBarController extends GetxController {
       ),
     );
     bottomBarDataList.insert(
-      2,
+      3,
       BottomBarModel(
         screenName: "Orders",
         bottomItem: BottomItem(
@@ -49,7 +59,7 @@ class BottomBarController extends GetxController {
     );
 
     bottomBarDataList.insert(
-      3,
+      4,
       BottomBarModel(
         screenName: "Profile",
         bottomItem: BottomItem(

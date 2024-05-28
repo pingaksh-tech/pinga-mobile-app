@@ -2,12 +2,12 @@
 
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../exports.dart';
-import '../../res/app_colors.dart';
-import '../../utils/utils.dart';
+
 import 'bottombar_controller.dart';
 
 class BottomBarScreen extends StatelessWidget {
@@ -68,7 +68,7 @@ class BottomBarScreen extends StatelessWidget {
               () => con.bottomBarDataList.length >= 2
                   ? IntrinsicHeight(
                       child: Container(
-                        color: Theme.of(context).colorScheme.background,
+                        color: Theme.of(context).scaffoldBackgroundColor,
                         child: BottomAppBar(
                           notchMargin: 6,
                           padding: EdgeInsets.symmetric(vertical: defaultPadding / 1.2),
@@ -89,7 +89,7 @@ class BottomBarScreen extends StatelessWidget {
                                         children: [
                                           AnimatedContainer(
                                             duration: const Duration(milliseconds: 250),
-                                            padding: EdgeInsets.all(defaultPadding / 1.3),
+                                            padding: EdgeInsets.all(defaultPadding / 1.5),
                                             decoration: BoxDecoration(
                                               color: con.currentBottomIndex.value == index ? Theme.of(context).primaryColor : Theme.of(context).scaffoldBackgroundColor,
                                               border: Border.all(color: con.currentBottomIndex.value == index ? Theme.of(context).primaryColor : Theme.of(context).scaffoldBackgroundColor, strokeAlign: 5),
@@ -119,14 +119,17 @@ class BottomBarScreen extends StatelessWidget {
                                                         color: Theme.of(context).primaryColor.withOpacity(.9),
                                                       ),
                                           ),
-                                          // Text(
-                                          //   StrExtension.capitalize(con.bottomBarDataList[index].screenName ?? ""),
-                                          //   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                          //         color: con.currentBottomIndex.value == index ? AppColors.goldColor : Theme.of(context).primaryColor.withOpacity(.9),
-                                          //         fontSize: 13,
-                                          //         fontWeight: FontWeight.w600,
-                                          //       ),
-                                          // ),
+                                          AnimatedDefaultTextStyle(
+                                            duration: defaultDuration,
+                                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                                  color: con.currentBottomIndex.value == index ? AppColors.secondary : Theme.of(context).primaryColor.withOpacity(.9),
+                                                  fontSize: con.currentBottomIndex.value != index ? 9.sp : 0,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                            child: Text(
+                                              con.bottomBarDataList[index].screenName ?? "",
+                                            ),
+                                          ),
                                         ],
                                       ),
                                     ),
