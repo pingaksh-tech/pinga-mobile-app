@@ -32,6 +32,11 @@ class CartController extends GetxController {
 
   Future<void> removeProductFromCart(BuildContext context, {required int index}) async {
     productsList.removeAt(index);
+
+    /// TEMP
+    calculateTotalPrice();
+
+    ///
     /* await CartDialogs.cartItemRemoveDialog(
       context: context,
       deleteNote: "Would you like to remove item form cart?",

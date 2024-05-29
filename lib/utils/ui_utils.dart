@@ -148,7 +148,7 @@ class UiUtils {
   static String amountFormat(String value, {int? decimalDigits, String? symbol}) {
     if (!isValEmpty(value)) {
       NumberFormat format = NumberFormat.currency(
-        decimalDigits: decimalDigits ?? 0,
+        decimalDigits: decimalDigits ?? 2,
         symbol: symbol ?? LocalStorage.currencySymbol.value,
         locale: "en_IN",
       );

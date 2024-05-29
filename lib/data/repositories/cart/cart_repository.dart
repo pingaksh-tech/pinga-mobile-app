@@ -288,6 +288,11 @@ class CartRepository {
 
   static Future<void> updateQuantityAPI({required String productId, required bool doIncrease}) async {
     final CartController cartCon = Get.find<CartController>();
+
+    /// TEMP
+    cartCon.calculateTotalPrice();
+
+    ///
     try {
       await APIFunction.putApiCall(apiUrl: "${ApiUrls.cartUpdatePUT}$productId", body: {"action": doIncrease ? "+" : "-"}).then(
         (response) async {
