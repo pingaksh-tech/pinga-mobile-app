@@ -8,15 +8,15 @@ import 'package:get/get.dart';
 import 'package:pingaksh_mobile/packages/app_animated_cliprect.dart';
 import 'package:pinput/pinput.dart';
 
-import '../../../data/api/api_utils.dart';
-import '../../../exports.dart';
-import '../../../packages/animated_counter/animated_counter.dart';
-import 'login_controller.dart';
+import '../../data/api/api_utils.dart';
+import '../../exports.dart';
+import '../../packages/animated_counter/animated_counter.dart';
+import 'auth_controller.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
+class AuthScreen extends StatelessWidget {
+  AuthScreen({super.key});
 
-  final LoginController con = Get.put(LoginController());
+  final AuthController con = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {

@@ -4,9 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../exports.dart';
+import '../../exports.dart';
 
-class LoginController extends GetxController {
+class AuthController extends GetxController {
   // Common
   RxBool isLoading = false.obs;
   RxBool disableButton = true.obs;
@@ -65,7 +65,8 @@ class LoginController extends GetxController {
       },
     );
   }
-   void checkOTPButtonDisableStatus() {
+
+  void checkOTPButtonDisableStatus() {
     if (otpController.value.text.trim().length != maxOTPLength) {
       disableButton.value = true;
     } else {

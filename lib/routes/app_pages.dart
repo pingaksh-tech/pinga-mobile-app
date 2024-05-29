@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:pingaksh_mobile/view/bottombar/bottombar_screen.dart';
 
-import '../view/auth_flow/login/login_screen.dart';
+import '../view/auth_flow/auth_screen.dart';
 import '../view/dashboard/dashboard_screen.dart';
 import '../view/splash/splash_screen.dart';
 import 'app_routes.dart';
@@ -21,7 +21,7 @@ class AppPages {
 
   static final List<GetPage<dynamic>> pages = <GetPage<dynamic>>[
     _getPage(name: AppRoutes.splashScreen, page: () => SplashScreen()),
-    _getPage(name: AppRoutes.loginScreen, page: () => LoginScreen()),
+    _getPage(name: AppRoutes.authScreen, page: () => AuthScreen()),
     _getPage(name: AppRoutes.dashboardScreen, page: () => DashboardScreen()),
     _getPage(name: AppRoutes.bottomBarScreen, page: () => BottomBarScreen()),
 
