@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:pingaksh_mobile/exports.dart';
 
+import '../../../../packages/like_button/like_button.dart';
 import '../../../../res/app_bar.dart';
 import '../../../../res/app_network_image.dart';
+import '../../components/product_sort_tile.dart';
 import 'product_controller.dart';
 
 class ProductScreen extends StatelessWidget {
@@ -20,6 +23,7 @@ class ProductScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.surface,
         shadowColor: Theme.of(context).scaffoldBackgroundColor,
         title: "Rings",
+        elevation: 2,
       ),
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2, vertical: defaultPadding),
@@ -33,51 +37,56 @@ class ProductScreen extends StatelessWidget {
                     context: context,
                     builder: (context) => IntrinsicHeight(
                       child: Container(
-                          width: Get.width,
-                          padding: EdgeInsets.all(defaultPadding).copyWith(bottom: MediaQuery.of(context).padding.bottom + defaultPadding),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).scaffoldBackgroundColor,
-                            borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
-                            border: Border.all(color: Theme.of(context).iconTheme.color!.withAlpha(15)),
-                          ),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    "Sort by",
-                                    style: AppTextStyle.titleStyle(context).copyWith(fontWeight: FontWeight.w400, fontSize: 16.sp),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {},
+                        width: Get.width,
+                        padding: EdgeInsets.all(defaultPadding).copyWith(bottom: MediaQuery.of(context).padding.bottom + defaultPadding),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).scaffoldBackgroundColor,
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
+                          border: Border.all(color: Theme.of(context).iconTheme.color!.withAlpha(15)),
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  "Sort by",
+                                  textAlign: TextAlign.center,
+                                  style: AppTextStyle.titleStyle(context).copyWith(fontWeight: FontWeight.w400, fontSize: 16.sp),
+                                ),
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: IconButton(
+                                    onPressed: () {
+                                      Get.back();
+                                    },
                                     icon: const Icon(Icons.close_sharp),
                                   ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Transform.scale(
-                                    scale: 1.2,
-                                    child: Checkbox(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(3),
-                                      ),
-                                      value: false,
-                                      onChanged: (value) {},
-                                      side: BorderSide(
-                                        color: AppColors.font.withOpacity(0.5),
-                                        width: 1.5,
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
-                                    "Price - Low to High",
-                                    style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
-                                  )
-                                ],
-                              )
-                            ],
-                          )),
+                                ),
+                              ],
+                            ),
+                            ProductSortTile(
+                              isCheck: con.isCheck,
+                              title: "Price - Low to high",
+                            ),
+                            ProductSortTile(
+                              isCheck: con.isCheck,
+                              title: "Price - High to Low",
+                            ),
+                            ProductSortTile(
+                              isCheck: con.isCheck,
+                              title: "Newest First",
+                            ),
+                            ProductSortTile(
+                              isCheck: con.isCheck,
+                              title: "Oldest First",
+                            ),
+                            ProductSortTile(
+                              isCheck: con.isCheck,
+                              title: "Most Ordered",
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   );
                 },
@@ -131,52 +140,82 @@ class ProductScreen extends StatelessWidget {
               10,
               (index) => Container(
                 width: Get.width / 2 - defaultPadding * 1.5,
-                margin: EdgeInsets.all(defaultPadding / 2).copyWith(bottom: defaultPadding),
-                color: Theme.of(context).colorScheme.surface,
+                margin: EdgeInsets.all(defaultPadding / 2),
+                padding: EdgeInsets.all(defaultPadding / 4),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
+                  borderRadius: BorderRadius.circular(defaultRadius),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.shade300,
+                      blurRadius: 3,
+                      offset: const Offset(0, 1),
+                    ),
+                  ],
+                ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
                       height: Get.width / 2 - defaultPadding,
-                      child: AppNetworkImage(
-                        imageUrl: "https://i.pinimg.com/736x/71/56/2b/71562bfee51fd6ffb222dae63e605eec.jpg",
-                        fit: BoxFit.fill,
-                        padding: EdgeInsets.only(bottom: defaultPadding / 2),
-                        borderRadius: BorderRadius.circular(defaultRadius),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.shade300,
-                            blurRadius: 5,
-                            offset: const Offset(0, 1),
+                      child: Stack(
+                        children: [
+                          AppNetworkImage(
+                            height: double.infinity,
+                            width: double.infinity,
+                            fit: BoxFit.scaleDown,
+                            padding: EdgeInsets.only(bottom: defaultPadding * 1.2),
+                            borderRadius: BorderRadius.circular(defaultRadius),
+                            imageUrl: "https://i.pinimg.com/736x/71/56/2b/71562bfee51fd6ffb222dae63e605eec.jpg",
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.shade300,
+                                blurRadius: 1,
+                                offset: const Offset(0, 1),
+                              ),
+                            ],
+                          ),
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: MFLikeButton(
+                              iconSize: 20,
+                              buttonSize: 30,
+                              isLiked: true,
+                              onTap: (isLiked) async {
+                                return isLiked;
+                              },
+                              selectedIcon: SvgPicture.asset(AppAssets.basketShoppingSimple, color: AppColors.lightSecondary, height: 20, width: 20), // ignore: deprecated_member_use
+                              unSelectedIcon: SvgPicture.asset(AppAssets.basketShopping, color: AppColors.lightSecondary, height: 20, width: 20), // ignore: deprecated_member_use
+                              shape: BoxShape.circle,
+                              padding: EdgeInsets.only(right: defaultPadding / 2),
+                              backgroundColor: Theme.of(context).primaryColor,
+                              borderColor: Theme.of(context).scaffoldBackgroundColor,
+                              likeColor: AppColors.goldColor,
+                            ),
                           ),
                         ],
                       ),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "PLRMKN1033(KISNA FG)",
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: AppTextStyle.subtitleStyle(context).copyWith(fontSize: 12.sp),
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                "₹ 1,90,280",
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 14.sp,
-                                      color: Theme.of(context).primaryColor,
-                                    ),
-                              ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0).copyWith(top: 1),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: Get.width,
+                            child: Text(
+                              "Gshgdghg",
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500, fontSize: 12.sp),
                             ),
-                            Icon(Icons.more_vert_rounded, color: Theme.of(context).primaryColor)
-                          ],
-                        ),
-                      ],
+                          ),
+                          const SizedBox(height: 3),
+                          Text(
+                            UiUtils.amountFormat("458454", symbol: "₹"),
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600, fontSize: 14.sp),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

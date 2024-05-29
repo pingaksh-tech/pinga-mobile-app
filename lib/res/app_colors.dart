@@ -10,6 +10,7 @@ class AppColors {
   static Color lightSecondary = const Color.fromARGB(255, 255, 237, 205);
   static const Color background = Color(0xFFFFFFFF);
   static const Color error = Color(0xFFFF0000);
+  static Color goldColor = const Color(0xFFBA995E);
 
   static const Color font = Color(0xFF1E2A3B);
   static const Color green = Color(0xFF08AC53);

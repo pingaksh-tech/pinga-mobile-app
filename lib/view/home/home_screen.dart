@@ -21,6 +21,7 @@ class HomeScreen extends StatelessWidget {
         showBackIcon: false,
         backgroundColor: Theme.of(context).colorScheme.surfaceBright,
         shadowColor: Theme.of(context).scaffoldBackgroundColor,
+        elevation: 2,
       ),
       body: ListView(
         physics: const RangeMaintainingScrollPhysics(),
@@ -38,7 +39,7 @@ class HomeScreen extends StatelessWidget {
               (index) => Container(
                 margin: EdgeInsets.all(defaultPadding).copyWith(bottom: defaultPadding / 2, top: 0),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
+                  borderRadius: BorderRadius.circular(defaultRadius),
                 ),
                 clipBehavior: Clip.antiAlias,
                 child: Image.asset(
@@ -68,7 +69,7 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   AppNetworkImage(
                     imageUrl: con.imgList[index],
-                    borderRadius: BorderRadius.circular(5),
+                    borderRadius: BorderRadius.circular(defaultRadius),
                     fit: BoxFit.fill,
                   ),
                   Text(
