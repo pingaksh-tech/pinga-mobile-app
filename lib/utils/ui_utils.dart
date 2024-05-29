@@ -166,9 +166,9 @@ class UiUtils {
     );
   }
 
-  static Widget fadeSwitcherWidget({required Widget child, Alignment alignment = Alignment.centerLeft}) {
+  static Widget fadeSwitcherWidget({required Widget child, Duration? duration, Alignment alignment = Alignment.centerLeft}) {
     return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 300),
+      duration: duration ?? const Duration(milliseconds: 300),
       transitionBuilder: (Widget child, Animation<double> animation) {
         return FadeTransition(
           opacity: CurvedAnimation(parent: animation, curve: Curves.easeIn),
