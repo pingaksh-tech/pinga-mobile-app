@@ -22,7 +22,7 @@ class ApiUtils {
     await Future.delayed(
       const Duration(milliseconds: 100),
       () async {
-        if (!LocalStorage.accessToken.isNotEmpty) {
+        if (LocalStorage.accessToken.isNotEmpty) {
           Get.offAllNamed(AppRoutes.bottomBarScreen);
         } else {
           Get.offAllNamed(AppRoutes.loginScreen);

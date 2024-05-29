@@ -12,6 +12,8 @@ import '../exports.dart';
 
 class UiUtils {
   UiUtils._();
+  static double appButtonHight = 48.w;
+  static double bottomBarHight = 85;
 
   /// Set the status bar style to dark
   static void darkStatusBar() {
@@ -100,6 +102,10 @@ class UiUtils {
         _isShowingToast = false;
       });
     }
+  }
+
+  static EdgeInsets textfieldScrollPadding(BuildContext context, {bool? showError = false, double? extendBottom}) {
+    return const EdgeInsets.all(20).copyWith(bottom: (UiUtils.appButtonHight + (defaultPadding * 3.3) + (showError != true ? defaultPadding * 1.3 : 0)) + (extendBottom ?? 0));
   }
 
   /// ***********************************************************************************
