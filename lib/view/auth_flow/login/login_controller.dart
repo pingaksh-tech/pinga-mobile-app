@@ -18,6 +18,22 @@ class LoginController extends GetxController {
   RxBool numberValidation = true.obs;
   RxString numberError = ''.obs;
 
+  bool mobileValidation() {
+    // Phone number validation
+    if (numberCon.value.text.trim().isEmpty) {
+      numberError.value = "Please enter number";
+      numberValidation.value = false;
+      //? number.length > 16 || number.length < 9
+    } else if (!GetUtils.isPhoneNumber(numberCon.value.text.trim())) {
+      numberError.value = "Please enter valid number";
+      numberValidation.value = false;
+    } else {
+      numberValidation.value = true;
+    }
+
+    return numberValidation.isTrue;
+  }
+
   // Forgot Password
   Rx<TextEditingController> otpController = TextEditingController().obs;
 
@@ -48,5 +64,12 @@ class LoginController extends GetxController {
         }
       },
     );
+  }
+   void checkOTPButtonDisableStatus() {
+    if (otpController.value.text.trim().length != maxOTPLength) {
+      disableButton.value = true;
+    } else {
+      disableButton.value = false;
+    }
   }
 }

@@ -66,15 +66,36 @@ class LoginScreen extends StatelessWidget {
                             ),
                           ),
                           UiUtils.fadeSwitcherWidget(
-                            child: Text(
-                              switch (con.screenType.value) {
-                                AuthScreenType.login => 'Enter your phone number to get OTP',
-                                AuthScreenType.forgotPassword => 'We just sent an OTP to ${con.numberCon.value.text}',
-                              },
-                              key: ValueKey(con.screenType.value),
-                              style: AppTextStyle.subtitleStyle(context),
-                            ),
-                          ),
+                              child: SizedBox(
+                            key: ValueKey(con.screenType.value),
+                            child: switch (con.screenType.value) {
+                              AuthScreenType.login => Text(
+                                  'Enter your phone number to get OTP',
+                                  key: ValueKey(con.screenType.value),
+                                  style: AppTextStyle.subtitleStyle(context),
+                                ),
+                              AuthScreenType.forgotPassword => RichText(
+                                  key: ValueKey(con.screenType.value),
+                                  textAlign: TextAlign.center,
+                                  text: TextSpan(
+                                    text: "We just sent an OTP to ",
+                                    style: AppTextStyle.subtitleStyle(context),
+                                    children: [
+                                      TextSpan(
+                                        text: con.numberCon.value.text.trim(),
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = con.isLoading.isFalse && con.isResendOtp.isFalse
+                                              ? () {
+                                                  con.screenType.value = AuthScreenType.login;
+                                                }
+                                              : null,
+                                        style: AppTextStyle.subtitleStyle(context).copyWith(fontWeight: FontWeight.w500, color: Theme.of(context).primaryColor),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                            },
+                          )),
                           (defaultPadding * 1.5).verticalSpace,
                           AnimatedClipRect(
                             open: con.screenType.value == AuthScreenType.login,
@@ -170,7 +191,7 @@ class LoginScreen extends StatelessWidget {
                                     // }
                                   },
                                   onChanged: (pin) async {
-                                    // con.checkButtonDisableStatus();
+                                    con.checkOTPButtonDisableStatus();
                                     con.otpValidation.value = true;
                                     con.otpError.value = "";
                                   },
@@ -250,6 +271,10 @@ class LoginScreen extends StatelessWidget {
                               AuthScreenType.forgotPassword => 'Verify',
                             },
                             loader: con.isLoading.value,
+                            disableButton: switch (con.screenType.value) {
+                              AuthScreenType.login => false,
+                              AuthScreenType.forgotPassword => con.disableButton.value,
+                            },
                             borderRadius: BorderRadius.circular(defaultRadius * 4),
                             margin: EdgeInsets.symmetric(horizontal: defaultPadding.w),
                             padding: EdgeInsets.only(top: defaultPadding.h),
@@ -258,18 +283,20 @@ class LoginScreen extends StatelessWidget {
 
                               switch (con.screenType.value) {
                                 case AuthScreenType.login:
+                                  if (con.mobileValidation()) {
+                                    // In login API
+                                    con.isLoading.value = true;
 
-                                  // In login API
-                                  con.isLoading.value = true;
-
-                                  await Future.delayed(
-                                    const Duration(milliseconds: 1000),
-                                    () {
-                                      con.timerStart();
-                                      con.isLoading.value = false;
-                                      con.screenType.value = AuthScreenType.forgotPassword;
-                                    },
-                                  );
+                                    await Future.delayed(
+                                      const Duration(milliseconds: 1000),
+                                      () {
+                                        con.timerStart();
+                                        con.otpController.value.clear();
+                                        con.isLoading.value = false;
+                                        con.screenType.value = AuthScreenType.forgotPassword;
+                                      },
+                                    );
+                                  }
                                   break;
 
                                 case AuthScreenType.forgotPassword:
