@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../exports.dart';
@@ -360,8 +361,8 @@ class _AppTextFieldState extends State<AppTextField> {
           child: widget.suffixIcon ??
               SvgPicture.asset(
                 AppAssets.search,
-                height: 23,
-                width: 23,
+                height: 24,
+                width: 24,
                 color: isFieldActive ? Theme.of(context).primaryColor : Colors.grey.shade400, // ignore: deprecated_member_use
               ),
         );

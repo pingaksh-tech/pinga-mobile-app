@@ -2,7 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:pingaksh_mobile/theme/app_style.dart';
+import 'package:pingaksh_mobile/res/app_bar.dart';
+import 'package:pingaksh_mobile/res/app_network_image.dart';
 import 'package:pingaksh_mobile/view/home/home_controller.dart';
 
 import '../../exports.dart';
@@ -15,55 +16,67 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: MyAppBar(
+        title: "Home",
+        showBackIcon: false,
+        backgroundColor: Theme.of(context).colorScheme.surfaceBright,
+        shadowColor: Theme.of(context).scaffoldBackgroundColor,
+      ),
       body: ListView(
+        physics: const RangeMaintainingScrollPhysics(),
+        padding: EdgeInsets.only(top: defaultPadding),
         children: [
           CarouselSlider(
             options: CarouselOptions(
-              // autoPlay: true,
+              autoPlay: true,
               enableInfiniteScroll: false,
               viewportFraction: 1,
-              height: Get.width / 2.1,
-              onPageChanged: (index, reason) {},
+              height: Get.width / 3.1,
             ),
             items: List.generate(
-              3,
+              con.bannerList.length,
               (index) => Container(
-                margin: EdgeInsets.all(defaultPadding).copyWith(bottom: defaultPadding / 2),
+                margin: EdgeInsets.all(defaultPadding).copyWith(bottom: defaultPadding / 2, top: 0),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(defaultRadius),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 clipBehavior: Clip.antiAlias,
-                child: Image.network(
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReyjIyudrWYKWlI5MNBSLHfg1OGjAgbP2xAA&s",
+                child: Image.asset(
+                  con.bannerList[index],
                   height: double.infinity,
                   width: double.infinity,
-                  fit: BoxFit.fill,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
           ),
           GridView.builder(
+            physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+            padding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(top: defaultPadding / 5, bottom: defaultBottomPadding),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               mainAxisSpacing: defaultPadding / 2,
-              crossAxisSpacing: defaultPadding / 2,
+              crossAxisSpacing: defaultPadding / 1.5,
               mainAxisExtent: 100.h,
             ),
             itemCount: con.imgList.length,
-            itemBuilder: (context, index) => Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(defaultRadius),
-                color: Colors.blueGrey,
-                image: DecorationImage(
-                  image: NetworkImage(
-                    con.imgList[index],
+            itemBuilder: (context, index) => GestureDetector(
+              onTap: () => Get.toNamed(AppRoutes.categoryScreen),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  AppNetworkImage(
+                    imageUrl: con.imgList[index],
+                    borderRadius: BorderRadius.circular(5),
+                    fit: BoxFit.fill,
                   ),
-                  fit: BoxFit.fill,
-                ),
+                  Text(
+                    "Rang Tarang",
+                    style: AppTextStyle.titleStyle(context).copyWith(color: Theme.of(context).scaffoldBackgroundColor),
+                  ),
+                ],
               ),
-              child: const Text("Rang Tarang"),
             ),
           ),
         ],

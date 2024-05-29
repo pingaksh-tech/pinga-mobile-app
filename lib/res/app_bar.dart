@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
-import '../../utils/utils.dart';
+import '../exports.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
@@ -11,22 +14,40 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onTap;
   final List<Widget>? actions;
   final VoidCallback? titleOnTap;
+  final Widget? leading;
   final Widget? child;
+  final SystemUiOverlayStyle? systemOverlayStyle;
   @override
   final Size preferredSize;
+  final bool centerTitle;
+  final bool showBackIcon;
+  final EdgeInsets? leadingPadding;
   final PreferredSizeWidget? bottom;
+  final double? leadingWidth;
+  final double? titleSpacing;
+  final Color? backgroundColor;
+  final Color? shadowColor;
 
   MyAppBar({
     super.key,
     this.title,
     this.titleStyle,
-    this.elevation,
+    this.elevation = 5,
     this.toolbarHeight,
     this.bottom,
     this.onTap,
     this.actions,
     this.titleOnTap,
+    this.systemOverlayStyle,
+    this.centerTitle = true,
+    this.showBackIcon = true,
+    this.leading,
     this.child,
+    this.leadingPadding,
+    this.leadingWidth,
+    this.titleSpacing,
+    this.backgroundColor,
+    this.shadowColor,
   })  : assert(elevation == null || elevation >= 0.0),
         preferredSize = _PreferredAppBarSize(toolbarHeight, bottom?.preferredSize.height);
 
@@ -39,36 +60,45 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PreferredSize(
-      preferredSize: const Size.fromHeight(50),
-      child: Container(
-        // decoration: BoxDecoration(
-        //   boxShadow: [
-        //     BoxShadow(
-        //       color: Theme.of(context).primaryColor.withOpacity(.1),
-        //       offset: const Offset(0, 2.0),
-        //       blurRadius: 4,
-        //     )
-        //   ],
-        // ),
-        child: AppBar(
-          elevation: elevation ?? 0,
-          centerTitle: false,
-          foregroundColor: Colors.black,
-          automaticallyImplyLeading: true,
-          toolbarHeight: toolbarHeight ?? 75,
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          title: GestureDetector(
-            onTap: titleOnTap,
-            child: child ??
-                Text(
-                  title ?? "",
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 22.sp, fontWeight: FontWeight.w700, color: Theme.of(context).primaryColor),
-                ),
-          ),
-          actions: !isValEmpty(actions) ? actions : null,
-        ),
+    return AppBar(
+      systemOverlayStyle: systemOverlayStyle,
+      elevation: elevation,
+      shadowColor: shadowColor ?? Colors.transparent,
+      centerTitle: centerTitle,
+      automaticallyImplyLeading: false,
+      toolbarHeight: toolbarHeight,
+      leadingWidth: leadingWidth,
+      titleSpacing: titleSpacing,
+      leading: showBackIcon
+          ? IconButton(
+              onPressed: () => Get.back(),
+              icon: SvgPicture.asset(
+                height: 30,
+                AppAssets.backArrowIcon,
+                color: AppColors.primary, // ignore: deprecated_member_use
+              ),
+            )
+          : leading,
+      backgroundColor: backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
+      title: GestureDetector(
+        onTap: titleOnTap,
+        child: child ??
+            Text(
+              title ?? "",
+              style: titleStyle ?? Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 18.sp, fontWeight: FontWeight.w600, color: AppColors.primary),
+            ),
       ),
+      actions: !isValEmpty(actions)
+          ? [
+              Padding(
+                padding: EdgeInsets.only(right: defaultPadding / 1.7),
+                child: Row(
+                  children: actions!,
+                ),
+              ),
+            ]
+          : null,
+      bottom: bottom,
     );
   }
 }
@@ -77,5 +107,5 @@ class _PreferredAppBarSize extends Size {
   final double? toolbarHeight;
   final double? bottomHeight;
 
-  _PreferredAppBarSize(this.toolbarHeight, this.bottomHeight) : super.fromHeight((toolbarHeight ?? 60) + (bottomHeight ?? 0));
+  _PreferredAppBarSize(this.toolbarHeight, this.bottomHeight) : super.fromHeight((toolbarHeight ?? kToolbarHeight) + (bottomHeight ?? 0));
 }

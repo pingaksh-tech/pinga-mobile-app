@@ -2,6 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:pingaksh_mobile/view/home/home_screen.dart';
 
 import '../../data/model/bottombar/bottombar_model.dart';
 import '../../exports.dart';
@@ -25,7 +26,7 @@ class BottomBarController extends GetxController {
         bottomItem: BottomItem(
           selectedImage: AppAssets.homeOutlinedSVG,
         ),
-        screenWidget: Container(),
+        screenWidget: HomeScreen(),
       ),
     );
     bottomBarDataList.insert(

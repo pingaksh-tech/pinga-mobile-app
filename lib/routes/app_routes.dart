@@ -43,4 +43,6 @@ class AppRoutes {
   ///                                 HOME MODULE
   /// ***********************************************************************************
   static const String dashboardScreen = '/dashboard-screen';
+  static const String categoryScreen = '/category-screen';
+  static const String productScreen = '/product-screen';
 }
