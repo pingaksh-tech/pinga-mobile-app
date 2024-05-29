@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:pingaksh_mobile/data/model/cart/cart_model.dart';
 
 import '../../data/repositories/cart/cart_repository.dart';
-import 'components/cart_dialogs.dart';
 
 class CartController extends GetxController {
   RxBool isLoading = false.obs;
@@ -32,7 +31,8 @@ class CartController extends GetxController {
   }
 
   Future<void> removeProductFromCart(BuildContext context, {required int index}) async {
-    await CartDialogs.cartItemRemoveDialog(
+    productsList.removeAt(index);
+    /* await CartDialogs.cartItemRemoveDialog(
       context: context,
       deleteNote: "Would you like to remove item form cart?",
       onTap: () async {
@@ -50,6 +50,6 @@ class CartController extends GetxController {
           },
         );
       },
-    );
+    );*/
   }
 }
