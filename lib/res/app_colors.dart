@@ -6,9 +6,9 @@ class AppColors {
   /// App Specific Colors
   static Color primary = const Color(0xFF330874);
   static Color lightPrimary = const Color(0xFF756390);
-  static Color secondary = const Color(0xFFBA995E);
+  static Color secondary = const Color(0xFFD89B00);
   static Color lightSecondary = const Color.fromARGB(255, 255, 237, 205);
-  static const Color background = Color(0xFFF8F8F8);
+  static const Color background = Color(0xFFFFFFFF);
   static const Color error = Color(0xFFFF0000);
 
   static const Color font = Color(0xFF1E2A3B);

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 import '../exports.dart';
 
@@ -30,14 +32,13 @@ class EmptyElement extends StatelessWidget {
           mainAxisAlignment: mainAxis ?? MainAxisAlignment.end,
           mainAxisSize: MainAxisSize.min,
           children: [
-            // if (imageHeight != 0) ...[
-            //   SvgPicture.string(
-            //     AppAssets.dynamicEmptyData(context),
-            //     width: imageWidth ?? Get.width / 3,
-            //     height: imageHeight ?? Get.width / 3.5,
-            //   ),
-            //   if (spacing != 0.0) SizedBox(height: spacing),
-            // ],
+            if (imagePath != null)
+              SvgPicture.asset(
+                imagePath!,
+                width: imageWidth ?? Get.width / 3,
+                height: imageHeight ?? Get.width / 2,
+              ),
+            SizedBox(height: spacing ?? defaultPadding),
             SizedBox(height: defaultPadding / 2),
             if (title != "")
               Text(

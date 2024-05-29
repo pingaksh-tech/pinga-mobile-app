@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../exports.dart';
 
@@ -144,6 +145,23 @@ class UiUtils {
   ///                                 SYSTEM UI OVERLAY STYLE
   /// ***********************************************************************************
 
+  static String amountFormat(String value, {int? decimalDigits, String? symbol}) {
+    if (!isValEmpty(value)) {
+      NumberFormat format = NumberFormat.currency(
+        decimalDigits: decimalDigits ?? 0,
+        symbol: symbol ?? LocalStorage.currencySymbol.value,
+        locale: "en_IN",
+      );
+      return format.format(double.parse(value));
+    } else {
+      return "${LocalStorage.currencySymbol.value}0.0";
+    }
+  }
+
+  /// ***********************************************************************************
+  ///                                 SYSTEM UI OVERLAY STYLE
+  /// ***********************************************************************************
+
   static SystemUiOverlayStyle systemUiOverlayStyle({
     bool? isReverse,
     Color? statusBarColor,
@@ -196,6 +214,25 @@ class UiUtils {
             color: color,
           ),
         ],
+      ),
+    );
+  }
+
+  static Widget scrollGradient(BuildContext context, {bool isBottom = false}) {
+    return RotatedBox(
+      quarterTurns: isBottom == true ? 2 : 4,
+      child: Container(
+        height: 25,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Theme.of(context).scaffoldBackgroundColor,
+              Theme.of(context).scaffoldBackgroundColor.withOpacity(0.0),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
       ),
     );
   }

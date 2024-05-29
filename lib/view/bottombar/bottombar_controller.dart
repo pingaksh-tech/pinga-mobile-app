@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../../data/model/bottombar/bottombar_model.dart';
 import '../../exports.dart';
+import '../cart/cart_screen.dart';
 
 class BottomBarController extends GetxController {
   RxInt currentBottomIndex = 0.obs;
@@ -44,7 +45,7 @@ class BottomBarController extends GetxController {
         bottomItem: BottomItem(
           selectedImage: AppAssets.cart,
         ),
-        screenWidget: Container(),
+        screenWidget: CartScreen(),
       ),
     );
     bottomBarDataList.insert(

@@ -23,8 +23,8 @@ class AppTheme {
       textTheme: buildTextTheme(base: base.textTheme, fontColor: AppColors.font, myFontFamily: fontFamily),
       primaryTextTheme: buildTextTheme(base: base.primaryTextTheme, fontColor: AppColors.font, myFontFamily: fontFamily),
       radioTheme: RadioThemeData(fillColor: WidgetStateProperty.all(AppColors.primary)),
-      dividerColor: kSecondaryColor?.withOpacity(0.5),
-      dividerTheme: DividerThemeData(color: kSecondaryColor?.withOpacity(0.15)),
+      // dividerColor: kSecondaryColor?.withOpacity(0.5),
+      dividerTheme: DividerThemeData(color: kPrimaryColor?.withOpacity(0.05)),
       // Widgets Theme
       appBarTheme: AppBarTheme(
         color: kPrimaryColor,

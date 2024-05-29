@@ -64,7 +64,7 @@ class AppIconButton extends StatelessWidget {
           style: IconButton.styleFrom(shadowColor: shadowColor),
           icon: ClipOval(
             child: Material(
-              color: backgroundColor?.withOpacity(withMyOpacity) ?? Colors.transparent,
+              color: backgroundColor ?? backgroundColor?.withOpacity(withMyOpacity) ?? Colors.transparent,
               child: Center(child: icon),
             ),
           ),

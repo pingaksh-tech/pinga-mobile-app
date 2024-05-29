@@ -10,4 +10,18 @@ class ApiUrls {
 
   /// Auth
   static const String getPredefineData = "predefine/get";
+
+  /// CART
+  static String cartListGET = "cart/get";
+  static String cartUpdatePUT = "cart/update/";
+  static String addOrRemoveCart = "cart/add-remove/";
+  static String placeOrderPOST = "order/create";
+
+  // static String homeProductUrl = "product/list";
+  // static String addLocationUrl = "user/lat-long";
+  // static String orderProductUrl = "order/list";
+  // static String profileUrl = "user/profile";
+  // static String placeOrderUrl = "order/create";
+  // static String singleProduct = "product/get/";
+  // static String latLng = "user/update-lat-long";
 }

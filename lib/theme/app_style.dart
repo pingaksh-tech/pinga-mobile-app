@@ -18,5 +18,5 @@ double defaultBottomPadding = ScreenUtil().bottomBarHeight == 0.0 ? defaultPaddi
 double appButtonHeight = 42.w;
 
 List<BoxShadow> defaultShadow(BuildContext context) => [
-      BoxShadow(blurStyle: BlurStyle.outer, color: Theme.of(context).iconTheme.color!.withOpacity(1), blurRadius: 1, spreadRadius: 20),
+      BoxShadow(blurStyle: BlurStyle.outer, color: Theme.of(context).iconTheme.color!.withOpacity(0.1), blurRadius: 1, spreadRadius: 20),
     ];
