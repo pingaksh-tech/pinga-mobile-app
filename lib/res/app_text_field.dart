@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../exports.dart';
 
@@ -362,14 +363,13 @@ class _AppTextFieldState extends State<AppTextField> {
 
       case TextFieldType.search:
         return onTapWrapWidget(
-          child: widget.suffixIcon /*??
+          child: widget.suffixIcon ??
               SvgPicture.asset(
-                AppAssets.searchIcon,
+                AppAssets.search,
                 height: 24,
                 width: 24,
                 color: isFieldActive ? Theme.of(context).primaryColor : Colors.grey.shade400, // ignore: deprecated_member_use
-              )*/
-          ,
+              ),
         );
     }
   }
