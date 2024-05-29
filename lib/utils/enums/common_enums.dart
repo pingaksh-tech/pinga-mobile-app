@@ -51,6 +51,9 @@ enum MyDeviceType {
 ///* LOGIN TYPES
 enum LoginType { apple, google, facebook }
 
+///* AUTH SCREEN TYPES
+enum AuthScreenType { login, forgotPassword }
+
 ///* USE IN AUTH FLOW API
 enum APIPlatform { app, web }
 

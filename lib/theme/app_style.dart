@@ -15,7 +15,7 @@ double navigationBarSpacing = (defaultPadding / 2).h;
 double defaultTopPadding = ScreenUtil().statusBarHeight + defaultPadding;
 double defaultBottomPadding = ScreenUtil().bottomBarHeight == 0.0 ? defaultPadding : ScreenUtil().bottomBarHeight + 6.h;
 
-double appButtonHeight = 42.w;
+double appButtonHeight = 48.w;
 
 List<BoxShadow> defaultShadow(BuildContext context) => [
       BoxShadow(blurStyle: BlurStyle.outer, color: Theme.of(context).iconTheme.color!.withOpacity(0.1), blurRadius: 1, spreadRadius: 20),

@@ -21,7 +21,7 @@ class AppTextStyle {
   static TextStyle subtitleStyle(BuildContext context, {FontWeight? fontWeight, double? fontSize, Color? color}) {
     return Theme.of(context).textTheme.bodyLarge!.copyWith(
           fontSize: fontSize ?? 13.5.sp,
-          fontWeight: fontWeight ?? FontWeight.w500,
+          fontWeight: fontWeight ?? FontWeight.w400,
           color: color ?? Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(.55),
         );
   }

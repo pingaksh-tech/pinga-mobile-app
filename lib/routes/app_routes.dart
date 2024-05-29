@@ -37,7 +37,7 @@ class AppRoutes {
   /// *                         AUTH AND ONBOARDING PAGES                               *
   /// ***********************************************************************************
   static const String splashScreen = '/splash-screen';
-  static const String loginScreen = '/login-screen';
+  static const String authScreen = '/auth-screen';
 
   /// ***********************************************************************************
   ///                                 HOME MODULE

@@ -22,10 +22,10 @@ class ApiUtils {
     await Future.delayed(
       const Duration(milliseconds: 100),
       () async {
-        if (!LocalStorage.accessToken.isNotEmpty) {
+        if (LocalStorage.accessToken.isNotEmpty) {
           Get.offAllNamed(AppRoutes.bottomBarScreen);
         } else {
-          Get.offAllNamed(AppRoutes.loginScreen);
+          Get.offAllNamed(AppRoutes.authScreen);
         }
       },
     );
@@ -36,8 +36,8 @@ class ApiUtils {
     //   await AuthRepository.logOutAPI(loader: loader).then(
     //     (value) async {
     //       if (value) {
-    if (Get.currentRoute != AppRoutes.loginScreen) {
-      Get.offAllNamed(AppRoutes.loginScreen);
+    if (Get.currentRoute != AppRoutes.authScreen) {
+      Get.offAllNamed(AppRoutes.authScreen);
     }
     UiUtils.toast("Log Out Successfully");
     deleteCacheDir();

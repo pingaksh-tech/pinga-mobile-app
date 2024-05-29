@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 import '../exports.dart';
 
@@ -22,17 +24,21 @@ class AppTextField extends StatefulWidget {
   final String? hintText;
   final TextStyle? hintStyle;
   final String? initialValue;
+  final TextAlign? textAlign;
 
   final Function(String value)? onChanged;
   final Function(dynamic value)? onDateOrTimeChange;
   final String? Function(String?)? validate;
   final List<TextInputFormatter>? inputFormatters;
   final Function(String)? onFieldSubmitted;
+  final void Function()? onEditingComplete;
 
   final Widget? prefixIcon;
   final VoidCallback? prefixOnTap;
   final Widget? suffixIcon;
+  final bool showNormalSuffixIcon;
   final VoidCallback? suffixOnTap;
+  final double? suffixIconSize;
 
   final int? maxLines;
   final bool? enabled;
@@ -91,15 +97,19 @@ class AppTextField extends StatefulWidget {
     this.hintText,
     this.hintStyle,
     this.initialValue,
+    this.textAlign,
     this.onChanged,
     this.onDateOrTimeChange,
     this.validate,
     this.inputFormatters,
     this.onFieldSubmitted,
+    this.onEditingComplete,
     this.prefixIcon,
     this.prefixOnTap,
+    this.showNormalSuffixIcon = false,
     this.suffixIcon,
     this.suffixOnTap,
+    this.suffixIconSize,
     this.maxLines,
     this.enabled,
     this.readOnly,
@@ -138,7 +148,7 @@ class AppTextField extends StatefulWidget {
 }
 
 class _AppTextFieldState extends State<AppTextField> {
-  // Textfield type date.
+  // TextField type date.
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
 
@@ -183,42 +193,28 @@ class _AppTextFieldState extends State<AppTextField> {
     _focus.dispose();
   }
 
+  Color get defaultBorderColor => Theme.of(context).primaryColor.withOpacity(.1);
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return AnimatedPadding(
+      duration: defaultDuration,
       padding: widget.padding ?? EdgeInsets.zero,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        // mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(defaultRadius),
+          if (widget.title != null && widget.title!.isNotEmpty) ...[
+            FieldTitleWidget(
+              context,
+              title: (widget.title ?? "").tr,
+              isFieldActive: widget.readOnly == true ? false : isFieldActive,
+              titleStyle: widget.titleStyle,
+              padding: widget.titlePadding ?? EdgeInsets.symmetric(horizontal: defaultPadding / 5).copyWith(bottom: defaultPadding / 4),
             ),
-            child: Stack(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 13.5.sp / 1.3),
-                  child: textFieldWidget(context),
-                ),
-                if (widget.title != null && widget.title!.isNotEmpty) ...[
-                  Container(
-                    margin: EdgeInsets.only(left: defaultPadding * 1.2),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    child: FieldTitleWidget(
-                      context,
-                      title: widget.title ?? "",
-                      isFieldActive: widget.readOnly == true ? false : isFieldActive,
-                      titleStyle: widget.titleStyle,
-                      padding: widget.titlePadding ?? EdgeInsets.symmetric(horizontal: defaultPadding / 3),
-                    ),
-                  ),
-                ],
-              ],
-            ),
-          ),
+          ],
+          textFieldWidget(context),
           if (widget.errorMessage != null && widget.errorMessage!.isNotEmpty)
             FieldErrorWidget(
               context,
@@ -245,6 +241,7 @@ class _AppTextFieldState extends State<AppTextField> {
       textAlignVertical: TextAlignVertical.center,
       cursorColor: widget.cursorColor ?? Theme.of(context).primaryColor,
       initialValue: widget.initialValue,
+      textAlign: widget.textAlign ?? TextAlign.start,
       controller: widget.controller,
       enabled: widget.enabled,
       cursorHeight: widget.cursorHeight,
@@ -255,6 +252,7 @@ class _AppTextFieldState extends State<AppTextField> {
       onChanged: (String value) {
         widget.onChanged != null ? widget.onChanged!(value) : null;
       },
+      onEditingComplete: widget.onEditingComplete,
       maxLines: widget.maxLines ?? 1,
       onFieldSubmitted: widget.onFieldSubmitted,
       style: textFormFieldStyle,
@@ -265,11 +263,11 @@ class _AppTextFieldState extends State<AppTextField> {
       readOnly: readOnly,
       decoration: InputDecoration(
         filled: true,
-        fillColor: widget.fillColor ?? Theme.of(context).scaffoldBackgroundColor, // Colors.transparent,
+        fillColor: widget.fillColor ?? const Color(0x1EB4B4B4),
         isCollapsed: true,
-        hintText: widget.hintText,
+        hintText: widget.hintText?.tr,
         hintStyle: widget.hintStyle ?? TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400, color: const Color(0xFFC2C2C2)),
-        contentPadding: widget.contentPadding ?? EdgeInsets.symmetric(horizontal: 20.sp, vertical: 18.sp),
+        contentPadding: widget.contentPadding ?? EdgeInsets.all(18.sp),
         prefixIcon: widget.prefixIcon != null
             ? InkWell(
                 overlayColor: WidgetStateProperty.all(Theme.of(context).brightness == Brightness.dark ? null : Colors.white),
@@ -277,22 +275,22 @@ class _AppTextFieldState extends State<AppTextField> {
                 child: DefaultTextStyle(style: textFormFieldStyle, child: widget.prefixIcon!),
               )
             : null,
-        suffixIcon: getSuffixIcon,
+        suffixIcon: widget.showNormalSuffixIcon ? widget.suffixIcon : getSuffixIcon,
         enabledBorder: widget.enabledBorder ??
             OutlineInputBorder(
               borderRadius: filedBorderRadius,
-              borderSide: BorderSide(color: widget.validation == false ? Theme.of(context).colorScheme.error : AppColors.lightGrey),
+              borderSide: BorderSide(color: widget.validation == false ? Theme.of(context).colorScheme.error : defaultBorderColor),
             ),
         border: widget.border ??
             OutlineInputBorder(
               borderRadius: filedBorderRadius,
-              borderSide: const BorderSide(color: AppColors.lightGrey),
+              borderSide: BorderSide(color: defaultBorderColor),
             ),
         focusedBorder: widget.focusedBorder ??
             OutlineInputBorder(
               borderRadius: filedBorderRadius,
               borderSide: BorderSide(
-                color: widget.readOnly == true || (widget.textFieldType != TextFieldType.normal && widget.textFieldType != TextFieldType.search) ? AppColors.lightGrey : (Theme.of(context).primaryColor),
+                color: widget.readOnly == true || (widget.textFieldType != TextFieldType.normal && widget.textFieldType != TextFieldType.search) ? defaultBorderColor : (Theme.of(context).primaryColor),
               ),
             ),
         focusedErrorBorder: widget.focusedErrorBorder ??
@@ -303,7 +301,7 @@ class _AppTextFieldState extends State<AppTextField> {
         disabledBorder: widget.disabledBorder ??
             OutlineInputBorder(
               borderRadius: filedBorderRadius,
-              borderSide: BorderSide(color: Colors.grey.shade400),
+              borderSide: BorderSide(color: defaultBorderColor),
             ),
         errorBorder: widget.errorBorder ??
             OutlineInputBorder(
@@ -325,13 +323,12 @@ class _AppTextFieldState extends State<AppTextField> {
   Widget? get getSuffixIcon {
     Widget? onTapWrapWidget({Widget? child}) {
       return Container(
-        width: 50,
-        height: 50,
+        width: widget.suffixIconSize ?? 50,
         margin: const EdgeInsets.only(right: 5),
         child: Center(
           child: widget.suffixOnTap != null && child != null
               ? AppIconButton(
-                  size: 50,
+                  size: 30,
                   onPressed: widget.suffixOnTap!,
                   icon: child,
                 )
@@ -342,17 +339,15 @@ class _AppTextFieldState extends State<AppTextField> {
 
     switch (widget.textFieldType!) {
       case TextFieldType.normal:
-        return onTapWrapWidget(
-          child: widget.suffixIcon,
-        );
+        return widget.suffixOnTap != null || widget.suffixIcon != null ? onTapWrapWidget(child: widget.suffixIcon) : null;
 
       case TextFieldType.date:
         return onTapWrapWidget(
-          child: widget.suffixIcon /*SvgPicture.asset(
+          child: widget.suffixIcon ??
+              SvgPicture.asset(
                 AppAssets.calenderIcon,
                 color: isFieldActive ? Theme.of(context).primaryColor : null, // ignore: deprecated_member_use
-              )*/
-          ,
+              ),
         );
 
       case TextFieldType.time:
@@ -362,14 +357,13 @@ class _AppTextFieldState extends State<AppTextField> {
 
       case TextFieldType.search:
         return onTapWrapWidget(
-          child: widget.suffixIcon /*??
+          child: widget.suffixIcon ??
               SvgPicture.asset(
-                AppAssets.searchIcon,
-                height: 24,
-                width: 24,
+                AppAssets.search,
+                height: 23,
+                width: 23,
                 color: isFieldActive ? Theme.of(context).primaryColor : Colors.grey.shade400, // ignore: deprecated_member_use
-              )*/
-          ,
+              ),
         );
     }
   }
@@ -419,7 +413,6 @@ class _AppTextFieldState extends State<AppTextField> {
 
       case TextFieldType.time:
         if (widget.onTap == null) {
-          printOkStatus("text");
           return () async {
             final TimeOfDay? picked = await showTimePicker(
               context: context,
@@ -481,10 +474,11 @@ class FieldTitleWidget extends StatelessWidget {
       child: AnimatedDefaultTextStyle(
         duration: const Duration(milliseconds: 150),
         style: titleStyle ??
-            Theme.of(context).textTheme.titleMedium!.copyWith(
+            Theme.of(context).textTheme.bodyLarge!.copyWith(
                   fontSize: 13.5.sp,
+                  fontWeight: FontWeight.w500,
                   fontFamily: AppTheme.fontFamilyName,
-                  color: isFieldActive == true ? Theme.of(mainContext).primaryColor : Theme.of(context).textTheme.titleMedium?.color,
+                  color: isFieldActive == true ? Theme.of(mainContext).primaryColor : Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(.85),
                 ),
         child: Text(title),
       ),
@@ -516,7 +510,7 @@ class FieldErrorWidget extends StatelessWidget {
     return TweenAnimationBuilder(
       duration: const Duration(milliseconds: 500),
       curve: Curves.easeOutCubic,
-      tween: validation == false ? Tween(begin: 0.0, end: (errorHeight ?? 17) + (errorSpacing ?? 5)) : Tween(begin: 0.0, end: 0.0),
+      tween: validation == false ? Tween(begin: 0.0, end: (errorHeight ?? 18) + (errorSpacing ?? 5)) : Tween(begin: 0.0, end: 0.0),
       builder: (context, value, child) {
         return Container(
           alignment: Alignment.topLeft,

@@ -40,7 +40,7 @@ class AnimatedFlipCounter extends StatelessWidget {
     final prototypeDigit = TextPainter(
       text: TextSpan(text: "8", style: style),
       textDirection: TextDirection.ltr,
-      textScaleFactor: MediaQuery.of(context).textScaleFactor,
+      textScaler: MediaQuery.of(context).textScaler,
     )..layout();
 
     // Find the text color (or red as warning). This is so we can avoid using
@@ -138,14 +138,14 @@ class _SingleDigitFlipCounter extends StatelessWidget {
   final EdgeInsets padding;
 
   const _SingleDigitFlipCounter({
-    Key? key,
+    super.key,
     required this.value,
     required this.duration,
     required this.curve,
     required this.size,
     required this.color,
     required this.padding,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
