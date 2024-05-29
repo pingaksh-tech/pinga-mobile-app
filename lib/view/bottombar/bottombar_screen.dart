@@ -2,6 +2,7 @@
 
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -28,51 +29,52 @@ class BottomBarScreen extends StatelessWidget {
         return false;
       },
       child: Obx(
-        () => Scaffold(
-          body: con.isLoading.value
-              ? Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: ListView.separated(
-                    itemCount: 15,
-                    separatorBuilder: (context, index) {
-                      return const SizedBox(height: 16);
-                    },
-                    itemBuilder: (context, index) {
-                      return ShimmerUtils.shimmer(
-                        child: ShimmerUtils.shimmerContainer(
-                          height: 70,
-                          width: Get.width,
-                          borderRadius: BorderRadius.circular(defaultRadius),
-                        ),
+        () => AnnotatedRegion<SystemUiOverlayStyle>(
+          value: UiUtils.systemUiOverlayStyle(systemNavigationBarColor: Theme.of(context).colorScheme.surface),
+          child: Scaffold(
+            body: con.isLoading.value
+                ? Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: ListView.separated(
+                      itemCount: 15,
+                      separatorBuilder: (context, index) {
+                        return const SizedBox(height: 16);
+                      },
+                      itemBuilder: (context, index) {
+                        return ShimmerUtils.shimmer(
+                          child: ShimmerUtils.shimmerContainer(
+                            height: 70,
+                            width: Get.width,
+                            borderRadius: BorderRadius.circular(defaultRadius),
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                : PageTransitionSwitcher(
+                    reverse: con.isLoggedIn.value,
+                    transitionBuilder: (
+                      Widget child,
+                      Animation<double> animation,
+                      Animation<double> secondaryAnimation,
+                    ) {
+                      return SharedAxisTransition(
+                        animation: animation,
+                        secondaryAnimation: secondaryAnimation,
+                        transitionType: con.transitionType!,
+                        fillColor: const Color(0x00FFFFFF),
+                        child: child,
                       );
                     },
+                    child: con.bottomBarDataList.isNotEmpty ? con.bottomBarDataList[con.currentBottomIndex.value].screenWidget! : const SizedBox(),
                   ),
-                )
-              : PageTransitionSwitcher(
-                  reverse: con.isLoggedIn.value,
-                  transitionBuilder: (
-                    Widget child,
-                    Animation<double> animation,
-                    Animation<double> secondaryAnimation,
-                  ) {
-                    return SharedAxisTransition(
-                      animation: animation,
-                      secondaryAnimation: secondaryAnimation,
-                      transitionType: con.transitionType!,
-                      fillColor: const Color(0x00FFFFFF),
-                      child: child,
-                    );
-                  },
-                  child: con.bottomBarDataList.isNotEmpty ? con.bottomBarDataList[con.currentBottomIndex.value].screenWidget! : const SizedBox(),
-                ),
-          bottomNavigationBar: Obx(
-            () => con.bottomBarDataList.length >= 2
-                ? IntrinsicHeight(
-                    child: Container(
-                      color: Theme.of(context).scaffoldBackgroundColor,
+            bottomNavigationBar: Obx(
+              () => con.bottomBarDataList.length >= 2
+                  ? IntrinsicHeight(
                       child: BottomAppBar(
                         notchMargin: 6,
-                        padding: EdgeInsets.symmetric(vertical: defaultPadding / 1.2),
+                        color: Theme.of(context).colorScheme.surface,
+                        padding: EdgeInsets.symmetric(vertical: defaultPadding / 1.2, horizontal: defaultPadding / 2),
                         shape: const CircularNotchedRectangle(),
                         child: Obx(
                           () => Row(
@@ -140,9 +142,9 @@ class BottomBarScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                    ),
-                  )
-                : const SizedBox(),
+                    )
+                  : const SizedBox(),
+            ),
           ),
         ),
       ),

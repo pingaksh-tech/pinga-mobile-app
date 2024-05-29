@@ -288,7 +288,7 @@ class AuthScreen extends StatelessWidget {
                                     con.isLoading.value = true;
 
                                     await Future.delayed(
-                                      const Duration(milliseconds: 1000),
+                                      const Duration(milliseconds: 300),
                                       () {
                                         con.timerStart();
                                         con.otpController.value.clear();
@@ -301,7 +301,7 @@ class AuthScreen extends StatelessWidget {
 
                                 case AuthScreenType.forgotPassword:
                                   if (con.isResendOtp.isFalse) {
-                                    con.screenType.value = AuthScreenType.login;
+                                    Get.offAllNamed(AppRoutes.bottomBarScreen);
                                   }
 
                                   break;
