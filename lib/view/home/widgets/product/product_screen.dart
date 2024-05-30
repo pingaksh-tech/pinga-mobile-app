@@ -3,13 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:pingaksh_mobile/exports.dart';
-import 'package:pingaksh_mobile/view/home/components/product_sort_tile.dart';
-import 'package:pingaksh_mobile/view/home/components/sort_filter_button.dart';
 
 import '../../../../packages/like_button/like_button.dart';
 import '../../../../res/app_bar.dart';
 import '../../../../res/app_network_image.dart';
-import 'product_controller.dart';
+import '../../../../widgets/checkbox_title_tile.dart';
+import '../../../product/components/sort_filter_button.dart';
+import '../../../product/product_controller.dart';
 
 class ProductScreen extends StatelessWidget {
   ProductScreen({super.key});
@@ -73,7 +73,7 @@ class ProductScreen extends StatelessWidget {
                               ),
                               shrinkWrap: true,
                               itemCount: con.sortOptions.length,
-                              itemBuilder: (context, index) => ProductSortTile(
+                              itemBuilder: (context, index) => CheckBoxWithTitleTile(
                                 isCheck: con.sortOptions[index]["isChecked"],
                                 title: con.sortOptions[index]["title"],
                               ),
