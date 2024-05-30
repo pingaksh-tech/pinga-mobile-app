@@ -71,7 +71,7 @@ class CategoryScreen extends StatelessWidget {
                   itemBuilder: (context, index) => CategoryTile(
                     categoryName: con.categoryList[index]["catName"],
                     subTitle: con.categoryList[index]["subTitle"],
-                    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReyjIyudrWYKWlI5MNBSLHfg1OGjAgbP2xAA&s",
+                    imageUrl: con.categoryList[index]["image"],
                     onTap: () => Get.toNamed(
                       AppRoutes.productScreen,
                       arguments: {"categoryName": con.categoryList[index]["catName"]},
