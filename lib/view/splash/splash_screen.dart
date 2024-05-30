@@ -14,12 +14,12 @@ class SplashScreen extends StatelessWidget {
       body: ListView(
         padding: EdgeInsets.zero,
         children: const [
-          AspectRatio(
-            aspectRatio: 1,
-            child: Center(
-              child: Text("Splash"),
-            ),
-          ),
+          // AspectRatio(
+          //   aspectRatio: 1,
+          //   child: Center(
+          //     child: Text("Splash"),
+          //   ),
+          // ),
         ],
       ),
     );

@@ -46,6 +46,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             ),
+            (defaultPadding / 2).verticalSpace,
             GridView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -54,7 +55,7 @@ class HomeScreen extends StatelessWidget {
                 crossAxisCount: 2,
                 mainAxisSpacing: defaultPadding / 2,
                 crossAxisSpacing: defaultPadding / 1.8,
-                mainAxisExtent: 100.h,
+                mainAxisExtent: 180.h,
               ),
               itemCount: con.brandList.length,
               itemBuilder: (context, index) => GestureDetector(

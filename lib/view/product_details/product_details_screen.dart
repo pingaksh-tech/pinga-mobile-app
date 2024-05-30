@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pingaksh_mobile/packages/cached_network_image/cached_network_image.dart';
 import 'package:pingaksh_mobile/res/app_bar.dart';
-import 'package:pingaksh_mobile/theme/app_style.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../exports.dart';
@@ -232,7 +231,7 @@ class ProductDetailsScreen extends StatelessWidget {
             Padding(
               padding: bodyPadding,
               child: Table(
-                border: TableBorder.all(color: Theme.of(context).dividerColor.withOpacity(0.2)),
+                border: TableBorder.all(color: Theme.of(context).dividerColor.withOpacity(0.15)),
                 columnWidths: const {
                   0: FlexColumnWidth(2),
                   1: FlexColumnWidth(3),
@@ -255,14 +254,14 @@ class ProductDetailsScreen extends StatelessWidget {
                     return TableRow(
                       children: [
                         Padding(
-                          padding: EdgeInsets.all(defaultPadding / 1.5),
+                          padding: EdgeInsets.all(defaultPadding / 3),
                           child: Text(
                             detail.keys.first,
                             style: Theme.of(context).textTheme.titleSmall,
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.all(defaultPadding / 1.5),
+                          padding: EdgeInsets.all(defaultPadding / 3),
                           child: Text(
                             detail.values.first,
                             style: Theme.of(context).textTheme.titleSmall,
@@ -303,9 +302,12 @@ class ProductDetailsScreen extends StatelessWidget {
         children: List.generate(
           2,
           (index) => GestureDetector(
-            onTap: () {
-              Get.toNamed(AppRoutes.productDetailsScreen);
-            },
+            onTap: () => Get.toNamed(
+              AppRoutes.productDetailsScreen,
+              arguments: {
+                // "brandName": con.brandList[index]["brandName"],
+              },
+            ),
             child: Container(
               width: Get.width / 2 - defaultPadding * 1.5,
               margin: EdgeInsets.all(defaultPadding / 2),

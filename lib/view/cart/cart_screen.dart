@@ -209,54 +209,54 @@ class CartScreen extends StatelessWidget {
                                   ),
 
                                   /// CART SUMMARY
-                                  IntrinsicHeight(
-                                    child: Obx(
-                                      () => AnimatedSwitcher(
-                                        duration: const Duration(milliseconds: 350),
-                                        child: con.isLoading.isFalse
-                                            ? con.productsList.isNotEmpty
-                                                ? Container(
-                                                    decoration: BoxDecoration(
-                                                      color: Theme.of(context).primaryColor.withOpacity(.1),
-                                                      borderRadius: BorderRadius.vertical(top: Radius.circular(defaultRadius)),
-                                                    ),
-                                                    child: Column(
-                                                      children: [
-                                                        Container(
-                                                          padding: EdgeInsets.symmetric(horizontal: defaultPadding),
-                                                          child: Column(
-                                                            children: [
-                                                              (defaultPadding / 1.5).verticalSpace,
-                                                              paymentSummaryItem(context, title: "Sub Total", price: con.totalPrice.value),
-                                                              paymentSummaryItem(context, title: "Tax", price: 0.0),
-                                                              const Divider(height: 1),
-                                                              (defaultPadding / 1.5).verticalSpace,
-                                                              paymentSummaryItem(context, title: "Total Amount", price: con.totalPrice.value, highlight: true),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        AppButton(
-                                                          padding: EdgeInsets.all(defaultPadding).copyWith(top: defaultPadding / 3),
-                                                          onPressed: () async {
-                                                            await CartRepository.placeOrderAPI();
-                                                          },
-                                                          child: Padding(
-                                                            padding: EdgeInsets.symmetric(horizontal: defaultPadding),
-                                                            child: Text(
-                                                              "Order Now",
-                                                              style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white, fontWeight: FontWeight.w600, letterSpacing: 1),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        // (defaultPadding / 2).verticalSpace
-                                                      ],
-                                                    ),
-                                                  )
-                                                : const SizedBox()
-                                            : const SizedBox(),
-                                      ),
-                                    ),
-                                  )
+                                  // IntrinsicHeight(
+                                  //   child: Obx(
+                                  //     () => AnimatedSwitcher(
+                                  //       duration: const Duration(milliseconds: 350),
+                                  //       child: con.isLoading.isFalse
+                                  //           ? con.productsList.isNotEmpty
+                                  //               ? Container(
+                                  //                   decoration: BoxDecoration(
+                                  //                     color: Theme.of(context).primaryColor.withOpacity(.1),
+                                  //                     borderRadius: BorderRadius.vertical(top: Radius.circular(defaultRadius)),
+                                  //                   ),
+                                  //                   child: Column(
+                                  //                     children: [
+                                  //                       Container(
+                                  //                         padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                                  //                         child: Column(
+                                  //                           children: [
+                                  //                             (defaultPadding / 1.5).verticalSpace,
+                                  //                             paymentSummaryItem(context, title: "Sub Total", price: con.totalPrice.value),
+                                  //                             paymentSummaryItem(context, title: "Tax", price: 0.0),
+                                  //                             const Divider(height: 1),
+                                  //                             (defaultPadding / 1.5).verticalSpace,
+                                  //                             paymentSummaryItem(context, title: "Total Amount", price: con.totalPrice.value, highlight: true),
+                                  //                           ],
+                                  //                         ),
+                                  //                       ),
+                                  //                       AppButton(
+                                  //                         padding: EdgeInsets.all(defaultPadding).copyWith(top: defaultPadding / 3),
+                                  //                         onPressed: () async {
+                                  //                           await CartRepository.placeOrderAPI();
+                                  //                         },
+                                  //                         child: Padding(
+                                  //                           padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                                  //                           child: Text(
+                                  //                             "Order Now",
+                                  //                             style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white, fontWeight: FontWeight.w600, letterSpacing: 1),
+                                  //                           ),
+                                  //                         ),
+                                  //                       ),
+                                  //                       // (defaultPadding / 2).verticalSpace
+                                  //                     ],
+                                  //                   ),
+                                  //                 )
+                                  //               : const SizedBox()
+                                  //           : const SizedBox(),
+                                  //     ),
+                                  //   ),
+                                  // )
                                 ],
                               ),
                             ),
@@ -284,62 +284,54 @@ class CartScreen extends StatelessWidget {
       ),
 
       /// CART SUMMARY
-      // bottomNavigationBar: IntrinsicHeight(
-      //   child: Obx(
-      //     () => AnimatedSwitcher(
-      //       duration: const Duration(milliseconds: 350),
-      //       child: con.isLoading.isFalse
-      //           ? con.productsList.isNotEmpty
-      //               ? Container(
-      //                   decoration: BoxDecoration(
-      //                     color: Theme.of(context).primaryColor.withOpacity(.1),
-      //                     /* gradient: LinearGradient(
-      //                       begin: Alignment.bottomCenter,
-      //                       end: Alignment.topCenter,
-      //                       stops: const [0.0, 1],
-      //                       colors: [
-      //                         Colors.white,
-      //                         Theme.of(context).primaryColor.withOpacity(.1),
-      //                       ],
-      //                     ),*/
-      //                     borderRadius: BorderRadius.vertical(top: Radius.circular(defaultRadius)),
-      //                   ),
-      //                   child: Column(
-      //                     children: [
-      //                       Container(
-      //                         padding: EdgeInsets.symmetric(horizontal: defaultPadding),
-      //                         child: Column(
-      //                           children: [
-      //                             (defaultPadding / 1.5).verticalSpace,
-      //                             paymentSummaryItem(context, title: "Sub Total", price: con.totalPrice.value),
-      //                             paymentSummaryItem(context, title: "Tax", price: 0.0),
-      //                             const Divider(height: 1),
-      //                             (defaultPadding / 1.5).verticalSpace,
-      //                             paymentSummaryItem(context, title: "Total Amount", price: con.totalPrice.value, highlight: true),
-      //                           ],
-      //                         ),
-      //                       ),
-      //                       AppButton(
-      //                         padding: EdgeInsets.all(defaultPadding).copyWith(top: defaultPadding / 3),
-      //                         onPressed: () async {
-      //                           await CartRepository.placeOrderAPI();
-      //                         },
-      //                         child: Padding(
-      //                           padding: EdgeInsets.symmetric(horizontal: defaultPadding),
-      //                           child: Text(
-      //                             "Order Now",
-      //                             style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white, fontWeight: FontWeight.w600, letterSpacing: 1),
-      //                           ),
-      //                         ),
-      //                       ),
-      //                     ],
-      //                   ),
-      //                 )
-      //               : const SizedBox()
-      //           : const SizedBox(),
-      //     ),
-      //   ),
-      // ),
+      bottomNavigationBar:  IntrinsicHeight(
+        child: Obx(
+              () => AnimatedSwitcher(
+            duration: const Duration(milliseconds: 350),
+            child: con.isLoading.isFalse
+                ? con.productsList.isNotEmpty
+                ? Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor.withOpacity(.1),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(defaultRadius)),
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                    child: Column(
+                      children: [
+                        (defaultPadding / 1.5).verticalSpace,
+                        paymentSummaryItem(context, title: "Sub Total", price: con.totalPrice.value),
+                        paymentSummaryItem(context, title: "Tax", price: 0.0),
+                        const Divider(height: 1),
+                        (defaultPadding / 1.5).verticalSpace,
+                        paymentSummaryItem(context, title: "Total Amount", price: con.totalPrice.value, highlight: true),
+                      ],
+                    ),
+                  ),
+                  AppButton(
+                    padding: EdgeInsets.all(defaultPadding).copyWith(top: defaultPadding / 3),
+                    onPressed: () async {
+                      await CartRepository.placeOrderAPI();
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                      child: Text(
+                        "Order Now",
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white, fontWeight: FontWeight.w600, letterSpacing: 1),
+                      ),
+                    ),
+                  ),
+                  // (defaultPadding / 2).verticalSpace
+                ],
+              ),
+            )
+                : const SizedBox()
+                : const SizedBox(),
+          ),
+        ),
+      ),
     );
   }
 
