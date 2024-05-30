@@ -151,14 +151,14 @@ class UiUtils {
   ///                                 SYSTEM UI OVERLAY STYLE
   /// ***********************************************************************************
 
-  static String amountFormat(String value, {int? decimalDigits, String? symbol}) {
+  static String amountFormat(dynamic value, {int? decimalDigits, String? symbol}) {
     if (!isValEmpty(value)) {
       NumberFormat format = NumberFormat.currency(
         decimalDigits: decimalDigits ?? 2,
         symbol: symbol ?? LocalStorage.currencySymbol.value,
         locale: "en_IN",
       );
-      return format.format(double.parse(value));
+      return format.format(double.parse(value.toString()));
     } else {
       return "${LocalStorage.currencySymbol.value}0.0";
     }

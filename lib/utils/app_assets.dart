@@ -25,6 +25,7 @@ class AppAssets {
   static String fillCart = '${svgPath}fillCart.svg';
   static String home = '${svgPath}home.svg';
   static String like = '${svgPath}like.svg';
+  static String likeFill = '${svgPath}like_fill.svg';
   static String orders = '${svgPath}orders.svg';
   static String profile = '${svgPath}profile.svg';
   static String search = '${svgPath}search.svg';

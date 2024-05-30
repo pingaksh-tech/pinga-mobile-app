@@ -4,7 +4,9 @@ import 'package:pingaksh_mobile/view/home/widgets/category/category_screen.dart'
 import 'package:pingaksh_mobile/view/home/widgets/product/product_screen.dart';
 
 import '../view/auth_flow/auth_screen.dart';
+import '../view/cart/cart_screen.dart';
 import '../view/dashboard/dashboard_screen.dart';
+import '../view/product_details/product_details_screen.dart';
 import '../view/profile/profile_screen.dart';
 import '../view/splash/splash_screen.dart';
 import 'app_routes.dart';
@@ -30,8 +32,7 @@ class AppPages {
     _getPage(name: AppRoutes.categoryScreen, page: () => CategoryScreen()),
     _getPage(name: AppRoutes.productScreen, page: () => ProductScreen()),
     _getPage(name: AppRoutes.profileScreen, page: () => ProfileScreen()),
-
-    // // _getPage(name: AppRoutes.navigationBarScreen, page: () => NavigationBarScreen()),
-    // // _getPage(name: AppRoutes.registerScreen, page: () => RegisterScreen()),
+    _getPage(name: AppRoutes.cartScreen, page: () => CartScreen()),
+    _getPage(name: AppRoutes.productDetailsScreen, page: () => ProductDetailsScreen()),
   ];
 }

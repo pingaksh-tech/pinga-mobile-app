@@ -8,6 +8,7 @@ import '../../data/repositories/cart/cart_repository.dart';
 import '../../exports.dart';
 import '../../packages/animated_counter/animated_counter.dart';
 import '../../packages/cached_network_image/cached_network_image.dart';
+import '../../res/app_bar.dart';
 import '../../res/empty_element.dart';
 import 'cart_controller.dart';
 import 'components/cart_item_simmer.dart';
@@ -22,6 +23,11 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: Get.currentRoute == AppRoutes.cartScreen
+          ? MyAppBar(
+              title: "My Cart",
+            )
+          : null,
       body: SafeArea(
         child: Obx(
           () => con.isLoading.isFalse
