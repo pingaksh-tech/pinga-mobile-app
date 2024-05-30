@@ -27,7 +27,7 @@ class OrdersRepository {
                 "createdAt": "2023-01-01T12:00:00Z",
                 "updatedAt": "2023-01-05T12:00:00Z",
                 "productimages": [
-                  {"_id": "img1", "image": "https://example.com/iphone13_1.jpg"},
+                  {"_id": "img1", "image": "https://kisna.com/cdn/shop/files/KFLR11133-Y-2_1800x1800.jpg?v=1715687553"},
                   {"_id": "img2", "image": "https://example.com/iphone13_2.jpg"}
                 ]
               },
