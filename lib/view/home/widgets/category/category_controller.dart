@@ -3,6 +3,9 @@ import 'package:get/get.dart';
 
 class CategoryController extends GetxController {
   Rx<TextEditingController> searchCon = TextEditingController().obs;
+  RxString brandTitle = "".obs;
+  RxBool showCloseButton = false.obs;
+
   List<Map<String, dynamic>> categoryList = [
     {
       "catName": "Ring",
@@ -33,4 +36,13 @@ class CategoryController extends GetxController {
       "subTitle": "Available 3598",
     },
   ];
+  @override
+  void onInit() {
+    super.onInit();
+    if (Get.arguments != null) {
+      if (Get.arguments["brandName"].runtimeType == String) {
+        brandTitle.value = Get.arguments["brandName"];
+      }
+    }
+  }
 }

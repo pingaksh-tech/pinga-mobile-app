@@ -58,7 +58,12 @@ class HomeScreen extends StatelessWidget {
               ),
               itemCount: con.brandList.length,
               itemBuilder: (context, index) => GestureDetector(
-                onTap: () => Get.toNamed(AppRoutes.categoryScreen),
+                onTap: () => Get.toNamed(
+                  AppRoutes.categoryScreen,
+                  arguments: {
+                    "brandName": con.brandList[index]["brandName"],
+                  },
+                ),
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
