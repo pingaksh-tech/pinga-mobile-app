@@ -32,7 +32,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
     this.title,
     this.titleStyle,
-    this.elevation = 5,
+    this.elevation = 0,
     this.toolbarHeight,
     this.bottom,
     this.onTap,

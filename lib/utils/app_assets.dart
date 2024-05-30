@@ -43,11 +43,11 @@ class AppAssets {
   static String authAsset = "${svgPath}auth_asset.svg";
   static String filter = '${svgPath}filter.svg';
   static String sortIcon = '${svgPath}sort.svg';
-
   static String faq = '${svgPath}faq.svg';
   static String privacy = '${svgPath}privacy.svg';
   static String rtp = '${svgPath}rtp.svg';
   static String tc = '${svgPath}tc.svg';
+  static String crossIcon = '${svgPath}cross_icon.svg';
 
   /// ***********************************************************************************
   ///                                   JSON
