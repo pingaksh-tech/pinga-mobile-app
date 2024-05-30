@@ -8,6 +8,7 @@ import '../../data/model/bottombar/bottombar_model.dart';
 import '../../exports.dart';
 import '../cart/cart_screen.dart';
 import '../orders/my_order_screen.dart';
+import '../profile/profile_screen.dart';
 
 class BottomBarController extends GetxController {
   RxInt currentBottomIndex = 0.obs;
@@ -68,7 +69,7 @@ class BottomBarController extends GetxController {
         bottomItem: BottomItem(
           selectedImage: AppAssets.profile,
         ),
-        screenWidget: Container(),
+        screenWidget: ProfileScreen(),
       ),
     );
   }
