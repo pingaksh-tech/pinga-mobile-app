@@ -99,7 +99,7 @@ class CartScreen extends StatelessWidget {
                                                     fit: BoxFit.cover,
                                                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                                                     borderRadius: BorderRadius.circular(defaultRadius),
-                                                    imageUrl: "https://i.pinimg.com/564x/0c/10/de/0c10defc33ccee0ec274d5cd3c761273.jpg" /* con.productsList[index].product?.productImages?[0].image ?? ""*/,
+                                                    imageUrl: /* "https://i.pinimg.com/564x/0c/10/de/0c10defc33ccee0ec274d5cd3c761273.jpg"*/ con.productsList[index].product?.productImages?[0].image ?? "",
                                                   )
                                                 : SizedBox(
                                                     width: imageWidth,

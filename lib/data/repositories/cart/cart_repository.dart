@@ -9,6 +9,7 @@ class CartRepository {
   /// ***********************************************************************************
   ///                                       CART LIST
   /// ***********************************************************************************
+
   static Map<String, dynamic> demoJson = {
     "success": true,
     "message": "Cart fetched successfully",
@@ -30,7 +31,7 @@ class CartRepository {
             "createdAt": "2023-01-01T12:00:00Z",
             "updatedAt": "2023-01-05T12:00:00Z",
             "productimages": [
-              {"_id": "img1", "image": "https://example.com/iphone13_1.jpg"},
+              {"_id": "img1", "image": "https://kisna.com/cdn/shop/files/KFLR11133-Y-1_1800x1800.jpg?v=1715687553"},
               {"_id": "img2", "image": "https://example.com/iphone13_2.jpg"}
             ],
             "brand_name": "Apple"
@@ -55,7 +56,7 @@ class CartRepository {
             "createdAt": "2023-02-01T12:00:00Z",
             "updatedAt": "2023-02-05T12:00:00Z",
             "productimages": [
-              {"_id": "img3", "image": "https://example.com/galaxys21_1.jpg"}
+              {"_id": "img3", "image": "https://kisna.com/cdn/shop/files/KFLR11133-Y-wm_1800x1800.jpg?v=1715687553"}
             ],
             "brand_name": "Samsung"
           },
@@ -79,7 +80,7 @@ class CartRepository {
             "createdAt": "2023-03-01T12:00:00Z",
             "updatedAt": "2023-03-05T12:00:00Z",
             "productimages": [
-              {"_id": "img4", "image": "https://example.com/sony_headphones_1.jpg"}
+              {"_id": "img4", "image": "https://kisna.com/cdn/shop/files/KFLR11133-Y-4_1800x1800.jpg?v=1715687553"}
             ],
             "brand_name": "Sony"
           },
@@ -103,7 +104,7 @@ class CartRepository {
             "createdAt": "2023-04-01T12:00:00Z",
             "updatedAt": "2023-04-05T12:00:00Z",
             "productimages": [
-              {"_id": "img5", "image": "https://example.com/dell_xps13_1.jpg"}
+              {"_id": "img5", "image": "https://kisna.com/cdn/shop/files/KFLR11133-Y-2_1800x1800.jpg?v=1715687553"}
             ],
             "brand_name": "Dell"
           },
@@ -127,7 +128,7 @@ class CartRepository {
             "createdAt": "2023-05-01T12:00:00Z",
             "updatedAt": "2023-05-05T12:00:00Z",
             "productimages": [
-              {"_id": "img6", "image": "https://example.com/nike_airmax270_1.jpg"}
+              {"_id": "img6", "image": "https://kisna.com/cdn/shop/files/KFLR11133-Y-3_1800x1800.jpg?v=1715687553"}
             ],
             "brand_name": "Nike"
           },
@@ -151,7 +152,7 @@ class CartRepository {
             "createdAt": "2023-06-01T12:00:00Z",
             "updatedAt": "2023-06-05T12:00:00Z",
             "productimages": [
-              {"_id": "img7", "image": "https://example.com/adidas_ultraboost21_1.jpg"}
+              {"_id": "img7", "image": "https://kisna.com/cdn/shop/files/KFLR11133-R-1_1800x1800.jpg?v=1715687553"}
             ],
             "brand_name": "Adidas"
           },
@@ -175,7 +176,7 @@ class CartRepository {
             "createdAt": "2023-07-01T12:00:00Z",
             "updatedAt": "2023-07-05T12:00:00Z",
             "productimages": [
-              {"_id": "img8", "image": "https://example.com/logitech_mxmaster3_1.jpg"}
+              {"_id": "img8", "image": "https://kisna.com/cdn/shop/files/KFLR11133-W-1_1800x1800.jpg?v=1715687553"}
             ],
             "brand_name": "Logitech"
           },
@@ -199,7 +200,7 @@ class CartRepository {
             "createdAt": "2023-08-01T12:00:00Z",
             "updatedAt": "2023-08-05T12:00:00Z",
             "productimages": [
-              {"_id": "img9", "image": "https://example.com/canon_eosr5_1.jpg"}
+              {"_id": "img9", "image": "https://kisna.com/cdn/shop/files/KFLR11133_1800x1800.jpg?v=1715687513"}
             ],
             "brand_name": "Canon"
           },
@@ -223,7 +224,7 @@ class CartRepository {
             "createdAt": "2023-09-01T12:00:00Z",
             "updatedAt": "2023-09-05T12:00:00Z",
             "productimages": [
-              {"_id": "img10", "image": "https://example.com/bose_qc35ii_1.jpg"}
+              {"_id": "img10", "image": "https://kisna.com/cdn/shop/files/our-promise-7-Days_adf02756-37a0-41e4-bc54-0a7ca584cfe2_1800x1800.webp?v=1715687519"}
             ],
             "brand_name": "Bose"
           },
@@ -247,7 +248,7 @@ class CartRepository {
             "createdAt": "2023-10-01T12:00:00Z",
             "updatedAt": "2023-10-05T12:00:00Z",
             "productimages": [
-              {"_id": "img11", "image": "https://example.com/macbookpro16_1.jpg"},
+              {"_id": "img11", "image": "https://kisna.com/cdn/shop/files/KFLR11133-Y-2_1800x1800.jpg?v=1715687553"},
               {"_id": "img12", "image": "https://example.com/macbookpro16_2.jpg"}
             ],
             "brand_name": "Apple"
