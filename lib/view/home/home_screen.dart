@@ -27,7 +27,7 @@ class HomeScreen extends StatelessWidget {
                 autoPlay: true,
                 enableInfiniteScroll: false,
                 viewportFraction: 1,
-                height: Get.width / 3.1,
+                height: Get.width / 2.6,
               ),
               items: List.generate(
                 con.bannerList.length,
