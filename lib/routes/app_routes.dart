@@ -52,4 +52,5 @@ class AppRoutes {
   ///                                 PRODUCTS PAGES
   /// ***********************************************************************************
   static const String productDetailsScreen = '/product-details-screen';
+  static const String filterScreen = '/filter-screen';
 }
