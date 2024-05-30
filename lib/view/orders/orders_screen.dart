@@ -175,14 +175,14 @@ class OrdersScreen extends StatelessWidget {
                                                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                                                 decoration: BoxDecoration(
                                                   borderRadius: BorderRadius.circular(defaultRadius / 2),
-                                                  color: con.orderProductList[index].status == "Rejected" ? Colors.red.withOpacity(.1) : (con.orderProductList[index].status == "Pending" ? Colors.orangeAccent.withOpacity(.1) : Colors.green.withOpacity(.1)),
+                                                  color: con.orderProductList[index].status?.toLowerCase() == OrderStatus.rejected.name ? Colors.red.withOpacity(.1) : (con.orderProductList[index].status?.toLowerCase() == OrderStatus.pending.name ? Colors.orangeAccent.withOpacity(.1) : Colors.green.withOpacity(.1)),
                                                 ),
                                                 child: Text(
                                                   con.orderProductList[index].status?.toUpperCase() ?? "",
                                                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                                                         fontWeight: FontWeight.w600,
                                                         fontSize: 12,
-                                                        color: con.orderProductList[index].status == "Rejected" ? Colors.red.withOpacity(.7) : (con.orderProductList[index].status == "Pending" ? Colors.orange.withOpacity(.8) : Colors.green),
+                                                        color: con.orderProductList[index].status?.toLowerCase() == OrderStatus.rejected.name ? Colors.red.withOpacity(.7) : (con.orderProductList[index].status?.toLowerCase() == OrderStatus.pending.name ? Colors.orange.withOpacity(.8) : Colors.green),
                                                       ),
                                                 ),
                                               ),

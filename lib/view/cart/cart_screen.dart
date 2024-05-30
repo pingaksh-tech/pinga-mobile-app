@@ -242,7 +242,7 @@ class CartScreen extends StatelessWidget {
                                                             ),
                                                           ),
                                                         ),
-                                                        (defaultPadding / 2).verticalSpace
+                                                        // (defaultPadding / 2).verticalSpace
                                                       ],
                                                     ),
                                                   )
@@ -256,10 +256,10 @@ class CartScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: UiUtils.scrollGradient(context, isBottom: true),
-                        ),
+                        // Align(
+                        //   alignment: Alignment.bottomCenter,
+                        //   child: UiUtils.scrollGradient(context, isBottom: true),
+                        // ),
                       ],
                     )
                   : EmptyElement(

@@ -94,8 +94,8 @@ class BottomBarScreen extends StatelessWidget {
                                           duration: const Duration(milliseconds: 250),
                                           padding: EdgeInsets.all(defaultPadding / 1.5),
                                           decoration: BoxDecoration(
-                                            color: con.currentBottomIndex.value == index ? Theme.of(context).primaryColor : Theme.of(context).scaffoldBackgroundColor,
-                                            border: Border.all(color: con.currentBottomIndex.value == index ? Theme.of(context).primaryColor : Theme.of(context).scaffoldBackgroundColor, strokeAlign: 5),
+                                            color: con.currentBottomIndex.value == index ? Theme.of(context).primaryColor : null,
+                                            border: Border.all(color: con.currentBottomIndex.value == index ? Theme.of(context).primaryColor : Theme.of(context).colorScheme.surface, strokeAlign: 5),
                                             shape: BoxShape.circle,
                                           ),
                                           child: con.currentBottomIndex.value == index

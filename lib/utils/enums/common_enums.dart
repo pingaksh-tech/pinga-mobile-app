@@ -92,3 +92,6 @@ enum RadioButtonType { outline, filled, done }
 
 ///* DATE RANGE TYPES
 enum DateRangeType { custom, today, yesterday, thisWeek, thisMonth, thisYear, lastWeek, lastMonth, last6Month, lastYear, more }
+
+/// Order Status
+enum OrderStatus { all, pending, accepted, rejected, completed }

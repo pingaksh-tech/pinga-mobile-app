@@ -194,7 +194,7 @@ class ProductScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 3),
                           Text(
-                            UiUtils.amountFormat("458454", symbol: "₹"),
+                            UiUtils.amountFormat("458454"),
                             style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600, fontSize: 14.sp),
                           ),
                         ],
