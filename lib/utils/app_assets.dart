@@ -16,6 +16,7 @@ class AppAssets {
   static String banner04 = '${imagesPath}banner04.jpg';
   static String banner05 = '${imagesPath}banner05.jpg';
   static String authBg = '${imagesPath}auth_bg.png';
+  static String filter = '${imagesPath}filter.png';
 
   /// ***********************************************************************************
   ///                                    SVG
@@ -42,7 +43,6 @@ class AppAssets {
 
   static String calenderIcon = "${svgPath}calender_icon.svg";
   static String authAsset = "${svgPath}auth_asset.svg";
-
 
   /// ***********************************************************************************
   ///                                   JSON

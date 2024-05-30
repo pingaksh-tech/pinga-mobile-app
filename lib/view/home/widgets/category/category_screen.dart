@@ -28,7 +28,8 @@ class CategoryScreen extends StatelessWidget {
             AppTextField(
               hintText: "Search",
               fillColor: AppColors.lightGrey.withOpacity(0.3),
-              padding: EdgeInsets.only(bottom: defaultPadding / 1.5),
+              controller: con.searchCon.value,
+              padding: EdgeInsets.only(bottom: defaultPadding),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(
                   Radius.circular(defaultRadius),
@@ -39,7 +40,7 @@ class CategoryScreen extends StatelessWidget {
             ),
             Expanded(
               child: ListView.separated(
-                padding: EdgeInsets.only(top: defaultPadding / 1.5, bottom: defaultPadding * 2),
+                padding: EdgeInsets.only(bottom: defaultPadding * 2),
                 shrinkWrap: true,
                 itemBuilder: (context, index) => CategoryTile(
                   categoryName: con.categoryList[index]["catName"],

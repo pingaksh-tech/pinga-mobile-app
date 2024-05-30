@@ -23,7 +23,7 @@ class ProductScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.surface,
         shadowColor: Theme.of(context).scaffoldBackgroundColor,
         title: "Rings",
-        elevation: 2,
+        elevation: 1,
       ),
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2, vertical: defaultPadding),
@@ -64,25 +64,12 @@ class ProductScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            ProductSortTile(
-                              isCheck: con.isCheck,
-                              title: "Price - Low to high",
-                            ),
-                            ProductSortTile(
-                              isCheck: con.isCheck,
-                              title: "Price - High to Low",
-                            ),
-                            ProductSortTile(
-                              isCheck: con.isCheck,
-                              title: "Newest First",
-                            ),
-                            ProductSortTile(
-                              isCheck: con.isCheck,
-                              title: "Oldest First",
-                            ),
-                            ProductSortTile(
-                              isCheck: con.isCheck,
-                              title: "Most Ordered",
+                            ListView.builder(
+                              itemCount: con.sortOptions.length,
+                              itemBuilder: (context, index) => ProductSortTile(
+                                isCheck: con.sortOptions[index]["isChecked"],
+                                title: con.sortOptions[index]["title"],
+                              ),
                             ),
                           ],
                         ),
@@ -112,11 +99,11 @@ class ProductScreen extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Icon(
-                    Icons.filter_alt_rounded,
-                    size: 30,
+                  Image.asset(
+                    AppAssets.filter,
+                    height: 30,
                     color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(.55),
-                  ).paddingOnly(right: defaultPadding / 2),
+                  ),
                   Text(
                     "Filter",
                     style: AppTextStyle.subtitleStyle(context).copyWith(fontSize: 15.sp),
@@ -130,11 +117,6 @@ class ProductScreen extends StatelessWidget {
             indent: defaultPadding / 2,
             endIndent: defaultPadding / 2,
           ),
-          Text(
-            "Total Products 4098",
-            textAlign: TextAlign.center,
-            style: AppTextStyle.subtitleStyle(context).copyWith(fontWeight: FontWeight.w400, fontSize: 15.sp),
-          ).paddingOnly(bottom: defaultPadding),
           Wrap(
             children: List.generate(
               10,

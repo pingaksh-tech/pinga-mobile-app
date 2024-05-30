@@ -1,7 +1,8 @@
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class CategoryController extends GetxController {
-  List<String> tabList = ["Category", "Latest Product"];
+  Rx<TextEditingController> searchCon = TextEditingController().obs;
   List<Map<String, dynamic>> categoryList = [
     {
       "catName": "Ring",
@@ -20,7 +21,7 @@ class CategoryController extends GetxController {
       "subTitle": "Available 3598",
     },
     {
-      "catName": "Bangles",
+      "catName": "Necklace",
       "subTitle": "Available 3598",
     },
     {
@@ -28,7 +29,7 @@ class CategoryController extends GetxController {
       "subTitle": "Available 3598",
     },
     {
-      "catName": "Bangles",
+      "catName": "Earrings",
       "subTitle": "Available 3598",
     },
   ];
