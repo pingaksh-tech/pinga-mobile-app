@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 import '../../../exports.dart';
-import '../../../view/orders/my_order_controller.dart';
+import '../../../view/orders/orders_controller.dart';
 import '../../model/order/order_list_model.dart';
 
 class OrdersRepository {

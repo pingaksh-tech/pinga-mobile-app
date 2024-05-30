@@ -9,7 +9,7 @@ import '../../exports.dart';
 import '../../packages/cached_network_image/cached_network_image.dart';
 import '../../res/empty_element.dart';
 import 'components/order_simmer_tile.dart';
-import 'my_order_controller.dart';
+import 'orders_controller.dart';
 
 class OrdersScreen extends StatelessWidget {
   OrdersScreen({super.key});
@@ -111,7 +111,7 @@ class OrdersScreen extends StatelessWidget {
                                         color: Theme.of(context).colorScheme.surface /*Colors.red*/,
                                         borderRadius: BorderRadius.circular(defaultRadius),
                                         boxShadow: [
-                                          BoxShadow(color: Theme.of(context).iconTheme.color!.withOpacity(0.08), blurRadius: 10, spreadRadius: 2),
+                                          BoxShadow(color: Theme.of(context).iconTheme.color!.withOpacity(0.05), blurRadius: 10, spreadRadius: 1),
                                         ],
                                       ),
                                       clipBehavior: Clip.antiAlias,

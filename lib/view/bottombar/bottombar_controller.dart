@@ -7,7 +7,7 @@ import 'package:pingaksh_mobile/view/home/home_screen.dart';
 import '../../data/model/bottombar/bottombar_model.dart';
 import '../../exports.dart';
 import '../cart/cart_screen.dart';
-import '../orders/my_order_screen.dart';
+import '../orders/orders_screen.dart';
 
 class BottomBarController extends GetxController {
   RxInt currentBottomIndex = 0.obs;

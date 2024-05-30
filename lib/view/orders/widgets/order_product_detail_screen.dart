@@ -8,7 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../exports.dart';
 import '../../../packages/animated_counter/animated_counter.dart';
 import '../../../res/empty_element.dart';
-import '../my_order_controller.dart';
+import '../orders_controller.dart';
 
 class OrderProductDetailScreen extends StatelessWidget {
   OrderProductDetailScreen({super.key});
