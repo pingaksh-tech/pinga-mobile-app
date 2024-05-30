@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:pingaksh_mobile/theme/app_style.dart';
-
 import '../../data/repositories/orders/orders_repository.dart';
 import '../../exports.dart';
 import '../../packages/cached_network_image/cached_network_image.dart';
