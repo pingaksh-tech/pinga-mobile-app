@@ -137,7 +137,7 @@ class ProductScreen extends StatelessWidget {
             ),
             Wrap(
               children: List.generate(
-                10,
+                con.productList.length,
                 (index) => Container(
                   width: Get.width / 2 - defaultPadding * 1.5,
                   margin: EdgeInsets.all(defaultPadding / 2),
@@ -162,11 +162,11 @@ class ProductScreen extends StatelessWidget {
                             AppNetworkImage(
                               height: double.infinity,
                               width: double.infinity,
-                              fit: BoxFit.scaleDown,
+                              fit: BoxFit.cover,
                               padding: EdgeInsets.only(bottom: defaultPadding * 1.2),
                               borderRadius: BorderRadius.circular(defaultRadius),
                               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                              imageUrl: "https://i.pinimg.com/736x/71/56/2b/71562bfee51fd6ffb222dae63e605eec.jpg",
+                              imageUrl: con.productList[index]["image"],
                               boxShadow: const [
                                 BoxShadow(
                                   color: AppColors.lightGrey,
@@ -213,7 +213,7 @@ class ProductScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 3),
                             Text(
-                              UiUtils.amountFormat("102500"),
+                              UiUtils.amountFormat(con.productList[index]["price"]),
                               style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600, fontSize: 14.sp),
                             ),
                           ],
