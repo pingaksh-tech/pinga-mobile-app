@@ -23,7 +23,7 @@ class ProductScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.surface,
         shadowColor: Theme.of(context).scaffoldBackgroundColor,
         title: "Rings",
-        elevation: 1,
+        elevation: 0,
       ),
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2, vertical: defaultPadding),
@@ -35,55 +35,56 @@ class ProductScreen extends StatelessWidget {
                 onTap: () {
                   showModalBottomSheet(
                     context: context,
-                    builder: (context) => IntrinsicHeight(
-                      child: Container(
-                        width: Get.width,
-                        padding: EdgeInsets.all(defaultPadding).copyWith(bottom: MediaQuery.of(context).padding.bottom + defaultPadding),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
-                          border: Border.all(color: Theme.of(context).iconTheme.color!.withAlpha(15)),
-                        ),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  "Sort by",
-                                  textAlign: TextAlign.center,
-                                  style: AppTextStyle.titleStyle(context).copyWith(fontWeight: FontWeight.w400, fontSize: 16.sp),
+                    builder: (context) => Container(
+                      width: Get.width,
+                      padding: EdgeInsets.all(defaultPadding).copyWith(bottom: MediaQuery.of(context).padding.bottom + defaultPadding),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
+                        border: Border.all(color: Theme.of(context).iconTheme.color!.withAlpha(15)),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                "Sort by",
+                                textAlign: TextAlign.center,
+                                style: AppTextStyle.titleStyle(context).copyWith(fontWeight: FontWeight.w400, fontSize: 16.sp),
+                              ),
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: IconButton(
+                                  onPressed: () {
+                                    Get.back();
+                                  },
+                                  icon: const Icon(Icons.close_sharp),
                                 ),
-                                Align(
-                                  alignment: Alignment.topRight,
-                                  child: IconButton(
-                                    onPressed: () {
-                                      Get.back();
-                                    },
-                                    icon: const Icon(Icons.close_sharp),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            ListView.builder(
+                              ),
+                            ],
+                          ),
+                          Expanded(
+                            child: ListView.builder(
                               itemCount: con.sortOptions.length,
                               itemBuilder: (context, index) => ProductSortTile(
                                 isCheck: con.sortOptions[index]["isChecked"],
                                 title: con.sortOptions[index]["title"],
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   );
                 },
                 child: Row(
                   children: [
-                    Icon(
-                      Icons.filter_list_rounded,
-                      size: 30,
-                      color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(.55),
-                    ).paddingOnly(right: defaultPadding / 2),
+                    SvgPicture.asset(
+                      AppAssets.sortIcon,
+                      height: 18.sp,
+                      color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(.55), // ignore: deprecated_member_use
+                    ).paddingOnly(right: defaultPadding),
                     Text(
                       "Sort",
                       style: AppTextStyle.subtitleStyle(context).copyWith(fontSize: 15.sp),
@@ -99,11 +100,11 @@ class ProductScreen extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Image.asset(
+                  SvgPicture.asset(
                     AppAssets.filter,
-                    height: 30,
-                    color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(.55),
-                  ),
+                    height: 20.sp,
+                    color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(.55), // ignore: deprecated_member_use
+                  ).paddingOnly(right: defaultPadding / 2),
                   Text(
                     "Filter",
                     style: AppTextStyle.subtitleStyle(context).copyWith(fontSize: 15.sp),
@@ -161,7 +162,7 @@ class ProductScreen extends StatelessWidget {
                             child: MFLikeButton(
                               iconSize: 20,
                               buttonSize: 30,
-                              isLiked: true,
+                              isLiked: false,
                               onTap: (isLiked) async {
                                 return isLiked;
                               },

@@ -56,30 +56,32 @@ class HomeScreen extends StatelessWidget {
                 crossAxisSpacing: defaultPadding / 1.8,
                 mainAxisExtent: 100.h,
               ),
-              itemCount: con.imgList.length,
+              itemCount: con.brandList.length,
               itemBuilder: (context, index) => GestureDetector(
                 onTap: () => Get.toNamed(AppRoutes.categoryScreen),
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
                     AppNetworkImage(
-                      imageUrl: con.imgList[index],
+                      height: double.infinity,
+                      width: double.infinity,
+                      imageUrl: con.brandList[index]["image"],
                       borderRadius: BorderRadius.circular(defaultRadius),
-                      fit: BoxFit.fill,
+                      fit: BoxFit.cover,
                     ),
                     Positioned.fill(
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(defaultRadius),
                         child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
+                          filter: ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
                           child: Container(
-                            color: Colors.black.withOpacity(0.2),
+                            color: Colors.black.withOpacity(0.45),
                           ),
                         ),
                       ),
                     ),
                     Text(
-                      "Rang Tarang",
+                      con.brandList[index]["brandName"],
                       style: AppTextStyle.titleStyle(context).copyWith(color: Theme.of(context).scaffoldBackgroundColor),
                     ),
                   ],

@@ -19,7 +19,7 @@ class CategoryScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.surface,
         shadowColor: Theme.of(context).scaffoldBackgroundColor,
         title: "Rang Tarang",
-        elevation: 1,
+        elevation: 0,
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding),
@@ -27,7 +27,6 @@ class CategoryScreen extends StatelessWidget {
           children: [
             AppTextField(
               hintText: "Search",
-              fillColor: AppColors.lightGrey.withOpacity(0.3),
               controller: con.searchCon.value,
               padding: EdgeInsets.only(bottom: defaultPadding),
               enabledBorder: OutlineInputBorder(
@@ -36,7 +35,7 @@ class CategoryScreen extends StatelessWidget {
                 ),
                 borderSide: BorderSide.none,
               ),
-              textFieldType: TextFieldType.search,
+              contentPadding: EdgeInsets.symmetric(vertical: defaultPadding, horizontal: defaultPadding),
             ),
             Expanded(
               child: ListView.separated(
