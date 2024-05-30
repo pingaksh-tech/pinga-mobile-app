@@ -43,6 +43,10 @@ class AppAssets {
   static String calenderIcon = "${svgPath}calender_icon.svg";
   static String authAsset = "${svgPath}auth_asset.svg";
 
+  static String faq = '${svgPath}faq.svg';
+  static String privacy = '${svgPath}privacy.svg';
+  static String rtp = '${svgPath}rtp.svg';
+  static String tc = '${svgPath}tc.svg';
 
   /// ***********************************************************************************
   ///                                   JSON

@@ -5,6 +5,7 @@ import 'package:pingaksh_mobile/view/home/widgets/product/product_screen.dart';
 
 import '../view/auth_flow/auth_screen.dart';
 import '../view/dashboard/dashboard_screen.dart';
+import '../view/profile/profile_screen.dart';
 import '../view/splash/splash_screen.dart';
 import 'app_routes.dart';
 
@@ -28,6 +29,7 @@ class AppPages {
     _getPage(name: AppRoutes.bottomBarScreen, page: () => BottomBarScreen()),
     _getPage(name: AppRoutes.categoryScreen, page: () => CategoryScreen()),
     _getPage(name: AppRoutes.productScreen, page: () => ProductScreen()),
+    _getPage(name: AppRoutes.profileScreen, page: () => ProfileScreen()),
 
     // // _getPage(name: AppRoutes.navigationBarScreen, page: () => NavigationBarScreen()),
     // // _getPage(name: AppRoutes.registerScreen, page: () => RegisterScreen()),

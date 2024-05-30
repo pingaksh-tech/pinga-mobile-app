@@ -45,4 +45,5 @@ class AppRoutes {
   static const String dashboardScreen = '/dashboard-screen';
   static const String categoryScreen = '/category-screen';
   static const String productScreen = '/product-screen';
+  static const String profileScreen = '/profile-screen';
 }
