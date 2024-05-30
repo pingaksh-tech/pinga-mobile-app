@@ -20,6 +20,7 @@ class AppColors {
   static const Color lightGrey = Color(0xFFD4D4D4);
   static const Color textFiledBorder = Color(0xFFE2E8F0);
   static const Color outlineButtonBorder = Color(0xFFE2E8F0);
+  static Color subText = const Color(0xFF64748B).withOpacity(0.7);
 
   static List<Color> bannerGradientColorList = [
     const Color(0xff169A8A).withOpacity(0.1),

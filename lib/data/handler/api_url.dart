@@ -17,9 +17,11 @@ class ApiUrls {
   static String addOrRemoveCart = "cart/add-remove/";
   static String placeOrderPOST = "order/create";
 
+  /// ORDERS
+  static String orderProductUrl = "order/list";
+
   // static String homeProductUrl = "product/list";
   // static String addLocationUrl = "user/lat-long";
-  // static String orderProductUrl = "order/list";
   // static String profileUrl = "user/profile";
   // static String placeOrderUrl = "order/create";
   // static String singleProduct = "product/get/";
