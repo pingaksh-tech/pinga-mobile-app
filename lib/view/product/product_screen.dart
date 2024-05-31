@@ -5,10 +5,9 @@ import 'package:get/get.dart';
 import 'package:pingaksh_mobile/exports.dart';
 import 'package:pingaksh_mobile/view/product/components/sort_filter_button.dart';
 import 'package:pingaksh_mobile/widgets/checkbox_title_tile.dart';
+import 'package:pingaksh_mobile/widgets/product_tile.dart';
 
-import '../../packages/like_button/like_button.dart';
 import '../../res/app_bar.dart';
-import '../../res/app_network_image.dart';
 import 'product_controller.dart';
 
 class ProductScreen extends StatelessWidget {
@@ -138,97 +137,16 @@ class ProductScreen extends StatelessWidget {
             Wrap(
               children: List.generate(
                 con.productList.length,
-                (index) => GestureDetector(
+                (index) => ProductTile(
                   onTap: () => Get.toNamed(
                     AppRoutes.productDetailsScreen,
                     arguments: {
                       // "brandName": con.brandList[index]["brandName"],
                     },
                   ),
-                  child: Container(
-                    width: Get.width / 2 - defaultPadding * 1.5,
-                    margin: EdgeInsets.all(defaultPadding / 2),
-                    padding: EdgeInsets.all(defaultPadding / 4),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface,
-                      borderRadius: BorderRadius.circular(defaultRadius),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.lightGrey.withOpacity(0.7),
-                          blurRadius: 2,
-                          offset: const Offset(0, 1),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: Get.width / 2 - defaultPadding,
-                          child: Stack(
-                            children: [
-                              AppNetworkImage(
-                                height: double.infinity,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                                padding: EdgeInsets.only(bottom: defaultPadding * 1.2),
-                                borderRadius: BorderRadius.circular(defaultRadius),
-                                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                                imageUrl: con.productList[index]["image"],
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: AppColors.lightGrey,
-                                    blurRadius: 1,
-                                    offset: Offset(0, 1),
-                                  ),
-                                ],
-                              ),
-                              Align(
-                                alignment: Alignment.bottomRight,
-                                child: MFLikeButton(
-                                  iconSize: 20,
-                                  buttonSize: 30,
-                                  isLiked: false,
-                                  onTap: (isLiked) async {
-                                    isLiked = !isLiked;
-                                    return isLiked;
-                                  },
-                                  selectedIcon: SvgPicture.asset(AppAssets.basketShoppingSimple, color: AppColors.lightSecondary, height: 20, width: 20), // ignore: deprecated_member_use
-                                  unSelectedIcon: SvgPicture.asset(AppAssets.basketShopping, color: AppColors.lightSecondary, height: 20, width: 20), // ignore: deprecated_member_use
-                                  shape: BoxShape.circle,
-                                  padding: EdgeInsets.only(right: defaultPadding / 2),
-                                  backgroundColor: Theme.of(context).primaryColor,
-                                  borderColor: Theme.of(context).scaffoldBackgroundColor,
-                                  likeColor: AppColors.goldColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0).copyWith(top: 1),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                width: Get.width,
-                                child: Text(
-                                  "Gold Ring",
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500, fontSize: 12.sp),
-                                ),
-                              ),
-                              const SizedBox(height: 3),
-                              Text(
-                                UiUtils.amountFormat(con.productList[index]["price"]),
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600, fontSize: 14.sp),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  imageUrl: con.productList[index]["image"],
+                  productName: "GoldRing",
+                  productPrice: con.productList[index]["price"],
                 ),
               ),
             )

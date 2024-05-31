@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pingaksh_mobile/res/app_bar.dart';
 import 'package:pingaksh_mobile/view/product/widgets/filter/filter_controller.dart';
+import 'package:pingaksh_mobile/widgets/filter_listview_widget.dart';
 
 import '../../../../exports.dart';
 import '../../../../widgets/checkbox_title_tile.dart';
@@ -45,24 +46,29 @@ class FilterScreen extends StatelessWidget {
                           padding: EdgeInsets.symmetric(vertical: defaultPadding, horizontal: defaultPadding / 1.5),
                           alignment: Alignment.centerLeft,
                           color: isSelected ? Theme.of(context).colorScheme.surface : AppColors.lightGrey.withOpacity(0.3),
-                          child: Row(
+                          child: Column(
                             children: [
-                              Expanded(
-                                child: Text(
-                                  con.filterTypeList[index],
-                                  textAlign: TextAlign.start,
-                                  style: AppTextStyle.titleStyle(context).copyWith(fontSize: 14.sp, fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400),
-                                ),
-                              ),
-                              if (isActive)
-                                Container(
-                                  width: 8.w,
-                                  height: 8.h,
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context).primaryColor,
-                                    shape: BoxShape.circle,
+                              // const Icon(Icons.price_change),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      con.filterTypeList[index],
+                                      textAlign: TextAlign.center,
+                                      style: AppTextStyle.titleStyle(context).copyWith(fontSize: 14.sp, fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400),
+                                    ),
                                   ),
-                                ),
+                                  if (isActive)
+                                    Container(
+                                      width: 8.w,
+                                      height: 8.h,
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).primaryColor,
+                                        shape: BoxShape.circle,
+                                      ),
+                                    ),
+                                ],
+                              ),
                             ],
                           ),
                         ),
@@ -77,30 +83,86 @@ class FilterScreen extends StatelessWidget {
               flex: 2,
               child: switch (con.filterType.value) {
                 FilterType.range => Padding(
-                    padding: EdgeInsets.only(top: defaultPadding),
+                    padding: EdgeInsets.only(top: defaultPadding, left: defaultPadding, right: defaultPadding),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Select Price Range",
-                          style: AppTextStyle.titleStyle(context).copyWith(fontSize: 14.sp, fontWeight: FontWeight.w400),
-                        ).paddingOnly(left: defaultPadding, bottom: defaultPadding),
+                          "Item name",
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ).paddingOnly(left: 0, bottom: defaultPadding / 5),
+                        AppTextField(
+                          hintText: "Enter item name",
+                          controller: con.itemNameCon.value,
+                          contentPadding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding / 2),
+                          padding: const EdgeInsets.symmetric(horizontal: 0),
+                        ),
+                        Divider(height: defaultPadding * 1.2),
+                        Text(
+                          "Metal WT",
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ).paddingOnly(left: 0, bottom: defaultPadding / 5),
                         Text(
                           "${UiUtils.amountFormat(con.minPrice.value.toString(), decimalDigits: 0)} - ${UiUtils.amountFormat(con.maxPrice.value.toString(), decimalDigits: 0)}",
-                          style: AppTextStyle.titleStyle(context).copyWith(fontSize: 14.sp),
-                        ).paddingOnly(left: defaultPadding),
-                        RangeSlider(
-                          values: RangeValues(con.minPrice.value, con.maxPrice.value),
-                          max: 10000,
-                          min: 5000,
-                          onChanged: (value) {
-                            con.minPrice.value = value.start;
-                            con.maxPrice.value = value.end;
-                          },
+                          style: AppTextStyle.titleStyle(context).copyWith(fontSize: 13.sp),
+                        ).paddingOnly(left: 0),
+                        Theme(
+                          data: ThemeData(
+                            sliderTheme: const SliderThemeData(
+                              trackHeight: 2,
+                            ),
+                          ),
+                          child: RangeSlider(
+                            values: RangeValues(con.minPrice.value, con.maxPrice.value),
+                            activeColor: Theme.of(context).primaryColor,
+                            max: 10000,
+                            min: 5000,
+                            onChanged: (value) {
+                              con.minPrice.value = value.start;
+                              con.maxPrice.value = value.end;
+                            },
+                          ),
+                        ),
+                        const Divider(height: 0),
+                        Text(
+                          "Diamond WT",
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ).paddingOnly(bottom: defaultPadding / 5, top: defaultPadding / 2),
+                        Text(
+                          "${UiUtils.amountFormat(con.minPrice.value.toString(), decimalDigits: 0)} - ${UiUtils.amountFormat(con.maxPrice.value.toString(), decimalDigits: 0)}",
+                          style: AppTextStyle.titleStyle(context).copyWith(fontSize: 13.sp),
+                        ),
+                        Theme(
+                          data: ThemeData(
+                            sliderTheme: const SliderThemeData(
+                              trackHeight: 2,
+                            ),
+                          ),
+                          child: RangeSlider(
+                            values: RangeValues(con.minPrice.value, con.maxPrice.value),
+                            activeColor: Theme.of(context).primaryColor,
+                            max: 10000,
+                            min: 5000,
+                            onChanged: (value) {
+                              con.minPrice.value = value.start;
+                              con.maxPrice.value = value.end;
+                            },
+                          ),
                         ),
                       ],
                     ),
                   ),
+                FilterType.available => Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text("Available"),
+                      Expanded(
+                        child: FilterListViewWidget(
+                          filterTabList: con.stockAvailableList,
+                        ),
+                      ),
+                    ],
+                  ).paddingOnly(left: defaultPadding),
                 FilterType.gender => ListView.separated(
                     physics: const RangeMaintainingScrollPhysics(),
                     padding: EdgeInsets.symmetric(vertical: defaultPadding / 2),
@@ -115,6 +177,7 @@ class FilterScreen extends StatelessWidget {
                       endIndent: defaultPadding,
                     ),
                   ),
+                FilterType.kt => Container(),
                 FilterType.brand => ListView.separated(
                     physics: const RangeMaintainingScrollPhysics(),
                     padding: EdgeInsets.symmetric(vertical: defaultPadding / 2),

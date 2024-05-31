@@ -1,12 +1,24 @@
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
-enum FilterType { range, gender, brand, jewellery }
+enum FilterType { range, available, gender, brand, kt, jewellery }
 
 class FilterController extends GetxController {
   RxDouble minPrice = 5000.0.obs;
   RxDouble maxPrice = 10000.0.obs;
-
-  RxList<String> filterTypeList = ["Range", "Gender", "Brand", "Jewellery Types"].obs;
+  Rx<TextEditingController> itemNameCon = TextEditingController().obs;
+  RxList<String> filterTypeList = [
+    "Range",
+    // "MRP",
+    "Available",
+    "Gender",
+    "Brand",
+    "KT",
+    "Delivery",
+    "Tag",
+    "Collection",
+    "Complexity",
+  ].obs;
 
   RxString selectFilter = "Range".obs;
   Rx<FilterType> filterType = FilterType.range.obs;
@@ -17,12 +29,18 @@ class FilterController extends GetxController {
         filterType.value = FilterType.range;
         break;
       case 1:
-        filterType.value = FilterType.gender;
+        filterType.value = FilterType.available;
         break;
       case 2:
-        filterType.value = FilterType.brand;
+        filterType.value = FilterType.gender;
         break;
       case 3:
+        filterType.value = FilterType.brand;
+        break;
+      case 4:
+        filterType.value = FilterType.kt;
+        break;
+      case 5:
         filterType.value = FilterType.jewellery;
         break;
     }
@@ -39,6 +57,12 @@ class FilterController extends GetxController {
   final List<Map<String, dynamic>> jewelryTypeList = [
     {"title": "Diamond", "isChecked": false.obs},
     {"title": "Gold", "isChecked": false.obs},
+  ];
+  final List<Map<String, dynamic>> stockAvailableList = [
+    {"title": "In Stock Available Only", "isChecked": false.obs},
+    {"title": "Family Products Only", "isChecked": false.obs},
+    {"title": "Wear It Items Only", "isChecked": false.obs},
+    {"title": "Try On Items Only", "isChecked": false.obs},
   ];
   final List<Map<String, dynamic>> genderList = [
     {"title": "Male", "isChecked": false.obs},
