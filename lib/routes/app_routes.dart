@@ -53,4 +53,10 @@ class AppRoutes {
   /// ***********************************************************************************
   static const String productDetailsScreen = '/product-details-screen';
   static const String filterScreen = '/filter-screen';
+
+  /// ***********************************************************************************
+  ///                                 COLLECTIONS PAGES
+  /// ***********************************************************************************
+  static const String watchListScreen = '/watch-list-screen';
+  static const String addWatchListScreen = '/add-watchlist-screen';
 }

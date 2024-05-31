@@ -35,6 +35,15 @@ class ProductDetailsScreen extends StatelessWidget {
               Get.toNamed(AppRoutes.cartScreen);
             },
           ),
+          AppIconButton(
+            icon: SvgPicture.asset(
+              AppAssets.overviewIcon,
+              colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+            ),
+            onPressed: () {
+              Get.toNamed(AppRoutes.addWatchListScreen);
+            },
+          ),
         ],
       ),
       body: Obx(() {
@@ -368,8 +377,10 @@ class ProductDetailsScreen extends StatelessWidget {
                               isLiked = !isLiked;
                               return isLiked;
                             },
-                            selectedIcon: SvgPicture.asset(AppAssets.basketShoppingSimple, color: AppColors.lightSecondary, height: 20, width: 20), // ignore: deprecated_member_use
-                            unSelectedIcon: SvgPicture.asset(AppAssets.basketShopping, color: AppColors.lightSecondary, height: 20, width: 20), // ignore: deprecated_member_use
+                            selectedIcon: SvgPicture.asset(AppAssets.basketShoppingSimple, color: AppColors.lightSecondary, height: 20, width: 20),
+                            // ignore: deprecated_member_use
+                            unSelectedIcon: SvgPicture.asset(AppAssets.basketShopping, color: AppColors.lightSecondary, height: 20, width: 20),
+                            // ignore: deprecated_member_use
                             shape: BoxShape.circle,
                             padding: EdgeInsets.only(right: defaultPadding / 2),
                             backgroundColor: Theme.of(context).primaryColor,

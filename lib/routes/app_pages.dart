@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:pingaksh_mobile/view/bottombar/bottombar_screen.dart';
 import 'package:pingaksh_mobile/view/category/category_screen.dart';
+import 'package:pingaksh_mobile/view/collections/watch_list/watch_list_screen.dart';
+import 'package:pingaksh_mobile/view/collections/widgets/add_watchlist/add_watchlist_screen.dart';
 import 'package:pingaksh_mobile/view/product/product_screen.dart';
 import 'package:pingaksh_mobile/view/product/widgets/filter/filter_screen.dart';
 
@@ -36,5 +38,7 @@ class AppPages {
     _getPage(name: AppRoutes.cartScreen, page: () => CartScreen()),
     _getPage(name: AppRoutes.productDetailsScreen, page: () => ProductDetailsScreen()),
     _getPage(name: AppRoutes.filterScreen, page: () => FilterScreen()),
+    _getPage(name: AppRoutes.watchListScreen, page: () => WatchListScreen()),
+    _getPage(name: AppRoutes.addWatchListScreen, page: () => AddWatchlistScreen()),
   ];
 }

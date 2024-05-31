@@ -49,6 +49,10 @@ class AppAssets {
   static String rtp = '${svgPath}rtp.svg';
   static String tc = '${svgPath}tc.svg';
   static String crossIcon = '${svgPath}cross_icon.svg';
+  static String menuIcon = '${svgPath}menu_icon.svg';
+  static String downloadIcon = '${svgPath}download.svg';
+  static String shareIcon = '${svgPath}share.svg';
+  static String overviewIcon = '${svgPath}overview.svg';
 
   /// ***********************************************************************************
   ///                                   JSON
