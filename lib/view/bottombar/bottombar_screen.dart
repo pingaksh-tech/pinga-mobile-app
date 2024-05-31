@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pingaksh_mobile/res/app_bar.dart';
-import 'package:pingaksh_mobile/view/bottombar/components/drawer.dart';
+import 'package:pingaksh_mobile/view/bottombar/components/app_drawer.dart';
 
 import '../../exports.dart';
 import '../../packages/app_animated_cliprect.dart';

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
 import 'package:pingaksh_mobile/res/app_bar.dart';
@@ -24,7 +25,8 @@ class AddWatchlistScreen extends StatelessWidget {
           children: [
             ListView.separated(
               shrinkWrap: true,
-              physics: const RangeMaintainingScrollPhysics(),
+              padding: EdgeInsets.only(bottom: 136.h),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: con.watchList.length,
               separatorBuilder: (context, index) => SizedBox(
                 height: defaultPadding / 1.5,
@@ -53,34 +55,52 @@ class AddWatchlistScreen extends StatelessWidget {
           ],
         );
       }),
-      bottomSheet: ListView(
-        shrinkWrap: true,
-        children: [
-          AppTextField(
-            title: "Add Watch list",
-            hintText: "Enter watchlist name",
-            contentPadding: EdgeInsets.all(defaultPadding / 1.2),
-            padding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(top: defaultPadding),
-            textInputAction: TextInputAction.done,
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(defaultRadius),
+      bottomSheet: Obx(() {
+        return ListView(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          children: [
+            AppTextField(
+              title: "Add Watch list",
+              hintText: "Enter watchlist name",
+              contentPadding: EdgeInsets.all(defaultPadding / 1.2),
+              padding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(top: defaultPadding),
+              textInputAction: TextInputAction.done,
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(defaultRadius),
+                ),
+                borderSide: BorderSide.none,
               ),
-              borderSide: BorderSide.none,
+              controller: con.nameCon.value,
+              validation: con.nameValidation.value,
+              errorMessage: con.nameError.value,
+              onChanged: (value) {
+                con.checkDisableButton();
+              },
             ),
-            controller: con.nameCon.value,
-            validation: con.nameValidation.value,
-            errorMessage: con.nameError.value,
-          ),
-          AppButton(
-            title: "Add",
-            padding: EdgeInsets.all(defaultPadding).copyWith(bottom: MediaQuery.of(context).padding.bottom + defaultPadding),
-            onPressed: () {
-              FocusScope.of(context).unfocus();
-            },
-          ),
-        ],
-      ),
+            AppButton(
+              title: "Add",
+              disableButton: con.disableButton.value,
+              padding: EdgeInsets.all(defaultPadding).copyWith(bottom: MediaQuery.of(context).padding.bottom + defaultPadding),
+              onPressed: () {
+                FocusScope.of(context).unfocus();
+                if (con.validate()) {
+                  con.watchList.add(
+                    {
+                      'id': con.watchList.length.toString(),
+                      'name': con.nameCon.value.text.trim(),
+                      'no_of_item': 21,
+                      'created_by': 'Guest',
+                    },
+                  );
+                  con.nameCon.value.clear();
+                }
+              },
+            ),
+          ],
+        );
+      }),
     );
   }
 }

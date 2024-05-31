@@ -5,6 +5,7 @@ import 'package:pingaksh_mobile/exports.dart';
 import 'package:pingaksh_mobile/res/app_bar.dart';
 import 'package:pingaksh_mobile/view/collections/watch_list/components/watchlist_tile.dart';
 import 'package:pingaksh_mobile/view/collections/watch_list/watch_list_controller.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../res/empty_element.dart';
 
@@ -68,7 +69,12 @@ class WatchListScreen extends StatelessWidget {
                         noOfItem: con.watchList[index]['no_of_item'],
                         createdBy: con.watchList[index]['created_by'],
                         downloadOnPressed: () {},
-                        shareOnPressed: () {},
+                        shareOnPressed: () async {
+                          /// share wishlist
+                          await Share.share(
+                            "Name : ${con.watchList[index]['name']}\nNo of Items : ${con.watchList[index]['no_of_item']}\nCreated By : ${con.watchList[index]['created_by']}",
+                          );
+                        },
                         deleteOnPressed: () {
                           int selectIndex = con.watchList.indexWhere(
                             (e) => e['id'] == con.watchList[index]['id'],
