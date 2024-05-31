@@ -9,12 +9,14 @@ class CategoryTile extends StatelessWidget {
   final String subTitle;
   final String imageUrl;
   final VoidCallback onTap;
+  final double? fontSize;
   const CategoryTile({
     super.key,
     required this.categoryName,
     required this.subTitle,
     required this.imageUrl,
     required this.onTap,
+    this.fontSize,
   });
 
   @override
@@ -47,7 +49,7 @@ class CategoryTile extends StatelessWidget {
                 children: [
                   Text(
                     categoryName,
-                    style: AppTextStyle.titleStyle(context).copyWith(fontSize: 16.sp),
+                    style: AppTextStyle.titleStyle(context).copyWith(fontSize: fontSize ?? 16.sp),
                   ),
                   Text(
                     subTitle,

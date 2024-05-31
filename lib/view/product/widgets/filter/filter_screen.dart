@@ -27,6 +27,7 @@ class FilterScreen extends StatelessWidget {
             Expanded(
               flex: 1,
               child: ListView.separated(
+                physics: const RangeMaintainingScrollPhysics(),
                 itemCount: con.filterTypeList.length,
                 separatorBuilder: (context, index) => Divider(
                   height: 0,
@@ -36,7 +37,7 @@ class FilterScreen extends StatelessWidget {
                   return Obx(
                     () {
                       bool isSelected = con.selectFilter.value == con.filterTypeList[index];
-                      bool isActive = con.isFilterActive(con.filterTypeList[index]);
+                      int activeCount = con.getActiveFilterCount(con.filterTypeList[index]);
                       return GestureDetector(
                         onTap: () {
                           con.filterCategoryType(index: index);
@@ -46,29 +47,32 @@ class FilterScreen extends StatelessWidget {
                           padding: EdgeInsets.symmetric(vertical: defaultPadding, horizontal: defaultPadding / 1.5),
                           alignment: Alignment.centerLeft,
                           color: isSelected ? Theme.of(context).colorScheme.surface : AppColors.lightGrey.withOpacity(0.3),
-                          child: Column(
+                          child: Row(
                             children: [
-                              // const Icon(Icons.price_change),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      con.filterTypeList[index],
-                                      textAlign: TextAlign.center,
-                                      style: AppTextStyle.titleStyle(context).copyWith(fontSize: 14.sp, fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400),
-                                    ),
-                                  ),
-                                  if (isActive)
-                                    Container(
-                                      width: 8.w,
-                                      height: 8.h,
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context).primaryColor,
-                                        shape: BoxShape.circle,
-                                      ),
-                                    ),
-                                ],
+                              Expanded(
+                                child: Text(
+                                  con.filterTypeList[index],
+                                  textAlign: TextAlign.start,
+                                  style: AppTextStyle.titleStyle(context).copyWith(fontSize: 14.sp, fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400),
+                                ),
                               ),
+                              if (activeCount != 0)
+                                Container(
+                                  height: 15.h,
+                                  width: 15.h,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).primaryColor,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Text(
+                                    activeCount.toString(),
+                                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                          color: Theme.of(context).colorScheme.surface,
+                                          fontSize: 10.sp,
+                                        ),
+                                  ),
+                                ),
                             ],
                           ),
                         ),
@@ -103,23 +107,21 @@ class FilterScreen extends StatelessWidget {
                           style: Theme.of(context).textTheme.bodyLarge,
                         ).paddingOnly(left: 0, bottom: defaultPadding / 5),
                         Text(
-                          "${UiUtils.amountFormat(con.minPrice.value.toString(), decimalDigits: 0)} - ${UiUtils.amountFormat(con.maxPrice.value.toString(), decimalDigits: 0)}",
+                          "${con.minMetalWt.value.toStringAsFixed(2)} - ${con.maxMetalWt.value.toStringAsFixed(2)}",
                           style: AppTextStyle.titleStyle(context).copyWith(fontSize: 13.sp),
                         ).paddingOnly(left: 0),
                         Theme(
                           data: ThemeData(
-                            sliderTheme: const SliderThemeData(
-                              trackHeight: 2,
-                            ),
+                            sliderTheme: const SliderThemeData(trackHeight: 2),
                           ),
                           child: RangeSlider(
-                            values: RangeValues(con.minPrice.value, con.maxPrice.value),
+                            values: RangeValues(con.minMetalWt.value, con.maxMetalWt.value),
                             activeColor: Theme.of(context).primaryColor,
-                            max: 10000,
-                            min: 5000,
+                            max: 12,
+                            min: 0,
                             onChanged: (value) {
-                              con.minPrice.value = value.start;
-                              con.maxPrice.value = value.end;
+                              con.minMetalWt.value = value.start;
+                              con.maxMetalWt.value = value.end;
                             },
                           ),
                         ),
@@ -129,7 +131,7 @@ class FilterScreen extends StatelessWidget {
                           style: Theme.of(context).textTheme.bodyLarge,
                         ).paddingOnly(bottom: defaultPadding / 5, top: defaultPadding / 2),
                         Text(
-                          "${UiUtils.amountFormat(con.minPrice.value.toString(), decimalDigits: 0)} - ${UiUtils.amountFormat(con.maxPrice.value.toString(), decimalDigits: 0)}",
+                          "${con.minDiamondWt.value.toStringAsFixed(2)} - ${con.maxDiamondWt.value.toStringAsFixed(2)}",
                           style: AppTextStyle.titleStyle(context).copyWith(fontSize: 13.sp),
                         ),
                         Theme(
@@ -139,37 +141,57 @@ class FilterScreen extends StatelessWidget {
                             ),
                           ),
                           child: RangeSlider(
-                            values: RangeValues(con.minPrice.value, con.maxPrice.value),
+                            values: RangeValues(con.minDiamondWt.value, con.maxDiamondWt.value),
                             activeColor: Theme.of(context).primaryColor,
-                            max: 10000,
-                            min: 5000,
+                            max: 50,
+                            min: 0,
                             onChanged: (value) {
-                              con.minPrice.value = value.start;
-                              con.maxPrice.value = value.end;
+                              con.minDiamondWt.value = value.start;
+                              con.maxDiamondWt.value = value.end;
                             },
                           ),
                         ),
                       ],
                     ),
                   ),
-                FilterType.available => Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text("Available"),
-                      Expanded(
-                        child: FilterListViewWidget(
-                          filterTabList: con.stockAvailableList,
-                        ),
+
+                //? Available Tab UI
+                FilterType.available => FilterListViewWidget(filterTabList: con.stockAvailableList),
+
+                //? Gender Tab UI
+                FilterType.gender => FilterListViewWidget(filterTabList: con.genderList),
+
+                //? Brand Tab UI
+                FilterType.brand => FilterListViewWidget(filterTabList: con.brandList),
+
+                //? KT Tab UI
+                FilterType.kt => FilterListViewWidget(filterTabList: con.ktList),
+                //? Delivery Tab UI
+                FilterType.delivery => FilterListViewWidget(filterTabList: con.deliveryList),
+                //? Tag Tab UI
+                FilterType.tag => FilterListViewWidget(filterTabList: con.tagList),
+                //? Collection Tab UI
+                FilterType.collection => FilterListViewWidget(filterTabList: con.collectionList),
+                //? Complexity Tab UI
+                FilterType.complexity => FilterListViewWidget(filterTabList: con.complexityList),
+                //? SubComplexity Tab UI
+                FilterType.subComplexity => FilterListViewWidget(filterTabList: con.subComplexityList),
+
+                //? BestSeller Tab UI
+                FilterType.bestSeller => ListView.separated(
+                    itemCount: con.bestSellerList.length,
+                    itemBuilder: (context, index) => Obx(
+                      () => CheckBoxWithTitleTile(
+                        isMultiSelection: false,
+                        onChanged: (_) {
+                          con.selectSeller.value = con.bestSellerList[index];
+                        },
+                        onTap: () {
+                          con.selectSeller.value = con.bestSellerList[index];
+                        },
+                        isCheck: (con.selectSeller.value == con.bestSellerList[index]).obs,
+                        title: con.bestSellerList[index],
                       ),
-                    ],
-                  ).paddingOnly(left: defaultPadding),
-                FilterType.gender => ListView.separated(
-                    physics: const RangeMaintainingScrollPhysics(),
-                    padding: EdgeInsets.symmetric(vertical: defaultPadding / 2),
-                    itemCount: con.genderList.length,
-                    itemBuilder: (context, index) => CheckBoxWithTitleTile(
-                      title: con.genderList[index]["title"],
-                      isCheck: con.genderList[index]["isChecked"],
                     ),
                     separatorBuilder: (context, index) => Divider(
                       height: defaultPadding / 2,
@@ -177,34 +199,28 @@ class FilterScreen extends StatelessWidget {
                       endIndent: defaultPadding,
                     ),
                   ),
-                FilterType.kt => Container(),
-                FilterType.brand => ListView.separated(
-                    physics: const RangeMaintainingScrollPhysics(),
-                    padding: EdgeInsets.symmetric(vertical: defaultPadding / 2),
-                    itemBuilder: (context, index) => CheckBoxWithTitleTile(
-                      title: con.brandList[index]["title"],
-                      isCheck: con.brandList[index]["isChecked"],
+
+                //? Latest Design Tab UI
+                FilterType.latestDesign => ListView.separated(
+                    itemCount: con.latestDesignList.length,
+                    itemBuilder: (context, index) => Obx(
+                      () => CheckBoxWithTitleTile(
+                        isMultiSelection: false,
+                        onChanged: (_) {
+                          con.selectLatestDesign.value = con.latestDesignList[index];
+                        },
+                        onTap: () {
+                          con.selectLatestDesign.value = con.latestDesignList[index];
+                        },
+                        isCheck: (con.selectLatestDesign.value == con.latestDesignList[index]).obs,
+                        title: con.latestDesignList[index],
+                      ),
                     ),
                     separatorBuilder: (context, index) => Divider(
                       height: defaultPadding / 2,
                       indent: defaultPadding,
                       endIndent: defaultPadding,
                     ),
-                    itemCount: con.brandList.length,
-                  ),
-                FilterType.jewellery => ListView.separated(
-                    physics: const RangeMaintainingScrollPhysics(),
-                    padding: EdgeInsets.symmetric(vertical: defaultPadding / 2),
-                    itemBuilder: (context, index) => CheckBoxWithTitleTile(
-                      title: con.jewelryTypeList[index]["title"],
-                      isCheck: con.jewelryTypeList[index]["isChecked"],
-                    ),
-                    separatorBuilder: (context, index) => Divider(
-                      height: defaultPadding / 2,
-                      indent: defaultPadding,
-                      endIndent: defaultPadding,
-                    ),
-                    itemCount: con.jewelryTypeList.length,
                   ),
               },
             ),

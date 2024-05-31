@@ -14,7 +14,7 @@ class HomeController extends GetxController {
   List<Map<String, dynamic>> brandList = [
     {
       "image": 'https://media.designrush.com/tinymce_images/316674/conversions/Desiree-Qelaj-content.jpg',
-      "brandName": "OroKraft",
+      "brandName": "Emerald",
     },
     {
       "image": 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVErxeqhTxrd4NYxO73norO2MWmwcziMvFWg&s',
@@ -22,11 +22,11 @@ class HomeController extends GetxController {
     },
     {
       "image": 'https://media.designrush.com/tinymce_images/316671/conversions/Juliana-Brasileiro---Design-de-Joias-content.jpg',
-      "brandName": "Platinum",
+      "brandName": "Pear",
     },
     {
       "image": 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlg1hJbN1MJxOP8emzbbcEtDiVsnvgsig2P9oL6xMBzn_gJAL1uPwqq0DatpdfBxGzzqI&usqp=CAU',
-      "brandName": "Rang Tarang",
+      "brandName": "Cushion",
     },
   ];
 }

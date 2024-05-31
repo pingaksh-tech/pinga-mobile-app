@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:pingaksh_mobile/exports.dart';
+import 'package:pingaksh_mobile/view/category/components/category_tile.dart';
 import 'package:pingaksh_mobile/view/product/components/sort_filter_button.dart';
 import 'package:pingaksh_mobile/widgets/checkbox_title_tile.dart';
 import 'package:pingaksh_mobile/widgets/product_tile.dart';
@@ -120,6 +121,22 @@ class ProductScreen extends StatelessWidget {
                     image: AppAssets.filter,
                     onTap: () => Get.toNamed(AppRoutes.filterScreen),
                   ),
+                  SizedBox(
+                    height: 20.h,
+                    child: const VerticalDivider(
+                      thickness: 1.5,
+                    ),
+                  ),
+                  AppIconButton(
+                    icon: SvgPicture.asset(
+                      con.isProductViewChange.isTrue ? AppAssets.appIcon : AppAssets.appListIcon,
+                      color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(.55), // ignore: deprecated_member_use
+                      height: 18.sp,
+                    ),
+                    onPressed: () {
+                      con.isProductViewChange.value = !con.isProductViewChange.value;
+                    },
+                  ),
                 ],
               ),
             ),
@@ -129,7 +146,7 @@ class ProductScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2, vertical: defaultPadding).copyWith(top: 0),
           children: [
             Divider(
-              height: 10.h,
+              height: 2.h,
               thickness: 1.5,
               indent: defaultPadding / 2,
               endIndent: defaultPadding / 2,
@@ -137,17 +154,20 @@ class ProductScreen extends StatelessWidget {
             Wrap(
               children: List.generate(
                 con.productList.length,
-                (index) => ProductTile(
-                  onTap: () => Get.toNamed(
-                    AppRoutes.productDetailsScreen,
-                    arguments: {
-                      // "brandName": con.brandList[index]["brandName"],
-                    },
-                  ),
-                  imageUrl: con.productList[index]["image"],
-                  productName: "GoldRing",
-                  productPrice: con.productList[index]["price"],
-                ),
+                (index) => con.isProductViewChange.isTrue
+                    ? ProductTile(
+                        onTap: () => Get.toNamed(AppRoutes.productDetailsScreen),
+                        imageUrl: con.productList[index]["image"],
+                        productName: "PLKMR7423746",
+                        productPrice: con.productList[index]["price"],
+                      )
+                    : CategoryTile(
+                        categoryName: "PLKMR7423746",
+                        subTitle: UiUtils.amountFormat(con.productList[index]["price"]),
+                        imageUrl: con.productList[index]["image"],
+                        onTap: () => Get.toNamed(AppRoutes.productDetailsScreen),
+                        fontSize: 14.sp,
+                      ).paddingOnly(left: defaultPadding / 2, right: defaultPadding / 2, top: defaultPadding / 1.2),
               ),
             )
           ],
