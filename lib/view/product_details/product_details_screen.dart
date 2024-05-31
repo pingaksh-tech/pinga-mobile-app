@@ -302,12 +302,26 @@ class ProductDetailsScreen extends StatelessWidget {
         children: List.generate(
           2,
           (index) => GestureDetector(
-            onTap: () => Get.toNamed(
-              AppRoutes.productDetailsScreen,
-              arguments: {
-                // "brandName": con.brandList[index]["brandName"],
-              },
-            ),
+            // onDoubleTap: () {
+            //   printOkStatus("---");
+            //   Get.toNamed(
+            //     AppRoutes.productDetailsScreen,
+            //     arguments: {
+            //       // "brandName": con.brandList[index]["brandName"],
+            //     },
+            //   );
+            // },
+            // behavior: HitTestBehavior.opaque,
+            onTap: () {
+              printOkStatus("---");
+              Get.toNamed(
+                AppRoutes.productDetailsScreen,
+                preventDuplicates: false,
+                arguments: {
+                  // "brandName": con.brandList[index]["brandName"],
+                },
+              );
+            },
             child: Container(
               width: Get.width / 2 - defaultPadding * 1.5,
               margin: EdgeInsets.all(defaultPadding / 2),

@@ -82,127 +82,137 @@ class CartScreen extends StatelessWidget {
                                           ],
                                         ),
                                       ),
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding / 1.5),
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context).colorScheme.surface /*  Colors.red.withOpacity(0.45)*/,
-                                          // borderRadius: BorderRadius.circular(defaultRadius),
-                                          // boxShadow: defaultShadow(context),
-                                        ),
-                                        child: Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            con.productsList[index].product?.productImages != null && con.productsList[index].product!.productImages!.isNotEmpty
-                                                ? AppNetworkImage(
-                                                    height: imageWidth,
-                                                    width: imageWidth,
-                                                    fit: BoxFit.cover,
-                                                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                                                    borderRadius: BorderRadius.circular(defaultRadius),
-                                                    imageUrl: /* "https://i.pinimg.com/564x/0c/10/de/0c10defc33ccee0ec274d5cd3c761273.jpg"*/ con.productsList[index].product?.productImages?[0].image ?? "",
-                                                  )
-                                                : SizedBox(
-                                                    width: imageWidth,
-                                                    height: imageWidth,
-                                                  ),
-                                            (defaultPadding / 2).horizontalSpace,
-                                            Expanded(
-                                              child: Obx(
-                                                () => Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Row(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [
-                                                        Flexible(
-                                                          child: Text(
-                                                            (con.productsList[index].product?.title ?? ""),
-                                                            maxLines: 2,
-                                                            style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500, fontSize: 13.sp),
-                                                          ),
-                                                        ),
-                                                      ],
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Get.toNamed(
+                                            AppRoutes.productDetailsScreen,
+                                            arguments: {
+                                              // "brandName": con.brandList[index]["brandName"],
+                                            },
+                                          );
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding / 1.5),
+                                          decoration: BoxDecoration(
+                                            color: Theme.of(context).colorScheme.surface /*  Colors.red.withOpacity(0.45)*/,
+                                            // borderRadius: BorderRadius.circular(defaultRadius),
+                                            // boxShadow: defaultShadow(context),
+                                          ),
+                                          child: Row(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              con.productsList[index].product?.productImages != null && con.productsList[index].product!.productImages!.isNotEmpty
+                                                  ? AppNetworkImage(
+                                                      height: imageWidth,
+                                                      width: imageWidth,
+                                                      fit: BoxFit.cover,
+                                                      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                                                      borderRadius: BorderRadius.circular(defaultRadius),
+                                                      imageUrl: /* "https://i.pinimg.com/564x/0c/10/de/0c10defc33ccee0ec274d5cd3c761273.jpg"*/ con.productsList[index].product?.productImages?[0].image ?? "",
+                                                    )
+                                                  : SizedBox(
+                                                      width: imageWidth,
+                                                      height: imageWidth,
                                                     ),
-                                                    // (defaultPadding / 5).verticalSpace,
-                                                    Text(
-                                                      'Brand: ${con.productsList[index].product?.brandName ?? "Unknown"}',
-                                                      style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w400),
-                                                      maxLines: 1,
-                                                      overflow: TextOverflow.ellipsis,
-                                                    ),
-                                                    (defaultPadding / 4).verticalSpace,
-                                                    Row(
-                                                      children: [
-                                                        Expanded(
-                                                          child: Padding(
-                                                            padding: EdgeInsets.only(right: defaultPadding),
+                                              (defaultPadding / 2).horizontalSpace,
+                                              Expanded(
+                                                child: Obx(
+                                                  () => Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Row(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                          Flexible(
                                                             child: Text(
-                                                              UiUtils.amountFormat(con.productsList[index].product?.price.toString() ?? ""),
+                                                              (con.productsList[index].product?.title ?? ""),
                                                               maxLines: 2,
-                                                              overflow: TextOverflow.ellipsis,
-                                                              style: Theme.of(Get.context!).textTheme.titleMedium?.copyWith(fontSize: 18.sp, fontWeight: FontWeight.w700),
+                                                              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500, fontSize: 13.sp),
                                                             ),
                                                           ),
-                                                        ),
-
-                                                        /// QUANTITY
-                                                        Row(
-                                                          children: [
-                                                            counterWidget(
-                                                              context,
-                                                              icon: con.productsList[index].quantity < 2 ? Icons.delete_outline : Icons.remove,
-                                                              isDisable: /*con.productsList[index].quantity.value.isLowerThan(2) ? true : false*/ false,
-                                                              onTap: () async {
-                                                                if (!con.productsList[index].quantity.value.isLowerThan(2)) {
-                                                                  con.productsList[index].quantity -= 1;
-                                                                  if (con.updateCartDebounce?.isActive ?? false) con.updateCartDebounce?.cancel();
-                                                                  con.updateCartDebounce = Timer(
-                                                                    const Duration(milliseconds: 300),
-                                                                    () async {
-                                                                      await CartRepository.updateQuantityAPI(productId: con.productsList[index].product?.id ?? "", doIncrease: false);
-                                                                    },
-                                                                  );
-                                                                } else {
-                                                                  /// REMOVE PRODUCT FROM CART
-                                                                  con.removeProductFromCart(context, index: index);
-                                                                }
-                                                              },
-                                                            ),
-                                                            Padding(
-                                                              padding: EdgeInsets.symmetric(horizontal: defaultPadding),
-                                                              child: AnimatedFlipCounter(
-                                                                value: con.productsList[index].quantity.value,
-                                                                duration: const Duration(milliseconds: 200),
-                                                                textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 12.sp),
+                                                        ],
+                                                      ),
+                                                      // (defaultPadding / 5).verticalSpace,
+                                                      Text(
+                                                        'Brand: ${con.productsList[index].product?.brandName ?? "Unknown"}',
+                                                        style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w400),
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow.ellipsis,
+                                                      ),
+                                                      (defaultPadding / 4).verticalSpace,
+                                                      Row(
+                                                        children: [
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding: EdgeInsets.only(right: defaultPadding),
+                                                              child: Text(
+                                                                UiUtils.amountFormat(con.productsList[index].product?.price.toString() ?? ""),
+                                                                maxLines: 2,
+                                                                overflow: TextOverflow.ellipsis,
+                                                                style: Theme.of(Get.context!).textTheme.titleMedium?.copyWith(fontSize: 18.sp, fontWeight: FontWeight.w700),
                                                               ),
                                                             ),
-                                                            counterWidget(
-                                                              context,
-                                                              icon: Icons.add,
-                                                              isDisable: con.productsList[index].quantity.value.isGreaterThan(19) ? true : false,
-                                                              onTap: () {
-                                                                if (!con.productsList[index].quantity.value.isGreaterThan(19)) {
-                                                                  con.productsList[index].quantity += 1;
-                                                                  if (con.updateCartDebounce?.isActive ?? false) con.updateCartDebounce?.cancel();
-                                                                  con.updateCartDebounce = Timer(
-                                                                    const Duration(milliseconds: 300),
-                                                                    () async {
-                                                                      await CartRepository.updateQuantityAPI(productId: con.productsList[index].product?.id ?? "", doIncrease: true);
-                                                                    },
-                                                                  );
-                                                                }
-                                                              },
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    // (defaultPadding / 2).verticalSpace,
-                                                  ],
+                                                          ),
+
+                                                          /// QUANTITY
+                                                          Row(
+                                                            children: [
+                                                              counterWidget(
+                                                                context,
+                                                                icon: con.productsList[index].quantity < 2 ? Icons.delete_outline : Icons.remove,
+                                                                isDisable: /*con.productsList[index].quantity.value.isLowerThan(2) ? true : false*/ false,
+                                                                onTap: () async {
+                                                                  if (!con.productsList[index].quantity.value.isLowerThan(2)) {
+                                                                    con.productsList[index].quantity -= 1;
+                                                                    if (con.updateCartDebounce?.isActive ?? false) con.updateCartDebounce?.cancel();
+                                                                    con.updateCartDebounce = Timer(
+                                                                      const Duration(milliseconds: 300),
+                                                                      () async {
+                                                                        await CartRepository.updateQuantityAPI(productId: con.productsList[index].product?.id ?? "", doIncrease: false);
+                                                                      },
+                                                                    );
+                                                                  } else {
+                                                                    /// REMOVE PRODUCT FROM CART
+                                                                    con.removeProductFromCart(context, index: index);
+                                                                  }
+                                                                },
+                                                              ),
+                                                              Padding(
+                                                                padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                                                                child: AnimatedFlipCounter(
+                                                                  value: con.productsList[index].quantity.value,
+                                                                  duration: const Duration(milliseconds: 200),
+                                                                  textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 12.sp),
+                                                                ),
+                                                              ),
+                                                              counterWidget(
+                                                                context,
+                                                                icon: Icons.add,
+                                                                isDisable: con.productsList[index].quantity.value.isGreaterThan(19) ? true : false,
+                                                                onTap: () {
+                                                                  if (!con.productsList[index].quantity.value.isGreaterThan(19)) {
+                                                                    con.productsList[index].quantity += 1;
+                                                                    if (con.updateCartDebounce?.isActive ?? false) con.updateCartDebounce?.cancel();
+                                                                    con.updateCartDebounce = Timer(
+                                                                      const Duration(milliseconds: 300),
+                                                                      () async {
+                                                                        await CartRepository.updateQuantityAPI(productId: con.productsList[index].product?.id ?? "", doIncrease: true);
+                                                                      },
+                                                                    );
+                                                                  }
+                                                                },
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      // (defaultPadding / 2).verticalSpace,
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -284,50 +294,50 @@ class CartScreen extends StatelessWidget {
       ),
 
       /// CART SUMMARY
-      bottomNavigationBar:  IntrinsicHeight(
+      bottomNavigationBar: IntrinsicHeight(
         child: Obx(
-              () => AnimatedSwitcher(
+          () => AnimatedSwitcher(
             duration: const Duration(milliseconds: 350),
             child: con.isLoading.isFalse
                 ? con.productsList.isNotEmpty
-                ? Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor.withOpacity(.1),
-                borderRadius: BorderRadius.vertical(top: Radius.circular(defaultRadius)),
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: defaultPadding),
-                    child: Column(
-                      children: [
-                        (defaultPadding / 1.5).verticalSpace,
-                        paymentSummaryItem(context, title: "Sub Total", price: con.totalPrice.value),
-                        paymentSummaryItem(context, title: "Tax", price: 0.0),
-                        const Divider(height: 1),
-                        (defaultPadding / 1.5).verticalSpace,
-                        paymentSummaryItem(context, title: "Total Amount", price: con.totalPrice.value, highlight: true),
-                      ],
-                    ),
-                  ),
-                  AppButton(
-                    padding: EdgeInsets.all(defaultPadding).copyWith(top: defaultPadding / 3),
-                    onPressed: () async {
-                      await CartRepository.placeOrderAPI();
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: defaultPadding),
-                      child: Text(
-                        "Order Now",
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white, fontWeight: FontWeight.w600, letterSpacing: 1),
-                      ),
-                    ),
-                  ),
-                  // (defaultPadding / 2).verticalSpace
-                ],
-              ),
-            )
-                : const SizedBox()
+                    ? Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor.withOpacity(.1),
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(defaultRadius)),
+                        ),
+                        child: Column(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                              child: Column(
+                                children: [
+                                  (defaultPadding / 1.5).verticalSpace,
+                                  paymentSummaryItem(context, title: "Sub Total", price: con.totalPrice.value),
+                                  paymentSummaryItem(context, title: "Tax", price: 0.0),
+                                  const Divider(height: 1),
+                                  (defaultPadding / 1.5).verticalSpace,
+                                  paymentSummaryItem(context, title: "Total Amount", price: con.totalPrice.value, highlight: true),
+                                ],
+                              ),
+                            ),
+                            AppButton(
+                              padding: EdgeInsets.all(defaultPadding).copyWith(top: defaultPadding / 3),
+                              onPressed: () async {
+                                await CartRepository.placeOrderAPI();
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                                child: Text(
+                                  "Order Now",
+                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white, fontWeight: FontWeight.w600, letterSpacing: 1),
+                                ),
+                              ),
+                            ),
+                            // (defaultPadding / 2).verticalSpace
+                          ],
+                        ),
+                      )
+                    : const SizedBox()
                 : const SizedBox(),
           ),
         ),
