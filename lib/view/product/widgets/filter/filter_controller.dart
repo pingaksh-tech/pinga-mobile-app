@@ -1,17 +1,22 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
-enum FilterType { range, available, gender, brand, kt, delivery, tag, collection, complexity, subComplexity, bestSeller, latestDesign }
+import '../../../../exports.dart';
 
 class FilterController extends GetxController {
   RxDouble minMetalWt = 0.0.obs;
   RxDouble maxMetalWt = 12.0.obs;
   RxDouble minDiamondWt = 0.0.obs;
   RxDouble maxDiamondWt = 50.0.obs;
+
   RxString selectSeller = "".obs;
   RxString selectLatestDesign = "".obs;
 
   Rx<TextEditingController> itemNameCon = TextEditingController().obs;
+
+  RxString selectFilter = "Range".obs;
+  Rx<FilterType> filterType = FilterType.range.obs;
+
   RxList<String> filterTypeList = [
     "Range",
     "Available",
@@ -26,9 +31,6 @@ class FilterController extends GetxController {
     "Best Sellers",
     "Latest Design",
   ].obs;
-
-  RxString selectFilter = "Range".obs;
-  Rx<FilterType> filterType = FilterType.range.obs;
 
   void filterCategoryType({required int index}) {
     switch (index) {
@@ -84,15 +86,18 @@ class FilterController extends GetxController {
     {"title": "Wear It Items Only", "isChecked": false.obs},
     {"title": "Try On Items Only", "isChecked": false.obs},
   ];
+
   final List<Map<String, dynamic>> genderList = [
     {"title": "Male", "isChecked": false.obs},
     {"title": "Female", "isChecked": false.obs},
   ];
+
   final List<Map<String, dynamic>> ktList = [
     {"title": "22KT (30)", "isChecked": false.obs},
     {"title": "18KT (50)", "isChecked": false.obs},
     {"title": "24KT (55)", "isChecked": false.obs},
   ];
+
   final List<Map<String, dynamic>> deliveryList = [
     {"title": "30 Days", "isChecked": false.obs},
     {"title": "56 Hours", "isChecked": false.obs},
@@ -106,6 +111,7 @@ class FilterController extends GetxController {
     {"title": "Shine Forever", "isChecked": false.obs},
     {"title": "Ghoomar", "isChecked": false.obs},
   ];
+
   final List<Map<String, dynamic>> complexityList = [
     {"title": "Band (3)", "isChecked": false.obs},
     {"title": "Broad (4)", "isChecked": false.obs},
@@ -114,6 +120,7 @@ class FilterController extends GetxController {
     {"title": "Regular (6)", "isChecked": false.obs},
     {"title": "Split Shank (5)", "isChecked": false.obs},
   ];
+
   final List<Map<String, dynamic>> collectionList = [
     {"title": "Fashion (3)", "isChecked": false.obs},
     {"title": "Mens (2)", "isChecked": false.obs},
@@ -123,6 +130,7 @@ class FilterController extends GetxController {
     {"title": "Color Stone (5)", "isChecked": false.obs},
     {"title": "Crafting The Sparkle", "isChecked": false.obs},
   ];
+
   final List<Map<String, dynamic>> subComplexityList = [
     {"title": "Beads (3)", "isChecked": false.obs},
     {"title": "Cluster (4)", "isChecked": false.obs},
@@ -132,20 +140,25 @@ class FilterController extends GetxController {
     {"title": "Floral (1)", "isChecked": false.obs},
     {"title": "Cut Out (2)", "isChecked": false.obs},
   ];
+
   final RxList<String> bestSellerList = [
     "Sold in your Store",
     "Sold in your City",
     "Sold in your State",
     "Sold in all India",
   ].obs;
+
   final RxList<String> latestDesignList = [
     "Last 30 days",
     "Last 90 days",
     "Last 180 days",
   ].obs;
+
+//? Clear All Filter
   void clearAllFilters() {
     minMetalWt.value = 0.0;
     maxMetalWt.value = 12.0;
+
     for (var available in stockAvailableList) {
       available["isChecked"].value = false;
     }
@@ -173,14 +186,28 @@ class FilterController extends GetxController {
     for (var subComplexity in subComplexityList) {
       subComplexity["isChecked"].value = false;
     }
+
     selectSeller.value = "";
     selectLatestDesign.value = "";
   }
 
+  int rangeCount() {
+    int range = 0;
+    if ((minMetalWt.value > 0.0 || maxMetalWt.value < 12.0) && (minDiamondWt.value > 0.0 || maxDiamondWt.value < 50.0)) {
+      range = 2;
+    } else if (minMetalWt.value > 0.0 || maxMetalWt.value < 12.0) {
+      range = 1;
+    } else if (minDiamondWt.value > 0.0 || maxDiamondWt.value < 50.0) {
+      range = 1;
+    }
+    return range;
+  }
+
+//? Count Active filter
   int getActiveFilterCount(String filterType) {
     switch (filterType) {
       case "Range":
-        return ((minMetalWt.value > 0.0 || maxMetalWt.value < 12.0 || minDiamondWt.value > 0.0 || maxDiamondWt.value > 50.0 ? 1 : 0));
+        return rangeCount();
       case "Gender":
         return genderList.where((gender) => gender["isChecked"].value).length;
       case "Brand":
@@ -199,6 +226,10 @@ class FilterController extends GetxController {
         return complexityList.where((complexity) => complexity["isChecked"].value).length;
       case "Sub Complexity":
         return subComplexityList.where((subComplexity) => subComplexity["isChecked"].value).length;
+      case "Best Sellers":
+        return selectSeller.value.isEmpty ? 0 : 1;
+      case "Latest Design":
+        return selectLatestDesign.value.isEmpty ? 0 : 1;
       default:
         return 0;
     }

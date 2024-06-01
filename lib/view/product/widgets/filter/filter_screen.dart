@@ -94,22 +94,21 @@ class FilterScreen extends StatelessWidget {
                         Text(
                           "Item name",
                           style: Theme.of(context).textTheme.bodyLarge,
-                        ).paddingOnly(left: 0, bottom: defaultPadding / 5),
+                        ).paddingOnly(bottom: defaultPadding / 5),
                         AppTextField(
                           hintText: "Enter item name",
                           controller: con.itemNameCon.value,
                           contentPadding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding / 2),
-                          padding: const EdgeInsets.symmetric(horizontal: 0),
                         ),
                         Divider(height: defaultPadding * 1.2),
                         Text(
                           "Metal WT",
                           style: Theme.of(context).textTheme.bodyLarge,
-                        ).paddingOnly(left: 0, bottom: defaultPadding / 5),
+                        ).paddingOnly(bottom: defaultPadding / 5),
                         Text(
                           "${con.minMetalWt.value.toStringAsFixed(2)} - ${con.maxMetalWt.value.toStringAsFixed(2)}",
                           style: AppTextStyle.titleStyle(context).copyWith(fontSize: 13.sp),
-                        ).paddingOnly(left: 0),
+                        ),
                         Theme(
                           data: ThemeData(
                             sliderTheme: const SliderThemeData(trackHeight: 2),

@@ -40,9 +40,7 @@ class CategoryTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(defaultRadius),
               imageUrl: imageUrl,
             ),
-            SizedBox(
-              width: defaultPadding,
-            ),
+            SizedBox(width: defaultPadding),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,9 +56,8 @@ class CategoryTile extends StatelessWidget {
                 ],
               ),
             ),
-            Icon(
+            const Icon(
               Icons.arrow_forward_ios_rounded,
-              color: Theme.of(context).primaryColor,
               size: 20,
             )
           ],

@@ -41,9 +41,4 @@ class ProductDetailsController extends GetxController {
     Colors.yellow, // Gold
     Colors.orange, // Silver
   ];
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
 }

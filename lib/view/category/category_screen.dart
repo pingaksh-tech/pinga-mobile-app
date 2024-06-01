@@ -100,9 +100,7 @@ class CategoryScreen extends StatelessWidget {
                     labelPadding: EdgeInsets.all(defaultPadding / 1.5),
                     indicatorSize: TabBarIndicatorSize.tab,
                     tabs: [
-                      const Text(
-                        "Category",
-                      ),
+                      const Text("Category"),
                       Text(
                         "Latest Product (${con.latestProductList.length})",
                       ),
