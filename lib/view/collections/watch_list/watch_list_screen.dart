@@ -61,23 +61,23 @@ class WatchListScreen extends StatelessWidget {
                       onTap: () {
                         Get.toNamed(
                           AppRoutes.productScreen,
-                          arguments: {"categoryName": con.watchList[index]['name']},
+                          arguments: {"categoryName": con.watchList[index].name},
                         );
                       },
                       child: WatchlistTile(
-                        name: con.watchList[index]['name'],
-                        noOfItem: con.watchList[index]['no_of_item'],
-                        createdBy: con.watchList[index]['created_by'],
+                        name: con.watchList[index].name,
+                        noOfItem: con.watchList[index].noOfItem,
+                        createdBy: con.watchList[index].createdBy,
                         downloadOnPressed: () {},
                         shareOnPressed: () async {
                           /// share wishlist
                           await Share.share(
-                            "Name : ${con.watchList[index]['name']}\nNo of Items : ${con.watchList[index]['no_of_item']}\nCreated By : ${con.watchList[index]['created_by']}",
+                            "Name : ${con.watchList[index].name}\nNo of Items : ${con.watchList[index].noOfItem}\nCreated By : ${con.watchList[index].createdBy}",
                           );
                         },
                         deleteOnPressed: () {
                           int selectIndex = con.watchList.indexWhere(
-                            (e) => e['id'] == con.watchList[index]['id'],
+                            (e) => e.id == con.watchList[index].id,
                           );
                           if (selectIndex != -1) {
                             con.watchList.removeAt(selectIndex);

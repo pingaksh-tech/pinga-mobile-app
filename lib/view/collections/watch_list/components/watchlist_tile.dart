@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:pingaksh_mobile/widgets/custom_check_box_tile.dart';
 
 import '../../../../exports.dart';
+import '../../../../widgets/custom_check_box_tile.dart';
 
 class WatchlistTile extends StatelessWidget {
   final String? name;
@@ -15,6 +15,7 @@ class WatchlistTile extends StatelessWidget {
   final VoidCallback? deleteOnPressed;
   final bool? isShowButtons;
   final RxBool? selected;
+  final void Function(bool?)? onChanged;
 
   const WatchlistTile({
     super.key,
@@ -26,6 +27,7 @@ class WatchlistTile extends StatelessWidget {
     this.deleteOnPressed,
     this.isShowButtons = true,
     this.selected,
+    this.onChanged,
   });
 
   @override
@@ -93,6 +95,7 @@ class WatchlistTile extends StatelessWidget {
                 scale: 1,
                 isSelected: selected ?? RxBool(false),
                 titleStyle: null,
+                onChanged: onChanged,
               ),
             ),
         ],

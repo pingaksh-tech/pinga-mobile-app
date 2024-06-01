@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:pingaksh_mobile/data/model/watchlist/watchlist_model.dart';
+import 'package:pingaksh_mobile/data/repositories/watchlist/watchlist_repository.dart';
 
 class AddWatchlistController extends GetxController {
   Rx<TextEditingController> nameCon = TextEditingController().obs;
@@ -9,44 +11,8 @@ class AddWatchlistController extends GetxController {
   RxBool select = false.obs;
   RxBool disableButton = true.obs;
 
-  RxList watchList = [
-    {
-      'id': '1',
-      'name': "Numun",
-      'no_of_item': 33,
-      'created_by': "Personal",
-    },
-    {
-      'id': '2',
-      'name': "Binks",
-      'no_of_item': 42,
-      'created_by': "Guest login",
-    },
-    {
-      'id': '3',
-      'name': "Joker",
-      'no_of_item': 21,
-      'created_by': "Guest login",
-    },
-    {
-      'id': '4',
-      'name': "Milli",
-      'no_of_item': 33,
-      'created_by': "Personal",
-    },
-    {
-      'id': '5',
-      'name': "Pinkness",
-      'no_of_item': 42,
-      'created_by': "Guest login",
-    },
-    {
-      'id': '6',
-      'name': "Enlighted",
-      'no_of_item': 21,
-      'created_by': "Guest login",
-    },
-  ].obs;
+  RxList<WatchlistModel> watchList = <WatchlistModel>[].obs;
+  RxList<WatchlistModel> selectedList = <WatchlistModel>[].obs;
 
   bool validate() {
     if (nameCon.value.text.trim().isEmpty) {
@@ -60,6 +26,16 @@ class AddWatchlistController extends GetxController {
   }
 
   void checkDisableButton() {
-    disableButton.value = !nameValidation.isTrue;
+    if (selectedList.isNotEmpty || nameCon.value.text.isNotEmpty) {
+      disableButton.value = false;
+    } else {
+      disableButton.value = true;
+    }
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    WatchlistRepository.watchlistAPI();
   }
 }

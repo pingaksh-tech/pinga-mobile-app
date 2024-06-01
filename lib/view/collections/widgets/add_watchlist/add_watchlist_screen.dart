@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
+import 'package:pingaksh_mobile/data/model/watchlist/watchlist_model.dart';
 import 'package:pingaksh_mobile/res/app_bar.dart';
 import 'package:pingaksh_mobile/view/collections/widgets/add_watchlist/add_watchlist_controller.dart';
 import 'package:pingaksh_mobile/view/product/product_controller.dart';
@@ -36,20 +37,24 @@ class AddWatchlistScreen extends StatelessWidget {
                   Get.delete<ProductController>();
                   Get.toNamed(
                     AppRoutes.productScreen,
-                    arguments: {"categoryName": con.watchList[index]['name']},
+                    arguments: {"categoryName": con.watchList[index].name},
                   );
                 },
                 child: WatchlistTile(
-                    name: con.watchList[index]['name'],
-                    noOfItem: con.watchList[index]['no_of_item'],
-                    createdBy: con.watchList[index]['created_by'],
-                    isShowButtons: false,
-                    selected: (con.watchList.indexWhere(
-                              (e) => 0 == con.watchList[0]['id'],
-                            ) ==
-                            0)
-                        ? con.select
-                        : RxBool(false)),
+                  name: con.watchList[index].name,
+                  noOfItem: con.watchList[index].noOfItem,
+                  createdBy: con.watchList[index].createdBy,
+                  isShowButtons: false,
+                  selected: RxBool(false),
+                  onChanged: (val) {
+                    if (!con.selectedList.contains(con.watchList[index])) {
+                      con.selectedList.add(con.watchList[index]);
+                    } else {
+                      con.selectedList.remove(con.watchList[index]);
+                    }
+                    con.checkDisableButton();
+                  },
+                ),
               ),
             )
           ],
@@ -73,7 +78,7 @@ class AddWatchlistScreen extends StatelessWidget {
                 borderSide: BorderSide.none,
               ),
               controller: con.nameCon.value,
-              validation: con.nameValidation.value,
+              validation: con.select.isFalse ? con.nameValidation.value : null,
               errorMessage: con.nameError.value,
               onChanged: (value) {
                 con.checkDisableButton();
@@ -85,14 +90,10 @@ class AddWatchlistScreen extends StatelessWidget {
               padding: EdgeInsets.all(defaultPadding).copyWith(bottom: MediaQuery.of(context).padding.bottom + defaultPadding),
               onPressed: () {
                 FocusScope.of(context).unfocus();
+
                 if (con.validate()) {
                   con.watchList.add(
-                    {
-                      'id': con.watchList.length.toString(),
-                      'name': con.nameCon.value.text.trim(),
-                      'no_of_item': 21,
-                      'created_by': 'Guest',
-                    },
+                    WatchlistModel(id: con.watchList.length.toString(), name: con.nameCon.value.text.trim(), noOfItem: 45, createdBy: "Guest"),
                   );
                   con.nameCon.value.clear();
                 }
