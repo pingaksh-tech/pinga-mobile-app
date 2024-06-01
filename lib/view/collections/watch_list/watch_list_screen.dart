@@ -68,7 +68,29 @@ class WatchListScreen extends StatelessWidget {
                         name: con.watchList[index].name,
                         noOfItem: con.watchList[index].noOfItem,
                         createdBy: con.watchList[index].createdBy,
-                        downloadOnPressed: () {},
+                        downloadOnPressed: () async {
+                          // Convert into CSV
+                          /*     con.rows.add(con.row);
+                          List<List<dynamic>> rowsAsListOfValues = const CsvToListConverter().convert(con.rows.toString());
+
+                          String csv = const ListToCsvConverter().convert(rowsAsListOfValues);
+                          printYellow(csv);
+                          String dir = (await getTemporaryDirectory()).path ?? '';
+                          String filePath = "$dir/list.csv";
+
+                          File file = File(filePath);
+                          await file.writeAsString(csv);
+
+                          printOkStatus(filePath);
+
+                          final result = await Share.shareXFiles([XFile(filePath)], text: '');
+                          if (result.status == ShareResultStatus.success) {
+                            printOkStatus('Thank you for sharing!');
+                          }*/
+                        },
+                        cartOnPressed: () {
+                          UiUtils.toast("Added Successfully");
+                        },
                         shareOnPressed: () async {
                           /// share wishlist
                           await Share.share(

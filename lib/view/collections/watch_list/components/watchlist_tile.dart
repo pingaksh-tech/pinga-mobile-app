@@ -13,6 +13,7 @@ class WatchlistTile extends StatelessWidget {
   final VoidCallback? downloadOnPressed;
   final VoidCallback? shareOnPressed;
   final VoidCallback? deleteOnPressed;
+  final VoidCallback? cartOnPressed;
   final bool? isShowButtons;
   final RxBool? selected;
   final void Function(bool?)? onChanged;
@@ -28,6 +29,7 @@ class WatchlistTile extends StatelessWidget {
     this.isShowButtons = true,
     this.selected,
     this.onChanged,
+    this.cartOnPressed,
   });
 
   @override
@@ -46,43 +48,55 @@ class WatchlistTile extends StatelessWidget {
             padding: EdgeInsets.only(top: defaultPadding / 2.8),
             child: Column(
               children: [
-                titleSubtitleTile(context, title: "Name${'\t' * 15}: ", subTitle: name ?? ''),
-                titleSubtitleTile(context, title: "No. of items${'\t' * 4}: ", subTitle: noOfItem.toString()),
-                titleSubtitleTile(context, title: "Created by${'\t' * 7}: ", subTitle: createdBy ?? ''),
+                titleSubtitleTile(context, title: "Name${'\t' * 15}:  ", subTitle: name ?? ''),
+                titleSubtitleTile(context, title: "No. of items${'\t' * 4}:  ", subTitle: noOfItem.toString()),
+                titleSubtitleTile(context, title: "Created by${'\t' * 7}:  ", subTitle: createdBy ?? ''),
                 if (isShowButtons ?? true) ...[
-                  8.verticalSpace,
+                  const Divider(),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      /// Download Button
-                      Expanded(
-                        child: featureButton(
-                          context,
-                          title: "Download",
-                          iconHeight: 12.h,
-                          icon: AppAssets.downloadIcon,
-                          onPressed: downloadOnPressed,
+                      /// DOWNLOAD
+                      IconButton(
+                        icon: SvgPicture.asset(
+                          AppAssets.downloadIcon,
+                          height: 14.h,
+                          colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
                         ),
+                        onPressed: downloadOnPressed,
                       ),
 
-                      /// Share Button
-                      Expanded(
-                        child: featureButton(
-                          context,
-                          title: "Share",
-                          iconHeight: 12.h,
-                          icon: AppAssets.shareIcon,
-                          onPressed: shareOnPressed,
+                      /// SHARE
+                      IconButton(
+                        icon: SvgPicture.asset(
+                          AppAssets.shareIcon,
+                          height: 14.h,
+                          colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
                         ),
+                        onPressed: shareOnPressed,
                       ),
 
-                      /// Delete Button
-                      featureButton(
-                        context,
-                        icon: AppAssets.trash,
+                      /// CART
+                      IconButton(
+                        icon: SvgPicture.asset(
+                          AppAssets.cart,
+                          height: 14.h,
+                          colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                        ),
+                        onPressed: cartOnPressed,
+                      ),
+
+                      /// DELETE
+                      IconButton(
+                        icon: SvgPicture.asset(
+                          AppAssets.trash,
+                          height: 14.h,
+                          colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                        ),
                         onPressed: deleteOnPressed,
-                      ),
+                      )
                     ],
-                  )
+                  ),
                 ]
               ],
             ),
@@ -108,7 +122,7 @@ class WatchlistTile extends StatelessWidget {
       children: [
         Text(
           title,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 11.sp, color: AppColors.font.withOpacity(.5)),
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.font.withOpacity(.5)),
         ),
         Text(
           subTitle,
@@ -118,7 +132,7 @@ class WatchlistTile extends StatelessWidget {
     );
   }
 
-  Widget featureButton(
+/*  Widget featureButton(
     BuildContext context, {
     String? title,
     String? icon,
@@ -138,14 +152,14 @@ class WatchlistTile extends StatelessWidget {
               children: [
                 SvgPicture.asset(
                   icon ?? '',
-                  height: iconHeight ?? 14.h,
+                  height: iconHeight ?? 12.h,
                   colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
                 ),
                 if (title != null && title.isNotEmpty) 4.horizontalSpace,
                 Text(
                   title ?? '',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontSize: 12.sp,
+                        fontSize: 11.5.sp,
                         color: AppColors.primary,
                         fontWeight: FontWeight.w500,
                       ),
@@ -156,5 +170,5 @@ class WatchlistTile extends StatelessWidget {
         ),
       ),
     );
-  }
+  }*/
 }

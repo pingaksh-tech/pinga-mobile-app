@@ -10,6 +10,15 @@ class WatchListController extends GetxController {
 
   RxList<WatchlistModel> watchList = <WatchlistModel>[].obs;
 
+  RxList<List<dynamic>> rows = <List<dynamic>>[].obs;
+  RxList<dynamic> row = [].obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    row.addAll(["Id", "Name", "No of items", "Created by"]);
+  }
+
   @override
   void onReady() {
     super.onReady();

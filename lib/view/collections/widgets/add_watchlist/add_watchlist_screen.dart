@@ -45,12 +45,14 @@ class AddWatchlistScreen extends StatelessWidget {
                   noOfItem: con.watchList[index].noOfItem,
                   createdBy: con.watchList[index].createdBy,
                   isShowButtons: false,
-                  selected: RxBool(false),
+                  selected: RxBool(con.select.value == con.watchList[index].id),
                   onChanged: (val) {
                     if (!con.selectedList.contains(con.watchList[index])) {
+                      con.select.value = con.watchList[index].id ?? '';
                       con.selectedList.add(con.watchList[index]);
                     } else {
                       con.selectedList.remove(con.watchList[index]);
+                      con.select.value = '';
                     }
                     con.checkDisableButton();
                   },
@@ -78,7 +80,7 @@ class AddWatchlistScreen extends StatelessWidget {
                 borderSide: BorderSide.none,
               ),
               controller: con.nameCon.value,
-              validation: con.select.isFalse ? con.nameValidation.value : null,
+              validation: con.nameValidation.value,
               errorMessage: con.nameError.value,
               onChanged: (value) {
                 con.checkDisableButton();
@@ -90,13 +92,12 @@ class AddWatchlistScreen extends StatelessWidget {
               padding: EdgeInsets.all(defaultPadding).copyWith(bottom: MediaQuery.of(context).padding.bottom + defaultPadding),
               onPressed: () {
                 FocusScope.of(context).unfocus();
-
-                if (con.validate()) {
+                if (con.nameCon.value.text.trim().isNotEmpty) {
                   con.watchList.add(
                     WatchlistModel(id: con.watchList.length.toString(), name: con.nameCon.value.text.trim(), noOfItem: 45, createdBy: "Guest"),
                   );
-                  con.nameCon.value.clear();
                 }
+                con.nameCon.value.clear();
               },
             ),
           ],

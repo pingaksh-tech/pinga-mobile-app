@@ -8,22 +8,12 @@ class AddWatchlistController extends GetxController {
   RxBool nameValidation = true.obs;
   RxString nameError = ''.obs;
 
-  RxBool select = false.obs;
+  // RxBool select = false.obs;
+  RxString select = ''.obs;
   RxBool disableButton = true.obs;
 
   RxList<WatchlistModel> watchList = <WatchlistModel>[].obs;
   RxList<WatchlistModel> selectedList = <WatchlistModel>[].obs;
-
-  bool validate() {
-    if (nameCon.value.text.trim().isEmpty) {
-      nameValidation.value = false;
-      nameError.value = 'Enter watchlist name';
-    } else {
-      nameValidation.value = true;
-    }
-
-    return nameValidation.isTrue;
-  }
 
   void checkDisableButton() {
     if (selectedList.isNotEmpty || nameCon.value.text.isNotEmpty) {

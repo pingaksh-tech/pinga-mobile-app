@@ -37,7 +37,7 @@ class BottomBarScreen extends StatelessWidget {
             drawer: const AppDrawer(),
             appBar: MyAppBar(
               showBackIcon: false,
-              title: con.currentBottomIndex.value == 0 ? 'Home' : 'WishList',
+              title: con.bottomBarDataList[con.currentBottomIndex.value].screenName,
               leading: Builder(
                 builder: (context) => IconButton(
                   icon: SvgPicture.asset(AppAssets.menuIcon),
