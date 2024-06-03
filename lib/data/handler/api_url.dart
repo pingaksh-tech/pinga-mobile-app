@@ -20,10 +20,13 @@ class ApiUrls {
   /// ORDERS
   static String orderProductUrl = "order/list";
 
-  // static String homeProductUrl = "product/list";
-  // static String addLocationUrl = "user/lat-long";
-  // static String profileUrl = "user/profile";
-  // static String placeOrderUrl = "order/create";
-  // static String singleProduct = "product/get/";
-  // static String latLng = "user/update-lat-long";
+// static String homeProductUrl = "product/list";
+// static String addLocationUrl = "user/lat-long";
+// static String profileUrl = "user/profile";
+// static String placeOrderUrl = "order/create";
+// static String singleProduct = "product/get/";
+// static String latLng = "user/update-lat-long";
+
+  /// WISHLIST
+  static String wishlistGet = "wishlist/get";
 }

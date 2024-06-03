@@ -1,0 +1,81 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:pingaksh_mobile/exports.dart';
+import 'package:pingaksh_mobile/packages/cached_network_image/cached_network_image.dart';
+
+class AppDrawer extends StatelessWidget {
+  const AppDrawer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        physics: const RangeMaintainingScrollPhysics(),
+        children: [
+          /// Drawer Header
+          Stack(
+            children: [
+              const DrawerHeader(
+                padding: EdgeInsets.zero,
+                child: AppNetworkImage(
+                  imageUrl: 'https://media.designrush.com/tinymce_images/316674/conversions/Desiree-Qelaj-content.jpg',
+                ),
+              ),
+              AppNetworkImage(
+                height: 60.h,
+                imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVErxeqhTxrd4NYxO73norO2MWmwcziMvFWg&s',
+                padding: EdgeInsets.only(top: defaultPadding * 8.5),
+                shape: BoxShape.circle,
+              ),
+              Positioned(
+                top: defaultPadding * 9,
+                right: defaultPadding,
+                child: Text(
+                  "Guest",
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(),
+                ),
+              )
+            ],
+          ),
+          10.verticalSpace,
+          const Divider(height: 1),
+
+          ListTile(
+            leading: SvgPicture.asset(
+              AppAssets.overviewIcon,
+              height: 16.h,
+              colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+            ),
+            title: Text(
+              "Watchlist",
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            onTap: () {
+              Get.back();
+              Get.toNamed(AppRoutes.watchListScreen);
+            },
+          ),
+          const Divider(height: 1),
+          ListTile(
+            leading: SvgPicture.asset(
+              AppAssets.like,
+              height: 16.h,
+              colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+            ),
+            title: Text(
+              "Wishlist",
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            onTap: () {
+              // Get.back();
+            },
+          ),
+          const Divider(height: 1),
+        ],
+      ),
+    );
+  }
+}

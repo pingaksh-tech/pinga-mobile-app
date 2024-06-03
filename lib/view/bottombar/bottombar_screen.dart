@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:pingaksh_mobile/res/app_bar.dart';
+import 'package:pingaksh_mobile/view/bottombar/components/app_drawer.dart';
 
 import '../../exports.dart';
 import '../../packages/app_animated_cliprect.dart';
@@ -32,6 +34,19 @@ class BottomBarScreen extends StatelessWidget {
         () => AnnotatedRegion<SystemUiOverlayStyle>(
           value: UiUtils.systemUiOverlayStyle(systemNavigationBarColor: Theme.of(context).colorScheme.surface),
           child: Scaffold(
+            drawer: const AppDrawer(),
+            appBar: MyAppBar(
+              showBackIcon: false,
+              title: con.bottomBarDataList[con.currentBottomIndex.value].screenName,
+              leading: Builder(
+                builder: (context) => IconButton(
+                  icon: SvgPicture.asset(AppAssets.menuIcon),
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                ),
+              ),
+            ),
             body: con.isLoading.value
                 ? Padding(
                     padding: const EdgeInsets.all(16),
