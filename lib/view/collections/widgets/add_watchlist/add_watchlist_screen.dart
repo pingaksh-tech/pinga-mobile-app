@@ -45,14 +45,12 @@ class AddWatchlistScreen extends StatelessWidget {
                   noOfItem: con.watchList[index].noOfItem,
                   createdBy: con.watchList[index].createdBy,
                   isShowButtons: false,
-                  selected: RxBool(con.select.value == con.watchList[index].id),
+                  selected: RxBool(con.selectedList.contains(con.watchList[index])),
                   onChanged: (val) {
                     if (!con.selectedList.contains(con.watchList[index])) {
-                      con.select.value = con.watchList[index].id ?? '';
                       con.selectedList.add(con.watchList[index]);
                     } else {
                       con.selectedList.remove(con.watchList[index]);
-                      con.select.value = '';
                     }
                     con.checkDisableButton();
                   },

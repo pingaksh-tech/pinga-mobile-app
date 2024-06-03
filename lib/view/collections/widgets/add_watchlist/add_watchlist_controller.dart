@@ -8,8 +8,6 @@ class AddWatchlistController extends GetxController {
   RxBool nameValidation = true.obs;
   RxString nameError = ''.obs;
 
-  // RxBool select = false.obs;
-  RxString select = ''.obs;
   RxBool disableButton = true.obs;
 
   RxList<WatchlistModel> watchList = <WatchlistModel>[].obs;

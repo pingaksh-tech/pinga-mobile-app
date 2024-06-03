@@ -131,44 +131,4 @@ class WatchlistTile extends StatelessWidget {
       ],
     );
   }
-
-/*  Widget featureButton(
-    BuildContext context, {
-    String? title,
-    String? icon,
-    double? iconHeight,
-    VoidCallback? onPressed,
-  }) {
-    return Card(
-      color: Theme.of(context).scaffoldBackgroundColor,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(defaultRadius),
-        onTap: onPressed,
-        child: Ink(
-          child: Padding(
-            padding: EdgeInsets.all(defaultPadding / 1.5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SvgPicture.asset(
-                  icon ?? '',
-                  height: iconHeight ?? 12.h,
-                  colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
-                ),
-                if (title != null && title.isNotEmpty) 4.horizontalSpace,
-                Text(
-                  title ?? '',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontSize: 11.5.sp,
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.w500,
-                      ),
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }*/
 }
