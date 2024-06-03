@@ -95,3 +95,6 @@ enum DateRangeType { custom, today, yesterday, thisWeek, thisMonth, thisYear, la
 
 /// Order Status
 enum OrderStatus { all, pending, accepted, rejected, completed }
+
+///* FILTER TYPES
+enum FilterType { range, available, gender, brand, kt, delivery, tag, collection, complexity, subComplexity, bestSeller, latestDesign }

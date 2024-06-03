@@ -5,7 +5,6 @@ class CategoryController extends GetxController {
   Rx<TextEditingController> searchCon = TextEditingController().obs;
   RxString brandTitle = "".obs;
   RxBool showCloseButton = false.obs;
-
   List<Map<String, dynamic>> categoryList = [
     {
       "catName": "Ring",
@@ -42,6 +41,11 @@ class CategoryController extends GetxController {
       "subTitle": "Available 3598",
       "image": "https://media.istockphoto.com/id/1651942696/photo/diamond-ring-isolated-on-white-background.webp?b=1&s=170667a&w=0&k=20&c=sOaX2vYuPtkuJce37Umflp_Vwn-F4cd7ryx0ltEexsE=",
     },
+  ];
+  List latestProductList = [
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ06xpVjn4EZ1x-_Ezxvca-NrIwosqqsxFEXA&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwTzWNTIXdGSzODVn7fhI1YMTcwRCHk1sbGQ&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJUifOy7j778xQdDP42I04C7Hu0LgEaHs69Q&s",
   ];
   @override
   void onInit() {

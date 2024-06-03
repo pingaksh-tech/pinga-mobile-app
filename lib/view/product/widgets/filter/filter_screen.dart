@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pingaksh_mobile/res/app_bar.dart';
 import 'package:pingaksh_mobile/view/product/widgets/filter/filter_controller.dart';
+import 'package:pingaksh_mobile/widgets/filter_listview_widget.dart';
 
 import '../../../../exports.dart';
 import '../../../../widgets/checkbox_title_tile.dart';
@@ -26,6 +27,7 @@ class FilterScreen extends StatelessWidget {
             Expanded(
               flex: 1,
               child: ListView.separated(
+                physics: const RangeMaintainingScrollPhysics(),
                 itemCount: con.filterTypeList.length,
                 separatorBuilder: (context, index) => Divider(
                   height: 0,
@@ -35,7 +37,7 @@ class FilterScreen extends StatelessWidget {
                   return Obx(
                     () {
                       bool isSelected = con.selectFilter.value == con.filterTypeList[index];
-                      bool isActive = con.isFilterActive(con.filterTypeList[index]);
+                      int activeCount = con.getActiveFilterCount(con.filterTypeList[index]);
                       return GestureDetector(
                         onTap: () {
                           con.filterCategoryType(index: index);
@@ -54,13 +56,21 @@ class FilterScreen extends StatelessWidget {
                                   style: AppTextStyle.titleStyle(context).copyWith(fontSize: 14.sp, fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400),
                                 ),
                               ),
-                              if (isActive)
+                              if (activeCount != 0)
                                 Container(
-                                  width: 8.w,
-                                  height: 8.h,
+                                  height: 15.h,
+                                  width: 15.h,
+                                  alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                     color: Theme.of(context).primaryColor,
                                     shape: BoxShape.circle,
+                                  ),
+                                  child: Text(
+                                    activeCount.toString(),
+                                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                          color: Theme.of(context).colorScheme.surface,
+                                          fontSize: 10.sp,
+                                        ),
                                   ),
                                 ),
                             ],
@@ -77,37 +87,110 @@ class FilterScreen extends StatelessWidget {
               flex: 2,
               child: switch (con.filterType.value) {
                 FilterType.range => Padding(
-                    padding: EdgeInsets.only(top: defaultPadding),
+                    padding: EdgeInsets.only(top: defaultPadding, left: defaultPadding, right: defaultPadding),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Select Price Range",
-                          style: AppTextStyle.titleStyle(context).copyWith(fontSize: 14.sp, fontWeight: FontWeight.w400),
-                        ).paddingOnly(left: defaultPadding, bottom: defaultPadding),
+                          "Item name",
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ).paddingOnly(bottom: defaultPadding / 5),
+                        AppTextField(
+                          hintText: "Enter item name",
+                          controller: con.itemNameCon.value,
+                          contentPadding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding / 2),
+                        ),
+                        Divider(height: defaultPadding * 1.2),
                         Text(
-                          "${UiUtils.amountFormat(con.minPrice.value.toString(), decimalDigits: 0)} - ${UiUtils.amountFormat(con.maxPrice.value.toString(), decimalDigits: 0)}",
-                          style: AppTextStyle.titleStyle(context).copyWith(fontSize: 14.sp),
-                        ).paddingOnly(left: defaultPadding),
-                        RangeSlider(
-                          values: RangeValues(con.minPrice.value, con.maxPrice.value),
-                          max: 10000,
-                          min: 5000,
-                          onChanged: (value) {
-                            con.minPrice.value = value.start;
-                            con.maxPrice.value = value.end;
-                          },
+                          "Metal WT",
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ).paddingOnly(bottom: defaultPadding / 5),
+                        Text(
+                          "${con.minMetalWt.value.toStringAsFixed(2)} - ${con.maxMetalWt.value.toStringAsFixed(2)}",
+                          style: AppTextStyle.titleStyle(context).copyWith(fontSize: 13.sp),
+                        ),
+                        Theme(
+                          data: ThemeData(
+                            sliderTheme: const SliderThemeData(trackHeight: 2),
+                          ),
+                          child: RangeSlider(
+                            values: RangeValues(con.minMetalWt.value, con.maxMetalWt.value),
+                            activeColor: Theme.of(context).primaryColor,
+                            max: 12,
+                            min: 0,
+                            onChanged: (value) {
+                              con.minMetalWt.value = value.start;
+                              con.maxMetalWt.value = value.end;
+                            },
+                          ),
+                        ),
+                        const Divider(height: 0),
+                        Text(
+                          "Diamond WT",
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ).paddingOnly(bottom: defaultPadding / 5, top: defaultPadding / 2),
+                        Text(
+                          "${con.minDiamondWt.value.toStringAsFixed(2)} - ${con.maxDiamondWt.value.toStringAsFixed(2)}",
+                          style: AppTextStyle.titleStyle(context).copyWith(fontSize: 13.sp),
+                        ),
+                        Theme(
+                          data: ThemeData(
+                            sliderTheme: const SliderThemeData(
+                              trackHeight: 2,
+                            ),
+                          ),
+                          child: RangeSlider(
+                            values: RangeValues(con.minDiamondWt.value, con.maxDiamondWt.value),
+                            activeColor: Theme.of(context).primaryColor,
+                            max: 50,
+                            min: 0,
+                            onChanged: (value) {
+                              con.minDiamondWt.value = value.start;
+                              con.maxDiamondWt.value = value.end;
+                            },
+                          ),
                         ),
                       ],
                     ),
                   ),
-                FilterType.gender => ListView.separated(
-                    physics: const RangeMaintainingScrollPhysics(),
-                    padding: EdgeInsets.symmetric(vertical: defaultPadding / 2),
-                    itemCount: con.genderList.length,
-                    itemBuilder: (context, index) => CheckBoxWithTitleTile(
-                      title: con.genderList[index]["title"],
-                      isCheck: con.genderList[index]["isChecked"],
+
+                //? Available Tab UI
+                FilterType.available => FilterListViewWidget(filterTabList: con.stockAvailableList),
+
+                //? Gender Tab UI
+                FilterType.gender => FilterListViewWidget(filterTabList: con.genderList),
+
+                //? Brand Tab UI
+                FilterType.brand => FilterListViewWidget(filterTabList: con.brandList),
+
+                //? KT Tab UI
+                FilterType.kt => FilterListViewWidget(filterTabList: con.ktList),
+                //? Delivery Tab UI
+                FilterType.delivery => FilterListViewWidget(filterTabList: con.deliveryList),
+                //? Tag Tab UI
+                FilterType.tag => FilterListViewWidget(filterTabList: con.tagList),
+                //? Collection Tab UI
+                FilterType.collection => FilterListViewWidget(filterTabList: con.collectionList),
+                //? Complexity Tab UI
+                FilterType.complexity => FilterListViewWidget(filterTabList: con.complexityList),
+                //? SubComplexity Tab UI
+                FilterType.subComplexity => FilterListViewWidget(filterTabList: con.subComplexityList),
+
+                //? BestSeller Tab UI
+                FilterType.bestSeller => ListView.separated(
+                    itemCount: con.bestSellerList.length,
+                    itemBuilder: (context, index) => Obx(
+                      () => CheckBoxWithTitleTile(
+                        isMultiSelection: false,
+                        onChanged: (_) {
+                          con.selectSeller.value = con.bestSellerList[index];
+                        },
+                        onTap: () {
+                          con.selectSeller.value = con.bestSellerList[index];
+                        },
+                        isCheck: (con.selectSeller.value == con.bestSellerList[index]).obs,
+                        title: con.bestSellerList[index],
+                      ),
                     ),
                     separatorBuilder: (context, index) => Divider(
                       height: defaultPadding / 2,
@@ -115,33 +198,28 @@ class FilterScreen extends StatelessWidget {
                       endIndent: defaultPadding,
                     ),
                   ),
-                FilterType.brand => ListView.separated(
-                    physics: const RangeMaintainingScrollPhysics(),
-                    padding: EdgeInsets.symmetric(vertical: defaultPadding / 2),
-                    itemBuilder: (context, index) => CheckBoxWithTitleTile(
-                      title: con.brandList[index]["title"],
-                      isCheck: con.brandList[index]["isChecked"],
+
+                //? Latest Design Tab UI
+                FilterType.latestDesign => ListView.separated(
+                    itemCount: con.latestDesignList.length,
+                    itemBuilder: (context, index) => Obx(
+                      () => CheckBoxWithTitleTile(
+                        isMultiSelection: false,
+                        onChanged: (_) {
+                          con.selectLatestDesign.value = con.latestDesignList[index];
+                        },
+                        onTap: () {
+                          con.selectLatestDesign.value = con.latestDesignList[index];
+                        },
+                        isCheck: (con.selectLatestDesign.value == con.latestDesignList[index]).obs,
+                        title: con.latestDesignList[index],
+                      ),
                     ),
                     separatorBuilder: (context, index) => Divider(
                       height: defaultPadding / 2,
                       indent: defaultPadding,
                       endIndent: defaultPadding,
                     ),
-                    itemCount: con.brandList.length,
-                  ),
-                FilterType.jewellery => ListView.separated(
-                    physics: const RangeMaintainingScrollPhysics(),
-                    padding: EdgeInsets.symmetric(vertical: defaultPadding / 2),
-                    itemBuilder: (context, index) => CheckBoxWithTitleTile(
-                      title: con.jewelryTypeList[index]["title"],
-                      isCheck: con.jewelryTypeList[index]["isChecked"],
-                    ),
-                    separatorBuilder: (context, index) => Divider(
-                      height: defaultPadding / 2,
-                      indent: defaultPadding,
-                      endIndent: defaultPadding,
-                    ),
-                    itemCount: con.jewelryTypeList.length,
                   ),
               },
             ),

@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:pingaksh_mobile/exports.dart';
 import 'package:pingaksh_mobile/res/app_bar.dart';
+import 'package:pingaksh_mobile/res/app_network_image.dart';
 import 'package:pingaksh_mobile/view/category/category_controller.dart';
 
 import 'components/category_tile.dart';
@@ -16,72 +17,132 @@ class CategoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        appBar: MyAppBar(
+      () => DefaultTabController(
+        length: 2,
+        child: Scaffold(
           backgroundColor: Theme.of(context).colorScheme.surface,
-          shadowColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.3),
-          title: con.brandTitle.value,
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(40.h),
-            child: AppTextField(
-              hintText: "Search",
-              controller: con.searchCon.value,
-              padding: EdgeInsets.only(left: defaultPadding, right: defaultPadding),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(defaultRadius),
+          appBar: MyAppBar(
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            shadowColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.3),
+            title: con.brandTitle.value,
+            bottom: PreferredSize(
+              preferredSize: Size.fromHeight(40.h),
+              child: AppTextField(
+                hintText: "Search",
+                controller: con.searchCon.value,
+                padding: EdgeInsets.only(left: defaultPadding, right: defaultPadding),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(defaultRadius),
+                  ),
+                  borderSide: BorderSide.none,
                 ),
-                borderSide: BorderSide.none,
+                contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.3, horizontal: defaultPadding),
+                suffixIcon: con.showCloseButton.isTrue
+                    ? Center(
+                        child: SvgPicture.asset(
+                          AppAssets.crossIcon,
+                          color: Theme.of(context).primaryColor, // ignore: deprecated_member_use
+                        ),
+                      )
+                    : null,
+                suffixOnTap: con.showCloseButton.isTrue
+                    ? () {
+                        FocusScope.of(context).unfocus();
+                        con.showCloseButton.value = false;
+                        con.searchCon.value.clear();
+                      }
+                    : null,
+                onChanged: (value) {
+                  if (con.searchCon.value.text.isNotEmpty) {
+                    con.showCloseButton.value = true;
+                  } else {
+                    con.showCloseButton.value = false;
+                  }
+                },
               ),
-              contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.3, horizontal: defaultPadding),
-              suffixIcon: con.showCloseButton.isTrue
-                  ? Center(
-                      child: SvgPicture.asset(
-                        AppAssets.crossIcon,
-                        color: Theme.of(context).primaryColor, // ignore: deprecated_member_use
-                      ),
-                    )
-                  : null,
-              suffixOnTap: con.showCloseButton.isTrue
-                  ? () {
-                      FocusScope.of(context).unfocus();
-                      con.showCloseButton.value = false;
-                      con.searchCon.value.clear();
-                    }
-                  : null,
-              onChanged: (value) {
-                if (con.searchCon.value.text.isNotEmpty) {
-                  con.showCloseButton.value = true;
-                } else {
-                  con.showCloseButton.value = false;
-                }
-              },
             ),
           ),
-        ),
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding),
-          child: Column(
-            children: [
-              Expanded(
-                child: ListView.separated(
-                  padding: EdgeInsets.only(bottom: defaultPadding * 2),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) => CategoryTile(
-                    categoryName: con.categoryList[index]["catName"],
-                    subTitle: con.categoryList[index]["subTitle"],
-                    imageUrl: con.categoryList[index]["image"],
-                    onTap: () => Get.toNamed(
-                      AppRoutes.productScreen,
-                      arguments: {"categoryName": con.categoryList[index]["catName"]},
+          body: Padding(
+            padding: EdgeInsets.symmetric(vertical: defaultPadding),
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: defaultPadding),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: AppColors.lightGrey,
                     ),
+                    borderRadius: BorderRadius.circular(defaultRadius - 3),
                   ),
-                  itemCount: con.categoryList.length,
-                  separatorBuilder: (context, index) => SizedBox(height: defaultPadding / 1.2),
+                  child: TabBar(
+                    dividerColor: Colors.transparent,
+                    padding: EdgeInsets.symmetric(vertical: defaultPadding / 3, horizontal: defaultPadding / 3),
+                    labelColor: Theme.of(context).scaffoldBackgroundColor,
+                    labelStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                    unselectedLabelColor: Colors.black.withOpacity(0.4),
+                    unselectedLabelStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).textTheme.bodyMedium?.color,
+                        ),
+                    automaticIndicatorColorAdjustment: true,
+                    indicatorPadding: EdgeInsets.zero,
+                    indicatorWeight: double.minPositive,
+                    indicator: BoxDecoration(
+                      borderRadius: BorderRadius.circular(defaultRadius - 4),
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    labelPadding: EdgeInsets.all(defaultPadding / 1.5),
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    tabs: [
+                      const Text("Category"),
+                      Text(
+                        "Latest Product (${con.latestProductList.length})",
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                Expanded(
+                  child: TabBarView(
+                    children: [
+                      ListView.separated(
+                        padding: EdgeInsets.all(defaultPadding),
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) => CategoryTile(
+                          categoryName: con.categoryList[index]["catName"],
+                          subTitle: con.categoryList[index]["subTitle"],
+                          imageUrl: con.categoryList[index]["image"],
+                          onTap: () => Get.toNamed(
+                            AppRoutes.productScreen,
+                            arguments: {"categoryName": con.categoryList[index]["catName"]},
+                          ),
+                        ),
+                        itemCount: con.categoryList.length,
+                        separatorBuilder: (context, index) => SizedBox(height: defaultPadding / 1.2),
+                      ),
+                      ListView.separated(
+                        shrinkWrap: true,
+                        padding: EdgeInsets.all(defaultPadding),
+                        itemBuilder: (context, index) => AppNetworkImage(
+                          height: Get.height / 8,
+                          width: double.infinity,
+                          imageUrl: con.latestProductList[index],
+                          fit: BoxFit.cover,
+                          borderRadius: BorderRadius.circular(defaultRadius),
+                        ),
+                        itemCount: con.latestProductList.length,
+                        separatorBuilder: (context, index) => SizedBox(height: defaultPadding / 1.2),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

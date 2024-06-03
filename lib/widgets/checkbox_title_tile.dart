@@ -7,10 +7,16 @@ import '../exports.dart';
 class CheckBoxWithTitleTile extends StatelessWidget {
   final String title;
   final RxBool isCheck;
+  final VoidCallback? onTap;
+  final void Function(bool?)? onChanged;
+  final bool isMultiSelection;
   const CheckBoxWithTitleTile({
     super.key,
     required this.title,
     required this.isCheck,
+    this.onTap,
+    this.onChanged,
+    this.isMultiSelection = true,
   });
 
   @override
@@ -18,9 +24,7 @@ class CheckBoxWithTitleTile extends StatelessWidget {
     return Obx(
       () => GestureDetector(
         behavior: HitTestBehavior.translucent,
-        onTap: () {
-          isCheck.value = !isCheck.value;
-        },
+        onTap: isMultiSelection ? () => isCheck.value = !isCheck.value : onTap,
         child: Row(
           mainAxisSize: MainAxisSize.max,
           children: [
@@ -29,9 +33,11 @@ class CheckBoxWithTitleTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(3.r),
               ),
               value: isCheck.value,
-              onChanged: (value) {
-                isCheck.value = !isCheck.value;
-              },
+              onChanged: isMultiSelection
+                  ? (value) {
+                      isCheck.value = !isCheck.value;
+                    }
+                  : onChanged,
               side: BorderSide(
                 color: AppColors.font.withOpacity(0.5),
                 width: 1.5,

@@ -9,11 +9,15 @@ class SortAndFilterButton extends StatelessWidget {
   final String title;
   final String image;
   final void Function()? onTap;
+  final bool? isFilterButton;
+  final String? filterCount;
   const SortAndFilterButton({
     super.key,
     required this.title,
     required this.image,
     this.onTap,
+    this.isFilterButton = true,
+    this.filterCount,
   });
 
   @override
@@ -34,6 +38,24 @@ class SortAndFilterButton extends StatelessWidget {
               title,
               style: AppTextStyle.subtitleStyle(context),
             ),
+            if (isFilterButton == true && !isValEmpty(filterCount))
+              Container(
+                height: 15.h,
+                width: 15.h,
+                alignment: Alignment.center,
+                margin: EdgeInsets.only(left: defaultPadding / 2),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  shape: BoxShape.circle,
+                ),
+                child: Text(
+                  filterCount ?? "",
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: Theme.of(context).colorScheme.surface,
+                        fontSize: 10.sp,
+                      ),
+                ),
+              ),
           ],
         ).paddingSymmetric(vertical: defaultPadding / 2),
       ),

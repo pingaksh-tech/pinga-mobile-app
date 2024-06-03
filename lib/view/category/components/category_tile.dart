@@ -9,12 +9,14 @@ class CategoryTile extends StatelessWidget {
   final String subTitle;
   final String imageUrl;
   final VoidCallback onTap;
+  final double? fontSize;
   const CategoryTile({
     super.key,
     required this.categoryName,
     required this.subTitle,
     required this.imageUrl,
     required this.onTap,
+    this.fontSize,
   });
 
   @override
@@ -38,16 +40,14 @@ class CategoryTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(defaultRadius),
               imageUrl: imageUrl,
             ),
-            SizedBox(
-              width: defaultPadding,
-            ),
+            SizedBox(width: defaultPadding),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     categoryName,
-                    style: AppTextStyle.titleStyle(context).copyWith(fontSize: 16.sp),
+                    style: AppTextStyle.titleStyle(context).copyWith(fontSize: fontSize ?? 16.sp),
                   ),
                   Text(
                     subTitle,
@@ -56,9 +56,8 @@ class CategoryTile extends StatelessWidget {
                 ],
               ),
             ),
-            Icon(
+            const Icon(
               Icons.arrow_forward_ios_rounded,
-              color: Theme.of(context).primaryColor,
               size: 20,
             )
           ],
