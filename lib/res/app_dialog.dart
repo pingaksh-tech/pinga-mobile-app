@@ -4,7 +4,9 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:pingaksh_mobile/controller/dialog_controller.dart';
 
 import '../exports.dart';
 
@@ -583,5 +585,175 @@ class AppDialogs {
         );
       },
     );
+  }
+
+  // Select size dialog
+  static Future<dynamic>? selectSizeDialog(
+    BuildContext context, {
+    Function(String?)? onChanged,
+  }) {
+    if (isRegistered<DialogController>()) {
+      final DialogController dialogCon = Get.find<DialogController>();
+      TextEditingController controller = TextEditingController();
+      return showGeneralDialog(
+          context: context,
+          pageBuilder: (context, animation, secondaryAnimation) {
+            return Scaffold(
+              body: SafeArea(
+                child: Container(
+                  width: Get.width,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(defaultRadius / 2),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      /// Title
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Select Size",
+                              style: AppTextStyle.titleStyle(context).copyWith(
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.primary,
+                              ),
+                            ),
+                            AppIconButton(
+                              size: 26.h,
+                              icon: SvgPicture.asset(AppAssets.crossIcon),
+                              onPressed: () {
+                                Get.back();
+                              },
+                            )
+                          ],
+                        ),
+                      ),
+                      defaultPadding.verticalSpace,
+                      AppTextField(
+                        controller: controller,
+                        hintText: 'Search',
+                        textFieldType: TextFieldType.search,
+                        textInputAction: TextInputAction.done,
+                        padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                        contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 4, horizontal: defaultPadding / 1.7),
+                        onChanged: onChanged,
+                      ),
+                      (defaultPadding / 1.4).verticalSpace,
+
+                      /// Records
+                      Expanded(
+                        child: ListView.separated(
+                          physics: const RangeMaintainingScrollPhysics(),
+                          itemCount: dialogCon.productSizeList.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) => ListTile(
+                            title: Text(
+                              dialogCon.productSizeList[index].size ?? '',
+                              style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
+                            ),
+                            onTap: () {
+                              Get.back(result: dialogCon.productSizeList[index].size);
+                            },
+                          ),
+                          separatorBuilder: (context, index) => Divider(height: 1.h),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            );
+          });
+    }
+    return null;
+  }
+
+  // Select color dialog
+  static Future<dynamic>? selectColorDialog(
+    BuildContext context, {
+    Function(String?)? onChanged,
+  }) {
+    if (isRegistered<DialogController>()) {
+      final DialogController dialogCon = Get.find<DialogController>();
+      TextEditingController controller = TextEditingController();
+      return showGeneralDialog(
+          context: context,
+          pageBuilder: (context, animation, secondaryAnimation) {
+            return Scaffold(
+              body: SafeArea(
+                child: Container(
+                  width: Get.width,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(defaultRadius / 2),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      /// Title
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Select Color",
+                              style: AppTextStyle.titleStyle(context).copyWith(
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.primary,
+                              ),
+                            ),
+                            AppIconButton(
+                              size: 26.h,
+                              icon: SvgPicture.asset(AppAssets.crossIcon),
+                              onPressed: () {
+                                Get.back();
+                              },
+                            )
+                          ],
+                        ),
+                      ),
+                      defaultPadding.verticalSpace,
+                      AppTextField(
+                        controller: controller,
+                        hintText: 'Search',
+                        textFieldType: TextFieldType.search,
+                        textInputAction: TextInputAction.done,
+                        padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                        contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 4, horizontal: defaultPadding / 1.7),
+                        onChanged: onChanged,
+                      ),
+                      (defaultPadding / 1.4).verticalSpace,
+
+                      /// Records
+                      Expanded(
+                        child: ListView.separated(
+                          physics: const RangeMaintainingScrollPhysics(),
+                          itemCount: dialogCon.productColorList.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) => ListTile(
+                            title: Text(
+                              dialogCon.productColorList[index].size ?? '',
+                              style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
+                            ),
+                            onTap: () {
+                              Get.back(result: dialogCon.productColorList[index].size);
+                            },
+                          ),
+                          separatorBuilder: (context, index) => Divider(height: 1.h),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            );
+          });
+    }
+    return null;
   }
 }

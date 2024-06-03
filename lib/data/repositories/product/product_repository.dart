@@ -1,3 +1,8 @@
+import 'package:get/get.dart';
+import 'package:pingaksh_mobile/controller/dialog_controller.dart';
+import 'package:pingaksh_mobile/data/model/product/product_colors_model.dart';
+import 'package:pingaksh_mobile/data/model/product/product_size_model.dart';
+
 class ProductRepository {
   /// ***********************************************************************************
   ///                                       PRODUCT LIST
@@ -19,7 +24,6 @@ class ProductRepository {
           "updatedAt": "2023-01-05T12:00:00Z"
         },
         {
-          
           "price": "108045",
           "productName": "PLKMR7423750",
           "image": "https://media.istockphoto.com/id/502711544/photo/rings.webp?b=1&s=170667a&w=0&k=20&c=UnC1U08uujF6Weh3Cz1u8duHbG-0luKf_U9_GfRo2Bc=",
@@ -52,4 +56,117 @@ class ProductRepository {
       ],
     },
   };
+
+  /// ***********************************************************************************
+  ///                                       PRODUCT SIZE LIST
+  /// ***********************************************************************************
+
+  static Map<String, dynamic> productSizeList = {
+    "success": true,
+    "message": "Size fetched successfully",
+    "data": {
+      "sizes": [
+        {"id": "size1", "size": "4 (S4 | CP-6 | P-04)"},
+        {"id": "size2", "size": "5 (S5 | P-5)"},
+        {"id": "size3", "size": "6 (S6 | CP-8 | P-6 45.9 (mm))"},
+        {"id": "size4", "size": "7 (S7 | CP-7 | P-07)"},
+        {"id": "size5", "size": "8 (S8 | P-8)"},
+        {"id": "size6", "size": "9 (S9 | CP-9 | P-9 50.2 (mm))"},
+        {"id": "size7", "size": "10 (S10 | CP-10 | P-10)"},
+        {"id": "size8", "size": "11 (S11 | P-11)"},
+        {"id": "size9", "size": "12 (S12 | CP-12 | P-12 60.4 (mm))"},
+        {"id": "size10", "size": "13 (S13 | CP-13 | P-13)"},
+        {"id": "size11", "size": "14 (S14 | P-14)"},
+        {"id": "size12", "size": "15 (S15 | CP-15 | P-15 70.6 (mm))"},
+        {"id": "size13", "size": "16 (S16 | CP-16 | P-16)"},
+        {"id": "size14", "size": "17 (S17 | P-17)"},
+        {"id": "size15", "size": "18 (S18 | CP-18 | P-18 80.8 (mm))"},
+        {"id": "size16", "size": "19 (S19 | CP-19 | P-19)"},
+        {"id": "size17", "size": "20 (S20 | P-20)"},
+        {"id": "size18", "size": "21 (S21 | CP-21 | P-21 90.0 (mm))"},
+        {"id": "size19", "size": "22 (S22 | CP-22 | P-22)"},
+        {"id": "size20", "size": "23 (S23 | P-23)"},
+        {"id": "size21", "size": "24 (S24 | CP-24 | P-24 100.2 (mm))"},
+        {"id": "size22", "size": "25 (S25 | CP-25 | P-25)"},
+        {"id": "size23", "size": "26 (S26 | P-26)"},
+        {"id": "size24", "size": "27 (S27 | CP-27 | P-27 110.4 (mm))"},
+        {"id": "size25", "size": "28 (S28 | CP-28 | P-28)"},
+        {"id": "size26", "size": "29 (S29 | P-29)"},
+        {"id": "size27", "size": "30 (S30 | CP-30 | P-30 120.6 (mm))"},
+        {"id": "size28", "size": "31 (S31 | CP-31 | P-31)"},
+        {"id": "size29", "size": "32 (S32 | P-32)"},
+        {"id": "size30", "size": "33 (S33 | CP-33 | P-33 130.8 (mm))"},
+        {"id": "size31", "size": "34 (S34 | CP-34 | P-34)"},
+        {"id": "size32", "size": "35 (S35 | P-35)"},
+        {"id": "size33", "size": "36 (S36 | CP-36 | P-36 140.0 (mm))"},
+        {"id": "size34", "size": "37 (S37 | CP-37 | P-37)"},
+        {"id": "size35", "size": "38 (S38 | P-38)"},
+        {"id": "size36", "size": "39 (S39 | CP-39 | P-39 150.2 (mm))"},
+        {"id": "size37", "size": "40 (S40 | CP-40 | P-40)"},
+        {"id": "size38", "size": "41 (S41 | P-41)"},
+        {"id": "size39", "size": "42 (S42 | CP-42 | P-42 160.4 (mm))"},
+        {"id": "size40", "size": "43 (S43 | CP-43 | P-43)"},
+        {"id": "size41", "size": "44 (S44 | P-44)"},
+        {"id": "size42", "size": "45 (S45 | CP-45 | P-45 170.6 (mm))"},
+        {"id": "size43", "size": "46 (S46 | CP-46 | P-46)"},
+        {"id": "size44", "size": "47 (S47 | P-47)"},
+        {"id": "size45", "size": "48 (S48 | CP-48 | P-48 180.8 (mm))"},
+        {"id": "size46", "size": "49 (S49 | CP-49 | P-49)"},
+        {"id": "size47", "size": "50 (S50 | P-50)"},
+        {"id": "size48", "size": "51 (S51 | CP-51 | P-51 190.0 (mm))"},
+        {"id": "size49", "size": "52 (S52 | CP-52 | P-52)"},
+        {"id": "size50", "size": "53 (S53 | P-53)"}
+      ],
+    }
+  };
+
+  /// ***********************************************************************************
+  ///                                       PRODUCT COLOR LIST
+  /// ***********************************************************************************
+  static Map<String, dynamic> productColorList = {
+    "success": true,
+    "message": "Colors fetched successfully",
+    "data": {
+      "colors": [
+        {"id": "color1", "color": "Y (Yellow)"},
+        {"id": "color2", "color": "R (Red)"},
+        {"id": "color3", "color": "B (Blue)"},
+        {"id": "color4", "color": "G (Green)"},
+        {"id": "color5", "color": "O (Orange)"},
+        {"id": "color6", "color": "P (Purple)"},
+        {"id": "color7", "color": "W (White)"},
+        {"id": "color8", "color": "BK (Black)"},
+        {"id": "color9", "color": "BR (Brown)"},
+        {"id": "color10", "color": "PI (Pink)"},
+        {"id": "color11", "color": "C (Cyan)"},
+        {"id": "color12", "color": "M (Magenta)"},
+        {"id": "color13", "color": "L (Lime)"},
+        {"id": "color14", "color": "N (Navy)"},
+        {"id": "color15", "color": "GR (Gray)"},
+        {"id": "color16", "color": "MG (Maroon)"},
+        {"id": "color17", "color": "BE (Beige)"},
+        {"id": "color18", "color": "TE (Teal)"},
+        {"id": "color19", "color": "AQ (Aqua)"},
+        {"id": "color20", "color": "LV (Lavender)"},
+      ],
+    }
+  };
+
+  /// ***********************************************************************************
+  ///                                       GET PRODUCT SIZE
+  /// ***********************************************************************************
+  static Future<void> getProductSizeAPI({RxBool? isLoader}) async {
+    final DialogController dialogCon = Get.find<DialogController>();
+    GetProductSizeModel model = GetProductSizeModel.fromJson(productSizeList /*response*/);
+    dialogCon.productSizeList.value = model.data?.sizes ?? [];
+  }
+
+  /// ***********************************************************************************
+  ///                                       GET PRODUCT COLOR
+  /// ***********************************************************************************
+  static Future<void> getProductColorAPI({RxBool? isLoader}) async {
+    final DialogController dialogCon = Get.find<DialogController>();
+    GetProductColorModel model = GetProductColorModel.fromJson(productColorList /*response*/);
+    dialogCon.productColorList.value = model.data?.colors ?? [];
+  }
 }

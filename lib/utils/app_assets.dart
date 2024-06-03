@@ -54,7 +54,11 @@ class AppAssets {
   static String menuIcon = '${svgPath}menu_icon.svg';
   static String downloadIcon = '${svgPath}download.svg';
   static String shareIcon = '${svgPath}share.svg';
-  static String overviewIcon = '${svgPath}overview.svg';
+  static String watchlistIcon = '${svgPath}watchlist_icon.svg';
+  static String jewelleryWearIcon = '${svgPath}jewellery_wear_icon.svg';
+  static String ringSizeIcon = '${svgPath}ring_size_icon.svg';
+  static String colorIcon = '${svgPath}color_icon.svg';
+  static String diamondIcon = '${svgPath}diamond_icon.svg';
 
   /// ***********************************************************************************
   ///                                   JSON

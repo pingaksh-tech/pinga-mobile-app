@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../../../exports.dart';
 import '../../../../widgets/custom_check_box_tile.dart';
+import 'icon_title_button.dart';
 
 class WatchlistTile extends StatelessWidget {
   final String? name;
@@ -56,45 +56,33 @@ class WatchlistTile extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
+                      /// CART
+                      IconTitleButton(
+                        title: "Add to Cart",
+                        icon: AppAssets.cart,
+                        onPressed: cartOnPressed,
+                      ),
+
                       /// DOWNLOAD
-                      IconButton(
-                        icon: SvgPicture.asset(
-                          AppAssets.downloadIcon,
-                          height: 14.h,
-                          colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
-                        ),
+                      IconTitleButton(
+                        title: "Download",
+                        icon: AppAssets.downloadIcon,
                         onPressed: downloadOnPressed,
                       ),
 
                       /// SHARE
-                      IconButton(
-                        icon: SvgPicture.asset(
-                          AppAssets.shareIcon,
-                          height: 14.h,
-                          colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
-                        ),
+                      IconTitleButton(
+                        title: "Share",
+                        icon: AppAssets.shareIcon,
                         onPressed: shareOnPressed,
                       ),
 
-                      /// CART
-                      IconButton(
-                        icon: SvgPicture.asset(
-                          AppAssets.cart,
-                          height: 14.h,
-                          colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
-                        ),
-                        onPressed: cartOnPressed,
-                      ),
-
                       /// DELETE
-                      IconButton(
-                        icon: SvgPicture.asset(
-                          AppAssets.trash,
-                          height: 14.h,
-                          colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
-                        ),
+                      IconTitleButton(
+                        title: "Delete",
+                        icon: AppAssets.trash,
                         onPressed: deleteOnPressed,
-                      )
+                      ),
                     ],
                   ),
                 ]

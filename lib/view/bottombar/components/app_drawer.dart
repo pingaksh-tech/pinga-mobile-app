@@ -15,6 +15,7 @@ class AppDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         physics: const RangeMaintainingScrollPhysics(),
         children: [
+
           /// Drawer Header
           Stack(
             children: [
@@ -35,7 +36,11 @@ class AppDrawer extends StatelessWidget {
                 right: defaultPadding,
                 child: Text(
                   "Guest",
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(),
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .titleLarge
+                      ?.copyWith(),
                 ),
               )
             ],
@@ -45,13 +50,16 @@ class AppDrawer extends StatelessWidget {
 
           ListTile(
             leading: SvgPicture.asset(
-              AppAssets.overviewIcon,
+              AppAssets.watchlistIcon,
               height: 16.h,
               colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
             ),
             title: Text(
               "Watchlist",
-              style: Theme.of(context).textTheme.titleMedium,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .titleMedium,
             ),
             onTap: () {
               Get.back();
@@ -67,7 +75,10 @@ class AppDrawer extends StatelessWidget {
             ),
             title: Text(
               "Wishlist",
-              style: Theme.of(context).textTheme.titleMedium,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .titleMedium,
             ),
             onTap: () {
               // Get.back();
