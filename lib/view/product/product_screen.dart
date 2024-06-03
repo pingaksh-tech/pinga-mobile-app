@@ -35,6 +35,7 @@ class ProductScreen extends StatelessWidget {
                     title: "Sort",
                     isFilterButton: false,
                     image: AppAssets.sortIcon,
+                    iconSize: 16.5.sp,
                     onTap: () {
                       showModalBottomSheet(
                         context: context,
@@ -73,6 +74,7 @@ class ProductScreen extends StatelessWidget {
                                 ListView.separated(
                                   separatorBuilder: (context, index) => const Divider(height: 0),
                                   shrinkWrap: true,
+                                  padding: EdgeInsets.only(top: defaultPadding / 2),
                                   itemCount: con.sortWithPriceList.length,
                                   itemBuilder: (context, index) => Obx(
                                     () => CheckBoxWithTitleTile(
@@ -131,13 +133,14 @@ class ProductScreen extends StatelessWidget {
                                   children: List.generate(
                                     con.sortList.length,
                                     (index) => Container(
-                                      padding: EdgeInsets.symmetric(horizontal: defaultPadding / 1.5, vertical: defaultPadding / 3.5).copyWith(right: defaultPadding / 2),
+                                      padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding / 3.5).copyWith(right: defaultPadding / 2),
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(defaultRadius),
+                                        borderRadius: BorderRadius.circular(defaultRadius - 2),
                                         color: Theme.of(context).primaryColor,
                                       ),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
                                           Text(
                                             con.sortList[index],
@@ -175,7 +178,7 @@ class ProductScreen extends StatelessWidget {
                                     children: [
                                       Expanded(
                                         child: AppButton(
-                                          flexibleHeight: true,
+                                          height: 30.h,
                                           buttonType: ButtonType.outline,
                                           borderColor: Theme.of(context).primaryColor,
                                           title: "Clear All",
@@ -192,7 +195,7 @@ class ProductScreen extends StatelessWidget {
                                       defaultPadding.horizontalSpace,
                                       Expanded(
                                         child: AppButton(
-                                          flexibleHeight: true,
+                                          height: 30.h,
                                           title: "Apply",
                                           onPressed: () => Get.back(),
                                         ),
@@ -248,23 +251,32 @@ class ProductScreen extends StatelessWidget {
               indent: defaultPadding / 2,
               endIndent: defaultPadding / 2,
             ),
+            Text(
+              "Total Products 4150",
+              style: AppTextStyle.subtitleStyle(context),
+              textAlign: TextAlign.center,
+            ).paddingOnly(top: defaultPadding / 3),
             Wrap(
               children: List.generate(
-                con.productList.length,
+                con.productsList.length,
                 (index) => con.isProductViewChange.isTrue
                     ? ProductTile(
                         onTap: () => Get.toNamed(AppRoutes.productDetailsScreen),
-                        imageUrl: con.productList[index]["image"],
-                        productName: con.productList[index]["productName"],
-                        productPrice: con.productList[index]["price"],
+                        imageUrl: con.productsList[index].product?.productImage ?? "",
+                        productName: con.productsList[index].product?.title ?? "",
+                        productPrice: con.productsList[index].product?.price.toString() ?? "",
                       )
                     : CategoryTile(
-                        categoryName: con.productList[index]["productName"],
-                        subTitle: UiUtils.amountFormat(con.productList[index]["price"]),
-                        imageUrl: con.productList[index]["image"],
+                        categoryName: con.productsList[index].product?.title ?? "",
+                        subTitle: con.productsList[index].product?.price.toString() ?? "",
+                        imageUrl: con.productsList[index].product?.productImage ?? "",
                         onTap: () => Get.toNamed(AppRoutes.productDetailsScreen),
                         fontSize: 14.sp,
-                      ).paddingOnly(left: defaultPadding / 2, right: defaultPadding / 2, top: defaultPadding / 1.2),
+                      ).paddingOnly(
+                        left: defaultPadding / 2,
+                        right: defaultPadding / 2,
+                        top: defaultPadding / 1.2,
+                      ),
               ),
             )
           ],

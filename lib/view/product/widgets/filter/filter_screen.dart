@@ -31,7 +31,7 @@ class FilterScreen extends StatelessWidget {
                 itemCount: con.filterTypeList.length,
                 separatorBuilder: (context, index) => Divider(
                   height: 0,
-                  color: AppColors.lightGrey.withOpacity(0.8),
+                  color: Theme.of(context).dividerColor.withOpacity(0.15),
                 ),
                 itemBuilder: (context, index) {
                   return Obx(
@@ -46,7 +46,7 @@ class FilterScreen extends StatelessWidget {
                         child: Container(
                           padding: EdgeInsets.symmetric(vertical: defaultPadding, horizontal: defaultPadding / 1.5),
                           alignment: Alignment.centerLeft,
-                          color: isSelected ? Theme.of(context).colorScheme.surface : AppColors.lightGrey.withOpacity(0.3),
+                          color: isSelected ? Theme.of(context).colorScheme.surface : Theme.of(context).scaffoldBackgroundColor,
                           child: Row(
                             children: [
                               Expanded(
@@ -82,7 +82,7 @@ class FilterScreen extends StatelessWidget {
                 },
               ),
             ),
-            const VerticalDivider(width: 0),
+            VerticalDivider(width: 0, color: Theme.of(context).dividerColor.withOpacity(0.15)),
             Expanded(
               flex: 2,
               child: switch (con.filterType.value) {

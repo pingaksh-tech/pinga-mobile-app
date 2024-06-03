@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../exports.dart';
@@ -39,29 +40,102 @@ class ProductTile extends StatelessWidget {
         ),
         child: Column(
           children: [
-            SizedBox(
-              height: Get.width / 2 - defaultPadding * 2.5,
-              child: AppNetworkImage(
-                height: double.infinity,
-                width: double.infinity,
-                fit: BoxFit.cover,
-                borderRadius: BorderRadius.circular(defaultRadius),
-                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                imageUrl: imageUrl,
-                boxShadow: const [
-                  BoxShadow(
-                    color: AppColors.lightGrey,
-                    blurRadius: 1,
-                    offset: Offset(0, 1),
+            Stack(
+              children: [
+                SizedBox(
+                  height: Get.width / 2 - defaultPadding * 2.5,
+                  child: AppNetworkImage(
+                    height: double.infinity,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    borderRadius: BorderRadius.circular(defaultRadius),
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    imageUrl: imageUrl,
+                    boxShadow: const [
+                      BoxShadow(
+                        color: AppColors.lightGrey,
+                        blurRadius: 1,
+                        offset: Offset(0, 1),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                Container(
+                  margin: EdgeInsets.all(defaultPadding / 2),
+                  padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: defaultPadding / 2),
+                  decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(5)),
+                  child: Text(
+                    "Flora",
+                    style: TextStyle(color: Theme.of(context).primaryColor),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: AppIconButton(
+                    onPressed: () {},
+                    size: 25.h,
+                    icon: Icon(
+                      Icons.more_vert_rounded,
+                      size: 18.sp,
+                    ),
+                  ),
+                )
+              ],
             ),
             Padding(
               padding: const EdgeInsets.all(8.0).copyWith(top: defaultPadding / 1.5, bottom: defaultPadding / 3),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Row(
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 45,
+                        padding: const EdgeInsets.all(5),
+                        margin: const EdgeInsets.only(right: 10),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(defaultRadius - 4),
+                        ),
+                        child: Column(
+                          children: [
+                            SvgPicture.asset(
+                              AppAssets.ringIcon,
+                              height: 15,
+                              color: Theme.of(context).primaryColor, // ignore: deprecated_member_use
+                            ),
+                            Text(
+                              "19",
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).primaryColor),
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: 35,
+                        height: 45,
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(defaultRadius - 4),
+                        ),
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.color_lens_outlined,
+                              size: 20,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            Text(
+                              "30",
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).primaryColor),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                   SizedBox(
                     width: Get.width,
                     child: Text(

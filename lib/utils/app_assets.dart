@@ -51,6 +51,7 @@ class AppAssets {
   static String crossIcon = '${svgPath}cross_icon.svg';
   static String appIcon = '${svgPath}app_icon.svg';
   static String appListIcon = '${svgPath}app_list_icon.svg';
+  static String ringIcon = '${svgPath}ring_icon.svg';
 
   /// ***********************************************************************************
   ///                                   JSON

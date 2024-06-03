@@ -37,6 +37,11 @@ class CategoryScreen extends StatelessWidget {
                   ),
                   borderSide: BorderSide.none,
                 ),
+                prefixIcon: Icon(
+                  Icons.search_rounded,
+                  size: 25.sp,
+                  color: const Color(0xFFC2C2C2),
+                ),
                 contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.3, horizontal: defaultPadding),
                 suffixIcon: con.showCloseButton.isTrue
                     ? Center(
@@ -77,7 +82,7 @@ class CategoryScreen extends StatelessWidget {
                   ),
                   child: TabBar(
                     dividerColor: Colors.transparent,
-                    padding: EdgeInsets.symmetric(vertical: defaultPadding / 3, horizontal: defaultPadding / 3),
+                    padding: EdgeInsets.symmetric(vertical: defaultPadding / 6, horizontal: defaultPadding / 6),
                     labelColor: Theme.of(context).scaffoldBackgroundColor,
                     labelStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
                           fontSize: 14.sp,
@@ -91,7 +96,6 @@ class CategoryScreen extends StatelessWidget {
                           color: Theme.of(context).textTheme.bodyMedium?.color,
                         ),
                     automaticIndicatorColorAdjustment: true,
-                    indicatorPadding: EdgeInsets.zero,
                     indicatorWeight: double.minPositive,
                     indicator: BoxDecoration(
                       borderRadius: BorderRadius.circular(defaultRadius - 4),
@@ -99,6 +103,7 @@ class CategoryScreen extends StatelessWidget {
                     ),
                     labelPadding: EdgeInsets.all(defaultPadding / 1.5),
                     indicatorSize: TabBarIndicatorSize.tab,
+                    splashBorderRadius: BorderRadius.circular(defaultRadius - 4),
                     tabs: [
                       const Text("Category"),
                       Text(
@@ -114,12 +119,12 @@ class CategoryScreen extends StatelessWidget {
                         padding: EdgeInsets.all(defaultPadding),
                         shrinkWrap: true,
                         itemBuilder: (context, index) => CategoryTile(
-                          categoryName: con.categoryList[index]["catName"],
-                          subTitle: con.categoryList[index]["subTitle"],
-                          imageUrl: con.categoryList[index]["image"],
+                          categoryName: con.categoryList[index].catName ?? "",
+                          subTitle: con.categoryList[index].productAvailable ?? "",
+                          imageUrl: con.categoryList[index].image ?? "",
                           onTap: () => Get.toNamed(
                             AppRoutes.productScreen,
-                            arguments: {"categoryName": con.categoryList[index]["catName"]},
+                            arguments: {"categoryName": con.categoryList[index].catName},
                           ),
                         ),
                         itemCount: con.categoryList.length,

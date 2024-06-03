@@ -11,6 +11,7 @@ class SortAndFilterButton extends StatelessWidget {
   final void Function()? onTap;
   final bool? isFilterButton;
   final String? filterCount;
+  final double? iconSize;
   const SortAndFilterButton({
     super.key,
     required this.title,
@@ -18,6 +19,7 @@ class SortAndFilterButton extends StatelessWidget {
     this.onTap,
     this.isFilterButton = true,
     this.filterCount,
+    this.iconSize,
   });
 
   @override
@@ -25,13 +27,14 @@ class SortAndFilterButton extends StatelessWidget {
     return Expanded(
       child: InkWell(
         splashColor: Colors.transparent,
+        borderRadius: BorderRadius.circular(defaultRadius),
         onTap: onTap,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SvgPicture.asset(
               image,
-              height: 18.sp,
+              height: iconSize ?? 18.sp,
               color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(.55), // ignore: deprecated_member_use
             ).paddingOnly(right: defaultPadding / 2),
             Text(
