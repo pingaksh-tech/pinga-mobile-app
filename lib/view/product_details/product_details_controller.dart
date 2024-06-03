@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ProductDetailsController extends GetxController {
-  Rx<ScrollController> scrollController = ScrollController().obs;
+import '../../exports.dart';
 
+class ProductDetailsController extends GetxController with GetSingleTickerProviderStateMixin {
   RxInt currentPage = 0.obs;
   Rx<PageController> imagesPageController = PageController().obs;
   RxList<String> productImages = [
@@ -26,4 +26,60 @@ class ProductDetailsController extends GetxController {
     Colors.yellow, // Gold
     Colors.orange, // Silver
   ];
+
+  /// ***********************************************************************************
+  ///                                  TAB BAR CONTROLLER
+  /// ***********************************************************************************
+
+  late TabController tabController;
+
+  /// TabBar Tab Listener
+  void tabListerFunction() {
+    tabController.addListener(
+      () {
+        if (tabController.indexIsChanging) {
+          // printOkStatus("tab is animating. from active (getting the index) to inactive(getting the index) ");
+        } else {
+          printOkStatus("===>${tabController.index}");
+
+          /// TAB CHANGE
+          switch (tabController.index) {
+            case 0:
+            case 1:
+            case 2:
+          }
+        }
+      },
+    );
+  }
+
+  /// ***********************************************************************************
+  ///                                       onInit
+  /// ***********************************************************************************
+
+  @override
+  void onInit() {
+    super.onInit();
+    tabController = TabController(length: 3, vsync: this);
+  }
+
+  /// ***********************************************************************************
+  ///                                       onReady
+  /// ***********************************************************************************
+
+  @override
+  void onReady() {
+    tabListerFunction();
+    super.onReady();
+  }
+
+  /// ***********************************************************************************
+  ///                                       onClose
+  /// ***********************************************************************************
+
+  @override
+  void onClose() {
+    tabController.dispose();
+    super.onClose();
+  }
 }
