@@ -271,8 +271,7 @@ class ProductDetailsScreen extends StatelessWidget {
                 VariantsTab(),
 
                 /// FAMILY PRODUCT TAB
-                Container(
-                  padding: EdgeInsets.all(defaultPadding).copyWith(top: 50),
+                Center(
                   child: Text(
                     "No family products available.",
                     style: Theme.of(context).textTheme.titleMedium,

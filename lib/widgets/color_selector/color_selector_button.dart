@@ -20,7 +20,7 @@ Widget colorSelectorButton(BuildContext context, {required RxString selectedColo
       child: Obx(() {
         return Container(
           padding: EdgeInsets.all(defaultPadding / 2.4),
-          decoration: BoxDecoration(color: backgroundColor ?? Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(defaultRadius)),
+          decoration: BoxDecoration(color: backgroundColor ?? Theme.of(context).primaryColor.withOpacity(0.06), borderRadius: BorderRadius.circular(defaultRadius)),
           child: Column(
             children: [
               SvgPicture.asset(

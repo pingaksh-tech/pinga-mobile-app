@@ -29,7 +29,7 @@ BoxShadow boxShadow({required offset}) {
 }
 
 List<BoxShadow> defaultShadow(BuildContext context) => [
-      BoxShadow(blurStyle: BlurStyle.outer, color: Theme.of(context).iconTheme.color!.withOpacity(0.1), blurRadius: 1, spreadRadius: 20),
+      BoxShadow(color: Theme.of(context).iconTheme.color!.withOpacity(0.03), blurRadius: 4, spreadRadius: 3),
     ];
 
 List<BoxShadow> get defaultShadowAllSide => [

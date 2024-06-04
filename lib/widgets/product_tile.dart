@@ -105,9 +105,9 @@ class ProductTile extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: defaultPadding / 6),
               child: Row(
                 children: [
-                  sizeSelectorButton(context, selectedSize: "19".obs, sizeColorSelectorButtonType: SizeColorSelectorButtonType.small),
+                  horizontalSelectorButton(context, selectedSize: "19".obs, selectableItemType: SelectableItemType.size, sizeColorSelectorButtonType: SizeColorSelectorButtonType.small),
                   (defaultPadding / 4).horizontalSpace,
-                  sizeSelectorButton(context, selectedSize: "19".obs, sizeColorSelectorButtonType: SizeColorSelectorButtonType.small),
+                  horizontalSelectorButton(context, selectedSize: "Y".obs, selectableItemType: SelectableItemType.color, sizeColorSelectorButtonType: SizeColorSelectorButtonType.small),
                 ],
               ),
             ),
@@ -116,9 +116,9 @@ class ProductTile extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: defaultPadding / 6),
               child: Row(
                 children: [
-                  sizeSelectorButton(context, selectedSize: "19".obs, sizeColorSelectorButtonType: SizeColorSelectorButtonType.small),
+                  horizontalSelectorButton(context, selectedSize: "SOL".obs, selectableItemType: SelectableItemType.diamond, sizeColorSelectorButtonType: SizeColorSelectorButtonType.small),
                   (defaultPadding / 4).horizontalSpace,
-                  sizeSelectorButton(context, selectedSize: "19".obs, sizeColorSelectorButtonType: SizeColorSelectorButtonType.small),
+                  horizontalSelectorButton(context, selectedSize: "".obs, selectableItemType: SelectableItemType.remarks, sizeColorSelectorButtonType: SizeColorSelectorButtonType.small),
                 ],
               ),
             ),

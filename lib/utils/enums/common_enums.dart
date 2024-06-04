@@ -101,3 +101,6 @@ enum FilterType { range, available, gender, brand, kt, delivery, tag, collection
 
 ///* SIZE-COLOR SELECTOR BUTTON SIZE TYPE
 enum SizeColorSelectorButtonType { small, medium, large }
+
+///* SELECTABLE ITEM TYPE
+enum SelectableItemType { size, color, diamond, remarks }

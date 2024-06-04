@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:pingaksh_mobile/exports.dart';
-import 'package:pingaksh_mobile/packages/cached_network_image/cached_network_image.dart';
-import 'package:pingaksh_mobile/view/product_details/widgets/variants/variants_controller.dart';
 
+import '../../../../exports.dart';
+import '../../../../res/app_network_image.dart';
 import '../../../../widgets/color_selector/color_selector_button.dart';
 import '../../../../widgets/plus_minus_title/plus_minus_tile.dart';
 import '../../../../widgets/size_selector/size_selector_botton.dart';
+import 'variants_controller.dart';
 
 class VariantsTab extends StatelessWidget {
   VariantsTab({super.key});
@@ -79,6 +78,8 @@ class VariantsTab extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                       ),
                 ),
+                4.verticalSpace,
+
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(defaultRadius),
@@ -91,30 +92,30 @@ class VariantsTab extends StatelessWidget {
 
                       /// Color Selector
                       colorSelectorButton(context, selectedColor: productColor ?? RxString("")),
-                      (defaultPadding / 2).horizontalSpace,
-                      GestureDetector(
-                        onTap: () {
-                          Get.toNamed(AppRoutes.remarkScreen);
-                        },
-                        child: Container(
-                          padding: EdgeInsets.all(defaultPadding / 2),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(defaultRadius), color: Theme.of(context).scaffoldBackgroundColor),
-                          child: Column(
-                            children: [
-                              SvgPicture.asset(
-                                AppAssets.remarkOutlineIcon,
-                                height: 14.h,
-                                colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
-                              ),
-                              Text(
-                                "RMK",
-                                style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 10.sp, color: AppColors.primary),
-                              )
-                            ],
-                          ),
-                        ),
-                      )
+                      // (defaultPadding / 2).horizontalSpace,
+                      // GestureDetector(
+                      //   onTap: () {
+                      //     Get.toNamed(AppRoutes.remarkScreen);
+                      //   },
+                      //   child: Container(
+                      //     padding: EdgeInsets.all(defaultPadding / 2),
+                      //     alignment: Alignment.center,
+                      //     decoration: BoxDecoration(borderRadius: BorderRadius.circular(defaultRadius), color: Theme.of(context).scaffoldBackgroundColor),
+                      //     child: Column(
+                      //       children: [
+                      //         SvgPicture.asset(
+                      //           AppAssets.remarkOutlineIcon,
+                      //           height: 14.h,
+                      //           colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                      //         ),
+                      //         Text(
+                      //           "RMK",
+                      //           style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 10.sp, color: AppColors.primary),
+                      //         )
+                      //       ],
+                      //     ),
+                      //   ),
+                      // )
                     ],
                   ),
                 ),
