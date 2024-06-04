@@ -10,6 +10,7 @@ class CategoryTile extends StatelessWidget {
   final String imageUrl;
   final VoidCallback onTap;
   final double? fontSize;
+
   const CategoryTile({
     super.key,
     required this.categoryName,
@@ -26,10 +27,11 @@ class CategoryTile extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(defaultPadding / 1.5),
         decoration: BoxDecoration(
-          color: AppColors.primary.withAlpha(10),
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(
             defaultRadius,
           ),
+          boxShadow: defaultShadowAllSide,
         ),
         child: Row(
           children: [

@@ -26,17 +26,11 @@ class ProductTile extends StatelessWidget {
       child: Container(
         width: Get.width / 2 - defaultPadding * 1.5,
         margin: EdgeInsets.all(defaultPadding / 2),
-        padding: EdgeInsets.all(defaultPadding / 4),
+        padding: EdgeInsets.all(defaultPadding / 6),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(defaultRadius),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.lightGrey.withOpacity(0.7),
-              blurRadius: 2,
-              offset: const Offset(0, 1),
-            ),
-          ],
+          boxShadow: defaultShadowAllSide,
         ),
         child: Column(
           children: [
@@ -48,14 +42,14 @@ class ProductTile extends StatelessWidget {
                     height: double.infinity,
                     width: double.infinity,
                     fit: BoxFit.cover,
-                    borderRadius: BorderRadius.circular(defaultRadius),
+                    borderRadius: BorderRadius.circular(defaultRadius / 1.5),
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                     imageUrl: imageUrl,
-                    boxShadow: const [
+                    boxShadow: [
                       BoxShadow(
-                        color: AppColors.lightGrey,
+                        color: AppColors.lightGrey.withOpacity(0.5),
                         blurRadius: 1,
-                        offset: Offset(0, 1),
+                        offset: const Offset(0, 1),
                       ),
                     ],
                   ),

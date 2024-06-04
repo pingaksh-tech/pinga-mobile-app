@@ -12,6 +12,7 @@ class FilterScreen extends StatelessWidget {
   FilterScreen({super.key});
 
   final FilterController con = Get.put(FilterController());
+  Color get dividerColor => Theme.of(Get.context!).dividerColor.withOpacity(0.08);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,7 @@ class FilterScreen extends StatelessWidget {
                 itemCount: con.filterTypeList.length,
                 separatorBuilder: (context, index) => Divider(
                   height: 0,
-                  color: Theme.of(context).dividerColor.withOpacity(0.15),
+                  color: dividerColor,
                 ),
                 itemBuilder: (context, index) {
                   return Obx(
@@ -82,7 +83,7 @@ class FilterScreen extends StatelessWidget {
                 },
               ),
             ),
-            VerticalDivider(width: 0, color: Theme.of(context).dividerColor.withOpacity(0.15)),
+            // VerticalDivider(width: 0, color: dividerColor),
             Expanded(
               flex: 2,
               child: switch (con.filterType.value) {
@@ -91,16 +92,13 @@ class FilterScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Item name",
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ).paddingOnly(bottom: defaultPadding / 5),
-                        AppTextField(
-                          hintText: "Enter item name",
-                          controller: con.itemNameCon.value,
-                          contentPadding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding / 2),
-                        ),
-                        Divider(height: defaultPadding * 1.2),
+                        // AppTextField(
+                        //   title: "Item name",
+                        //   hintText: "Enter item name",
+                        //   controller: con.itemNameCon.value,
+                        //   contentPadding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding / 2),
+                        // ),
+                        // Divider(height: defaultPadding * 1.2),
                         Text(
                           "Metal WT",
                           style: Theme.of(context).textTheme.bodyLarge,
@@ -230,16 +228,11 @@ class FilterScreen extends StatelessWidget {
           child: Row(
             children: [
               Expanded(
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(defaultRadius),
-                  child: Text(
-                    "Clear All",
-                    textAlign: TextAlign.center,
-                    style: AppTextStyle.appButtonStyle(context).copyWith(color: Theme.of(context).primaryColor),
-                  ).paddingSymmetric(vertical: defaultPadding / 1.5),
-                  onTap: () {
-                    con.clearAllFilters();
-                  },
+                child: AppButton(
+                  height: 30.h,
+                  title: "Clear All",
+                  buttonType: ButtonType.outline,
+                  onPressed: () => con.clearAllFilters(),
                 ),
               ),
               defaultPadding.horizontalSpace,

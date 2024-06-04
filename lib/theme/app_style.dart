@@ -17,6 +17,24 @@ double defaultBottomPadding = ScreenUtil().bottomBarHeight == 0.0 ? defaultPaddi
 
 double appButtonHeight = 48.w;
 
+Color get shadowColor => AppColors.lightGrey.withOpacity(0.1);
+
+BoxShadow boxShadow({required offset}) {
+  return BoxShadow(
+    color: shadowColor,
+    blurRadius: 3,
+    spreadRadius: 0.5,
+    offset: offset,
+  );
+}
+
 List<BoxShadow> defaultShadow(BuildContext context) => [
       BoxShadow(blurStyle: BlurStyle.outer, color: Theme.of(context).iconTheme.color!.withOpacity(0.1), blurRadius: 1, spreadRadius: 20),
+    ];
+
+List<BoxShadow> get defaultShadowAllSide => [
+      boxShadow(offset: const Offset(-4, -4)),
+      boxShadow(offset: const Offset(4, 4)),
+      boxShadow(offset: const Offset(-4, 4)),
+      boxShadow(offset: const Offset(4, -4)),
     ];
