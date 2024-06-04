@@ -15,13 +15,15 @@ class AppDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         physics: const RangeMaintainingScrollPhysics(),
         children: [
-
           /// Drawer Header
           Stack(
             children: [
               const DrawerHeader(
+                margin: EdgeInsets.zero,
                 padding: EdgeInsets.zero,
                 child: AppNetworkImage(
+                  borderRadius: BorderRadius.all(Radius.circular(0)),
+                  fit: BoxFit.cover,
                   imageUrl: 'https://media.designrush.com/tinymce_images/316674/conversions/Desiree-Qelaj-content.jpg',
                 ),
               ),
@@ -35,12 +37,8 @@ class AppDrawer extends StatelessWidget {
                 top: defaultPadding * 9,
                 right: defaultPadding,
                 child: Text(
-                  "Guest",
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .titleLarge
-                      ?.copyWith(),
+                  "",
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(),
                 ),
               )
             ],
@@ -56,10 +54,7 @@ class AppDrawer extends StatelessWidget {
             ),
             title: Text(
               "Watchlist",
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .titleMedium,
+              style: Theme.of(context).textTheme.titleMedium,
             ),
             onTap: () {
               Get.back();
@@ -75,10 +70,7 @@ class AppDrawer extends StatelessWidget {
             ),
             title: Text(
               "Wishlist",
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .titleMedium,
+              style: Theme.of(context).textTheme.titleMedium,
             ),
             onTap: () {
               // Get.back();

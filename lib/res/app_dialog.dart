@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:pingaksh_mobile/controller/dialog_controller.dart';
+import '../controller/dialog_controller.dart';
 
 import '../exports.dart';
 
@@ -599,6 +599,7 @@ class AppDialogs {
           context: context,
           pageBuilder: (context, animation, secondaryAnimation) {
             return Scaffold(
+              backgroundColor: Theme.of(context).colorScheme.surface,
               body: SafeArea(
                 child: Container(
                   width: Get.width,
@@ -684,6 +685,7 @@ class AppDialogs {
           context: context,
           pageBuilder: (context, animation, secondaryAnimation) {
             return Scaffold(
+              backgroundColor: Theme.of(context).colorScheme.surface,
               body: SafeArea(
                 child: Container(
                   width: Get.width,
