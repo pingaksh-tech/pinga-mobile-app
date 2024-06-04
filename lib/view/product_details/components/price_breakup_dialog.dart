@@ -63,7 +63,7 @@ class PriceBreakupDialog {
 
                   /// Table View
                   Padding(
-                    padding: bodyPadding,
+                    padding: bodyPadding.copyWith(bottom: defaultPadding),
                     child: Table(
                       columnWidths: const {
                         0: FlexColumnWidth(1),
@@ -100,7 +100,7 @@ class PriceBreakupDialog {
 
                   /// Table View
                   Padding(
-                    padding: bodyPadding,
+                    padding: bodyPadding.copyWith(bottom: defaultPadding),
                     child: Table(
                       columnWidths: const {
                         0: FlexColumnWidth(1),
@@ -165,7 +165,7 @@ class PriceBreakupDialog {
                       "Total",
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontSize: 14.sp,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w600,
                             color: AppColors.primary,
                           ),
                     ),
@@ -176,7 +176,7 @@ class PriceBreakupDialog {
                         UiUtils.amountFormat(12703, decimalDigits: 0),
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
                               fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w600,
                               color: AppColors.primary,
                             ),
                       ),
@@ -198,6 +198,7 @@ class PriceBreakupDialog {
     String? value3,
     bool isSubtitle = false,
   }) {
+    TextStyle? textStyle = Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500, fontSize: 12.sp);
     return TableRow(
       decoration: BoxDecoration(
         border: Border(

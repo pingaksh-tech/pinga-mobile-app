@@ -14,7 +14,6 @@ import 'package:pingaksh_mobile/view/product_details/widgets/variants/variants.d
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../exports.dart';
-import '../../packages/rating_widget/rating_widget.dart';
 import 'product_details_controller.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
@@ -26,25 +25,26 @@ class ProductDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MyAppBar(
-        title: "PLKMR7423746",
-        backgroundColor: Colors.white,
-        actions: [
-          AppIconButton(
-            // backgroundColor: AppColors.primary.withOpacity(0.1),
-            icon: SvgPicture.asset(
-              AppAssets.cart,
-              colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+    return Obx(() {
+      return Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: MyAppBar(
+          title: "PLKMR7423746",
+          backgroundColor: Colors.white,
+          actions: [
+            AppIconButton(
+              // backgroundColor: AppColors.primary.withOpacity(0.1),
+              icon: SvgPicture.asset(
+                AppAssets.cart,
+                colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+              ),
+              onPressed: () {
+                Get.toNamed(AppRoutes.cartScreen);
+              },
             ),
-            onPressed: () {
-              Get.toNamed(AppRoutes.cartScreen);
-            },
-          ),
-        ],
-      ),
-      body: Obx(() {
-        return DefaultTabController(
+          ],
+        ),
+        body: DefaultTabController(
           length: 3,
           child: NestedScrollView(
             controller: con.scrollController.value,
@@ -85,46 +85,50 @@ class ProductDetailsScreen extends StatelessWidget {
                                 Positioned(
                                   bottom: defaultPadding,
                                   left: Get.width / 2.3,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Theme.of(context).colorScheme.surface.withOpacity(.1),
-                                          blurRadius: 20,
-                                          spreadRadius: 5,
-                                        )
-                                      ],
-                                    ),
-                                    child: AnimatedSmoothIndicator(
-                                      activeIndex: con.currentPage.value,
-                                      count: con.productImages.length,
-                                      effect: ScrollingDotsEffect(
-                                        dotHeight: 8.0,
-                                        dotWidth: 8.0,
-                                        spacing: 5.0,
-                                        dotColor: Theme.of(context).primaryColor.withOpacity(0.15),
-                                        activeDotColor: Theme.of(context).primaryColor,
+                                  child: Obx(() {
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Theme.of(context).colorScheme.surface.withOpacity(.1),
+                                            blurRadius: 20,
+                                            spreadRadius: 5,
+                                          )
+                                        ],
                                       ),
-                                    ),
-                                  ),
+                                      child: AnimatedSmoothIndicator(
+                                        activeIndex: con.currentPage.value,
+                                        count: con.productImages.length,
+                                        effect: ScrollingDotsEffect(
+                                          dotHeight: 8.0,
+                                          dotWidth: 8.0,
+                                          spacing: 5.0,
+                                          dotColor: Theme.of(context).primaryColor.withOpacity(0.15),
+                                          activeDotColor: Theme.of(context).primaryColor,
+                                        ),
+                                      ),
+                                    );
+                                  }),
                                 ),
 
                                 /// LIKE
                                 Positioned(
                                   bottom: defaultPadding * 1,
                                   right: defaultPadding * 1,
-                                  child: AppIconButton(
-                                    backgroundColor: Theme.of(context).cardColor.withOpacity(1),
-                                    icon: SvgPicture.asset(
-                                      con.isLike.value ? AppAssets.likeFill : AppAssets.like,
-                                      colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
-                                    ),
-                                    onPressed: () {
-                                      con.isLike.value = !con.isLike.value;
-                                      con.isLike.refresh();
-                                    },
-                                    shadowColor: Theme.of(context).colorScheme.surface.withOpacity(.1),
-                                  ),
+                                  child: Obx(() {
+                                    return AppIconButton(
+                                      backgroundColor: Theme.of(context).cardColor.withOpacity(1),
+                                      icon: SvgPicture.asset(
+                                        con.isLike.value ? AppAssets.likeFill : AppAssets.like,
+                                        colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                                      ),
+                                      onPressed: () {
+                                        con.isLike.value = !con.isLike.value;
+                                        con.isLike.refresh();
+                                      },
+                                      shadowColor: Theme.of(context).colorScheme.surface.withOpacity(.1),
+                                    );
+                                  }),
                                 ),
                               ],
                             ),
@@ -144,26 +148,6 @@ class ProductDetailsScreen extends StatelessWidget {
                         ),
                         (defaultPadding / 6).verticalSpace,
 
-                        /// STAR RATING
-                        Padding(
-                          padding: bodyPadding.copyWith(/*top: defaultPadding, bottom: defaultPadding / 4*/),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              StarRatingWidget(rating: 5.5, size: 20.w),
-                              (defaultPadding / 4).horizontalSpace,
-                              Flexible(
-                                child: Text(
-                                  "(257 Reviews)",
-                                  textAlign: TextAlign.end,
-                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.subText),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        (defaultPadding / 3).verticalSpace,
-
                         /// PRODUCT PRICE
                         Padding(
                           padding: bodyPadding,
@@ -177,9 +161,11 @@ class ProductDetailsScreen extends StatelessWidget {
                                     ),
                               ),
                               defaultPadding.horizontalSpace,
+
+                              /// PRICE BREAKUP
                               AppButton(
                                 height: 15.h,
-                                margin: EdgeInsets.symmetric(horizontal: 4.w),
+                                margin: EdgeInsets.symmetric(horizontal: 10.w),
                                 borderRadius: BorderRadius.circular(5.r),
                                 flexibleWidth: true,
                                 title: "Price breakup",
@@ -196,49 +182,6 @@ class ProductDetailsScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                        /* (defaultPadding / 1).verticalSpace,
-                  Padding(
-                  padding: bodyPadding,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Select Your Favorite Color',
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w500, color: AppColors.subText),
-                      ),
-                      (defaultPadding / 3).verticalSpace,
-                      Row(
-                        children: con.colors.map((color) {
-                          return GestureDetector(
-                            onTap: () {
-                              con.selectedColor?.value = color;
-                              con.selectedColor?.refresh();
-                            },
-                            child: Container(
-                              margin: EdgeInsets.only(right: defaultPadding / 1.5, top: defaultPadding / 3),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: color,
-                                border: Border.all(
-                                  color: con.selectedColor?.value == color ? Theme.of(context).primaryColor : Colors.transparent,
-                                  width: con.selectedColor?.value == color ? 2.sp : 0,
-                                ),
-                              ),
-                              width: 40.sp,
-                              height: 40.sp,
-                              child: con.selectedColor?.value == color
-                                  ? Icon(
-                                      Icons.done,
-                                      color: Theme.of(context).primaryColor,
-                                    )
-                                  : null,
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                    ],
-                  ),
-                ),*/
 
                         Divider(height: defaultPadding * 2, indent: defaultPadding, endIndent: defaultPadding),
                         Padding(
@@ -248,6 +191,7 @@ class ProductDetailsScreen extends StatelessWidget {
                             children: [
                               /// Wear
                               CustomProductWatchButton(
+                                size: 58.h,
                                 icon: AppAssets.jewelleryWearIcon,
                                 title: "Wear",
                                 onPressed: () {
@@ -259,6 +203,7 @@ class ProductDetailsScreen extends StatelessWidget {
 
                               /// Watch
                               CustomProductWatchButton(
+                                size: 58.h,
                                 icon: AppAssets.watchlistIcon,
                                 title: "Watch",
                                 onPressed: () {
@@ -268,23 +213,21 @@ class ProductDetailsScreen extends StatelessWidget {
 
                               /// Add Metal
                               CustomProductWatchButton(
+                                size: 58.h,
                                 title: "Add\nmetal",
                                 onPressed: () {},
                               ),
                             ],
                           ),
                         ),
-                        (defaultPadding / 1.4).verticalSpace,
                         AppButton(
-                          padding: bodyPadding,
+                          padding: bodyPadding.copyWith(top: defaultPadding * 2, bottom: defaultPadding * 2),
                           height: 30.h,
                           title: "ADD TO CART",
                           onPressed: () {
                             UiUtils.toast("Added Successfully");
                           },
                         ),
-
-                        (defaultPadding).verticalSpace,
                       ],
                     ],
                   ),
@@ -299,9 +242,10 @@ class ProductDetailsScreen extends StatelessWidget {
                       maxHeight: 50,
                       minHeight: 48,
                       child: Container(
-                        color: Theme.of(context).scaffoldBackgroundColor,
+                        color: AppColors.background,
                         padding: EdgeInsets.symmetric(horizontal: defaultPadding),
                         child: MyTabBar(
+                            backgroundColor: AppColors.background,
                             borderRadius: BorderRadius.vertical(top: Radius.circular(4.r)),
                             border: Border.all(
                               color: Theme.of(context).dividerColor.withOpacity(0.15),
@@ -329,15 +273,15 @@ class ProductDetailsScreen extends StatelessWidget {
                 ProductInfo(),
 
                 /// VARIANTS TAB
-                Variants(),
+                VariantsTab(),
 
                 /// FAMILY PRODUCT TAB
                 Container(color: Colors.yellow),
               ],
             ),
           ),
-        );
-      }),
-    );
+        ),
+      );
+    });
   }
 }

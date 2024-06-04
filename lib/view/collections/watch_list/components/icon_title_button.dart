@@ -20,14 +20,15 @@ class IconTitleButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        IconButton(
-          padding: EdgeInsets.zero,
+        AppIconButton(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          size: 30.h,
           icon: SvgPicture.asset(
             icon ?? "",
             height: 14.h,
             colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
           ),
-          onPressed: onPressed,
+          onPressed: onPressed ?? () {},
         ),
         Text(
           title ?? "",

@@ -37,6 +37,7 @@ class WatchlistTile extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(defaultPadding / 1.5).copyWith(right: defaultPadding / 4, top: defaultPadding / 4),
       decoration: BoxDecoration(
+        boxShadow: defaultShadow(context),
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(
           defaultRadius,

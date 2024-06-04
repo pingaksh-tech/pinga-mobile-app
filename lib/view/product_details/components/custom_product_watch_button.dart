@@ -6,6 +6,7 @@ import '../../../exports.dart';
 
 class CustomProductWatchButton extends StatelessWidget {
   final String? icon;
+  final double? size;
   final String? title;
   final Color? backgroundColor;
   final VoidCallback onPressed;
@@ -16,18 +17,20 @@ class CustomProductWatchButton extends StatelessWidget {
     this.title,
     this.backgroundColor,
     required this.onPressed,
+    this.size,
   });
 
   @override
   Widget build(BuildContext context) {
     return AppIconButton(
       backgroundColor: backgroundColor ?? AppColors.subText.withOpacity(.12),
-      size: 52.h,
+      size: size ?? 52.h,
       icon: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           if (icon != null && icon!.isNotEmpty) ...[
+            4.verticalSpace,
             SvgPicture.asset(
               icon ?? "",
               height: 16.h,

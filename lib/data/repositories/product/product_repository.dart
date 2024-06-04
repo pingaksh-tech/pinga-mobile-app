@@ -264,6 +264,36 @@ class ProductRepository {
       ],
     }
   };
+  static Map<String, dynamic> variantList = {
+    "success": true,
+    "message": "Colors fetched successfully",
+    "data": {
+      "products": [
+        [
+          {"id": "p1", "name": "Solitaire Ring", "price": 2344, "color_id": "color1", "size_id": "size50", "quantity": 3, "diamond": "ds"},
+          {"id": "p2", "name": "Diamond Necklace", "price": 3999, "color_id": "color7", "size_id": "size14", "quantity": 1, "diamond": "ds"},
+          {"id": "p3", "name": "Gold Bracelet", "price": 799, "color_id": "color2", "size_id": "size17", "quantity": 5, "diamond": "ds"},
+          {"id": "p4", "name": "Silver Earrings", "price": 299, "color_id": "color3", "size_id": "size32", "quantity": 2, "diamond": "ds"},
+          {"id": "p5", "name": "Platinum Band", "price": 1799, "color_id": "color4", "size_id": "size45", "quantity": 10, "diamond": "ds"},
+          {"id": "p6", "name": "Ruby Pendant", "price": 1299, "color_id": "color2", "size_id": "size19", "quantity": 4, "diamond": "ds"},
+          {"id": "p7", "name": "Sapphire Ring", "price": 2999, "color_id": "color3", "size_id": "size16", "quantity": 8, "diamond": "ds"},
+          {"id": "p8", "name": "Emerald Bracelet", "price": 899, "color_id": "color4", "size_id": "size22", "quantity": 6, "diamond": "ds"},
+          {"id": "p9", "name": "Topaz Earrings", "price": 499, "color_id": "color5", "size_id": "size35", "quantity": 3, "diamond": "ds"},
+          {"id": "p10", "name": "Pearl Necklace", "price": 599, "color_id": "color7", "size_id": "size27", "quantity": 2, "diamond": "ds"},
+          {"id": "p11", "name": "Amethyst Ring", "price": 899, "color_id": "color6", "size_id": "size23", "quantity": 5, "diamond": "ds"},
+          {"id": "p12", "name": "Opal Pendant", "price": 749, "color_id": "color7", "size_id": "size30", "quantity": 7, "diamond": "ds"},
+          {"id": "p13", "name": "Peridot Bracelet", "price": 349, "color_id": "color4", "size_id": "size39", "quantity": 4, "diamond": "ds"},
+          {"id": "p14", "name": "Citrine Earrings", "price": 299, "color_id": "color1", "size_id": "size42", "quantity": 3, "diamond": "ds"},
+          {"id": "p15", "name": "Garnet Ring", "price": 599, "color_id": "color2", "size_id": "size28", "quantity": 6, "diamond": "ds"},
+          {"id": "p16", "name": "Tanzanite Bracelet", "price": 1599, "color_id": "color3", "size_id": "size24", "quantity": 9, "diamond": "ds"},
+          {"id": "p17", "name": "Aquamarine Pendant", "price": 1099, "color_id": "color3", "size_id": "size17", "quantity": 3, "diamond": "ds"},
+          {"id": "p18", "name": "Turquoise Necklace", "price": 499, "color_id": "color4", "size_id": "size36", "quantity": 5, "diamond": "ds"},
+          {"id": "p19", "name": "Moonstone Earrings", "price": 399, "color_id": "color7", "size_id": "size41", "quantity": 2, "diamond": "ds"},
+          {"id": "p20", "name": "Alexandrite Ring", "price": 1999, "color_id": "color6", "size_id": "size25", "quantity": 7, "diamond": "ds"}
+        ]
+      ],
+    }
+  };
 
   /// ***********************************************************************************
   ///                                       GET PRODUCT SIZE

@@ -7,7 +7,6 @@ import 'package:pingaksh_mobile/view/product_details/widgets/product_info/produc
 
 import '../../../../packages/like_button/like_button.dart';
 import '../../../../res/app_network_image.dart';
-import '../../components/price_breakup_dialog.dart';
 
 class ProductInfo extends StatelessWidget {
   ProductInfo({super.key});
@@ -18,7 +17,7 @@ class ProductInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(physics: const RangeMaintainingScrollPhysics(), children: [
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(top: defaultPadding * 3),
+        padding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(top: 48),
         child: Table(
           border: TableBorder.all(color: Theme.of(context).dividerColor.withOpacity(0.15)),
           columnWidths: const {
@@ -47,14 +46,14 @@ class ProductInfo extends StatelessWidget {
                     padding: EdgeInsets.all(defaultPadding / 3),
                     child: Text(
                       detail.keys.first,
-                      style: Theme.of(context).textTheme.titleSmall,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 12.sp),
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.all(defaultPadding / 3),
                     child: Text(
                       detail.values.first,
-                      style: Theme.of(context).textTheme.titleSmall,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 12.sp),
                     ),
                   ),
                 ],
@@ -65,7 +64,7 @@ class ProductInfo extends StatelessWidget {
       ),
       (defaultPadding / 2).verticalSpace,
 
-      /// RELATED PRODUCTS
+/*      /// RELATED PRODUCTS
       Padding(
         padding: bodyPadding,
         child: Text(
@@ -78,7 +77,7 @@ class ProductInfo extends StatelessWidget {
       ),
       (defaultPadding / 4).verticalSpace,
       relatedProductsView(context),
-      (defaultPadding * 1.5).verticalSpace,
+      (defaultPadding * 1.5).verticalSpace,*/
     ]);
   }
 

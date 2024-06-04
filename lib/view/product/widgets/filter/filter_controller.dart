@@ -160,31 +160,31 @@ class FilterController extends GetxController {
     maxMetalWt.value = 12.0;
 
     for (var available in stockAvailableList) {
-      available["isChecked"].value = false;
+      available["isChecked"].textValue = false;
     }
     for (var gender in genderList) {
-      gender["isChecked"].value = false;
+      gender["isChecked"].textValue = false;
     }
     for (var brand in brandList) {
-      brand["isChecked"].value = false;
+      brand["isChecked"].textValue = false;
     }
     for (var kt in ktList) {
-      kt["isChecked"].value = false;
+      kt["isChecked"].textValue = false;
     }
     for (var delivery in deliveryList) {
-      delivery["isChecked"].value = false;
+      delivery["isChecked"].textValue = false;
     }
     for (var tag in tagList) {
-      tag["isChecked"].value = false;
+      tag["isChecked"].textValue = false;
     }
     for (var collection in collectionList) {
-      collection["isChecked"].value = false;
+      collection["isChecked"].textValue = false;
     }
     for (var complexity in complexityList) {
-      complexity["isChecked"].value = false;
+      complexity["isChecked"].textValue = false;
     }
     for (var subComplexity in subComplexityList) {
-      subComplexity["isChecked"].value = false;
+      subComplexity["isChecked"].textValue = false;
     }
 
     selectSeller.value = "";
@@ -209,23 +209,23 @@ class FilterController extends GetxController {
       case "Range":
         return rangeCount();
       case "Gender":
-        return genderList.where((gender) => gender["isChecked"].value).length;
+        return genderList.where((gender) => gender["isChecked"].textValue).length;
       case "Brand":
-        return brandList.where((brand) => brand["isChecked"].value).length;
+        return brandList.where((brand) => brand["isChecked"].textValue).length;
       case "Available":
-        return stockAvailableList.where((item) => item["isChecked"].value).length;
+        return stockAvailableList.where((item) => item["isChecked"].textValue).length;
       case "KT":
-        return ktList.where((kt) => kt["isChecked"].value).length;
+        return ktList.where((kt) => kt["isChecked"].textValue).length;
       case "Delivery":
-        return deliveryList.where((delivery) => delivery["isChecked"].value).length;
+        return deliveryList.where((delivery) => delivery["isChecked"].textValue).length;
       case "Tag":
-        return tagList.where((tag) => tag["isChecked"].value).length;
+        return tagList.where((tag) => tag["isChecked"].textValue).length;
       case "Collection":
-        return collectionList.where((collection) => collection["isChecked"].value).length;
+        return collectionList.where((collection) => collection["isChecked"].textValue).length;
       case "Complexity":
-        return complexityList.where((complexity) => complexity["isChecked"].value).length;
+        return complexityList.where((complexity) => complexity["isChecked"].textValue).length;
       case "Sub Complexity":
-        return subComplexityList.where((subComplexity) => subComplexity["isChecked"].value).length;
+        return subComplexityList.where((subComplexity) => subComplexity["isChecked"].textValue).length;
       case "Best Sellers":
         return selectSeller.value.isEmpty ? 0 : 1;
       case "Latest Design":

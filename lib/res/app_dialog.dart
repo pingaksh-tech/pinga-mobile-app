@@ -756,4 +756,62 @@ class AppDialogs {
     }
     return null;
   }
+
+  /// ADD QUANTITY DIALOG
+  static Future<dynamic> addQuantityDialog(BuildContext context, {required RxInt quantity, required Function(int) onChanged}) {
+    TextEditingController controller = TextEditingController(text: quantity.toString());
+    return Get.dialog(
+      AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.r)),
+        backgroundColor: AppColors.background,
+        titlePadding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding).copyWith(bottom: 0),
+        contentPadding: EdgeInsets.all(defaultPadding * 1.2).copyWith(top: defaultPadding / 2),
+        actionsPadding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(bottom: defaultPadding),
+        title: Text(
+          "Add to cart",
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 16.sp, fontWeight: FontWeight.w500, color: AppColors.primary),
+        ),
+        content: AppTextField(
+          title: "Quantity",
+          titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.primary),
+          controller: controller,
+          keyboardType: TextInputType.number,
+          textInputAction: TextInputAction.done,
+          contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.4, horizontal: defaultPadding / 1.7),
+        ),
+        actions: [
+          /// CANCEL
+          TextButton(
+            child: Text(
+              "CANCEL",
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.primary,
+                  ),
+            ),
+            onPressed: () {
+              Get.back();
+            },
+          ),
+
+          /// ADD
+          TextButton(
+            child: Text(
+              "ADD",
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.primary,
+                  ),
+            ),
+            onPressed: () {
+              Get.back(/*result: RxInt(int.tryParse(controller.value.text.trim()) ?? 1)*/);
+              onChanged(int.tryParse(controller.value.text.trim()) ?? 0);
+            },
+          ),
+        ],
+      ),
+    );
+  }
 }
