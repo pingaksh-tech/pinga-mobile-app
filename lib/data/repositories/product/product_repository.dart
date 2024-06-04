@@ -3,6 +3,9 @@ import 'package:pingaksh_mobile/controller/dialog_controller.dart';
 import 'package:pingaksh_mobile/data/model/product/product_colors_model.dart';
 import 'package:pingaksh_mobile/data/model/product/product_size_model.dart';
 
+import '../../../view/product/product_controller.dart';
+import '../../model/product/product_model.dart';
+
 class ProductRepository {
   static Map<String, dynamic> productList = {
     "success": true,
@@ -278,5 +281,11 @@ class ProductRepository {
     final DialogController dialogCon = Get.find<DialogController>();
     GetProductColorModel model = GetProductColorModel.fromJson(productColorList /*response*/);
     dialogCon.productColorList.value = model.data?.colors ?? [];
+  }
+
+  static Future<void> productListApi() async {
+    final ProductController productCon = Get.find<ProductController>();
+    GetProductModel model = GetProductModel.fromJson(productList);
+    productCon.productsList.value = model.data?.products ?? [];
   }
 }
