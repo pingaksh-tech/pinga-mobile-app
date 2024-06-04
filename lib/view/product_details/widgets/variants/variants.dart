@@ -55,12 +55,11 @@ class VariantsTab extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 /// TITLE
-                Obx(() {
-                  return Text(
-                    title ?? "",
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 11.sp, color: AppColors.font.withOpacity(.6)),
-                  );
-                }),
+                Text(
+                  title ?? "",
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 11.sp, color: AppColors.font.withOpacity(.6)),
+                ),
+
                 4.verticalSpace,
 
                 /// PRICE
