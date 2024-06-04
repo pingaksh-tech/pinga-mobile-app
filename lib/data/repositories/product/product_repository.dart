@@ -5,6 +5,10 @@ import 'package:pingaksh_mobile/data/model/product/product_size_model.dart';
 
 import '../../../view/product/product_controller.dart';
 import '../../model/product/product_model.dart';
+import 'package:pingaksh_mobile/data/model/product/variant_product_model.dart';
+import 'package:pingaksh_mobile/view/product_details/widgets/variants/variants_controller.dart';
+
+
 
 class ProductRepository {
   static Map<String, dynamic> productList = {
@@ -313,9 +317,21 @@ class ProductRepository {
     dialogCon.productColorList.value = model.data?.colors ?? [];
   }
 
+  /// ***********************************************************************************
+  ///                                     GET PRODUCT LIST
+  /// ***********************************************************************************
   static Future<void> productListApi() async {
     final ProductController productCon = Get.find<ProductController>();
     GetProductModel model = GetProductModel.fromJson(productList);
     productCon.productsList.value = model.data?.products ?? [];
+  }
+
+  /// ***********************************************************************************
+  ///                                       GET PRODUCT VARIANT
+  /// ***********************************************************************************
+  static Future<void> getProductVariantAPI({RxBool? isLoader}) async {
+    final VariantsController variantsCon = Get.find<VariantsController>();
+    GetVariantProductModel model = GetVariantProductModel.fromJson(variantList);
+    variantsCon.variantList.value = model.data?.products ?? [];
   }
 }

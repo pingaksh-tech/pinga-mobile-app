@@ -29,14 +29,14 @@ class GetVariantProductModel {
 }
 
 class ProductVariantModel {
-  final List<Product>? products;
+  final List<ProductVariant>? products;
 
   ProductVariantModel({
     this.products,
   });
 
   factory ProductVariantModel.fromJson(Map<String, dynamic> json) => ProductVariantModel(
-        products: json["products"] == null ? [] : List<Product>.from(json["products"]!.map((x) => Product.fromJson(x))),
+        products: json["products"] == null ? [] : List<ProductVariant>.from(json["products"]!.map((x) => ProductVariant.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -44,7 +44,7 @@ class ProductVariantModel {
       };
 }
 
-class Product {
+class ProductVariant {
   final String? id;
   final String? name;
   final int? price;
@@ -53,7 +53,7 @@ class Product {
   final int? quantity;
   final String? diamond;
 
-  Product({
+  ProductVariant({
     this.id,
     this.name,
     this.price,
@@ -63,7 +63,7 @@ class Product {
     this.diamond,
   });
 
-  factory Product.fromJson(Map<String, dynamic> json) => Product(
+  factory ProductVariant.fromJson(Map<String, dynamic> json) => ProductVariant(
         id: json["id"],
         name: json["name"],
         price: json["price"],
