@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:pingaksh_mobile/res/app_bar.dart';
-import 'package:pingaksh_mobile/view/product/widgets/filter/filter_controller.dart';
-import 'package:pingaksh_mobile/widgets/filter_listview_widget.dart';
 
 import '../../../../exports.dart';
+import '../../../../res/app_bar.dart';
 import '../../../../widgets/checkbox_title_tile.dart';
+import '../../../../widgets/filter_listview_widget.dart';
+import 'filter_controller.dart';
 
 class FilterScreen extends StatelessWidget {
   FilterScreen({super.key});

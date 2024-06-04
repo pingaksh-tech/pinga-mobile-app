@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '../../exports.dart';
 
 class MyTabBar extends StatelessWidget {
-  final List<Tab> tabs;
+  final List<Widget> tabs;
   final Color? backgroundColor;
   final Color? labelColor;
   final double? width;
@@ -19,18 +19,31 @@ class MyTabBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: width ?? Get.width,
-      decoration: BoxDecoration(color: backgroundColor ?? Theme.of(context).cardColor, borderRadius: BorderRadius.circular(borderRadius ?? defaultRadius)),
+      decoration: BoxDecoration(color: backgroundColor ?? Theme.of(context).primaryColor.withOpacity(0.03), borderRadius: BorderRadius.circular(borderRadius ?? defaultRadius / 2)),
       child: TabBar(
-        controller: controller,
-        isScrollable: true,
-        tabAlignment: tabAlignment ?? TabAlignment.center,
         dividerColor: Colors.transparent,
-        labelStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w600,
+        padding: EdgeInsets.symmetric(vertical: defaultPadding / 6, horizontal: defaultPadding / 6),
+        labelColor: Theme.of(context).scaffoldBackgroundColor,
+        labelStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
               fontSize: 14.sp,
-              color: labelColor ?? Theme.of(context).primaryColor,
+              fontWeight: FontWeight.w600,
+              color: Theme.of(context).primaryColor,
             ),
-        unselectedLabelColor: AppColors.subText,
+        unselectedLabelColor: Colors.black.withOpacity(0.4),
+        unselectedLabelStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w500,
+              color: Theme.of(context).textTheme.bodyMedium?.color,
+            ),
+        automaticIndicatorColorAdjustment: true,
+        indicatorWeight: double.minPositive,
+        indicator: BoxDecoration(
+          borderRadius: BorderRadius.circular(defaultRadius / 2),
+          color: Theme.of(context).primaryColor,
+        ),
+        labelPadding: EdgeInsets.all(defaultPadding / 1.5),
+        indicatorSize: TabBarIndicatorSize.tab,
+        splashBorderRadius: BorderRadius.circular(defaultRadius / 2),
         tabs: tabs,
       ),
     );

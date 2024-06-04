@@ -60,6 +60,7 @@ class AppAssets {
   static String colorIcon = '${svgPath}color_icon.svg';
   static String diamondIcon = '${svgPath}diamond_icon.svg';
   static String ringIcon = '${svgPath}ring_icon.svg';
+  static String listIcon = '${svgPath}list.svg';
 
   /// ***********************************************************************************
   ///                                   JSON
