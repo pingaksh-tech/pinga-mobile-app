@@ -198,7 +198,6 @@ class PriceBreakupDialog {
     String? value3,
     bool isSubtitle = false,
   }) {
-    TextStyle? textStyle = Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500, fontSize: 12.sp);
     return TableRow(
       decoration: BoxDecoration(
         border: Border(

@@ -63,6 +63,8 @@ class AppAssets {
   static String plusIcon = '${svgPath}plus.svg';
   static String minusIcon = '${svgPath}minus.svg';
   static String listIcon = '${svgPath}list.svg';
+  static String remarkOutlineIcon = '${svgPath}outline_remark.svg';
+  static String remarkFilledIcon = '${svgPath}filled_remark_icon.svg';
 
   /// ***********************************************************************************
   ///                                   JSON

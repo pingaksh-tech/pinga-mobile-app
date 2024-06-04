@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:get/get.dart';
+
 GetVariantProductModel getVariantProductModelFromJson(String str) => GetVariantProductModel.fromJson(json.decode(str));
 
 String getVariantProductModelToJson(GetVariantProductModel data) => json.encode(data.toJson());
@@ -7,7 +9,7 @@ String getVariantProductModelToJson(GetVariantProductModel data) => json.encode(
 class GetVariantProductModel {
   final bool? success;
   final String? message;
-  final ProductVariantModel? data;
+  final VariantProductModel? data;
 
   GetVariantProductModel({
     this.success,
@@ -18,7 +20,7 @@ class GetVariantProductModel {
   factory GetVariantProductModel.fromJson(Map<String, dynamic> json) => GetVariantProductModel(
         success: json["success"],
         message: json["message"],
-        data: json["data"] == null ? null : ProductVariantModel.fromJson(json["data"]),
+        data: json["data"] == null ? null : VariantProductModel.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -28,14 +30,14 @@ class GetVariantProductModel {
       };
 }
 
-class ProductVariantModel {
+class VariantProductModel {
   final List<ProductVariant>? products;
 
-  ProductVariantModel({
+  VariantProductModel({
     this.products,
   });
 
-  factory ProductVariantModel.fromJson(Map<String, dynamic> json) => ProductVariantModel(
+  factory VariantProductModel.fromJson(Map<String, dynamic> json) => VariantProductModel(
         products: json["products"] == null ? [] : List<ProductVariant>.from(json["products"]!.map((x) => ProductVariant.fromJson(x))),
       );
 
@@ -46,40 +48,44 @@ class ProductVariantModel {
 
 class ProductVariant {
   final String? id;
+  final String? image;
   final String? name;
   final int? price;
-  final String? color;
-  final String? size;
-  final int? quantity;
+  final RxString? colorId;
+  final RxString? sizeId;
+  final RxInt? quantity;
   final String? diamond;
 
   ProductVariant({
     this.id,
+    this.image,
     this.name,
     this.price,
-    this.color,
-    this.size,
+    this.colorId,
+    this.sizeId,
     this.quantity,
     this.diamond,
   });
 
   factory ProductVariant.fromJson(Map<String, dynamic> json) => ProductVariant(
         id: json["id"],
+        image: json["image"],
         name: json["name"],
         price: json["price"],
-        color: json["color"],
-        size: json["size"],
-        quantity: json["quantity"],
+        colorId: RxString(json["color_id"].toString()),
+        sizeId: RxString(json["size_id"].toString()),
+        quantity: json["quantity"] == null ? null : RxInt(int.tryParse(json["quantity"].toString()) ?? 0),
         diamond: json["diamond"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
+        "image": image,
         "name": name,
         "price": price,
-        "color": color,
-        "size": size,
-        "quantity": quantity,
+        "color_id": colorId?.value,
+        "size_id": sizeId?.value,
+        "quantity": quantity?.value,
         "diamond": diamond,
       };
 }

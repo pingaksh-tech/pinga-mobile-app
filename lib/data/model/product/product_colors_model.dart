@@ -46,20 +46,20 @@ class ProductColorModel {
 
 class ColorModel {
   final String? id;
-  final String? size;
+  final String? color;
 
   ColorModel({
     this.id,
-    this.size,
+    this.color,
   });
 
   factory ColorModel.fromJson(Map<String, dynamic> json) => ColorModel(
         id: json["id"],
-        size: json["color"],
+        color: json["color"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "color": size,
+        "color": color,
       };
 }

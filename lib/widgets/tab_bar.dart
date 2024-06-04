@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 import '../exports.dart';
 
-class MyTabBar extends StatelessWidget {
+class MySlideTabBar extends StatelessWidget {
   final List<Tab> tabs;
   final Color? backgroundColor;
   final Color? labelColor;
@@ -14,7 +14,7 @@ class MyTabBar extends StatelessWidget {
   final TabController? controller;
   final BoxBorder? border;
 
-  const MyTabBar({
+  const MySlideTabBar({
     super.key,
     this.width,
     this.borderRadius,
