@@ -5,6 +5,9 @@ import 'package:get/get.dart';
 
 import '../exports.dart';
 import '../res/app_network_image.dart';
+import '../theme/app_style.dart';
+import 'plus_minus_title/plus_minus_tile.dart';
+import 'size_selector/size_selector_botton.dart';
 
 class ProductTile extends StatelessWidget {
   final VoidCallback onTap;
@@ -77,72 +80,73 @@ class ProductTile extends StatelessWidget {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0).copyWith(top: defaultPadding / 1.5, bottom: defaultPadding / 3),
+              padding: EdgeInsets.all(defaultPadding / 4).copyWith(top: defaultPadding / 2, bottom: defaultPadding / 2),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: 40,
-                        height: 45,
-                        padding: const EdgeInsets.all(5),
-                        margin: const EdgeInsets.only(right: 10),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(defaultRadius - 4),
-                        ),
-                        child: Column(
-                          children: [
-                            SvgPicture.asset(
-                              AppAssets.ringIcon,
-                              height: 15,
-                              color: Theme.of(context).primaryColor, // ignore: deprecated_member_use
-                            ),
-                            Text(
-                              "19",
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).primaryColor),
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        width: 35,
-                        height: 45,
-                        padding: const EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(defaultRadius - 4),
-                        ),
-                        child: Column(
-                          children: [
-                            Icon(
-                              Icons.color_lens_outlined,
-                              size: 20,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                            Text(
-                              "30",
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).primaryColor),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
                   SizedBox(
                     width: Get.width,
                     child: Text(
                       productName,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500, fontSize: 12.sp),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w400, fontSize: 12.sp),
                     ),
                   ),
                   SizedBox(height: 1.h),
                   Text(
                     UiUtils.amountFormat(productPrice),
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600, fontSize: 14.sp),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: defaultPadding / 6),
+              child: Row(
+                children: [
+                  sizeSelectorButton(context, selectedSize: "19".obs, sizeColorSelectorButtonType: SizeColorSelectorButtonType.small),
+                  (defaultPadding / 4).horizontalSpace,
+                  sizeSelectorButton(context, selectedSize: "19".obs, sizeColorSelectorButtonType: SizeColorSelectorButtonType.small),
+                ],
+              ),
+            ),
+            (defaultPadding / 4).verticalSpace,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: defaultPadding / 6),
+              child: Row(
+                children: [
+                  sizeSelectorButton(context, selectedSize: "19".obs, sizeColorSelectorButtonType: SizeColorSelectorButtonType.small),
+                  (defaultPadding / 4).horizontalSpace,
+                  sizeSelectorButton(context, selectedSize: "19".obs, sizeColorSelectorButtonType: SizeColorSelectorButtonType.small),
+                ],
+              ),
+            ),
+            (defaultPadding / 4).verticalSpace,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: defaultPadding / 6, vertical: defaultPadding / 6).copyWith(top: 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: AppButton(
+                      flexibleWidth: true,
+                      flexibleHeight: true,
+                      backgroundColor: Theme.of(context).primaryColor.withOpacity(0.06),
+                      child: SvgPicture.asset(
+                        AppAssets.like,
+                        height: 19.sp,
+                        width: 19.sp,
+                        colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                      ),
+                    ),
+                  ),
+                  (defaultPadding / 4).horizontalSpace,
+                  plusMinusTile(
+                    context,
+                    textValue: 1.obs,
+                    onIncrement: (v) {},
+                    onDecrement: (v) {},
                   ),
                 ],
               ),

@@ -15,8 +15,8 @@ Widget plusMinusTile(
   return Obx(() {
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
-        borderRadius: BorderRadius.circular(defaultPadding),
+        color: Theme.of(context).primaryColor.withOpacity(0.06),
+        borderRadius: BorderRadius.circular(defaultRadius),
       ),
       padding: EdgeInsets.all(defaultPadding / 2),
       alignment: Alignment.center,
@@ -25,7 +25,7 @@ Widget plusMinusTile(
         children: [
           /// Minus Button
           AppIconButton(
-            size: size ?? 17.h,
+            size: size ?? 25.h,
             icon: SvgPicture.asset(
               AppAssets.minusIcon,
               colorFilter: ColorFilter.mode(textValue.value > 0 ? AppColors.primary : Theme.of(context).disabledColor, BlendMode.srcIn),
@@ -58,7 +58,7 @@ Widget plusMinusTile(
 
           /// Plus Button
           AppIconButton(
-            size: size ?? 17.h,
+            size: size ?? 25.h,
             icon: SvgPicture.asset(
               AppAssets.plusIcon,
               colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),

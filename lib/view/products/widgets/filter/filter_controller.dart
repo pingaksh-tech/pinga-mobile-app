@@ -209,23 +209,23 @@ class FilterController extends GetxController {
       case "Range":
         return rangeCount();
       case "Gender":
-        return genderList.where((gender) => gender["isChecked"].textValue).length;
+        return genderList.where((gender) => false /*gender["isChecked"].textValue*/).length;
       case "Brand":
-        return brandList.where((brand) => brand["isChecked"].textValue).length;
+        return brandList.where((brand) => false /*brand["isChecked"].textValue*/).length;
       case "Available":
-        return stockAvailableList.where((item) => item["isChecked"].textValue).length;
+        return stockAvailableList.where((item) => false /*item["isChecked"].textValue*/).length;
       case "KT":
-        return ktList.where((kt) => kt["isChecked"].textValue).length;
+        return ktList.where((kt) => false /*kt["isChecked"].textValue*/).length;
       case "Delivery":
-        return deliveryList.where((delivery) => delivery["isChecked"].textValue).length;
+        return deliveryList.where((delivery) => false /*delivery["isChecked"].textValue*/).length;
       case "Tag":
-        return tagList.where((tag) => tag["isChecked"].textValue).length;
+        return tagList.where((tag) => false /*tag["isChecked"].textValue*/).length;
       case "Collection":
-        return collectionList.where((collection) => collection["isChecked"].textValue).length;
+        return collectionList.where((collection) => false /*collection["isChecked"].textValue*/).length;
       case "Complexity":
-        return complexityList.where((complexity) => complexity["isChecked"].textValue).length;
+        return complexityList.where((complexity) => false /*complexity["isChecked"].textValue*/).length;
       case "Sub Complexity":
-        return subComplexityList.where((subComplexity) => subComplexity["isChecked"].textValue).length;
+        return subComplexityList.where((subComplexity) => false /*subComplexity["isChecked"].textValue*/).length;
       case "Best Sellers":
         return selectSeller.value.isEmpty ? 0 : 1;
       case "Latest Design":

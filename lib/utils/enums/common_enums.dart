@@ -98,3 +98,6 @@ enum OrderStatus { all, pending, accepted, rejected, completed }
 
 ///* FILTER TYPES
 enum FilterType { range, available, gender, brand, kt, delivery, tag, collection, complexity, subComplexity, bestSeller, latestDesign }
+
+///* SIZE-COLOR SELECTOR BUTTON SIZE TYPE
+enum SizeColorSelectorButtonType { small, medium, large }
