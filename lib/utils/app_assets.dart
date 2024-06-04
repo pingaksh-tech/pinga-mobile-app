@@ -59,6 +59,7 @@ class AppAssets {
   static String ringSizeIcon = '${svgPath}ring_size_icon.svg';
   static String colorIcon = '${svgPath}color_icon.svg';
   static String diamondIcon = '${svgPath}diamond_icon.svg';
+  static String ringIcon = '${svgPath}ring_icon.svg';
 
   /// ***********************************************************************************
   ///                                   JSON

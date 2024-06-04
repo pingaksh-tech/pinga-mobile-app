@@ -29,8 +29,8 @@ class CheckBoxWithTitleTile extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           children: [
             Checkbox(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(3.r),
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(2.0)),
               ),
               value: isCheck.value,
               onChanged: isMultiSelection
@@ -40,13 +40,13 @@ class CheckBoxWithTitleTile extends StatelessWidget {
                   : onChanged,
               side: BorderSide(
                 color: AppColors.font.withOpacity(0.5),
-                width: 1.5,
               ),
             ),
-            Text(
-              title,
-              style: TextStyle(fontSize: 14.sp, fontWeight: isCheck.isTrue ? FontWeight.w500 : FontWeight.w400),
-            )
+            if (!isValEmpty(title))
+              Text(
+                title,
+                style: TextStyle(fontSize: 14.sp, fontWeight: isCheck.isTrue ? FontWeight.w500 : FontWeight.w400),
+              )
           ],
         ),
       ),
