@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
-import 'package:pingaksh_mobile/controller/dialog_controller.dart';
-import 'package:pingaksh_mobile/data/model/product/product_colors_model.dart';
-import 'package:pingaksh_mobile/data/model/product/product_size_model.dart';
 
-import '../../../view/product/product_controller.dart';
+import '../../../controller/dialog_controller.dart';
+import '../../../view/products/product_controller.dart';
+import '../../model/product/product_colors_model.dart';
 import '../../model/product/product_model.dart';
+import '../../model/product/product_size_model.dart';
 
 class ProductRepository {
   static Map<String, dynamic> productList = {

@@ -5,9 +5,9 @@ import 'package:get/get.dart';
 import 'package:pingaksh_mobile/data/model/watchlist/watchlist_model.dart';
 import 'package:pingaksh_mobile/res/app_bar.dart';
 import 'package:pingaksh_mobile/view/collections/widgets/add_watchlist/add_watchlist_controller.dart';
-import 'package:pingaksh_mobile/view/product/product_controller.dart';
 
 import '../../../../exports.dart';
+import '../../../products/product_controller.dart';
 import '../../watch_list/components/watchlist_tile.dart';
 
 class AddWatchlistScreen extends StatelessWidget {

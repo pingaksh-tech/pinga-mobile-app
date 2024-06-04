@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:pingaksh_mobile/exports.dart';
-import 'package:pingaksh_mobile/res/app_bar.dart';
-import 'package:pingaksh_mobile/res/app_network_image.dart';
-import 'package:pingaksh_mobile/view/category/category_controller.dart';
 
+import '../../exports.dart';
+import '../../res/app_bar.dart';
+import '../../res/app_network_image.dart';
+import '../../res/tab_bar.dart';
+import 'category_controller.dart';
 import 'components/category_tile.dart';
 
 class CategoryScreen extends StatelessWidget {
@@ -20,92 +21,74 @@ class CategoryScreen extends StatelessWidget {
       () => DefaultTabController(
         length: 2,
         child: Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.surface,
+          // backgroundColor: Theme.of(context).colorScheme.surface,
           appBar: MyAppBar(
             backgroundColor: Theme.of(context).colorScheme.surface,
             shadowColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.3),
             title: con.brandTitle.value,
             bottom: PreferredSize(
               preferredSize: Size.fromHeight(40.h),
-              child: AppTextField(
-                hintText: "Search",
-                controller: con.searchCon.value,
-                padding: EdgeInsets.only(left: defaultPadding, right: defaultPadding),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(defaultRadius),
-                  ),
-                  borderSide: BorderSide.none,
-                ),
-                prefixIcon: Icon(
-                  Icons.search_rounded,
-                  size: 25.sp,
-                  color: const Color(0xFFC2C2C2),
-                ),
-                contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.3, horizontal: defaultPadding),
-                suffixIcon: con.showCloseButton.isTrue
-                    ? Center(
-                        child: SvgPicture.asset(
-                          AppAssets.crossIcon,
-                          color: Theme.of(context).primaryColor, // ignore: deprecated_member_use
-                        ),
-                      )
-                    : null,
-                suffixOnTap: con.showCloseButton.isTrue
-                    ? () {
-                        FocusScope.of(context).unfocus();
+              child: Column(
+                children: [
+                  AppTextField(
+                    hintText: "Search",
+                    controller: con.searchCon.value,
+                    padding: EdgeInsets.only(left: defaultPadding, right: defaultPadding),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(defaultRadius),
+                      ),
+                      borderSide: BorderSide.none,
+                    ),
+                    textFieldType: TextFieldType.search,
+                    contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.3, horizontal: defaultPadding),
+                    suffixIcon: con.showCloseButton.isTrue
+                        ? Center(
+                            child: SvgPicture.asset(
+                              AppAssets.crossIcon,
+                              color: Theme.of(context).primaryColor, // ignore: deprecated_member_use
+                            ),
+                          )
+                        : null,
+                    suffixOnTap: con.showCloseButton.isTrue
+                        ? () {
+                            FocusScope.of(context).unfocus();
+                            con.showCloseButton.value = false;
+                            con.searchCon.value.clear();
+                          }
+                        : null,
+                    onChanged: (value) {
+                      if (con.searchCon.value.text.isNotEmpty) {
+                        con.showCloseButton.value = true;
+                      } else {
                         con.showCloseButton.value = false;
-                        con.searchCon.value.clear();
                       }
-                    : null,
-                onChanged: (value) {
-                  if (con.searchCon.value.text.isNotEmpty) {
-                    con.showCloseButton.value = true;
-                  } else {
-                    con.showCloseButton.value = false;
-                  }
-                },
+                    },
+                  ),
+                  (defaultPadding / 2).verticalSpace,
+                ],
               ),
             ),
           ),
-          body: Padding(
-            padding: EdgeInsets.symmetric(vertical: defaultPadding),
+          body: Container(
+            padding: EdgeInsets.zero,
             child: Column(
               children: [
+                (defaultPadding / 2).verticalSpace,
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: defaultPadding),
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: AppColors.lightGrey,
+                      color: AppColors.textFiledBorder,
                     ),
                     borderRadius: BorderRadius.circular(defaultRadius - 3),
                   ),
-                  child: TabBar(
-                    dividerColor: Colors.transparent,
-                    padding: EdgeInsets.symmetric(vertical: defaultPadding / 6, horizontal: defaultPadding / 6),
-                    labelColor: Theme.of(context).scaffoldBackgroundColor,
-                    labelStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w600,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                    unselectedLabelColor: Colors.black.withOpacity(0.4),
-                    unselectedLabelStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Theme.of(context).textTheme.bodyMedium?.color,
-                        ),
-                    automaticIndicatorColorAdjustment: true,
-                    indicatorWeight: double.minPositive,
-                    indicator: BoxDecoration(
-                      borderRadius: BorderRadius.circular(defaultRadius - 4),
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    labelPadding: EdgeInsets.all(defaultPadding / 1.5),
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    splashBorderRadius: BorderRadius.circular(defaultRadius - 4),
+                  child: MyTabBar(
+                    backgroundColor: Theme.of(context).cardColor,
                     tabs: [
-                      const Text("Category"),
+                      const Text(
+                        "Category",
+                      ),
                       Text(
                         "Latest Product (${con.latestProductList.length})",
                       ),

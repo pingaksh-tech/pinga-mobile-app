@@ -244,7 +244,7 @@ class _AppButtonState extends State<AppButton> {
 
   Color? get titleColor {
     if (widget.buttonType == ButtonType.outline) {
-      return Theme.of(context).colorScheme.secondary /*.withOpacity(disableOpacity)*/;
+      return Theme.of(context).colorScheme.primary /*.withOpacity(disableOpacity)*/;
     } else {
       return AppColors.getColorOnBackground(Theme.of(context).primaryColor) /*.withOpacity(disableOpacity)*/;
     }

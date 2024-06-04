@@ -1,15 +1,15 @@
 import 'package:get/get.dart';
-import 'package:pingaksh_mobile/view/bottombar/bottombar_screen.dart';
-import 'package:pingaksh_mobile/view/category/category_screen.dart';
-import 'package:pingaksh_mobile/view/collections/watch_list/watch_list_screen.dart';
-import 'package:pingaksh_mobile/view/collections/widgets/add_watchlist/add_watchlist_screen.dart';
-import 'package:pingaksh_mobile/view/product/product_screen.dart';
-import 'package:pingaksh_mobile/view/product/widgets/filter/filter_screen.dart';
 
 import '../view/auth_flow/auth_screen.dart';
+import '../view/bottombar/bottombar_screen.dart';
 import '../view/cart/cart_screen.dart';
+import '../view/category/category_screen.dart';
+import '../view/collections/watch_list/watch_list_screen.dart';
+import '../view/collections/widgets/add_watchlist/add_watchlist_screen.dart';
 import '../view/dashboard/dashboard_screen.dart';
 import '../view/product_details/product_details_screen.dart';
+import '../view/products/product_screen.dart';
+import '../view/products/widgets/filter/filter_screen.dart';
 import '../view/profile/profile_screen.dart';
 import '../view/splash/splash_screen.dart';
 import 'app_routes.dart';
