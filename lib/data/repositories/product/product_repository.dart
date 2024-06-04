@@ -5,8 +5,8 @@ import '../../../view/products/product_controller.dart';
 import '../../model/product/product_colors_model.dart';
 import '../../model/product/product_model.dart';
 import '../../model/product/product_size_model.dart';
-import 'package:pingaksh_mobile/data/model/product/variant_product_model.dart';
-import 'package:pingaksh_mobile/view/product_details/widgets/variants/variants_controller.dart';
+import '../../model/product/variant_product_model.dart';
+import '../../../view/product_details/widgets/variants/variants_controller.dart';
 
 class ProductRepository {
   static Map<String, dynamic> productList = {
@@ -271,13 +271,13 @@ class ProductRepository {
     "message": "variants fetched successfully",
     "data": {
       "products": [
-        {"id": "p1", "image": "https://media.istockphoto.com/id/1651974076/photo/golden-wedding-rings-on-trendy-white-podium-aesthetic-still-life-art-photography.webp?b=1&s=170667a&w=0&k=20&c=JYqzNrZjGH5c4OxWrjhvebI5_6rBCJ9JRZPe9cj_-rM=", "name": "Solitaire Ring", "price": 2344, "color_id": "P", "size_id": "50", "quantity": 3, "diamond": "ds"},
-        {"id": "p2", "image": "https://media.istockphoto.com/id/1651942696/photo/diamond-ring-isolated-on-white-background.webp?b=1&s=170667a&w=0&k=20&c=sOaX2vYuPtkuJce37Umflp_Vwn-F4cd7ryx0ltEexsE=", "name": "Diamond Necklace", "price": 3999, "color_id": "BK", "size_id": "14", "quantity": 1, "diamond": "ds"},
-        {"id": "p3", "image": "https://media.istockphoto.com/id/1651974076/photo/golden-wedding-rings-on-trendy-white-podium-aesthetic-still-life-art-photography.webp?b=1&s=170667a&w=0&k=20&c=JYqzNrZjGH5c4OxWrjhvebI5_6rBCJ9JRZPe9cj_-rM=", "name": "Gold Bracelet", "price": 799, "color_id": "C", "size_id": "17", "quantity": 5, "diamond": "ds"},
-        {"id": "p4", "image": "https://media.istockphoto.com/id/1318401740/photo/indian-gold-jewellery-stock-photo.webp?b=1&s=170667a&w=0&k=20&c=xbkn3_S5igjnfBDOHkuGCfg4BmGj8U2djQSvdDuccC8=", "name": "Silver Earrings", "price": 299, "color_id": "D", "size_id": "32", "quantity": 2, "diamond": "ds"},
-        {"id": "p5", "image": "https://media.istockphoto.com/id/1651974076/photo/golden-wedding-rings-on-trendy-white-podium-aesthetic-still-life-art-photography.webp?b=1&s=170667a&w=0&k=20&c=JYqzNrZjGH5c4OxWrjhvebI5_6rBCJ9JRZPe9cj_-rM=", "name": "Platinum Band", "price": 1799, "color_id": "T", "size_id": "45", "quantity": 10, "diamond": "ds"},
-        {"id": "p6", "image": "https://media.istockphoto.com/id/1318401740/photo/indian-gold-jewellery-stock-photo.webp?b=1&s=170667a&w=0&k=20&c=xbkn3_S5igjnfBDOHkuGCfg4BmGj8U2djQSvdDuccC8=", "name": "Emerald Bracelet", "price": 899, "color_id": "R", "size_id": "22", "quantity": 6, "diamond": "ds"},
-        {"id": "p7", "image": "https://media.istockphoto.com/id/1318401740/photo/indian-gold-jewellery-stock-photo.webp?b=1&s=170667a&w=0&k=20&c=xbkn3_S5igjnfBDOHkuGCfg4BmGj8U2djQSvdDuccC8=", "name": "Pearl Necklace", "price": 599, "color_id": "W", "size_id": "27", "quantity": 2, "diamond": "ds"},
+        {"id": "p1", "image": "https://media.istockphoto.com/id/1651974076/photo/golden-wedding-rings-on-trendy-white-podium-aesthetic-still-life-art-photography.webp?b=1&s=170667a&w=0&k=20&c=JYqzNrZjGH5c4OxWrjhvebI5_6rBCJ9JRZPe9cj_-rM=", "name": "Solitaire Ring", "price": 2344, "color_id": "P", "size_id": "50", "quantity": 0, "diamond": "ds"},
+        {"id": "p2", "image": "https://media.istockphoto.com/id/1651942696/photo/diamond-ring-isolated-on-white-background.webp?b=1&s=170667a&w=0&k=20&c=sOaX2vYuPtkuJce37Umflp_Vwn-F4cd7ryx0ltEexsE=", "name": "Diamond Necklace", "price": 3999, "color_id": "BK", "size_id": "14", "quantity": 0, "diamond": "ds"},
+        {"id": "p3", "image": "https://media.istockphoto.com/id/1651974076/photo/golden-wedding-rings-on-trendy-white-podium-aesthetic-still-life-art-photography.webp?b=1&s=170667a&w=0&k=20&c=JYqzNrZjGH5c4OxWrjhvebI5_6rBCJ9JRZPe9cj_-rM=", "name": "Gold Bracelet", "price": 799, "color_id": "C", "size_id": "17", "quantity": 0, "diamond": "ds"},
+        {"id": "p4", "image": "https://media.istockphoto.com/id/1318401740/photo/indian-gold-jewellery-stock-photo.webp?b=1&s=170667a&w=0&k=20&c=xbkn3_S5igjnfBDOHkuGCfg4BmGj8U2djQSvdDuccC8=", "name": "Silver Earrings", "price": 299, "color_id": "D", "size_id": "32", "quantity": 0, "diamond": "ds"},
+        {"id": "p5", "image": "https://media.istockphoto.com/id/1651974076/photo/golden-wedding-rings-on-trendy-white-podium-aesthetic-still-life-art-photography.webp?b=1&s=170667a&w=0&k=20&c=JYqzNrZjGH5c4OxWrjhvebI5_6rBCJ9JRZPe9cj_-rM=", "name": "Platinum Band", "price": 1799, "color_id": "T", "size_id": "45", "quantity": 0, "diamond": "ds"},
+        {"id": "p6", "image": "https://media.istockphoto.com/id/1318401740/photo/indian-gold-jewellery-stock-photo.webp?b=1&s=170667a&w=0&k=20&c=xbkn3_S5igjnfBDOHkuGCfg4BmGj8U2djQSvdDuccC8=", "name": "Emerald Bracelet", "price": 899, "color_id": "R", "size_id": "22", "quantity": 0, "diamond": "ds"},
+        {"id": "p7", "image": "https://media.istockphoto.com/id/1318401740/photo/indian-gold-jewellery-stock-photo.webp?b=1&s=170667a&w=0&k=20&c=xbkn3_S5igjnfBDOHkuGCfg4BmGj8U2djQSvdDuccC8=", "name": "Pearl Necklace", "price": 599, "color_id": "W", "size_id": "27", "quantity": 0, "diamond": "ds"},
       ],
     }
   };
