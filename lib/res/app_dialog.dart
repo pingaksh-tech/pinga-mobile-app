@@ -737,11 +737,11 @@ class AppDialogs {
                           shrinkWrap: true,
                           itemBuilder: (context, index) => ListTile(
                             title: Text(
-                              dialogCon.productColorList[index].size ?? '',
+                              dialogCon.productColorList[index].color ?? '',
                               style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
                             ),
                             onTap: () {
-                              Get.back(result: dialogCon.productColorList[index].size);
+                              Get.back(result: dialogCon.productColorList[index].color);
                             },
                           ),
                           separatorBuilder: (context, index) => Divider(height: 1.h),
@@ -763,7 +763,7 @@ class AppDialogs {
     return Get.dialog(
       AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.r)),
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         titlePadding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding).copyWith(bottom: 0),
         contentPadding: EdgeInsets.all(defaultPadding * 1.2).copyWith(top: defaultPadding / 2),
         actionsPadding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(bottom: defaultPadding),

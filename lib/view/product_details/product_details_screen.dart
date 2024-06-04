@@ -2,18 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:pingaksh_mobile/packages/cached_network_image/cached_network_image.dart';
-import 'package:pingaksh_mobile/res/app_bar.dart';
-import 'package:pingaksh_mobile/res/app_dialog.dart';
-import 'package:pingaksh_mobile/view/product_details/components/price_breakup_dialog.dart';
-import 'package:pingaksh_mobile/view/product_details/components/custom_product_watch_button.dart';
-import 'package:pingaksh_mobile/widgets/sliver_delegate.dart';
-import 'package:pingaksh_mobile/widgets/tab_bar.dart';
-import 'package:pingaksh_mobile/view/product_details/widgets/product_info/product_info.dart';
-import 'package:pingaksh_mobile/view/product_details/widgets/variants/variants.dart';
+import 'widgets/product_info/product_info.dart';
+import 'widgets/variants/variants.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../exports.dart';
+import '../../res/app_bar.dart';
+import '../../res/app_network_image.dart';
+import '../../widgets/sliver_delegate.dart';
+import '../../widgets/tab_bar.dart';
+import 'components/custom_product_watch_button.dart';
+import 'components/price_breakup_dialog.dart';
 import 'product_details_controller.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
@@ -194,11 +193,7 @@ class ProductDetailsScreen extends StatelessWidget {
                                 size: 58.h,
                                 icon: AppAssets.jewelleryWearIcon,
                                 title: "Wear",
-                                onPressed: () {
-                                  AppDialogs.selectColorDialog(context)?.then(
-                                    (value) => printOkStatus(value),
-                                  );
-                                },
+                                onPressed: () {},
                               ),
 
                               /// Watch
@@ -244,7 +239,7 @@ class ProductDetailsScreen extends StatelessWidget {
                       child: Container(
                         color: AppColors.background,
                         padding: EdgeInsets.symmetric(horizontal: defaultPadding),
-                        child: MyTabBar(
+                        child: MySlideTabBar(
                             backgroundColor: AppColors.background,
                             borderRadius: BorderRadius.vertical(top: Radius.circular(4.r)),
                             border: Border.all(
@@ -276,11 +271,37 @@ class ProductDetailsScreen extends StatelessWidget {
                 VariantsTab(),
 
                 /// FAMILY PRODUCT TAB
-                Container(color: Colors.yellow),
+                Container(
+                  padding: EdgeInsets.all(defaultPadding).copyWith(top: 50),
+                  child: Text(
+                    "No family products available.",
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ),
               ],
             ),
           ),
         ),
+        // bottom sheet
+        /*     bottomSheet: Container(
+          height: 90,
+          padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding),
+          color: AppColors.background,
+          child: Row(
+            children: [
+              sizeSelectorButton(
+                context,
+                selectedSize: ''.obs,
+                backgroundColor: Colors.transparent,
+              ),
+              colorSelectorButton(
+                context,
+                selectedColor: ''.obs,
+                backgroundColor: Colors.transparent,
+              )
+            ],
+          ),
+        ),*/
       );
     });
   }

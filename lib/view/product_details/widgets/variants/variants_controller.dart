@@ -1,9 +1,16 @@
 import 'package:get/get.dart';
 
+import '../../../../data/model/product/variant_product_model.dart';
+import '../../../../data/repositories/product/product_repository.dart';
+
 class VariantsController extends GetxController {
-  RxInt quantity = 0.obs;
+  RxList<ProductVariant> variantList = <ProductVariant>[].obs;
 
-  RxString get color => "-".obs;
+  @override
+  void onReady() async {
+    super.onReady();
 
-  RxString get size => "0".obs;
+    /// API CALL
+    await ProductRepository.getProductVariantAPI();
+  }
 }

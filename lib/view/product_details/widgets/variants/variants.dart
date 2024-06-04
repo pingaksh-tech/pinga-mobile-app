@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:pingaksh_mobile/exports.dart';
 import 'package:pingaksh_mobile/packages/cached_network_image/cached_network_image.dart';
@@ -16,22 +17,31 @@ class VariantsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(top: defaultPadding * 3),
-      children: [
-        for (int i = 0; i <= 3; i++)
-          variantDetailTile(
-            context,
-            image: "https://kisna.com/cdn/shop/files/KFLR11133-Y-1_1800x1800.jpg?v=1715687553",
-            title: "PLKMR7423746(SIVA 14)",
-            price: 37028 + i,
-          ),
-      ],
+    return ListView.builder(
+      padding: EdgeInsets.all(defaultPadding).copyWith(top: 48),
+      itemCount: con.variantList.length,
+      itemBuilder: (context, index) => variantDetailTile(
+        context,
+        image: "https://kisna.com/cdn/shop/files/KFLR11133-Y-1_1800x1800.jpg?v=1715687553",
+        title: con.variantList[index].name,
+        price: con.variantList[index].price,
+        quantity: con.variantList[index].quantity,
+        productSize: con.variantList[index].sizeId,
+        productColor: con.variantList[index].colorId,
+      ),
     );
   }
 
   /// VARIANT DETAIL TILE
-  Widget variantDetailTile(BuildContext context, {String? image, String? title, num? price}) {
+  Widget variantDetailTile(
+    BuildContext context, {
+    String? image,
+    String? title,
+    RxString? productSize,
+    RxString? productColor,
+    num? price,
+    RxInt? quantity,
+  }) {
     return Obx(() {
       return Container(
         decoration: BoxDecoration(
@@ -55,13 +65,10 @@ class VariantsTab extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 /// TITLE
-                Obx(() {
-                  return Text(
-                    title ?? "",
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 11.sp, color: AppColors.font.withOpacity(.6)),
-                  );
-                }),
-                4.verticalSpace,
+                Text(
+                  title ?? "",
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 11.sp, color: AppColors.font.withOpacity(.6)),
+                ),
 
                 /// PRICE
                 Text(
@@ -79,12 +86,35 @@ class VariantsTab extends StatelessWidget {
                   child: Row(
                     children: [
                       /// Size Selector
-                      sizeSelectorButton(context, selectedSize: con.size),
+                      sizeSelectorButton(context, selectedSize: productSize ?? RxString("")),
                       6.horizontalSpace,
 
                       /// Color Selector
-                      colorSelectorButton(context, selectedColor: con.color),
-                      defaultPadding.horizontalSpace,
+                      colorSelectorButton(context, selectedColor: productColor ?? RxString("")),
+                      (defaultPadding / 2).horizontalSpace,
+                      GestureDetector(
+                        onTap: () {
+                          Get.toNamed(AppRoutes.remarkScreen);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(defaultPadding / 2),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(defaultRadius), color: Theme.of(context).scaffoldBackgroundColor),
+                          child: Column(
+                            children: [
+                              SvgPicture.asset(
+                                AppAssets.remarkOutlineIcon,
+                                height: 14.h,
+                                colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                              ),
+                              Text(
+                                "RMK",
+                                style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 10.sp, color: AppColors.primary),
+                              )
+                            ],
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),
@@ -95,20 +125,18 @@ class VariantsTab extends StatelessWidget {
             /// Plus minus tile
             plusMinusTile(
               context,
-              textValue: con.quantity,
+              textValue: quantity ?? RxInt(0),
               onDecrement: (value) {
                 printYellow(value);
-                con.quantity.value = value;
-                con.quantity.refresh();
-                printOkStatus(con.quantity);
+                quantity?.value = value;
+
+                printOkStatus(quantity);
               },
               onIncrement: (value) {
                 printYellow(value);
-                con.quantity.value = value;
+                quantity?.value = value;
 
-                con.quantity.refresh();
-
-                printOkStatus(con.quantity);
+                printOkStatus(quantity);
               },
             ),
           ],

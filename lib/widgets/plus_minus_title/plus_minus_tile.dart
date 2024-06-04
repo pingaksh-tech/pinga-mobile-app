@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:pingaksh_mobile/res/app_dialog.dart';
 import '../../../../exports.dart';
+import '../../res/app_dialog.dart';
 
 Widget plusMinusTile(
   BuildContext context, {

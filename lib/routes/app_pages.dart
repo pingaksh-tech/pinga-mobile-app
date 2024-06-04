@@ -12,6 +12,7 @@ import '../view/products/product_screen.dart';
 import '../view/products/widgets/filter/filter_screen.dart';
 import '../view/profile/profile_screen.dart';
 import '../view/splash/splash_screen.dart';
+import '../widgets/add_remark/add_remark_screen.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -40,5 +41,6 @@ class AppPages {
     _getPage(name: AppRoutes.filterScreen, page: () => FilterScreen()),
     _getPage(name: AppRoutes.watchListScreen, page: () => WatchListScreen()),
     _getPage(name: AppRoutes.addWatchListScreen, page: () => AddWatchlistScreen()),
+    _getPage(name: AppRoutes.remarkScreen, page: () => AddRemarkScreen()),
   ];
 }
