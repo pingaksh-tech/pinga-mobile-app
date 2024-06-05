@@ -24,6 +24,18 @@ class ProductScreen extends StatelessWidget {
           backgroundColor: Theme.of(context).colorScheme.surface,
           shadowColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.3),
           title: con.categoryName.value,
+          actions: [
+            AppIconButton(
+              // backgroundColor: AppColors.primary.withOpacity(0.1),
+              icon: SvgPicture.asset(
+                AppAssets.cart,
+                colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+              ),
+              onPressed: () {
+                Get.toNamed(AppRoutes.cartScreen);
+              },
+            ),
+          ],
 
           /// SORTING AND FILTERS
           bottom: PreferredSize(
@@ -102,7 +114,7 @@ class ProductScreen extends StatelessWidget {
                   imageUrl: con.productsList[index].product?.productImage ?? "",
                   productName: con.productsList[index].product?.title ?? "",
                   productPrice: con.productsList[index].product?.price.toString() ?? "",
-                  // productQuantity: con.productsList[index].quantity.obs,
+                  productQuantity: con.productsList[index].quantity,
                   likeOnChanged: (value) {
                     /// Add product to wishlist
                     if (!con.wishlistList.contains(con.productsList[index])) {

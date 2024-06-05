@@ -9,7 +9,9 @@ class AddRemarkController extends GetxController {
   RxBool disableButton = true.obs;
 
   RxBool isSelected = false.obs;
-  RxList<String> selectedRemark = <String>[].obs;
+
+  // RxList<String> selectedRemark = <String>[].obs;
+  RxString selectedRemark = "".obs;
 
   RxList<String> remarkList = [
     "Big Loop",

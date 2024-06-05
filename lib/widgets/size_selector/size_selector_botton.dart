@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -111,7 +112,7 @@ Widget horizontalSelectorButton(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SvgPicture.asset(
-                    selectableItemType.icon,
+                    remarkSelected?.isTrue ?? false ? selectableItemType.selectedIcon ?? '' : selectableItemType.icon,
                     height: switch (sizeColorSelectorButtonType) {
                       SizeColorSelectorButtonType.small => 12.h,
                       SizeColorSelectorButtonType.medium => 14.h,
@@ -158,6 +159,7 @@ Widget horizontalSelectorButton(
                       SelectableItemType.diamond => " Oval ",
                       SelectableItemType.remarks => "Remark",
                     },
+                    textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontSize: switch (sizeColorSelectorButtonType) {
                           SizeColorSelectorButtonType.small => 8.h,

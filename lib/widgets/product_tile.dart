@@ -41,7 +41,7 @@ class _ProductTileState extends State<ProductTile> {
   SizeModel sizeModel = SizeModel();
   ColorModel colorModel = ColorModel();
   Diamond diamondModel = Diamond();
-  String selectedRemark = "";
+  RxString selectedRemark = "".obs;
 
   @override
   Widget build(BuildContext context) {
@@ -138,35 +138,12 @@ class _ProductTileState extends State<ProductTile> {
             padding: EdgeInsets.symmetric(horizontal: defaultPadding / 6),
             child: Row(
               children: [
-                horizontalSelectorButton(
-                  context,
-                  selectedSize: RxString(sizeModel.size ?? ""),
-                  selectableItemType: SelectableItemType.size,
-                  sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
-                  sizeOnChanged: (value) {
-                    /// Return Selected Size
-                    if (value != null && (value.runtimeType == SizeModel)) {
-                      sizeModel = (value as SizeModel);
-
-                      printYellow(sizeModel);
-                    }
-                  },
-                ),
+                /// Size
+                sizeSelector(),
                 (defaultPadding / 4).horizontalSpace,
-                horizontalSelectorButton(
-                  context,
-                  selectedColor: RxString(colorModel.color ?? ""),
-                  selectableItemType: SelectableItemType.color,
-                  sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
-                  colorOnChanged: (value) {
-                    /// Return Selected Color
-                    if (value != null && (value.runtimeType == ColorModel)) {
-                      colorModel = (value as ColorModel);
 
-                      printYellow(colorModel);
-                    }
-                  },
-                ),
+                /// Color
+                colorSelector(),
               ],
             ),
           ),
@@ -176,33 +153,11 @@ class _ProductTileState extends State<ProductTile> {
             child: Row(
               children: [
                 /// Diamond
-                horizontalSelectorButton(
-                  context,
-                  selectedDiamond: "SOL".obs,
-                  selectableItemType: SelectableItemType.diamond,
-                  sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
-                  rubyOnChanged: (value) {
-                    /// Return Selected Diamond
-                    if (value != null && (value.runtimeType == Diamond)) {
-                      diamondModel = (value as Diamond);
-
-                      printYellow(diamondModel);
-                    }
-                  },
-                ),
+                diamondSelector(),
                 (defaultPadding / 4).horizontalSpace,
 
                 /// Remark
-                horizontalSelectorButton(
-                  context,
-                  remarkSelected: selectedRemark.isNotEmpty.obs,
-                  selectableItemType: SelectableItemType.remarks,
-                  sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
-                  remarkOnChanged: (value) {
-                    selectedRemark = value;
-                    printOkStatus(selectedRemark);
-                  },
-                ),
+                remarkSelector(),
               ],
             ),
           ),
@@ -235,22 +190,9 @@ class _ProductTileState extends State<ProductTile> {
                   ),
                 ),
                 (defaultPadding / 4).horizontalSpace,
-                plusMinusTile(
-                  context,
-                  textValue: widget.productQuantity ?? RxInt(0),
-                  onDecrement: (value) {
-                    printYellow(value);
-                    widget.productQuantity?.value = value;
 
-                    printOkStatus(widget.productQuantity);
-                  },
-                  onIncrement: (value) {
-                    printYellow(value);
-                    widget.productQuantity?.value = value;
-
-                    printOkStatus(widget.productQuantity);
-                  },
-                ),
+                /// Increment / Decrement Tile
+                incrementDecrementTile(),
               ],
             ),
           ),
@@ -273,6 +215,7 @@ class _ProductTileState extends State<ProductTile> {
           boxShadow: defaultShadowAllSide,
         ),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AppNetworkImage(
               height: Get.width * 0.18,
@@ -292,7 +235,28 @@ class _ProductTileState extends State<ProductTile> {
                   ),
                   Text(
                     UiUtils.amountFormat(widget.productPrice, decimalDigits: 0),
-                    style: AppTextStyle.subtitleStyle(context),
+                    style: AppTextStyle.subtitleStyle(context).copyWith(fontSize: 12.sp),
+                  ),
+                  4.verticalSpace,
+
+                  /// SELECTORS
+                  Row(
+                    children: [
+                      /// Size Selector
+                      sizeSelector(isFlexible: true, direction: Axis.vertical),
+                      8.horizontalSpace,
+
+                      /// Color Selector
+                      colorSelector(isFlexible: true, direction: Axis.vertical),
+                      8.horizontalSpace,
+
+                      /// Diamond Selector
+                      diamondSelector(isFlexible: true, direction: Axis.vertical),
+                      8.horizontalSpace,
+
+                      /// Remark
+                      remarkSelector(isFlexible: true, direction: Axis.vertical),
+                    ],
                   ),
                 ],
               ),
@@ -329,6 +293,7 @@ class _ProductTileState extends State<ProductTile> {
               imageUrl: widget.imageUrl,
               height: 44.h,
               width: 44.h,
+              fit: BoxFit.cover,
               borderRadius: BorderRadius.circular(defaultRadius / 2),
             ),
           ),
@@ -359,60 +324,15 @@ class _ProductTileState extends State<ProductTile> {
                 Row(
                   children: [
                     /// Size Selector
-                    horizontalSelectorButton(
-                      context,
-                      isFlexible: true,
-                      selectedSize: RxString(sizeModel.size ?? ""),
-                      sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
-                      selectableItemType: SelectableItemType.size,
-                      axisDirection: Axis.vertical,
-                      sizeOnChanged: (value) {
-                        /// Return Selected Size
-                        if (value != null && (value.runtimeType == SizeModel)) {
-                          sizeModel = (value as SizeModel);
-
-                          printYellow(sizeModel);
-                        }
-                      },
-                    ),
+                    sizeSelector(isFlexible: true, direction: Axis.vertical),
                     8.horizontalSpace,
 
                     /// Color Selector
-                    horizontalSelectorButton(
-                      context,
-                      isFlexible: true,
-                      selectedColor: RxString(colorModel.color ?? ""),
-                      sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
-                      selectableItemType: SelectableItemType.color,
-                      axisDirection: Axis.vertical,
-                      colorOnChanged: (value) {
-                        /// Return Selected Color
-                        if (value != null && (value.runtimeType == ColorModel)) {
-                          colorModel = (value as ColorModel);
-
-                          printYellow(colorModel);
-                        }
-                      },
-                    ),
+                    colorSelector(isFlexible: true, direction: Axis.vertical),
                     8.horizontalSpace,
 
                     /// Diamond Selector
-                    horizontalSelectorButton(
-                      context,
-                      isFlexible: true,
-                      selectedDiamond: ''.obs,
-                      sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
-                      selectableItemType: SelectableItemType.diamond,
-                      axisDirection: Axis.vertical,
-                      rubyOnChanged: (value) {
-                        /// Return Selected Diamond
-                        if (value != null && (value.runtimeType == Diamond)) {
-                          diamondModel = (value as Diamond);
-
-                          printYellow(diamondModel);
-                        }
-                      },
-                    ),
+                    diamondSelector(isFlexible: true, direction: Axis.vertical),
                   ],
                 ),
               ],
@@ -422,26 +342,92 @@ class _ProductTileState extends State<ProductTile> {
           /// Plus minus tile
           Expanded(
             flex: 4,
-            child: plusMinusTile(
-              context,
-              size: 20.h,
-              textValue: widget.productQuantity ?? RxInt(0),
-              onDecrement: (value) {
-                printYellow(value);
-                widget.productQuantity?.value = value;
-
-                printOkStatus(widget.productQuantity);
-              },
-              onIncrement: (value) {
-                printYellow(value);
-                widget.productQuantity?.value = value;
-
-                printOkStatus(widget.productQuantity);
-              },
-            ),
+            child: incrementDecrementTile(height: 20.h),
           )
         ],
       ),
     );
   }
+
+  Widget sizeSelector({bool isFlexible = false, Axis direction = Axis.horizontal}) => horizontalSelectorButton(
+        context,
+        isFlexible: isFlexible,
+        selectedSize: RxString(sizeModel.size ?? ""),
+        sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+        selectableItemType: SelectableItemType.size,
+        axisDirection: direction,
+        sizeOnChanged: (value) {
+          /// Return Selected Size
+          if (value != null && (value.runtimeType == SizeModel)) {
+            sizeModel = (value as SizeModel);
+
+            printYellow(sizeModel);
+          }
+        },
+      );
+
+  Widget colorSelector({bool isFlexible = false, Axis direction = Axis.horizontal}) => horizontalSelectorButton(
+        context,
+        isFlexible: isFlexible,
+        selectedColor: RxString(colorModel.color ?? ""),
+        sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+        selectableItemType: SelectableItemType.color,
+        axisDirection: direction,
+        colorOnChanged: (value) {
+          /// Return Selected Color
+          if (value != null && (value.runtimeType == ColorModel)) {
+            colorModel = (value as ColorModel);
+
+            printYellow(colorModel);
+          }
+        },
+      );
+
+  Widget diamondSelector({bool isFlexible = false, Axis direction = Axis.horizontal}) => horizontalSelectorButton(
+        context,
+        isFlexible: isFlexible,
+        selectedDiamond: ''.obs,
+        sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+        selectableItemType: SelectableItemType.diamond,
+        axisDirection: direction,
+        rubyOnChanged: (value) {
+          /// Return Selected Diamond
+          if (value != null && (value.runtimeType == Diamond)) {
+            diamondModel = (value as Diamond);
+
+            printYellow(diamondModel);
+          }
+        },
+      );
+
+  Widget incrementDecrementTile({double? height}) => plusMinusTile(
+        context,
+        size: height,
+        textValue: widget.productQuantity ?? RxInt(0),
+        onDecrement: (value) {
+          printYellow(value);
+          widget.productQuantity?.value = value;
+
+          printOkStatus(widget.productQuantity);
+        },
+        onIncrement: (value) {
+          printYellow(value);
+          widget.productQuantity?.value = value;
+
+          printOkStatus(widget.productQuantity);
+        },
+      );
+
+  Widget remarkSelector({bool isFlexible = false, Axis direction = Axis.horizontal}) => horizontalSelectorButton(
+        context,
+        isFlexible: isFlexible,
+        remarkSelected: RxBool(selectedRemark.isNotEmpty),
+        selectableItemType: SelectableItemType.remarks,
+        sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+        axisDirection: direction,
+        remarkOnChanged: (value) {
+          selectedRemark.value = value;
+          printOkStatus(selectedRemark);
+        },
+      );
 }

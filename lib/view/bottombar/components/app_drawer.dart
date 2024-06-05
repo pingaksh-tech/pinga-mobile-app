@@ -43,8 +43,6 @@ class AppDrawer extends StatelessWidget {
               )
             ],
           ),
-          10.verticalSpace,
-          const Divider(height: 1),
 
           ListTile(
             leading: SvgPicture.asset(

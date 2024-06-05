@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:get/get.dart';
+
 GetProductModel getProductModelFromJson(String str) => GetProductModel.fromJson(json.decode(str));
 
 String getProductModelToJson(GetProductModel data) => json.encode(data.toJson());
@@ -19,13 +21,15 @@ class GetProductModel {
     this.data,
   });
 
-  factory GetProductModel.fromJson(Map<String, dynamic> json) => GetProductModel(
+  factory GetProductModel.fromJson(Map<String, dynamic> json) =>
+      GetProductModel(
         success: json["success"],
         message: json["message"],
         data: json["data"] == null ? null : ProductData.fromJson(json["data"]),
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() =>
+      {
         "success": success,
         "message": message,
         "data": data?.toJson(),
@@ -41,12 +45,14 @@ class ProductData {
     this.total,
   });
 
-  factory ProductData.fromJson(Map<String, dynamic> json) => ProductData(
+  factory ProductData.fromJson(Map<String, dynamic> json) =>
+      ProductData(
         products: json["products"] == null ? [] : List<ProductListModel>.from(json["products"]!.map((x) => ProductListModel.fromJson(x))),
         total: json["total"]?.toDouble(),
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() =>
+      {
         "products": products == null ? [] : List<dynamic>.from(products!.map((x) => x.toJson())),
         "total": total,
       };
@@ -56,7 +62,7 @@ class ProductListModel {
   final String? id;
   final String? user;
   final ProductProduct? product;
-  final int? quantity;
+  final RxInt? quantity;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
@@ -69,20 +75,22 @@ class ProductListModel {
     this.updatedAt,
   });
 
-  factory ProductListModel.fromJson(Map<String, dynamic> json) => ProductListModel(
+  factory ProductListModel.fromJson(Map<String, dynamic> json) =>
+      ProductListModel(
         id: json["_id"],
         user: json["user"],
         product: json["product"] == null ? null : ProductProduct.fromJson(json["product"]),
-        quantity: json["quantity"],
+        quantity: json["quantity"] == null ? null : RxInt(int.tryParse(json["quantity"].toString()) ?? 0),
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() =>
+      {
         "_id": id,
         "user": user,
         "product": product?.toJson(),
-        "quantity": quantity,
+        "quantity": quantity?.value,
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
       };
@@ -119,7 +127,8 @@ class ProductProduct {
     this.brandName,
   });
 
-  factory ProductProduct.fromJson(Map<String, dynamic> json) => ProductProduct(
+  factory ProductProduct.fromJson(Map<String, dynamic> json) =>
+      ProductProduct(
         id: json["_id"],
         title: json["title"],
         description: json["description"],
@@ -135,7 +144,8 @@ class ProductProduct {
         brandName: json["brand_name"],
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() =>
+      {
         "_id": id,
         "title": title,
         "description": description,

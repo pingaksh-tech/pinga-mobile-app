@@ -17,12 +17,12 @@ class VariantsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: EdgeInsets.all(defaultPadding).copyWith(top: 48),
+      padding: EdgeInsets.all(defaultPadding).copyWith(top: 48, bottom: defaultPadding * 5),
       itemCount: con.variantList.length,
       itemBuilder: (context, index) => ProductTile(
         onTap: () {},
         productTileType: ProductTileType.variant,
-        imageUrl: "https://kisna.com/cdn/shop/files/KFLR11133-Y-1_1800x1800.jpg?v=1715687553",
+        imageUrl: con.variantList[index].image ?? "",
         productName: con.variantList[index].name ?? "",
         productPrice: con.variantList[index].price.toString(),
         productQuantity: con.variantList[index].quantity,

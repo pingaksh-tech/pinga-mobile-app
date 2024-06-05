@@ -23,26 +23,25 @@ class AddRemarkScreen extends StatelessWidget {
           title: "Your Remark",
           centerTitle: false,
         ),
-        body: ListView.builder(
-          physics: const RangeMaintainingScrollPhysics(),
-          padding: EdgeInsets.all(defaultPadding).copyWith(bottom: 150.h),
-          shrinkWrap: true,
-          itemCount: con.remarkList.length,
-          itemBuilder: (context, index) => CustomCheckboxTile(
-            scale: 1,
-            title: con.remarkList[index],
-            titleStyle: Theme.of(context).textTheme.titleMedium,
-            isSelected: RxBool(con.selectedRemark.contains(con.remarkList[index])),
-            onChanged: (value) {
-              if (!con.selectedRemark.contains(con.remarkList[index])) {
-                con.selectedRemark.add(con.remarkList[index]);
-              } else {
-                con.selectedRemark.remove(con.remarkList[index]);
-              }
-              con.checkDisableButton();
-            },
-          ),
-        ),
+        body: Obx(() {
+          return ListView.builder(
+            physics: const RangeMaintainingScrollPhysics(),
+            padding: EdgeInsets.all(defaultPadding).copyWith(bottom: 150.h),
+            shrinkWrap: true,
+            itemCount: con.remarkList.length,
+            itemBuilder: (context, index) => CustomCheckboxTile(
+              scale: 1,
+              title: con.remarkList[index],
+              titleStyle: Theme.of(context).textTheme.titleMedium,
+              isSelected: RxBool((con.selectedRemark.value == con.remarkList[index])),
+              onChanged: (value) {
+                con.selectedRemark.value = con.remarkList[index];
+
+                con.checkDisableButton();
+              },
+            ),
+          );
+        }),
         bottomSheet: Obx(() {
           return ListView(
             shrinkWrap: true,
@@ -73,11 +72,11 @@ class AddRemarkScreen extends StatelessWidget {
                 padding: EdgeInsets.all(defaultPadding).copyWith(bottom: MediaQuery.of(context).padding.bottom + defaultPadding),
                 onPressed: () {
                   FocusScope.of(context).unfocus();
-                  if (con.remarkCon.value.text.trim().isNotEmpty) {
-                    con.remarkList.add(con.remarkCon.value.text.trim());
-                  }
+                  // if (con.remarkCon.value.text.trim().isNotEmpty) {
+
+                  // }
                   con.remarkCon.value.clear();
-                  Get.back(result: con.selectedRemark[0]);
+                  Get.back(result: con.selectedRemark);
                 },
               ),
             ],

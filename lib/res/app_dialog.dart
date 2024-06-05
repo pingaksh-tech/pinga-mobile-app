@@ -851,11 +851,10 @@ class AppDialogs {
     TextEditingController controller = TextEditingController(text: quantity.toString());
     return Get.dialog(
       AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.r)),
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: AppColors.background,
         titlePadding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding).copyWith(bottom: 0),
         contentPadding: EdgeInsets.all(defaultPadding * 1.2).copyWith(top: defaultPadding / 2),
-        actionsPadding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(bottom: defaultPadding),
+        actionsPadding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(bottom: defaultPadding / 1.4),
         title: Text(
           "Add to cart",
           style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 16.sp, fontWeight: FontWeight.w500, color: AppColors.primary),
@@ -877,7 +876,7 @@ class AppDialogs {
             child: Text(
               "CANCEL",
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontSize: 14.sp,
+                    fontSize: 12.sp,
                     fontWeight: FontWeight.w500,
                     color: AppColors.primary,
                   ),
@@ -892,7 +891,7 @@ class AppDialogs {
             child: Text(
               "ADD",
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontSize: 14.sp,
+                    fontSize: 12.sp,
                     fontWeight: FontWeight.w500,
                     color: AppColors.primary,
                   ),

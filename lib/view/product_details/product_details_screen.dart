@@ -7,6 +7,7 @@ import '../../data/model/product/product_diamond_model.dart';
 import '../../data/model/product/product_size_model.dart';
 import '../../widgets/plus_minus_title/plus_minus_tile.dart';
 import '../../widgets/size_selector/size_selector_botton.dart';
+import 'widgets/family_product/family_product_tab.dart';
 import 'widgets/product_info/product_info.dart';
 import 'widgets/variants/variants.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -269,12 +270,7 @@ class ProductDetailsScreen extends StatelessWidget {
                 VariantsTab(),
 
                 /// FAMILY PRODUCT TAB
-                Center(
-                  child: Text(
-                    "No family products available.",
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                ),
+                FamilyProductTab()
               ],
             ),
           ),
