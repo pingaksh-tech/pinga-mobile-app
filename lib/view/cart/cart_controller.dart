@@ -2,8 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import '../../data/model/cart/cart_model.dart';
 
+import '../../data/model/cart/cart_model.dart';
+import '../../data/model/product/product_colors_model.dart';
+import '../../data/model/product/product_diamond_model.dart';
+import '../../data/model/product/product_size_model.dart';
 import '../../data/repositories/cart/cart_repository.dart';
 
 class CartController extends GetxController {
@@ -13,6 +16,10 @@ class CartController extends GetxController {
   RxDouble totalPrice = 0.0.obs;
   Timer? updateCartDebounce;
 
+  SizeModel sizeModel = SizeModel();
+  ColorModel colorModel = ColorModel();
+  Diamond diamondModel = Diamond();
+  String selectedRemark = "";
   @override
   void onReady() {
     super.onReady();
