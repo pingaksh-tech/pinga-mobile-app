@@ -21,7 +21,7 @@ class CategoryScreen extends StatelessWidget {
       () => DefaultTabController(
         length: 2,
         child: Scaffold(
-          // backgroundColor: Theme.of(context).colorScheme.surface,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           appBar: MyAppBar(
             backgroundColor: Theme.of(context).colorScheme.surface,
             shadowColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.3),
@@ -84,7 +84,6 @@ class CategoryScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(defaultRadius - 3),
                   ),
                   child: MyTabBar(
-                    backgroundColor: Theme.of(context).cardColor,
                     tabs: [
                       const Text(
                         "Category",

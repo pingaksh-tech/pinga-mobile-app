@@ -27,12 +27,12 @@ class AppDrawer extends StatelessWidget {
                   imageUrl: 'https://media.designrush.com/tinymce_images/316674/conversions/Desiree-Qelaj-content.jpg',
                 ),
               ),
-              AppNetworkImage(
-                height: 60.h,
-                imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVErxeqhTxrd4NYxO73norO2MWmwcziMvFWg&s',
-                padding: EdgeInsets.only(top: defaultPadding * 8.5),
-                shape: BoxShape.circle,
-              ),
+              // AppNetworkImage(
+              //   height: 60.h,
+              //   imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVErxeqhTxrd4NYxO73norO2MWmwcziMvFWg&s',
+              //   padding: EdgeInsets.only(top: defaultPadding * 8.5),
+              //   shape: BoxShape.circle,
+              // ),
               Positioned(
                 top: defaultPadding * 9,
                 right: defaultPadding,

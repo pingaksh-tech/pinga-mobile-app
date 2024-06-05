@@ -19,7 +19,7 @@ class MyTabBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: width ?? Get.width,
-      decoration: BoxDecoration(color: backgroundColor ?? Theme.of(context).primaryColor.withOpacity(0.03), borderRadius: BorderRadius.circular(borderRadius ?? defaultRadius / 2)),
+      decoration: BoxDecoration(color: backgroundColor ?? Theme.of(context).colorScheme.surface, borderRadius: BorderRadius.circular(borderRadius ?? defaultRadius)),
       child: TabBar(
         dividerColor: Colors.transparent,
         padding: EdgeInsets.symmetric(vertical: defaultPadding / 6, horizontal: defaultPadding / 6),

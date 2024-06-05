@@ -20,7 +20,7 @@ class ProductScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
-        // backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: MyAppBar(
           backgroundColor: Theme.of(context).colorScheme.surface,
           shadowColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.3),
