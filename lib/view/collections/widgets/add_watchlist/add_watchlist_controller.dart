@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:pingaksh_mobile/data/model/watchlist/watchlist_model.dart';
-import 'package:pingaksh_mobile/data/repositories/watchlist/watchlist_repository.dart';
+import '../../../../data/model/watchlist/watchlist_model.dart';
+import '../../../../data/repositories/watchlist/watchlist_repository.dart';
 
 class AddWatchlistController extends GetxController {
   Rx<TextEditingController> nameCon = TextEditingController().obs;

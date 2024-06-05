@@ -1,9 +1,12 @@
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 
 import '../../data/model/product/product_model.dart';
 import '../../data/repositories/product/product_repository.dart';
 
 class ProductController extends GetxController {
+  RxBool isLike = false.obs;
+
   RxString categoryName = "".obs;
   RxBool isProductViewChange = true.obs;
 
@@ -13,6 +16,7 @@ class ProductController extends GetxController {
 
   RxList<String> sortList = <String>[].obs;
   RxList<ProductListModel> productsList = <ProductListModel>[].obs;
+  RxList<ProductListModel> wishlistList = <ProductListModel>[].obs;
 
   @override
   void onInit() {

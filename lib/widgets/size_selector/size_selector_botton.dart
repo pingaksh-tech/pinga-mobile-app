@@ -4,117 +4,174 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import '../../../../../exports.dart';
 import '../../../../../res/app_dialog.dart';
+import '../../data/model/product/product_colors_model.dart';
+import '../../data/model/product/product_diamond_model.dart';
+import '../../data/model/product/product_size_model.dart';
 
-Widget horizontalSelectorButton(BuildContext context, {RxString? selectedSize, RxString? selectedColor, required SelectableItemType selectableItemType, SizeColorSelectorButtonType sizeColorSelectorButtonType = SizeColorSelectorButtonType.medium, Color? backgroundColor}) {
-  bool isSmallSize = (sizeColorSelectorButtonType == SizeColorSelectorButtonType.small);
-  bool isMediumSize = (sizeColorSelectorButtonType == SizeColorSelectorButtonType.medium);
-  bool isLargeSize = (sizeColorSelectorButtonType == SizeColorSelectorButtonType.large);
-
-  bool isSize = (selectableItemType == SelectableItemType.size);
-  bool isColor = (selectableItemType == SelectableItemType.color);
-  bool isDiamond = (selectableItemType == SelectableItemType.diamond);
-  bool isRemark = (selectableItemType == SelectableItemType.remarks);
+Widget horizontalSelectorButton(
+  BuildContext context, {
+  RxString? selectedSize,
+  RxString? selectedColor,
+  RxString? selectedDiamond,
+  RxBool? remarkSelected,
+  required SelectableItemType selectableItemType,
+  SizeColorSelectorButtonType sizeColorSelectorButtonType = SizeColorSelectorButtonType.medium,
+  Color? backgroundColor,
+  bool isFlexible = false,
+  Axis axisDirection = Axis.horizontal,
+  Function(dynamic model)? sizeOnChanged,
+  Function(dynamic model)? colorOnChanged,
+  Function(dynamic model)? rubyOnChanged,
+  Function(dynamic model)? remarkOnChanged,
+}) {
   return Expanded(
+    flex: isFlexible ? 0 : 1,
     child: InkWell(
       onTap: () {
-        if (isSize) {
-          AppDialogs.selectSizeDialog(context)?.then(
-            (value) {
-              if (value != null) {
-                selectedSize?.value = value;
-              }
-            },
-          );
-        } else if (isColor) {
-          AppDialogs.selectColorDialog(context)?.then(
-            (value) {
-              if (value != null) {
-                selectedColor?.value = value;
-              }
-            },
-          );
+        switch (selectableItemType) {
+          case SelectableItemType.size:
+
+            /// Size Selector
+            AppDialogs.sizeSelector(context)?.then(
+              (value) {
+                if (value != null && (value.runtimeType == SizeModel)) {
+                  final SizeModel sizeModel = (value as SizeModel);
+
+                  selectedSize?.value = sizeModel.size ?? "0";
+
+                  if (sizeOnChanged != null) {
+                    sizeOnChanged(sizeModel);
+                  }
+                }
+              },
+            );
+            break;
+
+          case SelectableItemType.color:
+
+            /// Color Selector
+            AppDialogs.colorSelector(context)?.then(
+              (value) {
+                if (value != null && (value.runtimeType == ColorModel)) {
+                  final ColorModel colorModel = (value as ColorModel);
+
+                  selectedColor?.value = colorModel.color ?? "-";
+
+                  if (colorOnChanged != null) {
+                    colorOnChanged(colorModel);
+                  }
+                }
+              },
+            );
+            break;
+
+          case SelectableItemType.diamond:
+
+            /// Diamond Selector
+            AppDialogs.diamondSelector(context)?.then(
+              (value) {
+                if (value != null && (value.runtimeType == Diamond)) {
+                  final Diamond diamondModel = (value as Diamond);
+
+                  selectedDiamond?.value = diamondModel.diamond ?? "";
+
+                  printYellow(diamondModel.diamond);
+                  if (rubyOnChanged != null) {
+                    rubyOnChanged(diamondModel);
+                  }
+                }
+              },
+            );
+            break;
+
+          case SelectableItemType.remarks:
+            Get.toNamed(AppRoutes.remarkScreen)?.then(
+              (value) {
+                if (value != null) {
+                  if (remarkOnChanged != null) {
+                    remarkOnChanged(value);
+                  }
+                }
+              },
+            );
+
+            break;
         }
       },
       child: Ink(
-          child: Container(
-        padding: EdgeInsets.all(defaultPadding / 2.4),
-        decoration: BoxDecoration(
-          color: backgroundColor ?? Theme.of(context).primaryColor.withOpacity(0.06),
-          borderRadius: BorderRadius.circular(defaultRadius),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              isSize
-                  ? AppAssets.ringSizeIcon
-                  : isColor
-                      ? AppAssets.colorIcon
-                      : isDiamond
-                          ? AppAssets.diamondIcon
-                          : AppAssets.remarkOutlineIcon,
-              height: isSmallSize
-                  ? 12.h
-                  : isMediumSize
-                      ? 14.h
-                      : 16.h,
-              colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
-            ),
-            (defaultPadding / 4).horizontalSpace,
-            Text(
-              isSize
-                  ? ("Size ${isValEmpty(selectedSize?.value) ? "(0)" : "(${selectedSize?.value.split(" ").first})"}")
-                  : isColor
-                      ? ("Color ${isValEmpty(selectedColor?.value) ? "(-)" : "(${selectedColor?.value.split(" ").first})"}")
-                      : isDiamond
-                          ? "Ruby"
-                          : "Remark",
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontSize: isSmallSize
-                      ? 8.h
-                      : isMediumSize
-                          ? 10.h
-                          : 14.h,
-                  color: AppColors.primary),
-            )
-          ],
-        ),
-      )),
-    ),
-  );
-}
-
-Widget sizeSelectorButton(BuildContext context, {required RxString selectedSize, Color? backgroundColor}) {
-  return InkWell(
-    onTap: () {
-      AppDialogs.selectSizeDialog(context)?.then(
-        (value) {
-          if (value != null) {
-            selectedSize.value = value;
-          }
-        },
-      );
-    },
-    child: Ink(
-      child: Obx(() {
-        return Container(
+        child: Container(
           padding: EdgeInsets.all(defaultPadding / 2.4),
-          decoration: BoxDecoration(color: backgroundColor ?? Theme.of(context).primaryColor.withOpacity(0.06), borderRadius: BorderRadius.circular(defaultRadius)),
-          child: Column(
-            children: [
-              SvgPicture.asset(
-                AppAssets.ringSizeIcon,
-                height: 14.h,
-                colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
-              ),
-              Text(
-                "Size ${isValEmpty(selectedSize.value) ? "(0)" : "(${selectedSize.value.split(" ").first})"}",
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 10.sp, color: AppColors.primary),
-              )
-            ],
+          decoration: BoxDecoration(
+            color: backgroundColor ?? Theme.of(context).primaryColor.withOpacity(0.06),
+            borderRadius: BorderRadius.circular(defaultRadius),
           ),
-        );
-      }),
+          child: switch (axisDirection) {
+            /// Horizontal Selector
+            Axis.horizontal => Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(
+                    selectableItemType.icon,
+                    height: switch (sizeColorSelectorButtonType) {
+                      SizeColorSelectorButtonType.small => 12.h,
+                      SizeColorSelectorButtonType.medium => 14.h,
+                      SizeColorSelectorButtonType.large => 16.h,
+                    },
+                    colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                  ),
+                  (defaultPadding / 4).horizontalSpace,
+                  Text(
+                    switch (selectableItemType) {
+                      SelectableItemType.size => ("Size ${isValEmpty(selectedSize?.value) ? "(0)" : "(${selectedSize?.value.split(" ").first})"}"),
+                      SelectableItemType.color => ("Color ${isValEmpty(selectedColor?.value) ? "(-)" : "(${selectedColor?.value.split(" ").first})"}"),
+                      SelectableItemType.diamond => "Ruby",
+                      SelectableItemType.remarks => "Remark",
+                    },
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontSize: switch (sizeColorSelectorButtonType) {
+                          SizeColorSelectorButtonType.small => 8.h,
+                          SizeColorSelectorButtonType.medium => 10.h,
+                          SizeColorSelectorButtonType.large => 14.h,
+                        },
+                        color: AppColors.primary),
+                  )
+                ],
+              ),
+
+            /// Vertical Selector
+            Axis.vertical => Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(
+                    remarkSelected?.isTrue ?? false ? selectableItemType.selectedIcon ?? '' : selectableItemType.icon,
+                    height: switch (sizeColorSelectorButtonType) {
+                      SizeColorSelectorButtonType.small => 12.h,
+                      SizeColorSelectorButtonType.medium => 14.h,
+                      SizeColorSelectorButtonType.large => 16.h,
+                    },
+                    colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                  ),
+                  Text(
+                    switch (selectableItemType) {
+                      SelectableItemType.size => ("Size ${isValEmpty(selectedSize?.value) ? "(0)" : "(${selectedSize?.value.split(" ").first})"}"),
+                      SelectableItemType.color => ("Color ${isValEmpty(selectedColor?.value) ? "(-)" : "(${selectedColor?.value.split(" ").first})"}"),
+                      SelectableItemType.diamond => " Oval ",
+                      SelectableItemType.remarks => "Remark",
+                    },
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontSize: switch (sizeColorSelectorButtonType) {
+                          SizeColorSelectorButtonType.small => 8.h,
+                          SizeColorSelectorButtonType.medium => 10.h,
+                          SizeColorSelectorButtonType.large => 14.h,
+                        },
+                        color: AppColors.primary),
+                  )
+                ],
+              ),
+            null => throw UnimplementedError(),
+          },
+        ),
+      ),
     ),
   );
 }

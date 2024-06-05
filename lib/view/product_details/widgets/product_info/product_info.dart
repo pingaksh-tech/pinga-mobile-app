@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:pingaksh_mobile/exports.dart';
-import 'package:pingaksh_mobile/view/product_details/widgets/product_info/product_info_controller.dart';
+import '../../../../exports.dart';
+import 'product_info_controller.dart';
 
 import '../../../../packages/like_button/like_button.dart';
 import '../../../../res/app_network_image.dart';

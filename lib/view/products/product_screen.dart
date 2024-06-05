@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import '../../exports.dart';
 import '../../res/app_bar.dart';
 import '../../widgets/product_tile.dart';
-import '../category/components/category_tile.dart';
 import 'components/sort_filter_button.dart';
 import 'product_controller.dart';
 import 'widgets/sort/sorting_bottomsheet.dart';
@@ -96,24 +95,24 @@ class ProductScreen extends StatelessWidget {
             Wrap(
               children: List.generate(
                 con.productsList.length,
-                (index) => con.isProductViewChange.isTrue
-                    ? ProductTile(
-                        onTap: () => Get.toNamed(AppRoutes.productDetailsScreen),
-                        imageUrl: con.productsList[index].product?.productImage ?? "",
-                        productName: con.productsList[index].product?.title ?? "",
-                        productPrice: con.productsList[index].product?.price.toString() ?? "",
-                      )
-                    : CategoryTile(
-                        categoryName: con.productsList[index].product?.title ?? "",
-                        subTitle: con.productsList[index].product?.price.toString() ?? "",
-                        imageUrl: con.productsList[index].product?.productImage ?? "",
-                        onTap: () => Get.toNamed(AppRoutes.productDetailsScreen),
-                        fontSize: 14.sp,
-                      ).paddingOnly(
-                        left: defaultPadding / 2,
-                        right: defaultPadding / 2,
-                        top: defaultPadding / 1.2,
-                      ),
+                (index) => ProductTile(
+                  productTileType: con.isProductViewChange.isTrue ? ProductTileType.grid : ProductTileType.list,
+                  onTap: () => Get.toNamed(AppRoutes.productDetailsScreen),
+                  isLike: (con.wishlistList.contains(con.productsList[index])).obs,
+                  imageUrl: con.productsList[index].product?.productImage ?? "",
+                  productName: con.productsList[index].product?.title ?? "",
+                  productPrice: con.productsList[index].product?.price.toString() ?? "",
+                  // productQuantity: con.productsList[index].quantity.obs,
+                  likeOnChanged: (value) {
+                    /// Add product to wishlist
+                    if (!con.wishlistList.contains(con.productsList[index])) {
+                      con.wishlistList.add(con.productsList[index]);
+                    } else {
+                      con.wishlistList.remove(con.productsList[index]);
+                    }
+                    printOkStatus(con.wishlistList);
+                  },
+                ),
               ),
             )
           ],

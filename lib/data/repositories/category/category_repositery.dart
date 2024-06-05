@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:pingaksh_mobile/view/category/category_controller.dart';
+import '../../../view/category/category_controller.dart';
 
 import '../../model/category/category_model.dart';
 

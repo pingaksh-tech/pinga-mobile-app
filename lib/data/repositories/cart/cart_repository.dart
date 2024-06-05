@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:pingaksh_mobile/data/model/cart/cart_model.dart';
+import '../../model/cart/cart_model.dart';
 
 import '../../../exports.dart';
 import '../../../view/bottombar/bottombar_controller.dart';

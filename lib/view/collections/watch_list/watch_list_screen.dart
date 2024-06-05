@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:pingaksh_mobile/exports.dart';
-import 'package:pingaksh_mobile/res/app_bar.dart';
-import 'package:pingaksh_mobile/view/collections/watch_list/components/watchlist_tile.dart';
-import 'package:pingaksh_mobile/view/collections/watch_list/watch_list_controller.dart';
+import '../../../exports.dart';
+import '../../../res/app_bar.dart';
+import 'components/watchlist_tile.dart';
+import 'watch_list_controller.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../res/empty_element.dart';
@@ -110,7 +110,7 @@ class WatchListScreen extends StatelessWidget {
                   )
                 ],
               )
-            : EmptyElement(
+            : const EmptyElement(
                 title: "Watchlist is empty",
                 imagePath: AppAssets.emptyData,
               ),

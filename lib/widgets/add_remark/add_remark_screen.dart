@@ -77,6 +77,7 @@ class AddRemarkScreen extends StatelessWidget {
                     con.remarkList.add(con.remarkCon.value.text.trim());
                   }
                   con.remarkCon.value.clear();
+                  Get.back(result: con.selectedRemark[0]);
                 },
               ),
             ],

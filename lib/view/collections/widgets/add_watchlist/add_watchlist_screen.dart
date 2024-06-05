@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
-import 'package:pingaksh_mobile/data/model/watchlist/watchlist_model.dart';
-import 'package:pingaksh_mobile/res/app_bar.dart';
-import 'package:pingaksh_mobile/view/collections/widgets/add_watchlist/add_watchlist_controller.dart';
+import '../../../../data/model/watchlist/watchlist_model.dart';
+import '../../../../res/app_bar.dart';
+import 'add_watchlist_controller.dart';
 
 import '../../../../exports.dart';
 import '../../../products/product_controller.dart';

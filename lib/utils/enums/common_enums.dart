@@ -1,6 +1,10 @@
 library;
 
+import 'dart:ui';
+
 import 'package:get/get.dart';
+
+import '../../exports.dart';
 
 ///! WARNINGS:
 ///* =>> Don't change any enum INDEX (Positions)
@@ -102,5 +106,65 @@ enum FilterType { range, available, gender, brand, kt, delivery, tag, collection
 ///* SIZE-COLOR SELECTOR BUTTON SIZE TYPE
 enum SizeColorSelectorButtonType { small, medium, large }
 
+///* PRODUCT TILE TYPE
+enum ProductTileType { grid, list, variant }
+
 ///* SELECTABLE ITEM TYPE
-enum SelectableItemType { size, color, diamond, remarks }
+enum SelectableItemType {
+  size(
+    id: 0,
+    colors: Color(0xFF221361),
+    label: "Size",
+    slug: "slug",
+    icon: AppAssets.ringSizeIcon,
+    selectedIcon: AppAssets.ringSizeIcon,
+  ),
+  color(
+    id: 1,
+    colors: Color(0xFF221361),
+    label: "Color",
+    slug: "color",
+    icon: AppAssets.colorIcon,
+    selectedIcon: AppAssets.colorIcon,
+  ),
+  diamond(
+    id: 2,
+    colors: Color(0xFF221361),
+    label: "Ruby",
+    slug: "ruby",
+    icon: AppAssets.diamondIcon,
+    selectedIcon: AppAssets.diamondIcon,
+  ),
+  remarks(
+    id: 3,
+    colors: Color(0xFF221361),
+    label: "Remark",
+    slug: "remark",
+    icon: AppAssets.remarkOutlineIcon,
+    selectedIcon: AppAssets.remarkFilledIcon,
+  );
+
+  final int id;
+  final String label;
+  final Color colors;
+  final String slug;
+  final String icon;
+  final String? selectedIcon;
+
+  const SelectableItemType({
+    required this.id,
+    required this.label,
+    required this.colors,
+    required this.slug,
+    required this.icon,
+    this.selectedIcon,
+  });
+
+  static SelectableItemType fromId(int id) {
+    return SelectableItemType.values.firstWhere((e) => e.id == id);
+  }
+
+  static SelectableItemType fromSlug(String slug) {
+    return SelectableItemType.values.firstWhere((e) => e.slug == slug);
+  }
+}

@@ -8,7 +8,7 @@ import '../../../../../res/app_dialog.dart';
 Widget colorSelectorButton(BuildContext context, {required RxString selectedColor, Color? backgroundColor}) {
   return InkWell(
     onTap: () {
-      AppDialogs.selectColorDialog(context)?.then(
+      AppDialogs.colorSelector(context)?.then(
         (value) {
           if (value != null) {
             selectedColor.value = value;

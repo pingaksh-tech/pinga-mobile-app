@@ -198,7 +198,7 @@ class OrdersScreen extends StatelessWidget {
                             itemCount: con.orderProductList.length,
                           ),
                         )
-                      : Expanded(
+                      : const Expanded(
                           child: EmptyElement(
                             title: "No orders found",
                             imagePath: AppAssets.emptyData,

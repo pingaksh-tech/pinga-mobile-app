@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:pingaksh_mobile/data/model/cart/cart_model.dart';
+import '../../data/model/cart/cart_model.dart';
 
 import '../../data/repositories/cart/cart_repository.dart';
 

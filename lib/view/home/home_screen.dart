@@ -4,8 +4,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:pingaksh_mobile/res/app_network_image.dart';
-import 'package:pingaksh_mobile/view/home/home_controller.dart';
+import '../../res/app_network_image.dart';
+import 'home_controller.dart';
 
 import '../../exports.dart';
 

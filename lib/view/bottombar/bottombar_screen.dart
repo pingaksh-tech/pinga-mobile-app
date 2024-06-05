@@ -6,9 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:pingaksh_mobile/controller/dialog_controller.dart';
-import 'package:pingaksh_mobile/res/app_bar.dart';
-import 'package:pingaksh_mobile/view/bottombar/components/app_drawer.dart';
+import '../../controller/dialog_controller.dart';
+import '../../res/app_bar.dart';
+import 'components/app_drawer.dart';
 
 import '../../exports.dart';
 import '../../packages/app_animated_cliprect.dart';

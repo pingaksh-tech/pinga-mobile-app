@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:pingaksh_mobile/data/repositories/category/category_repositery.dart';
+import '../../data/repositories/category/category_repositery.dart';
 
 import '../../data/model/category/category_model.dart';
 

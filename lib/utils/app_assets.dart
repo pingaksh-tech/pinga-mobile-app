@@ -10,61 +10,61 @@ class AppAssets {
   ///                                   IMAGES
   /// ***********************************************************************************
 
-  static String banner01 = '${imagesPath}banner01.jpg';
-  static String banner02 = '${imagesPath}banner02.jpg';
-  static String banner03 = '${imagesPath}banner03.jpg';
-  static String banner04 = '${imagesPath}banner04.jpg';
-  static String banner05 = '${imagesPath}banner05.jpg';
-  static String authBg = '${imagesPath}auth_bg.png';
+  static const String banner01 = '${imagesPath}banner01.jpg';
+  static const String banner02 = '${imagesPath}banner02.jpg';
+  static const String banner03 = '${imagesPath}banner03.jpg';
+  static const String banner04 = '${imagesPath}banner04.jpg';
+  static const String banner05 = '${imagesPath}banner05.jpg';
+  static const String authBg = '${imagesPath}auth_bg.png';
 
   /// ***********************************************************************************
   ///                                    SVG
   /// ***********************************************************************************
-  static String bell = '${svgPath}bell.svg';
-  static String cart = '${svgPath}cart.svg';
-  static String fillCart = '${svgPath}fillCart.svg';
-  static String home = '${svgPath}home.svg';
-  static String like = '${svgPath}like.svg';
-  static String likeFill = '${svgPath}like_fill.svg';
-  static String orders = '${svgPath}orders.svg';
-  static String profile = '${svgPath}profile.svg';
-  static String search = '${svgPath}search.svg';
-  static String eyeOffSvg = '${svgPath}eyeOff.svg';
-  static String eyeOnSvg = '${svgPath}eyeOn.svg';
-  static String location = '${svgPath}location.svg';
-  static String emptyData = '${svgPath}emptyData.svg';
-  static String trash = '${svgPath}trash.svg';
-  static String basketShoppingSimple = '${svgPath}basket-shopping-simple.svg';
-  static String basketShopping = '${svgPath}basket-shopping.svg';
-  static String homeFilledSVG = '${svgPath}home_filled.svg';
-  static String homeOutlinedSVG = '${svgPath}home_outlined.svg';
-  static String backArrowIcon = '${svgPath}back_arrow.svg';
-  static String forwardIcon = '${svgPath}forward_arrow.svg';
-  static String calenderIcon = "${svgPath}calender_icon.svg";
-  static String authAsset = "${svgPath}auth_asset.svg";
-  static String filter = '${svgPath}filter.svg';
-  static String sortIcon = '${svgPath}sort.svg';
-  static String faq = '${svgPath}faq.svg';
-  static String privacy = '${svgPath}privacy.svg';
-  static String rtp = '${svgPath}rtp.svg';
-  static String tc = '${svgPath}tc.svg';
-  static String crossIcon = '${svgPath}cross_icon.svg';
-  static String appIcon = '${svgPath}app_icon.svg';
-  static String appListIcon = '${svgPath}app_list_icon.svg';
-  static String menuIcon = '${svgPath}menu_icon.svg';
-  static String downloadIcon = '${svgPath}download.svg';
-  static String shareIcon = '${svgPath}share.svg';
-  static String watchlistIcon = '${svgPath}watchlist_icon.svg';
-  static String jewelleryWearIcon = '${svgPath}jewellery_wear_icon.svg';
-  static String ringSizeIcon = '${svgPath}ring_size_icon.svg';
-  static String colorIcon = '${svgPath}color_icon.svg';
-  static String diamondIcon = '${svgPath}diamond_icon.svg';
-  static String ringIcon = '${svgPath}ring_icon.svg';
-  static String plusIcon = '${svgPath}plus.svg';
-  static String minusIcon = '${svgPath}minus.svg';
-  static String listIcon = '${svgPath}list.svg';
-  static String remarkOutlineIcon = '${svgPath}outline_remark.svg';
-  static String remarkFilledIcon = '${svgPath}filled_remark_icon.svg';
+  static const String bell = '${svgPath}bell.svg';
+  static const String cart = '${svgPath}cart.svg';
+  static const String fillCart = '${svgPath}fillCart.svg';
+  static const String home = '${svgPath}home.svg';
+  static const String like = '${svgPath}like.svg';
+  static const String likeFill = '${svgPath}like_fill.svg';
+  static const String orders = '${svgPath}orders.svg';
+  static const String profile = '${svgPath}profile.svg';
+  static const String search = '${svgPath}search.svg';
+  static const String eyeOffSvg = '${svgPath}eyeOff.svg';
+  static const String eyeOnSvg = '${svgPath}eyeOn.svg';
+  static const String location = '${svgPath}location.svg';
+  static const String emptyData = '${svgPath}emptyData.svg';
+  static const String trash = '${svgPath}trash.svg';
+  static const String basketShoppingSimple = '${svgPath}basket-shopping-simple.svg';
+  static const String basketShopping = '${svgPath}basket-shopping.svg';
+  static const String homeFilledSVG = '${svgPath}home_filled.svg';
+  static const String homeOutlinedSVG = '${svgPath}home_outlined.svg';
+  static const String backArrowIcon = '${svgPath}back_arrow.svg';
+  static const String forwardIcon = '${svgPath}forward_arrow.svg';
+  static const String calenderIcon = "${svgPath}calender_icon.svg";
+  static const String authAsset = "${svgPath}auth_asset.svg";
+  static const String filter = '${svgPath}filter.svg';
+  static const String sortIcon = '${svgPath}sort.svg';
+  static const String faq = '${svgPath}faq.svg';
+  static const String privacy = '${svgPath}privacy.svg';
+  static const String rtp = '${svgPath}rtp.svg';
+  static const String tc = '${svgPath}tc.svg';
+  static const String crossIcon = '${svgPath}cross_icon.svg';
+  static const String appIcon = '${svgPath}app_icon.svg';
+  static const String appListIcon = '${svgPath}app_list_icon.svg';
+  static const String menuIcon = '${svgPath}menu_icon.svg';
+  static const String downloadIcon = '${svgPath}download.svg';
+  static const String shareIcon = '${svgPath}share.svg';
+  static const String watchlistIcon = '${svgPath}watchlist_icon.svg';
+  static const String jewelleryWearIcon = '${svgPath}jewellery_wear_icon.svg';
+  static const String ringSizeIcon = '${svgPath}ring_size_icon.svg';
+  static const String colorIcon = '${svgPath}color_icon.svg';
+  static const String diamondIcon = '${svgPath}diamond_icon.svg';
+  static const String ringIcon = '${svgPath}ring_icon.svg';
+  static const String plusIcon = '${svgPath}plus.svg';
+  static const String minusIcon = '${svgPath}minus.svg';
+  static const String listIcon = '${svgPath}list.svg';
+  static const String remarkOutlineIcon = '${svgPath}outline_remark.svg';
+  static const String remarkFilledIcon = '${svgPath}filled_remark_icon.svg';
 
   /// ***********************************************************************************
   ///                                   JSON

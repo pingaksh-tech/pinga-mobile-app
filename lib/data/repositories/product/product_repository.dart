@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../../../controller/dialog_controller.dart';
 import '../../../view/products/product_controller.dart';
 import '../../model/product/product_colors_model.dart';
+import '../../model/product/product_diamond_model.dart';
 import '../../model/product/product_model.dart';
 import '../../model/product/product_size_model.dart';
 import '../../model/product/variant_product_model.dart';
@@ -266,6 +267,7 @@ class ProductRepository {
       ],
     }
   };
+
   static Map<String, dynamic> variantList = {
     "success": true,
     "message": "variants fetched successfully",
@@ -278,6 +280,25 @@ class ProductRepository {
         {"id": "p5", "image": "https://media.istockphoto.com/id/1651974076/photo/golden-wedding-rings-on-trendy-white-podium-aesthetic-still-life-art-photography.webp?b=1&s=170667a&w=0&k=20&c=JYqzNrZjGH5c4OxWrjhvebI5_6rBCJ9JRZPe9cj_-rM=", "name": "Platinum Band", "price": 1799, "color_id": "T", "size_id": "45", "quantity": 0, "diamond": "ds"},
         {"id": "p6", "image": "https://media.istockphoto.com/id/1318401740/photo/indian-gold-jewellery-stock-photo.webp?b=1&s=170667a&w=0&k=20&c=xbkn3_S5igjnfBDOHkuGCfg4BmGj8U2djQSvdDuccC8=", "name": "Emerald Bracelet", "price": 899, "color_id": "R", "size_id": "22", "quantity": 0, "diamond": "ds"},
         {"id": "p7", "image": "https://media.istockphoto.com/id/1318401740/photo/indian-gold-jewellery-stock-photo.webp?b=1&s=170667a&w=0&k=20&c=xbkn3_S5igjnfBDOHkuGCfg4BmGj8U2djQSvdDuccC8=", "name": "Pearl Necklace", "price": 599, "color_id": "W", "size_id": "27", "quantity": 0, "diamond": "ds"},
+      ],
+    }
+  };
+
+  static Map<String, dynamic> diamondList = {
+    "success": true,
+    "message": "diamond fetched successfully",
+    "data": {
+      "diamonds": [
+        {"id": "diamond1", "diamond": "Round"},
+        {"id": "diamond2", "diamond": "Princess"},
+        {"id": "diamond3", "diamond": "Emerald"},
+        {"id": "diamond4", "diamond": "Asscher"},
+        {"id": "diamond5", "diamond": "Marquise"},
+        {"id": "diamond6", "diamond": "Oval"},
+        {"id": "diamond7", "diamond": "Radiant"},
+        {"id": "diamond8", "diamond": "Pear"},
+        {"id": "diamond9", "diamond": "Heart"},
+        {"id": "diamond10", "diamond": "Cushion"}
       ],
     }
   };
@@ -305,7 +326,7 @@ class ProductRepository {
   /// ***********************************************************************************
   static Future<void> productListApi() async {
     final ProductController productCon = Get.find<ProductController>();
-    GetProductModel model = GetProductModel.fromJson(productList);
+    GetProductModel model = GetProductModel.fromJson(productList /*response*/);
     productCon.productsList.value = model.data?.products ?? [];
   }
 
@@ -314,7 +335,16 @@ class ProductRepository {
   /// ***********************************************************************************
   static Future<void> getProductVariantAPI({RxBool? isLoader}) async {
     final VariantsController variantsCon = Get.find<VariantsController>();
-    GetVariantProductModel model = GetVariantProductModel.fromJson(variantList);
+    GetVariantProductModel model = GetVariantProductModel.fromJson(variantList /*response*/);
     variantsCon.variantList.value = model.data?.products ?? [];
+  }
+
+  /// ***********************************************************************************
+  ///                                       GET PRODUCT DIAMOND
+  /// ***********************************************************************************
+  static Future<void> getProductDiamondAPI({RxBool? isLoader}) async {
+    final DialogController dialogCon = Get.find<DialogController>();
+    GetDiamondModel model = GetDiamondModel.fromJson(diamondList /*response*/);
+    dialogCon.productDiamondList.value = model.data?.diamonds ?? [];
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pingaksh_mobile/widgets/checkbox_title_tile.dart';
+import 'checkbox_title_tile.dart';
 
 import '../exports.dart';
 

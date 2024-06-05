@@ -278,7 +278,7 @@ class CartScreen extends StatelessWidget {
                         // ),
                       ],
                     )
-                  : EmptyElement(
+                  : const EmptyElement(
                       title: "Cart is empty",
                       imagePath: AppAssets.emptyData,
                     ))

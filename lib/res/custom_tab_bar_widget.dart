@@ -69,7 +69,7 @@ class _CustomTabBarState extends State<CustomTabBar> {
                       // color: Theme.of(context).disabledColor,
                     ),
                 automaticIndicatorColorAdjustment: true,
-                overlayColor: const MaterialStatePropertyAll(Colors.transparent),
+                overlayColor: const WidgetStatePropertyAll(Colors.transparent),
                 dividerColor: Colors.transparent,
                 indicatorColor: Theme.of(context).colorScheme.primary,
                 indicatorPadding: EdgeInsets.zero,

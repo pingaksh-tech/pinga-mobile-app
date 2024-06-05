@@ -8,7 +8,7 @@ import '../../../../../res/app_dialog.dart';
 Widget diamondSelectorButton(BuildContext context, {required RxString selectedSize, Color? backgroundColor}) {
   return InkWell(
     onTap: () {
-      AppDialogs.selectSizeDialog(context)?.then(
+      AppDialogs.sizeSelector(context)?.then(
         (value) {
           if (value != null) {
             selectedSize.value = value;

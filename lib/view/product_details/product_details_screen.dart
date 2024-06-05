@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import '../../data/model/product/product_colors_model.dart';
+import '../../data/model/product/product_diamond_model.dart';
+import '../../data/model/product/product_size_model.dart';
+import '../../widgets/plus_minus_title/plus_minus_tile.dart';
+import '../../widgets/size_selector/size_selector_botton.dart';
 import 'widgets/product_info/product_info.dart';
 import 'widgets/variants/variants.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -215,14 +220,7 @@ class ProductDetailsScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                        AppButton(
-                          padding: bodyPadding.copyWith(top: defaultPadding * 2, bottom: defaultPadding * 2),
-                          height: 30.h,
-                          title: "ADD TO CART",
-                          onPressed: () {
-                            UiUtils.toast("Added Successfully");
-                          },
-                        ),
+                        (defaultPadding).verticalSpace,
                       ],
                     ],
                   ),
@@ -282,25 +280,89 @@ class ProductDetailsScreen extends StatelessWidget {
           ),
         ),
         // bottom sheet
-        /*     bottomSheet: Container(
-          height: 90,
-          padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding),
-          color: AppColors.background,
+        bottomSheet: Container(
+          height: 60.h,
+          decoration: BoxDecoration(color: AppColors.background, boxShadow: [
+            BoxShadow(
+              color: Theme.of(context).iconTheme.color!.withOpacity(0.03),
+              blurRadius: 4,
+              spreadRadius: 7,
+            ),
+          ]),
+          padding: EdgeInsets.all(defaultPadding),
           child: Row(
             children: [
-              sizeSelectorButton(
+              /// Size Selector
+              horizontalSelectorButton(
                 context,
-                selectedSize: ''.obs,
-                backgroundColor: Colors.transparent,
+                selectedSize: RxString(con.selectedSize.value.size ?? ''),
+                selectableItemType: SelectableItemType.size,
+                sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+                axisDirection: Axis.vertical,
+                sizeOnChanged: (value) {
+                  /// Selected Size
+                  if (value != null && (value.runtimeType == SizeModel)) {
+                    con.selectedSize.value = (value as SizeModel);
+                  }
+                },
               ),
-              colorSelectorButton(
+              (defaultPadding / 5).horizontalSpace,
+
+              /// Color Selector
+              horizontalSelectorButton(
                 context,
-                selectedColor: ''.obs,
-                backgroundColor: Colors.transparent,
+                selectedColor: RxString(con.selectedColor.value.color ?? ''),
+                selectableItemType: SelectableItemType.color,
+                sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+                axisDirection: Axis.vertical,
+                colorOnChanged: (value) {
+                  /// Selected Color
+                  if (value != null && (value.runtimeType == ColorModel)) {
+                    con.selectedColor.value = (value as ColorModel);
+                  }
+                },
+              ),
+              (defaultPadding / 5).horizontalSpace,
+
+              /// Diamond Selector
+              horizontalSelectorButton(
+                context,
+                selectedDiamond: RxString(con.selectedDiamond.value.diamond ?? ''),
+                selectableItemType: SelectableItemType.diamond,
+                sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+                axisDirection: Axis.vertical,
+                sizeOnChanged: (value) {
+                  /// Selected Diamond
+                  if (value != null && (value.runtimeType == Diamond)) {
+                    con.selectedDiamond.value = (value as Diamond);
+                  }
+                },
+              ),
+              (defaultPadding / 5).horizontalSpace,
+
+              /// Add Remark
+              horizontalSelectorButton(
+                context,
+                remarkSelected: con.selectedRemark.isNotEmpty.obs,
+                selectableItemType: SelectableItemType.remarks,
+                sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+                axisDirection: Axis.vertical,
+                remarkOnChanged: (value) {
+                  con.selectedRemark.value = value;
+                },
+              ),
+              (defaultPadding / 5).horizontalSpace,
+              plusMinusTile(
+                context,
+                textValue: 0.obs,
+                onIncrement: (v) {
+                  // UiUtils.toast("Added Successfully");
+                },
+                onDecrement: (v) {},
               )
             ],
           ),
-        ),*/
+        ),
       );
     });
   }

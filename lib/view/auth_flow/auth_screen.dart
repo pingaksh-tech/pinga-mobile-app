@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:pingaksh_mobile/packages/app_animated_cliprect.dart';
+import '../../packages/app_animated_cliprect.dart';
 import 'package:pinput/pinput.dart';
 
 import '../../data/api/api_utils.dart';

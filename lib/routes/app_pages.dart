@@ -35,7 +35,7 @@ class AppPages {
     _getPage(name: AppRoutes.bottomBarScreen, page: () => BottomBarScreen()),
     _getPage(name: AppRoutes.categoryScreen, page: () => CategoryScreen()),
     _getPage(name: AppRoutes.productScreen, page: () => ProductScreen()),
-    _getPage(name: AppRoutes.profileScreen, page: () => ProfileScreen()),
+    _getPage(name: AppRoutes.profileScreen, page: () => const ProfileScreen()),
     _getPage(name: AppRoutes.cartScreen, page: () => CartScreen()),
     _getPage(name: AppRoutes.productDetailsScreen, page: () => ProductDetailsScreen()),
     _getPage(name: AppRoutes.filterScreen, page: () => FilterScreen()),

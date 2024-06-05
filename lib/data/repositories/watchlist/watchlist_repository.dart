@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-import 'package:pingaksh_mobile/data/model/watchlist/watchlist_model.dart';
-import 'package:pingaksh_mobile/exports.dart';
-import 'package:pingaksh_mobile/view/collections/watch_list/watch_list_controller.dart';
-import 'package:pingaksh_mobile/view/collections/widgets/add_watchlist/add_watchlist_controller.dart';
+import '../../model/watchlist/watchlist_model.dart';
+import '../../../exports.dart';
+import '../../../view/collections/watch_list/watch_list_controller.dart';
+import '../../../view/collections/widgets/add_watchlist/add_watchlist_controller.dart';
 
 class WatchlistRepository {
   /// ***********************************************************************************

@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 
 import '../../../../exports.dart';
 import '../../../../res/app_network_image.dart';
-import '../../../../widgets/color_selector/color_selector_button.dart';
 import '../../../../widgets/plus_minus_title/plus_minus_tile.dart';
+import '../../../../widgets/product_tile.dart';
 import '../../../../widgets/size_selector/size_selector_botton.dart';
 import 'variants_controller.dart';
 
@@ -19,14 +19,13 @@ class VariantsTab extends StatelessWidget {
     return ListView.builder(
       padding: EdgeInsets.all(defaultPadding).copyWith(top: 48),
       itemCount: con.variantList.length,
-      itemBuilder: (context, index) => variantDetailTile(
-        context,
-        image: "https://kisna.com/cdn/shop/files/KFLR11133-Y-1_1800x1800.jpg?v=1715687553",
-        title: con.variantList[index].name,
-        price: con.variantList[index].price,
-        quantity: con.variantList[index].quantity,
-        productSize: con.variantList[index].sizeId,
-        productColor: con.variantList[index].colorId,
+      itemBuilder: (context, index) => ProductTile(
+        onTap: () {},
+        productTileType: ProductTileType.variant,
+        imageUrl: "https://kisna.com/cdn/shop/files/KFLR11133-Y-1_1800x1800.jpg?v=1715687553",
+        productName: con.variantList[index].name ?? "",
+        productPrice: con.variantList[index].price.toString(),
+        productQuantity: con.variantList[index].quantity,
       ),
     );
   }
@@ -53,93 +52,99 @@ class VariantsTab extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AppNetworkImage(
-              imageUrl: image ?? "",
-              height: 44.h,
-              width: 44.h,
-              borderRadius: BorderRadius.circular(defaultRadius / 2),
+            Expanded(
+              flex: 2,
+              child: AppNetworkImage(
+                imageUrl: image ?? "",
+                height: 44.h,
+                width: 44.h,
+                borderRadius: BorderRadius.circular(defaultRadius / 2),
+              ),
             ),
             6.horizontalSpace,
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                /// TITLE
-                Text(
-                  title ?? "",
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 11.sp, color: AppColors.font.withOpacity(.6)),
-                ),
-
-                /// PRICE
-                Text(
-                  UiUtils.amountFormat(price, decimalDigits: 0),
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontSize: 13.sp,
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.w500,
-                      ),
-                ),
-                4.verticalSpace,
-
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(defaultRadius),
+            Expanded(
+              flex: 7,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  /// TITLE
+                  Text(
+                    title ?? "",
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 11.sp, color: AppColors.font.withOpacity(.6)),
                   ),
-                  child: Row(
+
+                  /// PRICE
+                  Text(
+                    UiUtils.amountFormat(price, decimalDigits: 0),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontSize: 13.sp,
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.w500,
+                        ),
+                  ),
+                  4.verticalSpace,
+
+                  Row(
                     children: [
                       /// Size Selector
-                      sizeSelectorButton(context, selectedSize: productSize ?? RxString("")),
-                      6.horizontalSpace,
+                      horizontalSelectorButton(
+                        context,
+                        isFlexible: true,
+                        selectedSize: productSize,
+                        sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+                        selectableItemType: SelectableItemType.size,
+                        axisDirection: Axis.vertical,
+                      ),
+                      8.horizontalSpace,
 
                       /// Color Selector
-                      colorSelectorButton(context, selectedColor: productColor ?? RxString("")),
-                      // (defaultPadding / 2).horizontalSpace,
-                      // GestureDetector(
-                      //   onTap: () {
-                      //     Get.toNamed(AppRoutes.remarkScreen);
-                      //   },
-                      //   child: Container(
-                      //     padding: EdgeInsets.all(defaultPadding / 2),
-                      //     alignment: Alignment.center,
-                      //     decoration: BoxDecoration(borderRadius: BorderRadius.circular(defaultRadius), color: Theme.of(context).scaffoldBackgroundColor),
-                      //     child: Column(
-                      //       children: [
-                      //         SvgPicture.asset(
-                      //           AppAssets.remarkOutlineIcon,
-                      //           height: 14.h,
-                      //           colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
-                      //         ),
-                      //         Text(
-                      //           "RMK",
-                      //           style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 10.sp, color: AppColors.primary),
-                      //         )
-                      //       ],
-                      //     ),
-                      //   ),
-                      // )
+                      horizontalSelectorButton(
+                        context,
+                        isFlexible: true,
+                        selectedColor: productColor,
+                        sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+                        selectableItemType: SelectableItemType.color,
+                        axisDirection: Axis.vertical,
+                      ),
+                      8.horizontalSpace,
+
+                      /// Diamond Selector
+                      horizontalSelectorButton(
+                        context,
+                        isFlexible: true,
+                        selectedDiamond: ''.obs,
+                        sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+                        selectableItemType: SelectableItemType.diamond,
+                        axisDirection: Axis.vertical,
+                      ),
                     ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-            const Spacer(),
 
             /// Plus minus tile
-            plusMinusTile(
-              context,
-              textValue: quantity ?? RxInt(0),
-              onDecrement: (value) {
-                printYellow(value);
-                quantity?.value = value;
+            Expanded(
+              flex: 4,
+              child: plusMinusTile(
+                context,
+                size: 20.h,
+                textValue: quantity ?? RxInt(0),
+                onDecrement: (value) {
+                  printYellow(value);
+                  quantity?.value = value;
 
-                printOkStatus(quantity);
-              },
-              onIncrement: (value) {
-                printYellow(value);
-                quantity?.value = value;
+                  printOkStatus(quantity);
+                },
+                onIncrement: (value) {
+                  printYellow(value);
+                  quantity?.value = value;
 
-                printOkStatus(quantity);
-              },
-            ),
+                  printOkStatus(quantity);
+                },
+              ),
+            )
           ],
         ),
       );

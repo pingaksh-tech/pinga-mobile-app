@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../data/model/product/product_colors_model.dart';
+import '../../data/model/product/product_diamond_model.dart';
+import '../../data/model/product/product_size_model.dart';
+
 class ProductDetailsController extends GetxController {
   Rx<ScrollController> scrollController = ScrollController().obs;
 
@@ -20,7 +24,10 @@ class ProductDetailsController extends GetxController {
 
   RxBool isLike = false.obs;
 
-  Rx<Color>? selectedColor = Colors.yellow.obs;
+  Rx<SizeModel> selectedSize = SizeModel().obs;
+  Rx<ColorModel> selectedColor = ColorModel().obs;
+  Rx<Diamond> selectedDiamond = Diamond().obs;
+  RxString selectedRemark = "".obs;
 
   final List<Color> colors = [
     Colors.yellow, // Gold

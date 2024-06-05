@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:pingaksh_mobile/exports.dart';
-import 'package:pingaksh_mobile/packages/cached_network_image/cached_network_image.dart';
+import '../../../exports.dart';
+import '../../../packages/cached_network_image/cached_network_image.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});

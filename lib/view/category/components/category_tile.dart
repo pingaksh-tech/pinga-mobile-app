@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:pingaksh_mobile/exports.dart';
-import 'package:pingaksh_mobile/res/app_network_image.dart';
+import '../../../exports.dart';
+import '../../../res/app_network_image.dart';
 
 class CategoryTile extends StatelessWidget {
   final String categoryName;

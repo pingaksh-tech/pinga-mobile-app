@@ -9,7 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../exports.dart';
 
 class ProfileScreen extends StatelessWidget {
-  ProfileScreen({super.key});
+  const ProfileScreen({super.key});
 
   // final ProfileController con = Get.put(ProfileController());
 
