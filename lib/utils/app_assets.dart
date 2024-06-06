@@ -54,7 +54,7 @@ class AppAssets {
   static const String menuIcon = '${svgPath}menu_icon.svg';
   static const String downloadIcon = '${svgPath}download.svg';
   static const String shareIcon = '${svgPath}share.svg';
-  static const String watchlistIcon = '${svgPath}watchlist_icon.svg';
+  static const String watchlistFilled = '${svgPath}watchlist.svg';
   static const String jewelleryWearIcon = '${svgPath}jewellery_wear_icon.svg';
   static const String ringSizeIcon = '${svgPath}ring_size_icon.svg';
   static const String colorIcon = '${svgPath}color_icon.svg';
@@ -65,9 +65,15 @@ class AppAssets {
   static const String listIcon = '${svgPath}list.svg';
   static const String remarkOutlineIcon = '${svgPath}outline_remark.svg';
   static const String remarkFilledIcon = '${svgPath}filled_remark_icon.svg';
+  static const String feedbackIcon = '${svgPath}feedback.svg';
+  static const String logOutIcon = '${svgPath}log_out.svg';
+  static const String policiesIcon = '${svgPath}policies.svg';
+  static const String customerCareIcon = '${svgPath}customer_care.svg';
+  static const String settingIcon = '${svgPath}settings.svg';
+  static const String catalogIcon = '${svgPath}catalog.svg';
 
   /// ***********************************************************************************
   ///                                   JSON
   /// ***********************************************************************************
-//? JSON ( static const String exampleJson = '${jsonPath}example.json'; )
+//? JSON ( static const String exampl eJson = '${jsonPath}example.json'; )
 }

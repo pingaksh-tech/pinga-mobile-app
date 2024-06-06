@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
 import '../../../exports.dart';
 import '../../../packages/cached_network_image/cached_network_image.dart';
 
@@ -46,18 +45,15 @@ class AppDrawer extends StatelessWidget {
 
           ListTile(
             leading: SvgPicture.asset(
-              AppAssets.watchlistIcon,
+              AppAssets.homeOutlinedSVG,
               height: 16.h,
               colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
             ),
             title: Text(
-              "Watchlist",
+              "Home",
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            onTap: () {
-              Get.back();
-              Get.toNamed(AppRoutes.watchListScreen);
-            },
+            onTap: () {},
           ),
           const Divider(height: 1),
           ListTile(
@@ -75,6 +71,107 @@ class AppDrawer extends StatelessWidget {
             },
           ),
           const Divider(height: 1),
+
+          /// My Catalog
+          ListTile(
+            leading: SvgPicture.asset(
+              AppAssets.catalogIcon,
+              height: 16.h,
+              colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+            ),
+            title: Text(
+              "My Catalog",
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            onTap: () {
+              // Get.back();
+            },
+          ),
+          const Divider(height: 1),
+
+          /// My Catalog
+          ListTile(
+            leading: SvgPicture.asset(
+              AppAssets.settingIcon,
+              height: 16.h,
+              colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+            ),
+            title: Text(
+              "Setting",
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            onTap: () {
+              // Get.back();
+            },
+          ),
+          const Divider(height: 1),
+
+          /// My Catalog
+          ListTile(
+            leading: SvgPicture.asset(
+              AppAssets.customerCareIcon,
+              height: 16.h,
+              colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+            ),
+            title: Text(
+              "Customer Care",
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            onTap: () {
+              // Get.back();
+            },
+          ),
+          const Divider(height: 1),
+
+          /// Policies
+          ListTile(
+            leading: SvgPicture.asset(
+              AppAssets.policiesIcon,
+              height: 16.h,
+              colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+            ),
+            title: Text(
+              "Policies",
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            onTap: () {
+              // Get.back();
+            },
+          ),
+          const Divider(height: 1),
+
+          /// Feedback
+          ListTile(
+            leading: SvgPicture.asset(
+              AppAssets.feedbackIcon,
+              height: 16.h,
+              colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+            ),
+            title: Text(
+              "Feedback",
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            onTap: () {
+              // Get.back();
+            },
+          ),
+          const Divider(height: 1),
+
+          /// Log out
+          ListTile(
+            leading: SvgPicture.asset(
+              AppAssets.logOutIcon,
+              height: 16.h,
+              colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+            ),
+            title: Text(
+              "Log out",
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            onTap: () {
+              // Get.back();
+            },
+          ),
         ],
       ),
     );

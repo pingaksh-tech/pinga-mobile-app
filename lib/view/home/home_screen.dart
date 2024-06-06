@@ -55,7 +55,7 @@ class HomeScreen extends StatelessWidget {
                 crossAxisCount: 2,
                 mainAxisSpacing: defaultPadding / 2,
                 crossAxisSpacing: defaultPadding / 1.8,
-                mainAxisExtent: 180.h,
+                mainAxisExtent: 170.h,
               ),
               itemCount: con.brandList.length,
               itemBuilder: (context, index) => GestureDetector(
@@ -94,6 +94,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                     Text(
                       con.brandList[index]["brandName"],
+                      textAlign: TextAlign.center,
                       style: AppTextStyle.titleStyle(context).copyWith(color: Theme.of(context).scaffoldBackgroundColor),
                     ),
                   ],

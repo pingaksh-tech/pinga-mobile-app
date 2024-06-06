@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
 
@@ -907,7 +908,7 @@ class AppDialogs {
   }
 
   static Future<dynamic> addMetalDialog(BuildContext context) {
-    TextEditingController controller = TextEditingController();
+    Rx<TextEditingController> controller = TextEditingController().obs;
     return Get.dialog(
       AlertDialog(
         backgroundColor: AppColors.background,
@@ -921,7 +922,7 @@ class AppDialogs {
                 "Add extra metal",
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontSize: 14.sp,
+                      fontSize: 15.4.sp,
                       fontWeight: FontWeight.w500,
                       color: AppColors.font,
                     ),
@@ -930,14 +931,13 @@ class AppDialogs {
             AppIconButton(
               size: 24.h,
               splashColor: Theme.of(context).scaffoldBackgroundColor,
-              onPressed: () {
-                Get.back();
-              },
-              // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               icon: SvgPicture.asset(
                 AppAssets.crossIcon,
                 colorFilter: ColorFilter.mode(AppColors.subText, BlendMode.srcIn),
               ),
+              onPressed: () {
+                Get.back();
+              },
             ),
           ],
         ),
@@ -948,36 +948,53 @@ class AppDialogs {
             AppTextField(
               title: "Metal Wt",
               hintText: "Add extra metal weight",
-              controller: controller,
+              controller: controller.value,
               contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.4, horizontal: defaultPadding / 1.7),
               titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontSize: 12.sp,
+                    fontSize: 13.sp,
                     fontWeight: FontWeight.w400,
                     color: Theme.of(context).colorScheme.primary,
                   ),
+              keyboardType: TextInputType.number,
               textInputAction: TextInputAction.done,
+              onChanged: (_) {
+                /// Debounce
+                commonDebounce(callback: () async {
+                  controller.refresh();
+                  /*API CALL*/
+                  await null;
+                });
+              },
             ),
+            (defaultPadding / 1.5).verticalSpace,
             Text(
               "Metal price",
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontSize: 12.sp,
+                    fontSize: 13.sp,
                     fontWeight: FontWeight.w400,
                     color: Theme.of(context).colorScheme.primary,
                   ),
             ),
-            Text(
-              "Metal price",
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.font.withOpacity(.7),
-                  ),
-            ),
-            const AppButton(
-              flexibleHeight: true,
+            1.verticalSpace,
+            Obx(() {
+              return Text(
+                isValEmpty(controller.value.text.trim()) ? "Metal price" : UiUtils.amountFormat(22311, decimalDigits: 0),
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.font.withOpacity(.7),
+                    ),
+              );
+            }),
+            (defaultPadding / 1.4).verticalSpace,
+            AppButton(
               title: "Add metal",
+              flexibleHeight: true,
+              onPressed: () {
+                Get.back();
+              },
             )
           ],
         ),

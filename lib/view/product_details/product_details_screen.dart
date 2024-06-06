@@ -196,7 +196,7 @@ class ProductDetailsScreen extends StatelessWidget {
                               /// Watch
                               CustomProductWatchButton(
                                 size: 58.h,
-                                icon: AppAssets.watchlistIcon,
+                                icon: AppAssets.watchlistFilled,
                                 title: "Watch",
                                 onPressed: () {
                                   Get.toNamed(AppRoutes.addWatchListScreen);

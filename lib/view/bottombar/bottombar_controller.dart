@@ -2,6 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import '../collections/watch_list/watch_list_screen.dart';
 import '../home/home_screen.dart';
 
 import '../../data/model/bottombar/bottombar_model.dart';
@@ -34,11 +35,11 @@ class BottomBarController extends GetxController {
     bottomBarDataList.insert(
       1,
       BottomBarModel(
-        screenName: "Wishlist",
+        screenName: "Watchlist",
         bottomItem: BottomItem(
-          selectedImage: AppAssets.like,
+          selectedImage: AppAssets.watchlistFilled,
         ),
-        screenWidget: Container(),
+        screenWidget: WatchListScreen(),
       ),
     );
     bottomBarDataList.insert(

@@ -21,15 +21,15 @@ class WatchListScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: MyAppBar(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          title: "Watchlist",
-          bottom: con.watchList.isNotEmpty
+          showBackIcon: false,
+          child: con.watchList.isNotEmpty
               ? PreferredSize(
                   preferredSize: Size.fromHeight(40.h),
                   child: AppTextField(
                     hintText: "Search",
                     contentPadding: EdgeInsets.all(defaultPadding / 1.2),
                     fillColor: AppColors.background,
-                    padding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(bottom: defaultPadding),
+                    padding: EdgeInsets.only(bottom: defaultPadding),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(defaultRadius),

@@ -30,6 +30,12 @@ Widget plusMinusTile(
               if (textValue.value > 0) {
                 textValue.value--;
                 onDecrement(textValue.value);
+
+                /// Debounce
+                commonDebounce(callback: () async {
+                  /*API CALL*/
+                  await null;
+                });
               }
             },
             icon: SvgPicture.asset(
@@ -64,6 +70,12 @@ Widget plusMinusTile(
               if (textValue.value >= 0) {
                 textValue.value++;
                 onIncrement(textValue.value);
+
+                /// Debounce
+                commonDebounce(callback: () async {
+                  /*API CALL*/
+                  await null;
+                });
               }
             },
             icon: SvgPicture.asset(

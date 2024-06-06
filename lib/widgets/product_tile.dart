@@ -8,6 +8,7 @@ import '../data/model/product/product_diamond_model.dart';
 import '../data/model/product/product_size_model.dart';
 import '../exports.dart';
 import '../res/app_network_image.dart';
+import '../res/pop_up_menu_button.dart';
 import 'plus_minus_title/plus_minus_tile.dart';
 import 'size_selector/size_selector_botton.dart';
 
@@ -99,12 +100,16 @@ class _ProductTileState extends State<ProductTile> {
                   style: TextStyle(color: Theme.of(context).primaryColor),
                 ),
               ),
-              Align(
-                alignment: Alignment.topRight,
-                child: AppIconButton(
-                  onPressed: () {},
-                  size: 25.h,
-                  icon: Icon(
+              Positioned(
+                top: defaultPadding / 2,
+                right: defaultPadding / 2.4,
+                child: AppPopUpMenuButton(
+                  menuList: const ["Variants", "Add to Watchlist"],
+                  onSelect: (value) {
+                    printOkStatus(value);
+                  },
+                  child: Icon(
+                    shadows: const [Shadow(color: AppColors.background, blurRadius: 4)],
                     Icons.more_vert_rounded,
                     size: 18.sp,
                   ),
@@ -206,7 +211,7 @@ class _ProductTileState extends State<ProductTile> {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2).copyWith(top: defaultPadding / 1.2),
       child: Container(
-        padding: EdgeInsets.all(defaultPadding / 1.5),
+        padding: EdgeInsets.all(defaultPadding / 1.5).copyWith(top: 0, right: 0),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(
@@ -227,6 +232,7 @@ class _ProductTileState extends State<ProductTile> {
                     width: 44.h,
                     fit: BoxFit.cover,
                     borderRadius: BorderRadius.circular(defaultRadius / 2),
+                    padding: EdgeInsets.only(top: defaultPadding / 1.5),
                   ),
                 ),
                 6.horizontalSpace,
@@ -238,37 +244,46 @@ class _ProductTileState extends State<ProductTile> {
                       Row(
                         children: [
                           Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                /// TITLE
-                                Text(
-                                  widget.productName,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 11.sp, color: AppColors.font.withOpacity(.6)),
-                                ),
+                            child: Padding(
+                              padding: EdgeInsets.only(top: defaultPadding / 1.5),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  /// TITLE
+                                  Text(
+                                    widget.productName,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 11.sp, color: AppColors.font.withOpacity(.6)),
+                                  ),
 
-                                /// PRICE
-                                Text(
-                                  UiUtils.amountFormat(widget.productPrice, decimalDigits: 0),
-                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                        fontSize: 13.sp,
-                                        color: AppColors.primary,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                ),
-                              ],
+                                  /// PRICE
+                                  Text(
+                                    UiUtils.amountFormat(widget.productPrice, decimalDigits: 0),
+                                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                          fontSize: 13.sp,
+                                          color: AppColors.primary,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
 
                           /// Plus minus tile
                           // incrementDecrementTile(height: 20.h),
-                          AppIconButton(
-                            onPressed: () {},
-                            size: 25.h,
-                            icon: Icon(
-                              Icons.more_vert_rounded,
-                              size: 18.sp,
+                          Padding(
+                            padding: EdgeInsets.only(right: defaultPadding / 2),
+                            child: AppPopUpMenuButton(
+                              menuList: const ["Variants", "Add to Watchlist"],
+                              onSelect: (value) {
+                                printOkStatus(value);
+                              },
+                              child: Icon(
+                                shadows: const [Shadow(color: AppColors.background, blurRadius: 4)],
+                                Icons.more_vert_rounded,
+                                size: 18.sp,
+                              ),
                             ),
                           ),
                         ],
@@ -283,26 +298,29 @@ class _ProductTileState extends State<ProductTile> {
             (defaultPadding / 2).verticalSpace,
 
             ///
-            Row(
-              children: [
-                /// Size Selector
-                sizeSelector(direction: Axis.vertical),
-                6.horizontalSpace,
+            Padding(
+              padding: EdgeInsets.only(right: defaultPadding / 1.5),
+              child: Row(
+                children: [
+                  /// Size Selector
+                  sizeSelector(direction: Axis.vertical),
+                  6.horizontalSpace,
 
-                /// Color Selector
-                colorSelector(direction: Axis.vertical),
-                6.horizontalSpace,
+                  /// Color Selector
+                  colorSelector(direction: Axis.vertical),
+                  6.horizontalSpace,
 
-                /// Diamond Selector
-                diamondSelector(direction: Axis.vertical),
-                6.horizontalSpace,
+                  /// Diamond Selector
+                  diamondSelector(direction: Axis.vertical),
+                  6.horizontalSpace,
 
-                /// Remark Selector
-                remarkSelector(direction: Axis.vertical),
-                6.horizontalSpace,
+                  /// Remark Selector
+                  remarkSelector(direction: Axis.vertical),
+                  6.horizontalSpace,
 
-                incrementDecrementTile(height: 20.h),
-              ],
+                  incrementDecrementTile(height: 20.h),
+                ],
+              ),
             ),
           ],
         ),
