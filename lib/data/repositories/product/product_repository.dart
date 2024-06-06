@@ -289,16 +289,10 @@ class ProductRepository {
     "message": "diamond fetched successfully",
     "data": {
       "diamonds": [
-        {"id": "diamond1", "diamond": "Round"},
-        {"id": "diamond2", "diamond": "Princess"},
-        {"id": "diamond3", "diamond": "Emerald"},
-        {"id": "diamond4", "diamond": "Asscher"},
-        {"id": "diamond5", "diamond": "Marquise"},
-        {"id": "diamond6", "diamond": "Oval"},
-        {"id": "diamond7", "diamond": "Radiant"},
-        {"id": "diamond8", "diamond": "Pear"},
-        {"id": "diamond9", "diamond": "Heart"},
-        {"id": "diamond10", "diamond": "Cushion"}
+        {"id": "diamond1", "value": "VV-EF", "diamond": "VVS-EF"},
+        {"id": "diamond2", "value": "VS-GH", "diamond": "VS-SI-GH"},
+        {"id": "diamond3", "value": "VS-HI", "diamond": "VS-SI-HI"},
+        {"id": "diamond4", "value": "SI-HI", "diamond": "SI-HI"},
       ],
     }
   };

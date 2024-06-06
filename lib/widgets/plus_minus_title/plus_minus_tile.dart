@@ -19,8 +19,9 @@ Widget plusMinusTile(
         borderRadius: BorderRadius.circular(defaultRadius),
       ),
       padding: EdgeInsets.all(defaultPadding / 2),
-      alignment: Alignment.center,
+      // alignment: Alignment.center,
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           /// Minus Button

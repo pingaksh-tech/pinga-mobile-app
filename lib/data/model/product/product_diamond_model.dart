@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 GetDiamondModel getDiamondModelFromJson(String str) => GetDiamondModel.fromJson(json.decode(str));
@@ -17,16 +16,16 @@ class GetDiamondModel {
   });
 
   factory GetDiamondModel.fromJson(Map<String, dynamic> json) => GetDiamondModel(
-    success: json["success"],
-    message: json["message"],
-    data: json["data"] == null ? null : DiamondModel.fromJson(json["data"]),
-  );
+        success: json["success"],
+        message: json["message"],
+        data: json["data"] == null ? null : DiamondModel.fromJson(json["data"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "success": success,
-    "message": message,
-    "data": data?.toJson(),
-  };
+        "success": success,
+        "message": message,
+        "data": data?.toJson(),
+      };
 }
 
 class DiamondModel {
@@ -37,30 +36,34 @@ class DiamondModel {
   });
 
   factory DiamondModel.fromJson(Map<String, dynamic> json) => DiamondModel(
-    diamonds: json["diamonds"] == null ? [] : List<Diamond>.from(json["diamonds"]!.map((x) => Diamond.fromJson(x))),
-  );
+        diamonds: json["diamonds"] == null ? [] : List<Diamond>.from(json["diamonds"]!.map((x) => Diamond.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "diamonds": diamonds == null ? [] : List<dynamic>.from(diamonds!.map((x) => x.toJson())),
-  };
+        "diamonds": diamonds == null ? [] : List<dynamic>.from(diamonds!.map((x) => x.toJson())),
+      };
 }
 
 class Diamond {
   final String? id;
+  final String? value;
   final String? diamond;
 
   Diamond({
     this.id,
+    this.value,
     this.diamond,
   });
 
   factory Diamond.fromJson(Map<String, dynamic> json) => Diamond(
-    id: json["id"],
-    diamond: json["diamond"],
-  );
+        id: json["id"],
+        value: json["value"],
+        diamond: json["diamond"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "diamond": diamond,
-  };
+        "id": id,
+        "value": value,
+        "diamond": diamond,
+      };
 }

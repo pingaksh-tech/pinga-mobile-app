@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -14,16 +13,16 @@ Widget horizontalSelectorButton(
   RxString? selectedSize,
   RxString? selectedColor,
   RxString? selectedDiamond,
-  RxBool? remarkSelected,
+  RxString? remarkSelected,
   required SelectableItemType selectableItemType,
   SizeColorSelectorButtonType sizeColorSelectorButtonType = SizeColorSelectorButtonType.medium,
   Color? backgroundColor,
   bool isFlexible = false,
   Axis axisDirection = Axis.horizontal,
-  Function(dynamic model)? sizeOnChanged,
-  Function(dynamic model)? colorOnChanged,
-  Function(dynamic model)? rubyOnChanged,
-  Function(dynamic model)? remarkOnChanged,
+  Function(SizeModel model)? sizeOnChanged,
+  Function(ColorModel model)? colorOnChanged,
+  Function(Diamond model)? rubyOnChanged,
+  Function(String model)? remarkOnChanged,
 }) {
   return Expanded(
     flex: isFlexible ? 0 : 1,
@@ -76,7 +75,7 @@ Widget horizontalSelectorButton(
 
                   selectedDiamond?.value = diamondModel.diamond ?? "";
 
-                  printYellow(diamondModel.diamond);
+                  printYellow(selectedDiamond);
                   if (rubyOnChanged != null) {
                     rubyOnChanged(diamondModel);
                   }
@@ -86,7 +85,7 @@ Widget horizontalSelectorButton(
             break;
 
           case SelectableItemType.remarks:
-            Get.toNamed(AppRoutes.remarkScreen)?.then(
+            Get.toNamed(AppRoutes.remarkScreen, arguments: {"remark": remarkSelected?.value})?.then(
               (value) {
                 if (value != null) {
                   if (remarkOnChanged != null) {
@@ -112,7 +111,7 @@ Widget horizontalSelectorButton(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SvgPicture.asset(
-                    remarkSelected?.isTrue ?? false ? selectableItemType.selectedIcon ?? '' : selectableItemType.icon,
+                    remarkSelected?.isNotEmpty ?? false ? selectableItemType.selectedIcon ?? '' : selectableItemType.icon,
                     height: switch (sizeColorSelectorButtonType) {
                       SizeColorSelectorButtonType.small => 12.h,
                       SizeColorSelectorButtonType.medium => 14.h,
@@ -125,7 +124,7 @@ Widget horizontalSelectorButton(
                     switch (selectableItemType) {
                       SelectableItemType.size => ("Size ${isValEmpty(selectedSize?.value) ? "(0)" : "(${selectedSize?.value.split(" ").first})"}"),
                       SelectableItemType.color => ("Color ${isValEmpty(selectedColor?.value) ? "(-)" : "(${selectedColor?.value.split(" ").first})"}"),
-                      SelectableItemType.diamond => "Ruby",
+                      SelectableItemType.diamond => isValEmpty(selectedDiamond?.value) ? "Diamond" : selectedDiamond?.value ?? '',
                       SelectableItemType.remarks => "Remark",
                     },
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -144,7 +143,7 @@ Widget horizontalSelectorButton(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SvgPicture.asset(
-                    remarkSelected?.isTrue ?? false ? selectableItemType.selectedIcon ?? '' : selectableItemType.icon,
+                    remarkSelected?.isNotEmpty ?? false ? selectableItemType.selectedIcon ?? '' : selectableItemType.icon,
                     height: switch (sizeColorSelectorButtonType) {
                       SizeColorSelectorButtonType.small => 12.h,
                       SizeColorSelectorButtonType.medium => 14.h,
@@ -156,7 +155,7 @@ Widget horizontalSelectorButton(
                     switch (selectableItemType) {
                       SelectableItemType.size => ("Size ${isValEmpty(selectedSize?.value) ? "(0)" : "(${selectedSize?.value.split(" ").first})"}"),
                       SelectableItemType.color => ("Color ${isValEmpty(selectedColor?.value) ? "(-)" : "(${selectedColor?.value.split(" ").first})"}"),
-                      SelectableItemType.diamond => " Oval ",
+                      SelectableItemType.diamond => isValEmpty(selectedDiamond?.value) ? "Diamond" : selectedDiamond?.value ?? '',
                       SelectableItemType.remarks => "Remark",
                     },
                     textAlign: TextAlign.center,
@@ -170,7 +169,6 @@ Widget horizontalSelectorButton(
                   )
                 ],
               ),
-            null => throw UnimplementedError(),
           },
         ),
       ),

@@ -38,4 +38,15 @@ class AddRemarkController extends GetxController {
       disableButton.value = true;
     }
   }
+
+  @override
+  void onInit() {
+    super.onInit();
+
+    if (Get.arguments != null) {
+      if (Get.arguments['remark'].runtimeType == String) {
+        selectedRemark.value = Get.arguments['remark'];
+      }
+    }
+  }
 }

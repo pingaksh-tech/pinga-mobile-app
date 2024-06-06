@@ -19,7 +19,8 @@ class CartController extends GetxController {
   SizeModel sizeModel = SizeModel();
   ColorModel colorModel = ColorModel();
   Diamond diamondModel = Diamond();
-  String selectedRemark = "";
+  RxString selectedRemark = "".obs;
+
   @override
   void onReady() {
     super.onReady();

@@ -297,8 +297,8 @@ class ProductDetailsScreen extends StatelessWidget {
                 axisDirection: Axis.vertical,
                 sizeOnChanged: (value) {
                   /// Selected Size
-                  if (value != null && (value.runtimeType == SizeModel)) {
-                    con.selectedSize.value = (value as SizeModel);
+                  if ((value.runtimeType == SizeModel)) {
+                    con.selectedSize.value = value;
                   }
                 },
               ),
@@ -313,8 +313,8 @@ class ProductDetailsScreen extends StatelessWidget {
                 axisDirection: Axis.vertical,
                 colorOnChanged: (value) {
                   /// Selected Color
-                  if (value != null && (value.runtimeType == ColorModel)) {
-                    con.selectedColor.value = (value as ColorModel);
+                  if ((value.runtimeType == ColorModel)) {
+                    con.selectedColor.value = value;
                   }
                 },
               ),
@@ -327,10 +327,10 @@ class ProductDetailsScreen extends StatelessWidget {
                 selectableItemType: SelectableItemType.diamond,
                 sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
                 axisDirection: Axis.vertical,
-                sizeOnChanged: (value) {
+                rubyOnChanged: (value) {
                   /// Selected Diamond
-                  if (value != null && (value.runtimeType == Diamond)) {
-                    con.selectedDiamond.value = (value as Diamond);
+                  if ((value.runtimeType == Diamond)) {
+                    con.selectedDiamond.value = value;
                   }
                 },
               ),
@@ -339,7 +339,7 @@ class ProductDetailsScreen extends StatelessWidget {
               /// Add Remark
               horizontalSelectorButton(
                 context,
-                remarkSelected: con.selectedRemark.isNotEmpty.obs,
+                remarkSelected: con.selectedRemark,
                 selectableItemType: SelectableItemType.remarks,
                 sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
                 axisDirection: Axis.vertical,

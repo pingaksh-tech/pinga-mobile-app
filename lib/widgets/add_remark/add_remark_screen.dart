@@ -23,13 +23,13 @@ class AddRemarkScreen extends StatelessWidget {
           title: "Your Remark",
           centerTitle: false,
         ),
-        body: Obx(() {
-          return ListView.builder(
-            physics: const RangeMaintainingScrollPhysics(),
-            padding: EdgeInsets.all(defaultPadding).copyWith(bottom: 150.h),
-            shrinkWrap: true,
-            itemCount: con.remarkList.length,
-            itemBuilder: (context, index) => CustomCheckboxTile(
+        body: ListView.builder(
+          physics: const RangeMaintainingScrollPhysics(),
+          padding: EdgeInsets.all(defaultPadding).copyWith(bottom: 150.h),
+          shrinkWrap: true,
+          itemCount: con.remarkList.length,
+          itemBuilder: (context, index) => Obx(() {
+            return CustomCheckboxTile(
               scale: 1,
               title: con.remarkList[index],
               titleStyle: Theme.of(context).textTheme.titleMedium,
@@ -39,9 +39,9 @@ class AddRemarkScreen extends StatelessWidget {
 
                 con.checkDisableButton();
               },
-            ),
-          );
-        }),
+            );
+          }),
+        ),
         bottomSheet: Obx(() {
           return ListView(
             shrinkWrap: true,
@@ -72,11 +72,11 @@ class AddRemarkScreen extends StatelessWidget {
                 padding: EdgeInsets.all(defaultPadding).copyWith(bottom: MediaQuery.of(context).padding.bottom + defaultPadding),
                 onPressed: () {
                   FocusScope.of(context).unfocus();
-                  // if (con.remarkCon.value.text.trim().isNotEmpty) {
-
-                  // }
-                  con.remarkCon.value.clear();
-                  Get.back(result: con.selectedRemark);
+                  if (con.remarkCon.value.text.trim().isNotEmpty) {
+                    con.selectedRemark.value = con.remarkCon.value.text.trim();
+                    con.remarkCon.value.clear();
+                  }
+                  Get.back(result: con.selectedRemark.value);
                 },
               ),
             ],

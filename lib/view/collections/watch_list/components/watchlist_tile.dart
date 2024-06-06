@@ -16,6 +16,7 @@ class WatchlistTile extends StatelessWidget {
   final VoidCallback? cartOnPressed;
   final bool? isShowButtons;
   final RxBool? selected;
+  final VoidCallback? onPressed;
   final void Function(bool?)? onChanged;
 
   const WatchlistTile({
@@ -30,78 +31,85 @@ class WatchlistTile extends StatelessWidget {
     this.selected,
     this.onChanged,
     this.cartOnPressed,
+    this.onPressed,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(defaultPadding / 1.5).copyWith(right: defaultPadding / 4, top: defaultPadding / 4),
-      decoration: BoxDecoration(
-        boxShadow: defaultShadow(context),
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(
-          defaultRadius,
+    return InkWell(
+      borderRadius: BorderRadius.circular(defaultRadius),
+      splashColor: Theme.of(context).colorScheme.primary.withOpacity(.2),
+      highlightColor: Colors.transparent,
+      onTap: onPressed,
+      child: Ink(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          boxShadow: defaultShadowAllSide,
+          borderRadius: BorderRadius.circular(defaultRadius),
         ),
-      ),
-      child: Stack(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(top: defaultPadding / 2.8),
-            child: Column(
-              children: [
-                titleSubtitleTile(context, title: "Name${'\t' * 15}:  ", subTitle: name ?? ''),
-                titleSubtitleTile(context, title: "No. of items${'\t' * 4}:  ", subTitle: noOfItem.toString()),
-                titleSubtitleTile(context, title: "Created by${'\t' * 7}:  ", subTitle: createdBy ?? ''),
-                if (isShowButtons ?? true) ...[
-                  const Divider(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      /// CART
-                      IconTitleButton(
-                        title: "Add to Cart",
-                        icon: AppAssets.cart,
-                        onPressed: cartOnPressed,
-                      ),
+        child: Container(
+          padding: EdgeInsets.all(defaultPadding / 1.5).copyWith(right: defaultPadding / 4, top: defaultPadding / 4),
+          child: Stack(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: defaultPadding / 2.8),
+                child: Column(
+                  children: [
+                    titleSubtitleTile(context, title: "Name${'\t' * 15}:  ", subTitle: name ?? ''),
+                    titleSubtitleTile(context, title: "No. of items${'\t' * 4}:  ", subTitle: noOfItem.toString()),
+                    titleSubtitleTile(context, title: "Created by${'\t' * 7}:  ", subTitle: createdBy ?? ''),
+                    if (isShowButtons ?? true) ...[
+                      const Divider(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          /// CART
+                          IconTitleButton(
+                            title: "Add to Cart",
+                            icon: AppAssets.cart,
+                            onPressed: cartOnPressed,
+                          ),
 
-                      /// DOWNLOAD
-                      IconTitleButton(
-                        title: "Download",
-                        icon: AppAssets.downloadIcon,
-                        onPressed: downloadOnPressed,
-                      ),
+                          /// DOWNLOAD
+                          IconTitleButton(
+                            title: "Download",
+                            icon: AppAssets.downloadIcon,
+                            onPressed: downloadOnPressed,
+                          ),
 
-                      /// SHARE
-                      IconTitleButton(
-                        title: "Share",
-                        icon: AppAssets.shareIcon,
-                        onPressed: shareOnPressed,
-                      ),
+                          /// SHARE
+                          IconTitleButton(
+                            title: "Share",
+                            icon: AppAssets.shareIcon,
+                            onPressed: shareOnPressed,
+                          ),
 
-                      /// DELETE
-                      IconTitleButton(
-                        title: "Delete",
-                        icon: AppAssets.trash,
-                        onPressed: deleteOnPressed,
+                          /// DELETE
+                          IconTitleButton(
+                            title: "Delete",
+                            icon: AppAssets.trash,
+                            onPressed: deleteOnPressed,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ]
-              ],
-            ),
-          ),
-          if (selected != null)
-            Positioned(
-              right: 0,
-              top: 0,
-              child: CustomCheckboxTile(
-                scale: 1,
-                isSelected: selected ?? RxBool(false),
-                titleStyle: null,
-                onChanged: onChanged,
+                    ]
+                  ],
+                ),
               ),
-            ),
-        ],
+              if (selected != null)
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  child: CustomCheckboxTile(
+                    scale: 1,
+                    isSelected: selected!,
+                    titleStyle: null,
+                    onChanged: onChanged,
+                  ),
+                ),
+            ],
+          ),
+        ),
       ),
     );
   }

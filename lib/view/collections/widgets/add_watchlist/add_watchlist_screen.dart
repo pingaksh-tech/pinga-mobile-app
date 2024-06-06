@@ -7,7 +7,6 @@ import '../../../../res/app_bar.dart';
 import 'add_watchlist_controller.dart';
 
 import '../../../../exports.dart';
-import '../../../products/product_controller.dart';
 import '../../watch_list/components/watchlist_tile.dart';
 
 class AddWatchlistScreen extends StatelessWidget {
@@ -32,21 +31,14 @@ class AddWatchlistScreen extends StatelessWidget {
               separatorBuilder: (context, index) => SizedBox(
                 height: defaultPadding / 1.5,
               ),
-              itemBuilder: (context, index) => GestureDetector(
-                onTap: () {
-                  Get.delete<ProductController>();
-                  Get.toNamed(
-                    AppRoutes.productScreen,
-                    arguments: {"categoryName": con.watchList[index].name},
-                  );
-                },
-                child: WatchlistTile(
+              itemBuilder: (context, index) => Obx(() {
+                return WatchlistTile(
                   name: con.watchList[index].name,
                   noOfItem: con.watchList[index].noOfItem,
                   createdBy: con.watchList[index].createdBy,
                   isShowButtons: false,
                   selected: RxBool(con.selectedList.contains(con.watchList[index])),
-                  onChanged: (val) {
+                  onPressed: () {
                     if (!con.selectedList.contains(con.watchList[index])) {
                       con.selectedList.add(con.watchList[index]);
                     } else {
@@ -54,8 +46,16 @@ class AddWatchlistScreen extends StatelessWidget {
                     }
                     con.checkDisableButton();
                   },
-                ),
-              ),
+                  onChanged: (_) {
+                    if (!con.selectedList.contains(con.watchList[index])) {
+                      con.selectedList.add(con.watchList[index]);
+                    } else {
+                      con.selectedList.remove(con.watchList[index]);
+                    }
+                    con.checkDisableButton();
+                  },
+                );
+              }),
             )
           ],
         );

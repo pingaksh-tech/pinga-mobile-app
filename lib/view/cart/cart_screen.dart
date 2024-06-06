@@ -141,8 +141,8 @@ class CartScreen extends StatelessWidget {
                                                           axisDirection: Axis.vertical,
                                                           sizeOnChanged: (value) {
                                                             /// Return Selected Size
-                                                            if (value != null && (value.runtimeType == SizeModel)) {
-                                                              con.sizeModel = (value as SizeModel);
+                                                            if ((value.runtimeType == SizeModel)) {
+                                                              con.sizeModel = value;
                                                             }
                                                           },
                                                         ),
@@ -156,8 +156,8 @@ class CartScreen extends StatelessWidget {
                                                           axisDirection: Axis.vertical,
                                                           colorOnChanged: (value) {
                                                             /// Return Selected Color
-                                                            if (value != null && (value.runtimeType == ColorModel)) {
-                                                              con.colorModel = (value as ColorModel);
+                                                            if ((value.runtimeType == ColorModel)) {
+                                                              con.colorModel = value;
 
                                                               printYellow(con.colorModel);
                                                             }
@@ -168,11 +168,11 @@ class CartScreen extends StatelessWidget {
                                                           context,
                                                           isFlexible: true,
                                                           axisDirection: Axis.vertical,
-                                                          remarkSelected: con.selectedRemark.isNotEmpty.obs,
+                                                          remarkSelected: con.selectedRemark,
                                                           selectableItemType: SelectableItemType.remarks,
                                                           sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
                                                           remarkOnChanged: (value) {
-                                                            con.selectedRemark = value;
+                                                            con.selectedRemark.value = value;
                                                           },
                                                         ),
                                                         (defaultPadding / 4).horizontalSpace,
@@ -185,8 +185,8 @@ class CartScreen extends StatelessWidget {
                                                           sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
                                                           rubyOnChanged: (value) {
                                                             /// Return Selected Diamond
-                                                            if (value != null && (value.runtimeType == Diamond)) {
-                                                              con.diamondModel = (value as Diamond);
+                                                            if ((value.runtimeType == Diamond)) {
+                                                              con.diamondModel = value;
                                                             }
                                                           },
                                                         ),

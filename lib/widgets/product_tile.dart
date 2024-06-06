@@ -214,57 +214,96 @@ class _ProductTileState extends State<ProductTile> {
           ),
           boxShadow: defaultShadowAllSide,
         ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Column(
           children: [
-            AppNetworkImage(
-              height: Get.width * 0.18,
-              width: Get.width * 0.18,
-              fit: BoxFit.cover,
-              borderRadius: BorderRadius.circular(defaultRadius),
-              imageUrl: widget.imageUrl,
-            ),
-            SizedBox(width: defaultPadding),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.productName,
-                    style: AppTextStyle.titleStyle(context).copyWith(fontSize: 14.sp),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: AppNetworkImage(
+                    imageUrl: widget.imageUrl,
+                    height: 44.h,
+                    width: 44.h,
+                    fit: BoxFit.cover,
+                    borderRadius: BorderRadius.circular(defaultRadius / 2),
                   ),
-                  Text(
-                    UiUtils.amountFormat(widget.productPrice, decimalDigits: 0),
-                    style: AppTextStyle.subtitleStyle(context).copyWith(fontSize: 12.sp),
-                  ),
-                  4.verticalSpace,
-
-                  /// SELECTORS
-                  Row(
+                ),
+                6.horizontalSpace,
+                Expanded(
+                  flex: 10,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      /// Size Selector
-                      sizeSelector(isFlexible: true, direction: Axis.vertical),
-                      8.horizontalSpace,
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                /// TITLE
+                                Text(
+                                  widget.productName,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 11.sp, color: AppColors.font.withOpacity(.6)),
+                                ),
 
-                      /// Color Selector
-                      colorSelector(isFlexible: true, direction: Axis.vertical),
-                      8.horizontalSpace,
+                                /// PRICE
+                                Text(
+                                  UiUtils.amountFormat(widget.productPrice, decimalDigits: 0),
+                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                        fontSize: 13.sp,
+                                        color: AppColors.primary,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                ),
+                              ],
+                            ),
+                          ),
 
-                      /// Diamond Selector
-                      diamondSelector(isFlexible: true, direction: Axis.vertical),
-                      8.horizontalSpace,
+                          /// Plus minus tile
+                          // incrementDecrementTile(height: 20.h),
+                          AppIconButton(
+                            onPressed: () {},
+                            size: 25.h,
+                            icon: Icon(
+                              Icons.more_vert_rounded,
+                              size: 18.sp,
+                            ),
+                          ),
+                        ],
+                      ),
 
-                      /// Remark
-                      remarkSelector(isFlexible: true, direction: Axis.vertical),
+                      // 4.verticalSpace,
                     ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            const Icon(
-              Icons.arrow_forward_ios_rounded,
-              size: 20,
-            )
+            (defaultPadding / 2).verticalSpace,
+
+            ///
+            Row(
+              children: [
+                /// Size Selector
+                sizeSelector(direction: Axis.vertical),
+                6.horizontalSpace,
+
+                /// Color Selector
+                colorSelector(direction: Axis.vertical),
+                6.horizontalSpace,
+
+                /// Diamond Selector
+                diamondSelector(direction: Axis.vertical),
+                6.horizontalSpace,
+
+                /// Remark Selector
+                remarkSelector(direction: Axis.vertical),
+                6.horizontalSpace,
+
+                incrementDecrementTile(height: 20.h),
+              ],
+            ),
           ],
         ),
       ),
@@ -273,78 +312,100 @@ class _ProductTileState extends State<ProductTile> {
 
   /// VARIANT TILE
   Widget variantView() {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.background,
-        border: Border.all(
-          color: Theme.of(context).dividerColor.withOpacity(.15),
-        ),
-        borderRadius: BorderRadius.vertical(
-          bottom: Radius.circular(4.r),
-        ),
-      ),
-      padding: EdgeInsets.all(defaultPadding / 1.5),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 2,
-            child: AppNetworkImage(
-              imageUrl: widget.imageUrl,
-              height: 44.h,
-              width: 44.h,
-              fit: BoxFit.cover,
-              borderRadius: BorderRadius.circular(defaultRadius / 2),
-            ),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2).copyWith(top: defaultPadding / 1.2),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: BorderRadius.circular(
+            defaultRadius,
           ),
-          6.horizontalSpace,
-          Expanded(
-            flex: 7,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                /// TITLE
-                Text(
-                  widget.productName,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 11.sp, color: AppColors.font.withOpacity(.6)),
-                ),
+          boxShadow: defaultShadowAllSide,
+        ),
+        // decoration: BoxDecoration(
+        //   color: AppColors.background,
+        //   border: Border.all(
+        //     color: Theme.of(context).dividerColor.withOpacity(.15),
+        //   ),
+        //   borderRadius: BorderRadius.vertical(
+        //     bottom: Radius.circular(4.r),
+        //   ),
+        // ),
+        padding: EdgeInsets.all(defaultPadding / 1.5),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 2,
+              child: AppNetworkImage(
+                imageUrl: widget.imageUrl,
+                height: 44.h,
+                width: 44.h,
+                fit: BoxFit.cover,
+                borderRadius: BorderRadius.circular(defaultRadius / 2),
+              ),
+            ),
+            6.horizontalSpace,
+            Expanded(
+              flex: 10,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            /// TITLE
+                            Text(
+                              widget.productName,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 11.sp, color: AppColors.font.withOpacity(.6)),
+                            ),
 
-                /// PRICE
-                Text(
-                  UiUtils.amountFormat(widget.productPrice, decimalDigits: 0),
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontSize: 13.sp,
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.w500,
+                            /// PRICE
+                            Text(
+                              UiUtils.amountFormat(widget.productPrice, decimalDigits: 0),
+                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    fontSize: 13.sp,
+                                    color: AppColors.primary,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                            ),
+                          ],
+                        ),
                       ),
-                ),
-                4.verticalSpace,
 
-                Row(
-                  children: [
-                    /// Size Selector
-                    sizeSelector(isFlexible: true, direction: Axis.vertical),
-                    8.horizontalSpace,
+                      /// Plus minus tile
+                      incrementDecrementTile(height: 20.h),
+                    ],
+                  ),
+                  6.verticalSpace,
+                  Row(
+                    children: [
+                      /// Size Selector
+                      sizeSelector(isFlexible: true, direction: Axis.vertical),
+                      6.horizontalSpace,
 
-                    /// Color Selector
-                    colorSelector(isFlexible: true, direction: Axis.vertical),
-                    8.horizontalSpace,
+                      /// Color Selector
+                      colorSelector(isFlexible: true, direction: Axis.vertical),
+                      6.horizontalSpace,
 
-                    /// Diamond Selector
-                    diamondSelector(isFlexible: true, direction: Axis.vertical),
-                  ],
-                ),
-              ],
+                      /// Diamond Selector
+                      diamondSelector(isFlexible: true, direction: Axis.vertical),
+                      6.horizontalSpace,
+
+                      /// Remark Selector
+                      remarkSelector(isFlexible: true, direction: Axis.vertical),
+                    ],
+                  ),
+                  // 4.verticalSpace,
+                ],
+              ),
             ),
-          ),
-
-          /// Plus minus tile
-          Expanded(
-            flex: 4,
-            child: incrementDecrementTile(height: 20.h),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -358,8 +419,8 @@ class _ProductTileState extends State<ProductTile> {
         axisDirection: direction,
         sizeOnChanged: (value) {
           /// Return Selected Size
-          if (value != null && (value.runtimeType == SizeModel)) {
-            sizeModel = (value as SizeModel);
+          if ((value.runtimeType == SizeModel)) {
+            sizeModel = value;
 
             printYellow(sizeModel);
           }
@@ -375,8 +436,8 @@ class _ProductTileState extends State<ProductTile> {
         axisDirection: direction,
         colorOnChanged: (value) {
           /// Return Selected Color
-          if (value != null && (value.runtimeType == ColorModel)) {
-            colorModel = (value as ColorModel);
+          if ((value.runtimeType == ColorModel)) {
+            colorModel = value;
 
             printYellow(colorModel);
           }
@@ -386,14 +447,14 @@ class _ProductTileState extends State<ProductTile> {
   Widget diamondSelector({bool isFlexible = false, Axis direction = Axis.horizontal}) => horizontalSelectorButton(
         context,
         isFlexible: isFlexible,
-        selectedDiamond: ''.obs,
+        selectedDiamond: RxString(diamondModel.diamond ?? ''),
         sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
         selectableItemType: SelectableItemType.diamond,
         axisDirection: direction,
         rubyOnChanged: (value) {
           /// Return Selected Diamond
-          if (value != null && (value.runtimeType == Diamond)) {
-            diamondModel = (value as Diamond);
+          if ((value.runtimeType == Diamond)) {
+            diamondModel = value;
 
             printYellow(diamondModel);
           }
@@ -405,13 +466,11 @@ class _ProductTileState extends State<ProductTile> {
         size: height,
         textValue: widget.productQuantity ?? RxInt(0),
         onDecrement: (value) {
-          printYellow(value);
           widget.productQuantity?.value = value;
 
           printOkStatus(widget.productQuantity);
         },
         onIncrement: (value) {
-          printYellow(value);
           widget.productQuantity?.value = value;
 
           printOkStatus(widget.productQuantity);
@@ -421,7 +480,7 @@ class _ProductTileState extends State<ProductTile> {
   Widget remarkSelector({bool isFlexible = false, Axis direction = Axis.horizontal}) => horizontalSelectorButton(
         context,
         isFlexible: isFlexible,
-        remarkSelected: RxBool(selectedRemark.isNotEmpty),
+        remarkSelected: selectedRemark,
         selectableItemType: SelectableItemType.remarks,
         sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
         axisDirection: direction,
