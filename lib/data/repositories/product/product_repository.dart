@@ -1,13 +1,13 @@
 import 'package:get/get.dart';
 
 import '../../../controller/dialog_controller.dart';
+import '../../../view/product_details/widgets/variants/variants_controller.dart';
 import '../../../view/products/product_controller.dart';
 import '../../model/product/product_colors_model.dart';
 import '../../model/product/product_diamond_model.dart';
 import '../../model/product/product_model.dart';
 import '../../model/product/product_size_model.dart';
 import '../../model/product/variant_product_model.dart';
-import '../../../view/product_details/widgets/variants/variants_controller.dart';
 
 class ProductRepository {
   static Map<String, dynamic> productList = {

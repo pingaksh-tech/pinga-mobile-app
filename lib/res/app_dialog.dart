@@ -8,8 +8,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import '../controller/dialog_controller.dart';
 
+import '../controller/dialog_controller.dart';
 import '../exports.dart';
 
 class AppDialogs {
@@ -997,6 +997,64 @@ class AppDialogs {
               },
             )
           ],
+  static Future<void> cartProductDetailDialog(BuildContext context) {
+    return Get.dialog(
+      Dialog(
+        insetPadding: REdgeInsets.all(defaultPadding * 1.5),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(defaultRadius)),
+        child: Padding(
+          padding: EdgeInsets.all(defaultPadding).copyWith(top: 0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      "KCP700(Sun Spring Ring)",
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500, fontSize: 16.sp),
+                    ).paddingSymmetric(vertical: defaultPadding),
+                  ),
+                  AppIconButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: SvgPicture.asset(AppAssets.crossIcon, height: 25.h),
+                  ),
+                ],
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: AppColors.lightGrey),
+                  borderRadius: BorderRadius.circular(defaultRadius),
+                ),
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  separatorBuilder: (context, index) => const Divider(),
+                  padding: EdgeInsets.symmetric(vertical: defaultPadding, horizontal: defaultPadding),
+                  itemCount: 6,
+                  itemBuilder: (context, index) => Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        "Gold",
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 15.sp),
+                      ),
+                      Text(
+                        ":",
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 15.sp),
+                      ),
+                      Text(
+                        "Ring",
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 15.sp),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

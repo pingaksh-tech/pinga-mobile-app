@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
-import '../../model/cart/cart_model.dart';
 
 import '../../../exports.dart';
 import '../../../view/bottombar/bottombar_controller.dart';
 import '../../../view/cart/cart_controller.dart';
+import '../../../view/cart/widget/cart_stock_controller.dart';
+import '../../model/cart/cart_model.dart';
+import '../../model/cart/stock_model.dart';
 
 class CartRepository {
   /// ***********************************************************************************
@@ -262,6 +264,25 @@ class CartRepository {
     }
   };
 
+  static Map<String, dynamic> stockList = {
+    "success": true,
+    "message": "Stock fetched successfully",
+    "data": {
+      "stocks": [
+        {"id": "stock1", "value": "Pear", "stock": "Diamond Type", "image": AppAssets.diamondIcon},
+        {"id": "stock2", "value": "0.00 ct", "stock": "Diamond Wt", "image": AppAssets.diamondWeight},
+        {"id": "stock3", "value": "2.86 gm", "stock": "Metal Wt", "image": AppAssets.metalWeight},
+        {"id": "stock4", "value": "Yellow + White", "stock": "Color", "image": AppAssets.colorIcon},
+        {"id": "stock4", "value": "16", "stock": "Size", "image": AppAssets.ringSizeIcon},
+        {"id": "stock4", "value": "1", "stock": "Available quantity", "image": AppAssets.stockIcon}
+      ]
+    }
+  };
+
+  List productDetail = [
+    {"categoryName": "Metal", "value": "Gold"},
+  ];
+
   static Future<void> cartListApi() async {
     final CartController cartCon = Get.find<CartController>();
     CartDataModel model = CartDataModel.fromJson(demoJson /*response*/);
@@ -355,5 +376,14 @@ class CartRepository {
       UiUtils.toast("PLease try again");
       cartCon.isLoading.value = false;
     } finally {}
+  }
+
+  /// ***********************************************************************************
+  ///                                     GET STOCK
+  /// **********************************************************************************
+  static Future<void> getStockAPI({RxBool? isLoader}) async {
+    final CartStockController stockCon = Get.find<CartStockController>();
+    GetStockModel model = GetStockModel.fromJson(stockList /*response*/);
+    stockCon.stockList.value = model.stockModel?.stocks ?? [];
   }
 }
