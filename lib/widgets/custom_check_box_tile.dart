@@ -9,16 +9,17 @@ class CustomCheckboxTile extends StatelessWidget {
     this.scale,
     this.onChanged,
     this.title,
-    required this.titleStyle,
+    this.titleStyle,
     required this.isSelected,
+    this.borderWidth,
   });
 
   final double? scale;
-
   final void Function(bool?)? onChanged;
   final String? title;
   final TextStyle? titleStyle;
   final RxBool isSelected;
+  final double? borderWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class CustomCheckboxTile extends StatelessWidget {
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(2.0)),
           ),
-          side: BorderSide(color: AppColors.primary),
+          side: BorderSide(color: AppColors.primary, width: borderWidth ?? 1),
           value: isSelected.value,
           onChanged: (val) {
             onTap();

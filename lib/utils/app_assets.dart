@@ -65,6 +65,12 @@ class AppAssets {
   static const String listIcon = '${svgPath}list.svg';
   static const String remarkOutlineIcon = '${svgPath}outline_remark.svg';
   static const String remarkFilledIcon = '${svgPath}filled_remark_icon.svg';
+  static const String boxIcon = '${svgPath}detail_box.svg';
+  static const String deleteIcon = '${svgPath}delete_icon.svg';
+  static const String stockIcon = '${svgPath}stock_icon.svg';
+  static const String summaryIcon = '${svgPath}summary_icon.svg';
+  static const String diamondWeight = '${svgPath}diamond_weight.svg';
+  static const String metalWeight = '${svgPath}metal_weight.svg';
 
   /// ***********************************************************************************
   ///                                   JSON

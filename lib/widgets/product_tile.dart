@@ -7,7 +7,9 @@ import '../data/model/product/product_colors_model.dart';
 import '../data/model/product/product_diamond_model.dart';
 import '../data/model/product/product_size_model.dart';
 import '../exports.dart';
+import '../res/app_dialog.dart';
 import '../res/app_network_image.dart';
+import 'custom_check_box_tile.dart';
 import 'plus_minus_title/plus_minus_tile.dart';
 import 'size_selector/size_selector_botton.dart';
 
@@ -17,9 +19,12 @@ class ProductTile extends StatefulWidget {
   final String productName;
   final String productPrice;
   final RxInt? productQuantity;
+  final String? brandName;
   final RxBool? isLike;
   final ProductTileType productTileType;
   final Function(bool)? likeOnChanged;
+  final VoidCallback? deleteOnTap;
+  final VoidCallback? cartDetailOnTap;
 
   const ProductTile({
     super.key,
@@ -31,6 +36,9 @@ class ProductTile extends StatefulWidget {
     this.likeOnChanged,
     this.productQuantity,
     this.productTileType = ProductTileType.grid,
+    this.brandName,
+    this.deleteOnTap,
+    this.cartDetailOnTap,
   });
 
   @override
@@ -45,16 +53,15 @@ class _ProductTileState extends State<ProductTile> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      return GestureDetector(
-        onTap: widget.onTap,
-        child: switch (widget.productTileType) {
-          ProductTileType.grid => productGridTile(),
-          ProductTileType.list => productListTile(),
-          ProductTileType.variant => variantView(),
-        },
-      );
-    });
+    return GestureDetector(
+      onTap: widget.onTap,
+      child: switch (widget.productTileType) {
+        ProductTileType.grid => productGridTile(),
+        ProductTileType.list => productListTile(),
+        ProductTileType.variant => variantView(),
+        ProductTileType.cartTile => productCartTile(),
+      },
+    );
   }
 
   /// GRID TILE
@@ -489,4 +496,178 @@ class _ProductTileState extends State<ProductTile> {
           printOkStatus(selectedRemark);
         },
       );
+  Widget stockSelector({bool isFlexible = false, Axis direction = Axis.horizontal}) => horizontalSelectorButton(
+        context,
+        isFlexible: isFlexible,
+        selectableItemType: SelectableItemType.stock,
+        sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+        axisDirection: direction,
+      );
+  Widget productCartTile() {
+    return GestureDetector(
+      onTap: widget.onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding / 1.2),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              clipBehavior: Clip.none,
+              alignment: Alignment.topLeft,
+              children: [
+                widget.imageUrl.isNotEmpty
+                    ? AppNetworkImage(
+                        height: Get.width * 0.25,
+                        width: Get.width * 0.25,
+                        fit: BoxFit.cover,
+                        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                        borderRadius: BorderRadius.circular(defaultRadius),
+                        imageUrl: widget.imageUrl,
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 2,
+                            spreadRadius: 0.5,
+                            color: AppColors.lightGrey.withOpacity(0.5),
+                          ),
+                        ],
+                      )
+                    : SizedBox(
+                        width: Get.width * 0.25,
+                        height: Get.width * 0.25,
+                      ),
+                Positioned(
+                  top: -12.h,
+                  left: -5.w,
+                  child: CustomCheckboxTile(
+                    isSelected: false.obs,
+                  ),
+                ),
+              ],
+            ),
+            (defaultPadding / 2).horizontalSpace,
+            Expanded(
+              child: Obx(
+                () => Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                widget.productName,
+                                maxLines: 2,
+                                style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500, fontSize: 13.sp),
+                              ),
+                              Text(
+                                "Brand: ${widget.brandName}",
+                                style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w400),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(right: defaultPadding, top: defaultPadding / 5),
+                                child: Text(
+                                  UiUtils.amountFormat(widget.productPrice),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(Get.context!).textTheme.titleMedium?.copyWith(fontSize: 16.sp, fontWeight: FontWeight.w700),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Row(
+                              children: [
+                                AppIconButton(
+                                  onPressed: () {
+                                    AppDialogs.cartProductDetailDialog(context);
+                                  },
+                                  size: 30.sp,
+                                  icon: SvgPicture.asset(
+                                    AppAssets.boxIcon,
+                                    colorFilter: ColorFilter.mode(
+                                      Theme.of(context).primaryColor,
+                                      BlendMode.srcIn,
+                                    ),
+                                  ),
+                                ),
+                                (defaultPadding / 3).horizontalSpace,
+                                AppIconButton(
+                                  onPressed: () {},
+                                  size: 30.sp,
+                                  icon: SvgPicture.asset(
+                                    AppAssets.deleteIcon,
+                                    height: 17.h,
+                                    colorFilter: ColorFilter.mode(
+                                      Theme.of(context).primaryColor,
+                                      BlendMode.srcIn,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            (defaultPadding / 6).verticalSpace,
+                            plusMinusTile(
+                              context,
+                              size: 20,
+                              textValue: RxInt(1),
+                              onIncrement: (p0) {},
+                              onDecrement: (p0) {},
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    (defaultPadding / 2).verticalSpace,
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      physics: const RangeMaintainingScrollPhysics(),
+                      child: Row(
+                        children: [
+                          sizeSelector(
+                            direction: Axis.vertical,
+                            isFlexible: true,
+                          ),
+                          (defaultPadding / 4).horizontalSpace,
+                          colorSelector(
+                            direction: Axis.vertical,
+                            isFlexible: true,
+                          ),
+                          (defaultPadding / 4).horizontalSpace,
+                          diamondSelector(
+                            direction: Axis.vertical,
+                            isFlexible: true,
+                          ),
+                          (defaultPadding / 4).horizontalSpace,
+                          remarkSelector(
+                            direction: Axis.vertical,
+                            isFlexible: true,
+                          ),
+                          (defaultPadding / 4).horizontalSpace,
+                          stockSelector(
+                            direction: Axis.vertical,
+                            isFlexible: true,
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

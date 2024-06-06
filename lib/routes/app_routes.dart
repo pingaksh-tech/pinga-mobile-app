@@ -60,4 +60,9 @@ class AppRoutes {
   static const String watchListScreen = '/watch-list-screen';
   static const String addWatchListScreen = '/add-watchlist-screen';
   static const String remarkScreen = '/remark-screen';
+
+  /// ***********************************************************************************
+  ///                                 CART PAGES
+  /// ***********************************************************************************
+  static const String cartStockScreen = '/cart-stock-screen';
 }

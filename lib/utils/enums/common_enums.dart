@@ -107,7 +107,7 @@ enum FilterType { range, available, gender, brand, kt, delivery, tag, collection
 enum SizeColorSelectorButtonType { small, medium, large }
 
 ///* PRODUCT TILE TYPE
-enum ProductTileType { grid, list, variant }
+enum ProductTileType { grid, list, variant, cartTile }
 
 ///* SELECTABLE ITEM TYPE
 enum SelectableItemType {
@@ -142,6 +142,15 @@ enum SelectableItemType {
     slug: "remark",
     icon: AppAssets.remarkOutlineIcon,
     selectedIcon: AppAssets.remarkFilledIcon,
+  ),
+
+  stock(
+    id: 4,
+    colors: Color(0xFF221361),
+    label: "Stock",
+    slug: "stock",
+    icon: AppAssets.stockIcon,
+    selectedIcon: AppAssets.stockIcon,
   );
 
   final int id;

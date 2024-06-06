@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+
 import '../../../../../exports.dart';
 import '../../../../../res/app_dialog.dart';
 import '../../data/model/product/product_colors_model.dart';
@@ -96,6 +97,9 @@ Widget horizontalSelectorButton(
             );
 
             break;
+          case SelectableItemType.stock:
+            Get.toNamed(AppRoutes.cartStockScreen);
+            break;
         }
       },
       child: Ink(
@@ -126,6 +130,7 @@ Widget horizontalSelectorButton(
                       SelectableItemType.color => ("Color ${isValEmpty(selectedColor?.value) ? "(-)" : "(${selectedColor?.value.split(" ").first})"}"),
                       SelectableItemType.diamond => isValEmpty(selectedDiamond?.value) ? "Diamond" : selectedDiamond?.value ?? '',
                       SelectableItemType.remarks => "Remark",
+                      SelectableItemType.stock => "Stock",
                     },
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontSize: switch (sizeColorSelectorButtonType) {
@@ -157,6 +162,7 @@ Widget horizontalSelectorButton(
                       SelectableItemType.color => ("Color ${isValEmpty(selectedColor?.value) ? "(-)" : "(${selectedColor?.value.split(" ").first})"}"),
                       SelectableItemType.diamond => isValEmpty(selectedDiamond?.value) ? "Diamond" : selectedDiamond?.value ?? '',
                       SelectableItemType.remarks => "Remark",
+                      SelectableItemType.stock => "Stock",
                     },
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
