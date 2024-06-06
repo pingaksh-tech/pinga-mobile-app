@@ -997,6 +997,11 @@ class AppDialogs {
               },
             )
           ],
+        ),
+      ),
+    );
+  }
+
   static Future<void> cartProductDetailDialog(BuildContext context) {
     return Get.dialog(
       Dialog(
