@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../data/model/product/product_colors_model.dart';
 import '../../data/model/product/product_diamond_model.dart';
 import '../../data/model/product/product_size_model.dart';
+import '../../res/app_dialog.dart';
 import '../../widgets/plus_minus_title/plus_minus_tile.dart';
 import '../../widgets/size_selector/size_selector_botton.dart';
 import '../products/components/cart_icon_button.dart';
@@ -206,7 +207,9 @@ class ProductDetailsScreen extends StatelessWidget {
                               CustomProductWatchButton(
                                 size: 58.h,
                                 title: "Add\nmetal",
-                                onPressed: () {},
+                                onPressed: () {
+                                  AppDialogs.addMetalDialog(context);
+                                },
                               ),
                             ],
                           ),

@@ -11,7 +11,7 @@ class CartIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      alignment: Alignment.bottomRight,
+      alignment: Alignment.topRight,
       children: [
         AppIconButton(
           icon: SvgPicture.asset(
@@ -23,6 +23,7 @@ class CartIconButton extends StatelessWidget {
           },
         ),
         Positioned(
+          top: 2.h,
           right: defaultPadding / 2,
           child: Container(
             padding: EdgeInsets.all(4.h).copyWith(top: 5.h),
