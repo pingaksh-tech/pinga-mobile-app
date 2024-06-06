@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import '../../exports.dart';
 import '../../res/app_bar.dart';
 import '../../widgets/product_tile.dart';
+import 'components/cart_icon_button.dart';
 import 'components/sort_filter_button.dart';
 import 'product_controller.dart';
 import 'widgets/sort/sorting_bottomsheet.dart';
@@ -24,17 +25,8 @@ class ProductScreen extends StatelessWidget {
           backgroundColor: Theme.of(context).colorScheme.surface,
           shadowColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.3),
           title: con.categoryName.value,
-          actions: [
-            AppIconButton(
-              // backgroundColor: AppColors.primary.withOpacity(0.1),
-              icon: SvgPicture.asset(
-                AppAssets.cart,
-                colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
-              ),
-              onPressed: () {
-                Get.toNamed(AppRoutes.cartScreen);
-              },
-            ),
+          actions: const [
+            CartIconButton(),
           ],
 
           /// SORTING AND FILTERS

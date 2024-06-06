@@ -27,7 +27,9 @@ class AppDialogs {
             ),
             child: Container(
               decoration: BoxDecoration(
-                color: Theme.of(context).scaffoldBackgroundColor,
+                color: Theme
+                    .of(context)
+                    .scaffoldBackgroundColor,
                 borderRadius: BorderRadius.circular(defaultRadius),
               ),
               padding: EdgeInsets.only(top: defaultPadding),
@@ -54,23 +56,39 @@ class AppDialogs {
                           children: [
                             TextSpan(
                               text: "A new version of ",
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500, fontSize: 16, height: 1.5),
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.w500, fontSize: 16, height: 1.5),
                             ),
                             TextSpan(
                               text: "${AppStrings.appName.value} ",
-                              style: TextStyle(fontWeight: FontWeight.w700, color: Theme.of(context).primaryColor, fontSize: 16),
+                              style: TextStyle(fontWeight: FontWeight.w700, color: Theme
+                                  .of(context)
+                                  .primaryColor, fontSize: 16),
                             ),
                             TextSpan(
                               text: "is available with important enhancements and bug fixes. Please update to the latest version for the best experience. Click ",
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500, fontSize: 16, height: 1.5),
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.w500, fontSize: 16, height: 1.5),
                             ),
                             TextSpan(
                               text: "'Update' ",
-                              style: TextStyle(fontWeight: FontWeight.w700, color: Theme.of(context).primaryColor, fontSize: 16),
+                              style: TextStyle(fontWeight: FontWeight.w700, color: Theme
+                                  .of(context)
+                                  .primaryColor, fontSize: 16),
                             ),
                             TextSpan(
                               text: "to get the latest features.",
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500, fontSize: 16, height: 1.5),
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.w500, fontSize: 16, height: 1.5),
                             ),
                           ],
                         ),
@@ -82,24 +100,27 @@ class AppDialogs {
                     children: [
                       isForceUpdate == false
                           ? Expanded(
-                              child: InkWell(
-                                onTap: onLater,
-                                child: Container(
-                                  height: 46,
-                                  padding: EdgeInsets.all(defaultPadding / 2.5),
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context).primaryColor.withOpacity(.2),
-                                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(defaultRadius)),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      "May be later",
-                                      style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp),
-                                    ),
-                                  ),
-                                ),
+                        child: InkWell(
+                          onTap: onLater,
+                          child: Container(
+                            height: 46,
+                            padding: EdgeInsets.all(defaultPadding / 2.5),
+                            decoration: BoxDecoration(
+                              color: Theme
+                                  .of(context)
+                                  .primaryColor
+                                  .withOpacity(.2),
+                              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(defaultRadius)),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "May be later",
+                                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp),
                               ),
-                            )
+                            ),
+                          ),
+                        ),
+                      )
                           : const SizedBox.shrink(),
                       Expanded(
                         child: GestureDetector(
@@ -111,31 +132,34 @@ class AppDialogs {
                           child: Container(
                             height: 46,
                             decoration: BoxDecoration(
-                              color: Theme.of(context).primaryColor,
+                              color: Theme
+                                  .of(context)
+                                  .primaryColor,
                               borderRadius: isForceUpdate != true
                                   ? BorderRadius.only(bottomRight: Radius.circular(defaultRadius))
                                   : BorderRadius.only(
-                                      bottomRight: Radius.circular(defaultRadius),
-                                      bottomLeft: Radius.circular(defaultRadius),
-                                    ),
+                                bottomRight: Radius.circular(defaultRadius),
+                                bottomLeft: Radius.circular(defaultRadius),
+                              ),
                             ),
                             padding: EdgeInsets.all(defaultPadding / 2.5),
                             child: Obx(
-                              () => Center(
-                                child: isLoader.isTrue
-                                    ? const SizedBox(
-                                        width: 20,
-                                        height: 20,
-                                        child: CircularProgressIndicator(
-                                          color: Colors.white,
-                                          strokeWidth: 3,
-                                        ),
-                                      )
-                                    : Text(
-                                        "Update",
-                                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 14.sp),
+                                  () =>
+                                  Center(
+                                    child: isLoader.isTrue
+                                        ? const SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                        strokeWidth: 3,
                                       ),
-                              ),
+                                    )
+                                        : Text(
+                                      "Update",
+                                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 14.sp),
+                                    ),
+                                  ),
                             ),
                           ),
                         ),
@@ -212,133 +236,147 @@ class AppDialogs {
     } else {
       Get.dialog(
         Obx(
-          () => PopScope(
-            canPop: !isLoader.value,
-            onPopInvoked: (didPop) {},
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-              child: Dialog(
-                shadowColor: Colors.transparent,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(defaultRadius),
-                ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    borderRadius: BorderRadius.circular(defaultRadius),
-                  ),
-                  padding: EdgeInsets.only(top: defaultPadding),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(bottom: defaultPadding / 1.5),
-                        child: Text(
-                          'Logout App!',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w700),
-                        ),
+              () =>
+              PopScope(
+                canPop: !isLoader.value,
+                onPopInvoked: (didPop) {},
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                  child: Dialog(
+                    shadowColor: Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(defaultRadius),
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme
+                            .of(context)
+                            .scaffoldBackgroundColor,
+                        borderRadius: BorderRadius.circular(defaultRadius),
                       ),
-                      Divider(height: defaultPadding / 3, color: Theme.of(context).primaryColor.withOpacity(.2)),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: defaultPadding.w, horizontal: defaultPadding.w).copyWith(top: defaultPadding.h),
-                            child: RichText(
-                              textAlign: TextAlign.center,
-                              maxLines: 5,
-                              overflow: TextOverflow.ellipsis,
-                              text: TextSpan(
-                                style: TextStyle(color: Colors.black, fontSize: 13.sp, fontFamily: AppTheme.fontFamilyName, height: 1.5),
-                                children: <TextSpan>[
-                                  const TextSpan(
-                                    text: 'Hey 👋 ',
-                                    style: TextStyle(fontWeight: FontWeight.w600),
-                                  ),
-                                  TextSpan(
-                                    text: "$fullName, ",
-                                    style: const TextStyle(fontWeight: FontWeight.w600),
-                                  ),
-                                  const TextSpan(
-                                    text: 'Are you sure you want to logout from the application ?',
-                                    style: TextStyle(fontWeight: FontWeight.w300),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: defaultPadding),
-                      Row(
+                      padding: EdgeInsets.only(top: defaultPadding),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Expanded(
-                            child: InkWell(
-                              onTap: () {
-                                if (isLoader.isFalse) {
-                                  onCancellation();
-                                }
-                              },
-                              child: Container(
-                                height: 46,
-                                padding: EdgeInsets.all(defaultPadding / 2.5),
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).primaryColor.withOpacity(.2),
-                                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(defaultRadius)),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "Close",
-                                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp, color: Theme.of(context).primaryColor),
-                                  ),
-                                ),
-                              ),
+                          Padding(
+                            padding: EdgeInsets.only(bottom: defaultPadding / 1.5),
+                            child: Text(
+                              'Logout App!',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w700),
                             ),
                           ),
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                if (isLoader.isFalse) {
-                                  onLogout();
-                                }
-                              },
-                              child: Container(
-                                height: 46,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).primaryColor,
-                                  borderRadius: BorderRadius.only(bottomRight: Radius.circular(defaultRadius)),
-                                ),
-                                padding: EdgeInsets.all(defaultPadding / 2.5),
-                                child: Obx(
-                                  () => Center(
-                                    child: isLoader.isTrue
-                                        ? const SizedBox(
-                                            width: 20,
-                                            height: 20,
-                                            child: CircularProgressIndicator(
-                                              color: Colors.white,
-                                              strokeWidth: 3,
-                                            ),
-                                          )
-                                        : Text(
-                                            "Logout",
-                                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 14.sp),
-                                          ),
+                          Divider(height: defaultPadding / 3, color: Theme
+                              .of(context)
+                              .primaryColor
+                              .withOpacity(.2)),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: defaultPadding.w, horizontal: defaultPadding.w).copyWith(top: defaultPadding.h),
+                                child: RichText(
+                                  textAlign: TextAlign.center,
+                                  maxLines: 5,
+                                  overflow: TextOverflow.ellipsis,
+                                  text: TextSpan(
+                                    style: TextStyle(color: Colors.black, fontSize: 13.sp, fontFamily: AppTheme.fontFamilyName, height: 1.5),
+                                    children: <TextSpan>[
+                                      const TextSpan(
+                                        text: 'Hey 👋 ',
+                                        style: TextStyle(fontWeight: FontWeight.w600),
+                                      ),
+                                      TextSpan(
+                                        text: "$fullName, ",
+                                        style: const TextStyle(fontWeight: FontWeight.w600),
+                                      ),
+                                      const TextSpan(
+                                        text: 'Are you sure you want to logout from the application ?',
+                                        style: TextStyle(fontWeight: FontWeight.w300),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
-                            ),
+                            ],
+                          ),
+                          SizedBox(height: defaultPadding),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () {
+                                    if (isLoader.isFalse) {
+                                      onCancellation();
+                                    }
+                                  },
+                                  child: Container(
+                                    height: 46,
+                                    padding: EdgeInsets.all(defaultPadding / 2.5),
+                                    decoration: BoxDecoration(
+                                      color: Theme
+                                          .of(context)
+                                          .primaryColor
+                                          .withOpacity(.2),
+                                      borderRadius: BorderRadius.only(bottomLeft: Radius.circular(defaultRadius)),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        "Close",
+                                        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp, color: Theme
+                                            .of(context)
+                                            .primaryColor),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    if (isLoader.isFalse) {
+                                      onLogout();
+                                    }
+                                  },
+                                  child: Container(
+                                    height: 46,
+                                    decoration: BoxDecoration(
+                                      color: Theme
+                                          .of(context)
+                                          .primaryColor,
+                                      borderRadius: BorderRadius.only(bottomRight: Radius.circular(defaultRadius)),
+                                    ),
+                                    padding: EdgeInsets.all(defaultPadding / 2.5),
+                                    child: Obx(
+                                          () =>
+                                          Center(
+                                            child: isLoader.isTrue
+                                                ? const SizedBox(
+                                              width: 20,
+                                              height: 20,
+                                              child: CircularProgressIndicator(
+                                                color: Colors.white,
+                                                strokeWidth: 3,
+                                              ),
+                                            )
+                                                : Text(
+                                              "Logout",
+                                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 14.sp),
+                                            ),
+                                          ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),
         ),
       );
     }
@@ -413,141 +451,157 @@ class AppDialogs {
     } else {
       Get.dialog(
         Obx(
-          () => PopScope(
-            canPop: !isLoader.value,
-            onPopInvoked: (didPop) {},
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-              child: Dialog(
-                shadowColor: Colors.transparent,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(defaultRadius),
-                ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    borderRadius: BorderRadius.circular(defaultRadius),
-                  ),
-                  padding: EdgeInsets.only(top: defaultPadding),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(bottom: defaultPadding / 1.5),
-                        child: Text(
-                          'Delete Account!',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w700),
-                        ),
+              () =>
+              PopScope(
+                canPop: !isLoader.value,
+                onPopInvoked: (didPop) {},
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                  child: Dialog(
+                    shadowColor: Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(defaultRadius),
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme
+                            .of(context)
+                            .scaffoldBackgroundColor,
+                        borderRadius: BorderRadius.circular(defaultRadius),
                       ),
-                      Divider(height: defaultPadding / 3, color: Theme.of(context).primaryColor.withOpacity(.2)),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: defaultPadding.w, horizontal: defaultPadding.w).copyWith(top: defaultPadding.h),
-                            child: RichText(
-                              textAlign: TextAlign.center,
-                              maxLines: 5,
-                              overflow: TextOverflow.ellipsis,
-                              text: TextSpan(
-                                style: TextStyle(color: Colors.black, fontSize: 13.sp, fontFamily: AppTheme.fontFamilyName, height: 1.5),
-                                children: <TextSpan>[
-                                  const TextSpan(
-                                    text: 'Hey 👋 ',
-                                    style: TextStyle(fontWeight: FontWeight.w600),
-                                  ),
-                                  TextSpan(
-                                    text: "$fullName, ",
-                                    style: const TextStyle(fontWeight: FontWeight.w600),
-                                  ),
-                                  const TextSpan(
-                                    text: 'Are you sure you want to',
-                                    style: TextStyle(fontWeight: FontWeight.w300),
-                                  ),
-                                  const TextSpan(
-                                    text: ' delete ',
-                                    style: TextStyle(fontWeight: FontWeight.w300),
-                                  ),
-                                  const TextSpan(
-                                    text: 'your account ?',
-                                    style: TextStyle(fontWeight: FontWeight.w300),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: defaultPadding),
-                      Row(
+                      padding: EdgeInsets.only(top: defaultPadding),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Expanded(
-                            child: InkWell(
-                              onTap: () {
-                                if (isLoader.isFalse) {
-                                  onCancellation();
-                                }
-                              },
-                              child: Container(
-                                height: 46,
-                                padding: EdgeInsets.all(defaultPadding / 2.5),
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).primaryColor,
-                                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(defaultRadius)),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "Close",
-                                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 14.sp),
-                                  ),
-                                ),
-                              ),
+                          Padding(
+                            padding: EdgeInsets.only(bottom: defaultPadding / 1.5),
+                            child: Text(
+                              'Delete Account!',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w700),
                             ),
                           ),
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                if (isLoader.isFalse) {
-                                  onDelete();
-                                }
-                              },
-                              child: Container(
-                                height: 46,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).primaryColor.withOpacity(.2),
-                                  borderRadius: BorderRadius.only(bottomRight: Radius.circular(defaultRadius)),
-                                ),
-                                padding: EdgeInsets.all(defaultPadding / 2.5),
-                                child: Obx(
-                                  () => Center(
-                                    child: isLoader.isTrue
-                                        ? SizedBox(
-                                            width: 20,
-                                            height: 20,
-                                            child: CircularProgressIndicator(
-                                              color: Theme.of(context).primaryColor,
-                                              strokeWidth: 3,
-                                            ),
-                                          )
-                                        : Text(
-                                            "Delete",
-                                            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp, color: Theme.of(context).primaryColor),
-                                          ),
+                          Divider(height: defaultPadding / 3, color: Theme
+                              .of(context)
+                              .primaryColor
+                              .withOpacity(.2)),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: defaultPadding.w, horizontal: defaultPadding.w).copyWith(top: defaultPadding.h),
+                                child: RichText(
+                                  textAlign: TextAlign.center,
+                                  maxLines: 5,
+                                  overflow: TextOverflow.ellipsis,
+                                  text: TextSpan(
+                                    style: TextStyle(color: Colors.black, fontSize: 13.sp, fontFamily: AppTheme.fontFamilyName, height: 1.5),
+                                    children: <TextSpan>[
+                                      const TextSpan(
+                                        text: 'Hey 👋 ',
+                                        style: TextStyle(fontWeight: FontWeight.w600),
+                                      ),
+                                      TextSpan(
+                                        text: "$fullName, ",
+                                        style: const TextStyle(fontWeight: FontWeight.w600),
+                                      ),
+                                      const TextSpan(
+                                        text: 'Are you sure you want to',
+                                        style: TextStyle(fontWeight: FontWeight.w300),
+                                      ),
+                                      const TextSpan(
+                                        text: ' delete ',
+                                        style: TextStyle(fontWeight: FontWeight.w300),
+                                      ),
+                                      const TextSpan(
+                                        text: 'your account ?',
+                                        style: TextStyle(fontWeight: FontWeight.w300),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
-                            ),
+                            ],
+                          ),
+                          SizedBox(height: defaultPadding),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () {
+                                    if (isLoader.isFalse) {
+                                      onCancellation();
+                                    }
+                                  },
+                                  child: Container(
+                                    height: 46,
+                                    padding: EdgeInsets.all(defaultPadding / 2.5),
+                                    decoration: BoxDecoration(
+                                      color: Theme
+                                          .of(context)
+                                          .primaryColor,
+                                      borderRadius: BorderRadius.only(bottomLeft: Radius.circular(defaultRadius)),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        "Close",
+                                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 14.sp),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    if (isLoader.isFalse) {
+                                      onDelete();
+                                    }
+                                  },
+                                  child: Container(
+                                    height: 46,
+                                    decoration: BoxDecoration(
+                                      color: Theme
+                                          .of(context)
+                                          .primaryColor
+                                          .withOpacity(.2),
+                                      borderRadius: BorderRadius.only(bottomRight: Radius.circular(defaultRadius)),
+                                    ),
+                                    padding: EdgeInsets.all(defaultPadding / 2.5),
+                                    child: Obx(
+                                          () =>
+                                          Center(
+                                            child: isLoader.isTrue
+                                                ? SizedBox(
+                                              width: 20,
+                                              height: 20,
+                                              child: CircularProgressIndicator(
+                                                color: Theme
+                                                    .of(context)
+                                                    .primaryColor,
+                                                strokeWidth: 3,
+                                              ),
+                                            )
+                                                : Text(
+                                              "Delete",
+                                              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp, color: Theme
+                                                  .of(context)
+                                                  .primaryColor),
+                                            ),
+                                          ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),
         ),
       );
     }
@@ -564,7 +618,11 @@ class AppDialogs {
             padding: EdgeInsets.only(top: defaultPadding / 3),
             child: Text(
               'We have launched a new and improved app. Please update to continue using the app.',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(fontWeight: FontWeight.w500),
             ),
           ),
           actions: <Widget>[
@@ -589,8 +647,7 @@ class AppDialogs {
   }
 
   // Select size dialog
-  static Future<dynamic>? sizeSelector(
-    BuildContext context, {
+  static Future<dynamic>? sizeSelector(BuildContext context, {
     Function(String?)? onChanged,
   }) {
     if (isRegistered<DialogController>()) {
@@ -600,7 +657,10 @@ class AppDialogs {
           context: context,
           pageBuilder: (context, animation, secondaryAnimation) {
             return Scaffold(
-              backgroundColor: Theme.of(context).colorScheme.surface,
+              backgroundColor: Theme
+                  .of(context)
+                  .colorScheme
+                  .surface,
               body: SafeArea(
                 child: Container(
                   width: Get.width,
@@ -610,6 +670,7 @@ class AppDialogs {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+
                       /// Title
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: defaultPadding),
@@ -652,15 +713,20 @@ class AppDialogs {
                           physics: const RangeMaintainingScrollPhysics(),
                           itemCount: dialogCon.productSizeList.length,
                           shrinkWrap: true,
-                          itemBuilder: (context, index) => ListTile(
-                            title: Text(
-                              dialogCon.productSizeList[index].size ?? '',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
-                            ),
-                            onTap: () {
-                              Get.back(result: dialogCon.productSizeList[index]);
-                            },
-                          ),
+                          itemBuilder: (context, index) =>
+                              ListTile(
+                                title: Text(
+                                  dialogCon.productSizeList[index].size ?? '',
+                                  style: Theme
+                                      .of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.copyWith(color: AppColors.font),
+                                ),
+                                onTap: () {
+                                  Get.back(result: dialogCon.productSizeList[index]);
+                                },
+                              ),
                           separatorBuilder: (context, index) => Divider(height: 1.h),
                         ),
                       )
@@ -675,8 +741,7 @@ class AppDialogs {
   }
 
   // Select color dialog
-  static Future<dynamic>? colorSelector(
-    BuildContext context, {
+  static Future<dynamic>? colorSelector(BuildContext context, {
     Function(String?)? onChanged,
   }) {
     if (isRegistered<DialogController>()) {
@@ -686,7 +751,10 @@ class AppDialogs {
           context: context,
           pageBuilder: (context, animation, secondaryAnimation) {
             return Scaffold(
-              backgroundColor: Theme.of(context).colorScheme.surface,
+              backgroundColor: Theme
+                  .of(context)
+                  .colorScheme
+                  .surface,
               body: SafeArea(
                 child: Container(
                   width: Get.width,
@@ -696,6 +764,7 @@ class AppDialogs {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+
                       /// Title
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: defaultPadding),
@@ -738,15 +807,20 @@ class AppDialogs {
                           physics: const RangeMaintainingScrollPhysics(),
                           itemCount: dialogCon.productColorList.length,
                           shrinkWrap: true,
-                          itemBuilder: (context, index) => ListTile(
-                            title: Text(
-                              dialogCon.productColorList[index].color ?? '',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
-                            ),
-                            onTap: () {
-                              Get.back(result: dialogCon.productColorList[index]);
-                            },
-                          ),
+                          itemBuilder: (context, index) =>
+                              ListTile(
+                                title: Text(
+                                  dialogCon.productColorList[index].color ?? '',
+                                  style: Theme
+                                      .of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.copyWith(color: AppColors.font),
+                                ),
+                                onTap: () {
+                                  Get.back(result: dialogCon.productColorList[index]);
+                                },
+                              ),
                           separatorBuilder: (context, index) => Divider(height: 1.h),
                         ),
                       )
@@ -761,8 +835,7 @@ class AppDialogs {
   }
 
   // Select Diamond Dialog
-  static Future<dynamic>? diamondSelector(
-    BuildContext context, {
+  static Future<dynamic>? diamondSelector(BuildContext context, {
     Function(String?)? onChanged,
   }) {
     if (isRegistered<DialogController>()) {
@@ -772,7 +845,10 @@ class AppDialogs {
           context: context,
           pageBuilder: (context, animation, secondaryAnimation) {
             return Scaffold(
-              backgroundColor: Theme.of(context).colorScheme.surface,
+              backgroundColor: Theme
+                  .of(context)
+                  .colorScheme
+                  .surface,
               body: SafeArea(
                 child: Container(
                   width: Get.width,
@@ -782,6 +858,7 @@ class AppDialogs {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+
                       /// Title
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: defaultPadding),
@@ -824,15 +901,20 @@ class AppDialogs {
                           physics: const RangeMaintainingScrollPhysics(),
                           itemCount: dialogCon.productDiamondList.length,
                           shrinkWrap: true,
-                          itemBuilder: (context, index) => ListTile(
-                            title: Text(
-                              dialogCon.productDiamondList[index].diamond ?? '',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
-                            ),
-                            onTap: () {
-                              Get.back(result: dialogCon.productDiamondList[index]);
-                            },
-                          ),
+                          itemBuilder: (context, index) =>
+                              ListTile(
+                                title: Text(
+                                  dialogCon.productDiamondList[index].diamond ?? '',
+                                  style: Theme
+                                      .of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.copyWith(color: AppColors.font),
+                                ),
+                                onTap: () {
+                                  Get.back(result: dialogCon.productDiamondList[index]);
+                                },
+                              ),
                           separatorBuilder: (context, index) => Divider(height: 1.h),
                         ),
                       )
@@ -857,29 +939,42 @@ class AppDialogs {
         actionsPadding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(bottom: defaultPadding / 1.4),
         title: Text(
           "Add to cart",
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 16.sp, fontWeight: FontWeight.w500, color: AppColors.primary),
+          style: Theme
+              .of(context)
+              .textTheme
+              .titleMedium
+              ?.copyWith(fontSize: 16.sp, fontWeight: FontWeight.w500, color: AppColors.primary),
         ),
         content: AppTextField(
           title: "Quantity",
-          titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.primary),
+          titleStyle: Theme
+              .of(context)
+              .textTheme
+              .titleMedium
+              ?.copyWith(fontSize: 12.sp, color: AppColors.primary),
           controller: controller,
           keyboardType: TextInputType.number,
           textInputAction: TextInputAction.done,
           inputFormatters: [
-            LengthLimitingTextInputFormatter(10),
+            LengthLimitingTextInputFormatter(4),
           ],
           contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.4, horizontal: defaultPadding / 1.7),
         ),
         actions: [
+
           /// CANCEL
           TextButton(
             child: Text(
               "CANCEL",
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.primary,
-                  ),
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .titleMedium
+                  ?.copyWith(
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w500,
+                color: AppColors.primary,
+              ),
             ),
             onPressed: () {
               Get.back();
@@ -890,11 +985,15 @@ class AppDialogs {
           TextButton(
             child: Text(
               "ADD",
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.primary,
-                  ),
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .titleMedium
+                  ?.copyWith(
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w500,
+                color: AppColors.primary,
+              ),
             ),
             onPressed: () {
               Get.back(/*result: RxInt(int.tryParse(controller.value.text.trim()) ?? 1)*/);
@@ -905,4 +1004,6 @@ class AppDialogs {
       ),
     );
   }
+
+  static Future<dynamic>
 }

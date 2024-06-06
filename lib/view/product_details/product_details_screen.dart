@@ -7,6 +7,7 @@ import '../../data/model/product/product_diamond_model.dart';
 import '../../data/model/product/product_size_model.dart';
 import '../../widgets/plus_minus_title/plus_minus_tile.dart';
 import '../../widgets/size_selector/size_selector_botton.dart';
+import '../products/components/cart_icon_button.dart';
 import 'widgets/family_product/family_product_tab.dart';
 import 'widgets/product_info/product_info.dart';
 import 'widgets/variants/variants.dart';
@@ -36,18 +37,7 @@ class ProductDetailsScreen extends StatelessWidget {
         appBar: MyAppBar(
           title: "PLKMR7423746",
           backgroundColor: Colors.white,
-          actions: [
-            AppIconButton(
-              // backgroundColor: AppColors.primary.withOpacity(0.1),
-              icon: SvgPicture.asset(
-                AppAssets.cart,
-                colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
-              ),
-              onPressed: () {
-                Get.toNamed(AppRoutes.cartScreen);
-              },
-            ),
-          ],
+          actions: const [CartIconButton()],
         ),
         body: DefaultTabController(
           length: 3,

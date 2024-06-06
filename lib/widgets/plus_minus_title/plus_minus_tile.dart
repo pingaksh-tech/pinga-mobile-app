@@ -18,19 +18,13 @@ Widget plusMinusTile(
         color: Theme.of(context).primaryColor.withOpacity(0.06),
         borderRadius: BorderRadius.circular(defaultRadius),
       ),
-      padding: EdgeInsets.all(defaultPadding / 2),
-      // alignment: Alignment.center,
+      // padding: EdgeInsets.all(defaultPadding / 2),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          /// Minus Button
-          AppIconButton(
-            size: size ?? 25.h,
-            icon: SvgPicture.asset(
-              AppAssets.minusIcon,
-              colorFilter: ColorFilter.mode(textValue.value > 0 ? AppColors.primary : Theme.of(context).disabledColor, BlendMode.srcIn),
-            ),
+          /// Decrement Button
+          incrementDecrementButton(
             onPressed: () {
               /// DECREMENT
               if (textValue.value > 0) {
@@ -38,7 +32,12 @@ Widget plusMinusTile(
                 onDecrement(textValue.value);
               }
             },
+            icon: SvgPicture.asset(
+              AppAssets.minusIcon,
+              colorFilter: ColorFilter.mode(textValue.value > 0 ? AppColors.primary : Theme.of(context).disabledColor, BlendMode.srcIn),
+            ),
           ),
+
           GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
@@ -47,7 +46,7 @@ Widget plusMinusTile(
               });
             },
             child: SizedBox(
-              width: 30.w,
+              width: 32.w,
               child: Text(
                 "${textValue.value}",
                 textAlign: TextAlign.center,
@@ -57,13 +56,9 @@ Widget plusMinusTile(
             ),
           ),
 
-          /// Plus Button
-          AppIconButton(
-            size: size ?? 25.h,
-            icon: SvgPicture.asset(
-              AppAssets.plusIcon,
-              colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
-            ),
+          /// Increment Button
+          incrementDecrementButton(
+            borderRadius: BorderRadius.horizontal(right: Radius.circular(defaultRadius)),
             onPressed: () {
               /// INCREMENT
               if (textValue.value >= 0) {
@@ -71,9 +66,29 @@ Widget plusMinusTile(
                 onIncrement(textValue.value);
               }
             },
+            icon: SvgPicture.asset(
+              AppAssets.plusIcon,
+              colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+            ),
           ),
         ],
       ),
     );
   });
+}
+
+Widget incrementDecrementButton({required VoidCallback onPressed, required Widget icon, BorderRadius? borderRadius}) {
+  return Material(
+    color: Colors.transparent,
+    child: InkWell(
+      borderRadius: borderRadius ?? BorderRadius.horizontal(left: Radius.circular(defaultRadius)),
+      onTap: onPressed,
+      child: Container(
+        height: 36.h,
+        width: 27.h,
+        padding: EdgeInsets.symmetric(vertical: defaultPadding / 2, horizontal: 5.h),
+        child: icon,
+      ),
+    ),
+  );
 }

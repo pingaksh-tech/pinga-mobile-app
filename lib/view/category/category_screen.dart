@@ -7,6 +7,7 @@ import '../../exports.dart';
 import '../../res/app_bar.dart';
 import '../../res/app_network_image.dart';
 import '../../res/tab_bar.dart';
+import '../products/components/cart_icon_button.dart';
 import 'category_controller.dart';
 import 'components/category_tile.dart';
 
@@ -26,6 +27,7 @@ class CategoryScreen extends StatelessWidget {
             backgroundColor: Theme.of(context).colorScheme.surface,
             shadowColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.3),
             title: con.brandTitle.value,
+            actions: const [CartIconButton()],
             bottom: PreferredSize(
               preferredSize: Size.fromHeight(40.h),
               child: Column(

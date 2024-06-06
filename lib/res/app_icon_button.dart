@@ -41,7 +41,7 @@ class AppIconButton extends StatelessWidget {
       height: size,
       width: size,
       decoration: BoxDecoration(
-        shape: BoxShape.circle,
+        // shape: BoxShape.circle,
         border: borderColor != null ? Border.all(color: borderColor!.withOpacity(withMyOpacity), width: borderWidth ?? 1.0) : null,
       ),
       child: GestureDetector(
