@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
+import '../controller/predefine_value_controller.dart';
 import '../data/model/predefined_model/predefined_model.dart';
 import '../exports.dart';
 
@@ -799,6 +800,7 @@ class AppDialogs {
             body: SafeArea(
               child: Container(
                 width: Get.width,
+                padding: EdgeInsets.only(top: defaultPadding),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(defaultRadius / 2),
                 ),
@@ -1036,7 +1038,7 @@ class AppDialogs {
 
 // Cart Product Detail
   static Future<void> cartProductDetailDialog(BuildContext context, {required String productName}) {
-    final DialogController dialogCon = Get.find<DialogController>();
+    final PreValueController dialogCon = Get.find<PreValueController>();
     return Get.dialog(
       Dialog(
         insetPadding: REdgeInsets.all(defaultPadding * 1.5),

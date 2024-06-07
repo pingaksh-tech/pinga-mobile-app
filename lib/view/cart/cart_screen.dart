@@ -67,6 +67,7 @@ class CartScreen extends StatelessWidget {
                         separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
                         itemBuilder: (context, index) => ProductTile(
                           productTileType: ProductTileType.cartTile,
+                          categorySlug: "ring",
                           isCartSelected: RxBool(con.selectedList.contains(con.productsList[index])),
                           imageUrl: con.productsList[index].product?.productImages?[0].image ?? "",
                           productName: (con.productsList[index].product?.title ?? ""),

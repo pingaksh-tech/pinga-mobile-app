@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../../../controller/dialog_controller.dart';
+import '../../../controller/predefine_value_controller.dart';
 import '../../../exports.dart';
 import '../../../view/bottombar/bottombar_controller.dart';
 import '../../../view/cart/cart_controller.dart';
@@ -308,6 +308,7 @@ class CartRepository {
       ]
     }
   };
+
   static Future<void> cartListApi() async {
     final CartController cartCon = Get.find<CartController>();
     CartDataModel model = CartDataModel.fromJson(demoJson /*response*/);
@@ -416,7 +417,7 @@ class CartRepository {
   ///                                     GET PRODUCT DETAIL
   /// **********************************************************************************
   static Future<void> getProductDetailAPI({RxBool? isLoader}) async {
-    final DialogController dialogCon = Get.find<DialogController>();
+    final PreValueController dialogCon = Get.find<PreValueController>();
     GetProductDetailModel model = GetProductDetailModel.fromJson(productDetail /*response*/);
     dialogCon.cartProductDetailList.value = model.data?.productDetail ?? [];
   }
