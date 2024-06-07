@@ -3,9 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-import '../../../exports.dart';
-import '../../../res/app_bar.dart';
-import '../../../widgets/plus_minus_title/plus_minus_tile.dart';
+import '../../../../exports.dart';
+import '../../../../res/app_bar.dart';
+import '../../../../widgets/plus_minus_title/plus_minus_tile.dart';
 import 'cart_stock_controller.dart';
 
 class CartStockScreen extends StatelessWidget {

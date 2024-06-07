@@ -11,7 +11,6 @@ import 'widgets/family_product/family_product_tab.dart';
 import 'widgets/product_info/product_info.dart';
 import 'widgets/variants/variants.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
 import '../../exports.dart';
 import '../../res/app_bar.dart';
 import '../../res/app_network_image.dart';

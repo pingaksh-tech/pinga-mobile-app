@@ -12,6 +12,7 @@ import 'components/app_drawer.dart';
 
 import '../../exports.dart';
 import '../../packages/app_animated_cliprect.dart';
+import '../cart/components/cart_popup_menu.dart';
 import 'bottombar_controller.dart';
 
 class BottomBarScreen extends StatelessWidget {
@@ -49,6 +50,9 @@ class BottomBarScreen extends StatelessWidget {
                   },
                 ),
               ),
+              actions: [
+                con.currentBottomIndex.value == 2 ? CartPopUpMenu() : const SizedBox(),
+              ],
             ),
             body: con.isLoading.value
                 ? Padding(
