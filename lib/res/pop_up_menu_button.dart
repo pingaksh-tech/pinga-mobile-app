@@ -12,9 +12,12 @@ class AppPopUpMenuButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
+      type: MaterialType.card,
       color: Colors.transparent,
       child: PopupMenuButton(
+        elevation: 10,
         splashRadius: defaultRadius,
+        shadowColor: Theme.of(context).colorScheme.primary.withOpacity(.2),
         position: PopupMenuPosition.under,
         itemBuilder: (context) => menuList
             .map(

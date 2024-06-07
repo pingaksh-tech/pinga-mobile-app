@@ -22,6 +22,7 @@ class FamilyProductTab extends StatelessWidget {
             (index) => ProductTile(
               productTileType: ProductTileType.grid,
               onTap: () {},
+              categorySlug: "ring",
               isLike: false.obs,
               imageUrl: "https://kisna.com/cdn/shop/files/KFLR11133-Y-1_1800x1800.jpg?v=1715687553",
               productName: "PKSHUDN#&",

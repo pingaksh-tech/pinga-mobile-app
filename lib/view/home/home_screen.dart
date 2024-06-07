@@ -18,6 +18,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.surface,
         body: ListView(
           physics: const RangeMaintainingScrollPhysics(),
           padding: EdgeInsets.only(top: defaultPadding),

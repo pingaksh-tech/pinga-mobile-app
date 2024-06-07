@@ -6,7 +6,9 @@ import '../../../../widgets/product_tile.dart';
 import 'variants_controller.dart';
 
 class VariantsTab extends StatelessWidget {
-  VariantsTab({super.key});
+  final String productCategory;
+
+  VariantsTab({super.key, required this.productCategory});
 
   final VariantsController con = Get.put(VariantsController());
 
@@ -17,6 +19,7 @@ class VariantsTab extends StatelessWidget {
       itemCount: con.variantList.length,
       itemBuilder: (context, index) => ProductTile(
         onTap: () {},
+        categorySlug: productCategory,
         productTileType: ProductTileType.variant,
         imageUrl: con.variantList[index].image ?? "",
         productName: con.variantList[index].name ?? "",

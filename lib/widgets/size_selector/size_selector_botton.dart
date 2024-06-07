@@ -5,13 +5,13 @@ import 'package:get/get.dart';
 
 import '../../../../../exports.dart';
 import '../../../../../res/app_dialog.dart';
-import '../../data/model/product/product_colors_model.dart';
-import '../../data/model/product/product_diamond_model.dart';
-import '../../data/model/product/product_size_model.dart';
+import '../../controller/predefine_value_controller.dart';
+import '../../data/model/predefined_model/predefined_model.dart';
 
 Widget horizontalSelectorButton(
   BuildContext context, {
   RxString? selectedSize,
+  String? categorySlug,
   RxString? selectedColor,
   RxString? selectedDiamond,
   RxString? remarkSelected,
@@ -21,68 +21,82 @@ Widget horizontalSelectorButton(
   bool isFlexible = false,
   Axis axisDirection = Axis.horizontal,
   Function(SizeModel model)? sizeOnChanged,
-  Function(ColorModel model)? colorOnChanged,
-  Function(Diamond model)? rubyOnChanged,
+  Function(SizeModel model)? colorOnChanged,
+  Function(SizeModel model)? rubyOnChanged,
   Function(String model)? remarkOnChanged,
 }) {
   return Expanded(
     flex: isFlexible ? 0 : 1,
     child: InkWell(
-      onTap: () {
+      onTap: () async {
         switch (selectableItemType) {
           case SelectableItemType.size:
+            //
+            if (isRegistered<PreValueController>()) {
+              final PreValueController preValueCon = Get.find<PreValueController>();
+              List<SizeModel> sizeList = await preValueCon.checkHasPreValue(categorySlug ?? '', type: selectableItemType.slug);
 
-            /// Size Selector
-            AppDialogs.sizeSelector(context)?.then(
-              (value) {
-                if (value != null && (value.runtimeType == SizeModel)) {
-                  final SizeModel sizeModel = (value as SizeModel);
+              /// Size Selector
+              AppDialogs.sizeSelector(context, sizeList: sizeList.obs)?.then(
+                (value) {
+                  if (value != null && (value.runtimeType == SizeModel)) {
+                    final SizeModel sizeModel = (value as SizeModel);
 
-                  selectedSize?.value = sizeModel.size ?? "0";
+                    selectedSize?.value = sizeModel.label ?? "0";
 
-                  if (sizeOnChanged != null) {
-                    sizeOnChanged(sizeModel);
+                    if (sizeOnChanged != null) {
+                      sizeOnChanged(sizeModel);
+                    }
                   }
-                }
-              },
-            );
+                },
+              );
+            }
             break;
 
           case SelectableItemType.color:
+            if (isRegistered<PreValueController>()) {
+              final PreValueController preValueCon = Get.find<PreValueController>();
+              List<SizeModel> colorList = await preValueCon.checkHasPreValue(categorySlug ?? '', type: selectableItemType.slug);
 
-            /// Color Selector
-            AppDialogs.colorSelector(context)?.then(
-              (value) {
-                if (value != null && (value.runtimeType == ColorModel)) {
-                  final ColorModel colorModel = (value as ColorModel);
+              /// Color Selector
+              AppDialogs.colorSelector(context, colorList: colorList.obs)?.then(
+                (value) {
+                  if (value != null && (value.runtimeType == SizeModel)) {
+                    final SizeModel colorModel = (value as SizeModel);
 
-                  selectedColor?.value = colorModel.color ?? "-";
+                    selectedColor?.value = colorModel.value ?? "-";
 
-                  if (colorOnChanged != null) {
-                    colorOnChanged(colorModel);
+                    if (colorOnChanged != null) {
+                      colorOnChanged(colorModel);
+                    }
                   }
-                }
-              },
-            );
+                },
+              );
+            }
             break;
 
           case SelectableItemType.diamond:
+            if (isRegistered<PreValueController>()) {
+              final PreValueController preValueCon = Get.find<PreValueController>();
+              List<SizeModel> diamondList = await preValueCon.checkHasPreValue(categorySlug ?? '', type: selectableItemType.slug);
 
-            /// Diamond Selector
-            AppDialogs.diamondSelector(context)?.then(
-              (value) {
-                if (value != null && (value.runtimeType == Diamond)) {
-                  final Diamond diamondModel = (value as Diamond);
+              printOkStatus(diamondList);
 
-                  selectedDiamond?.value = diamondModel.diamond ?? "";
+              /// Diamond Selector
+              AppDialogs.diamondSelector(context, diamondList: diamondList.obs)?.then(
+                (value) {
+                  if (value != null && (value.runtimeType == SizeModel)) {
+                    final SizeModel diamondModel = (value as SizeModel);
 
-                  printYellow(selectedDiamond);
-                  if (rubyOnChanged != null) {
-                    rubyOnChanged(diamondModel);
+                    selectedDiamond?.value = diamondModel.value ?? "";
+
+                    if (rubyOnChanged != null) {
+                      rubyOnChanged(diamondModel);
+                    }
                   }
-                }
-              },
-            );
+                },
+              );
+            }
             break;
 
           case SelectableItemType.remarks:
@@ -127,7 +141,7 @@ Widget horizontalSelectorButton(
                   Text(
                     switch (selectableItemType) {
                       SelectableItemType.size => ("Size ${isValEmpty(selectedSize?.value) ? "(0)" : "(${selectedSize?.value.split(" ").first})"}"),
-                      SelectableItemType.color => ("Color ${isValEmpty(selectedColor?.value) ? "(-)" : "(${selectedColor?.value.split(" ").first})"}"),
+                      SelectableItemType.color => ("Color ${isValEmpty(selectedColor?.value) ? "(-)" : "(${selectedColor?.value})"}"),
                       SelectableItemType.diamond => isValEmpty(selectedDiamond?.value) ? "Diamond" : selectedDiamond?.value ?? '',
                       SelectableItemType.remarks => "Remark",
                       SelectableItemType.stock => "Stock",

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../data/model/product/product_colors_model.dart';
-import '../../data/model/product/product_diamond_model.dart';
-import '../../data/model/product/product_size_model.dart';
+import '../../data/model/predefined_model/predefined_model.dart';
+import '../../exports.dart';
 
 class ProductDetailsController extends GetxController {
   Rx<ScrollController> scrollController = ScrollController().obs;
@@ -25,12 +24,19 @@ class ProductDetailsController extends GetxController {
   RxBool isLike = false.obs;
 
   Rx<SizeModel> selectedSize = SizeModel().obs;
-  Rx<ColorModel> selectedColor = ColorModel().obs;
-  Rx<Diamond> selectedDiamond = Diamond().obs;
+  Rx<SizeModel> selectedColor = SizeModel().obs;
+  Rx<SizeModel> selectedDiamond = SizeModel().obs;
   RxString selectedRemark = "".obs;
+  RxString productCategory = "".obs;
 
-  final List<Color> colors = [
-    Colors.yellow, // Gold
-    Colors.orange, // Silver
-  ];
+  @override
+  void onInit() {
+    super.onInit();
+    if (Get.arguments != null) {
+      if (Get.arguments['category'].runtimeType == String) {
+        productCategory.value = Get.arguments['category'];
+        printOkStatus(productCategory);
+      }
+    }
+  }
 }

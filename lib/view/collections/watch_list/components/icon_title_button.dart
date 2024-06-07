@@ -18,23 +18,33 @@ class IconTitleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        AppIconButton(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          size: 30.h,
-          icon: SvgPicture.asset(
-            icon ?? "",
-            height: 14.h,
-            colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
-          ),
-          onPressed: onPressed ?? () {},
+    return InkWell(
+      borderRadius: BorderRadius.circular(defaultRadius),
+      onTap: onPressed,
+      child: Ink(
+        padding: EdgeInsets.all(defaultPadding / 3),
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.all(defaultPadding / 2),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Theme.of(context).scaffoldBackgroundColor,
+              ),
+              child: SvgPicture.asset(
+                icon ?? "",
+                height: 14.h,
+                colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+              ),
+            ),
+            2.verticalSpace,
+            Text(
+              title ?? "",
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 10.sp, color: AppColors.primary),
+            )
+          ],
         ),
-        Text(
-          title ?? "",
-          style: Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 10.sp, color: AppColors.primary),
-        )
-      ],
+      ),
     );
   }
 }

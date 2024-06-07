@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import '../../controller/dialog_controller.dart';
+import '../../controller/predefine_value_controller.dart';
 import '../../res/app_bar.dart';
 import 'components/app_drawer.dart';
 
@@ -18,7 +18,7 @@ class BottomBarScreen extends StatelessWidget {
   BottomBarScreen({super.key});
 
   final BottomBarController con = Get.put(BottomBarController());
-  final DialogController dialogCon = Get.put(DialogController());
+  final PreValueController dialogCon = Get.put(PreValueController());
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +38,7 @@ class BottomBarScreen extends StatelessWidget {
           child: Scaffold(
             drawer: const AppDrawer(),
             appBar: MyAppBar(
+              backgroundColor: Theme.of(context).colorScheme.surface,
               showBackIcon: false,
               title: con.bottomBarDataList[con.currentBottomIndex.value].screenName,
               leading: Builder(
@@ -90,6 +91,8 @@ class BottomBarScreen extends StatelessWidget {
                   ? IntrinsicHeight(
                       child: BottomAppBar(
                         notchMargin: 6,
+                        elevation: 30,
+                        shadowColor: Theme.of(context).colorScheme.primary,
                         color: Theme.of(context).colorScheme.surface,
                         padding: EdgeInsets.symmetric(vertical: defaultPadding / 1.2, horizontal: defaultPadding / 2),
                         shape: const CircularNotchedRectangle(),

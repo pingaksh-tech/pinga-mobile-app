@@ -3,9 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-import '../data/model/product/product_colors_model.dart';
-import '../data/model/product/product_diamond_model.dart';
-import '../data/model/product/product_size_model.dart';
+import '../data/model/predefined_model/predefined_model.dart';
 import '../exports.dart';
 import '../res/app_dialog.dart';
 import '../res/app_network_image.dart';
@@ -18,6 +16,7 @@ class ProductTile extends StatefulWidget {
   final VoidCallback onTap;
   final String imageUrl;
   final String productName;
+  final String? categorySlug;
   final String productPrice;
   final RxInt? productQuantity;
   final String? brandName;
@@ -40,6 +39,7 @@ class ProductTile extends StatefulWidget {
     this.brandName,
     this.deleteOnTap,
     this.cartDetailOnTap,
+    this.categorySlug,
   });
 
   @override
@@ -48,8 +48,8 @@ class ProductTile extends StatefulWidget {
 
 class _ProductTileState extends State<ProductTile> {
   SizeModel sizeModel = SizeModel();
-  ColorModel colorModel = ColorModel();
-  Diamond diamondModel = Diamond();
+  SizeModel colorModel = SizeModel();
+  SizeModel diamondModel = SizeModel();
   RxString selectedRemark = "".obs;
 
   @override
@@ -114,7 +114,13 @@ class _ProductTileState extends State<ProductTile> {
                   child: AppPopUpMenuButton(
                     menuList: const ["Variants", "Add to Watchlist"],
                     onSelect: (value) {
-                      printOkStatus(value);
+                      switch (value) {
+                        case "variants":
+                          break;
+                        case "add to watchlist":
+                          Get.toNamed(AppRoutes.addWatchListScreen);
+                          break;
+                      }
                     },
                     child: Icon(
                       shadows: const [Shadow(color: AppColors.background, blurRadius: 4)],
@@ -152,11 +158,11 @@ class _ProductTileState extends State<ProductTile> {
               child: Row(
                 children: [
                   /// Size
-                  sizeSelector(),
+                  sizeSelector(categorySlug: widget.categorySlug ?? ''),
                   (defaultPadding / 4).horizontalSpace,
 
                   /// Color
-                  colorSelector(),
+                  colorSelector(categorySlug: widget.categorySlug ?? ''),
                 ],
               ),
             ),
@@ -166,7 +172,7 @@ class _ProductTileState extends State<ProductTile> {
               child: Row(
                 children: [
                   /// Diamond
-                  diamondSelector(),
+                  diamondSelector(categorySlug: widget.categorySlug ?? ''),
                   (defaultPadding / 4).horizontalSpace,
 
                   /// Remark
@@ -279,15 +285,18 @@ class _ProductTileState extends State<ProductTile> {
                                 ),
                               ),
                             ),
-
-                            /// Plus minus tile
-                            // incrementDecrementTile(height: 20.h),
                             Padding(
                               padding: EdgeInsets.only(right: defaultPadding / 2),
                               child: AppPopUpMenuButton(
                                 menuList: const ["Variants", "Add to Watchlist"],
                                 onSelect: (value) {
-                                  printOkStatus(value);
+                                  switch (value) {
+                                    case "variants":
+                                      break;
+                                    case "add to watchlist":
+                                      Get.toNamed(AppRoutes.addWatchListScreen);
+                                      break;
+                                  }
                                 },
                                 child: Icon(
                                   shadows: const [Shadow(color: AppColors.background, blurRadius: 4)],
@@ -313,21 +322,22 @@ class _ProductTileState extends State<ProductTile> {
                 child: Row(
                   children: [
                     /// Size Selector
-                    sizeSelector(direction: Axis.vertical),
+                    sizeSelector(direction: Axis.vertical, categorySlug: widget.categorySlug ?? ''),
                     6.horizontalSpace,
 
                     /// Color Selector
-                    colorSelector(direction: Axis.vertical),
+                    colorSelector(direction: Axis.vertical, categorySlug: widget.categorySlug ?? ''),
                     6.horizontalSpace,
 
                     /// Diamond Selector
-                    diamondSelector(direction: Axis.vertical),
+                    diamondSelector(direction: Axis.vertical, categorySlug: widget.categorySlug ?? ''),
                     6.horizontalSpace,
 
                     /// Remark Selector
                     remarkSelector(direction: Axis.vertical),
                     6.horizontalSpace,
 
+                    /// Plus minus tile
                     incrementDecrementTile(height: 20.h),
                   ],
                 ),
@@ -415,15 +425,15 @@ class _ProductTileState extends State<ProductTile> {
                     Row(
                       children: [
                         /// Size Selector
-                        sizeSelector(isFlexible: true, direction: Axis.vertical),
+                        sizeSelector(isFlexible: true, direction: Axis.vertical, categorySlug: widget.categorySlug ?? ''),
                         6.horizontalSpace,
 
                         /// Color Selector
-                        colorSelector(isFlexible: true, direction: Axis.vertical),
+                        colorSelector(isFlexible: true, direction: Axis.vertical, categorySlug: widget.categorySlug ?? ''),
                         6.horizontalSpace,
 
                         /// Diamond Selector
-                        diamondSelector(isFlexible: true, direction: Axis.vertical),
+                        diamondSelector(isFlexible: true, direction: Axis.vertical, categorySlug: widget.categorySlug ?? ''),
                         6.horizontalSpace,
 
                         /// Remark Selector
@@ -441,33 +451,37 @@ class _ProductTileState extends State<ProductTile> {
     });
   }
 
-  Widget sizeSelector({bool isFlexible = false, Axis direction = Axis.horizontal}) => horizontalSelectorButton(
+  Widget sizeSelector({bool isFlexible = false, Axis direction = Axis.horizontal, required String categorySlug}) {
+    return horizontalSelectorButton(
+      context,
+      categorySlug: categorySlug,
+      isFlexible: isFlexible,
+      selectedSize: RxString(sizeModel.value ?? ""),
+      sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+      selectableItemType: SelectableItemType.size,
+      axisDirection: direction,
+      sizeOnChanged: (value) {
+        /// Return Selected Size
+        if ((value.runtimeType == SizeModel)) {
+          sizeModel = value;
+
+          printYellow(sizeModel);
+        }
+      },
+    );
+  }
+
+  Widget colorSelector({bool isFlexible = false, Axis direction = Axis.horizontal, required String categorySlug}) => horizontalSelectorButton(
         context,
         isFlexible: isFlexible,
-        selectedSize: RxString(sizeModel.size ?? ""),
-        sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
-        selectableItemType: SelectableItemType.size,
-        axisDirection: direction,
-        sizeOnChanged: (value) {
-          /// Return Selected Size
-          if ((value.runtimeType == SizeModel)) {
-            sizeModel = value;
-
-            printYellow(sizeModel);
-          }
-        },
-      );
-
-  Widget colorSelector({bool isFlexible = false, Axis direction = Axis.horizontal}) => horizontalSelectorButton(
-        context,
-        isFlexible: isFlexible,
-        selectedColor: RxString(colorModel.color ?? ""),
+        categorySlug: categorySlug,
+        selectedColor: RxString(colorModel.value ?? ""),
         sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
         selectableItemType: SelectableItemType.color,
         axisDirection: direction,
         colorOnChanged: (value) {
           /// Return Selected Color
-          if ((value.runtimeType == ColorModel)) {
+          if ((value.runtimeType == SizeModel)) {
             colorModel = value;
 
             printYellow(colorModel);
@@ -475,16 +489,17 @@ class _ProductTileState extends State<ProductTile> {
         },
       );
 
-  Widget diamondSelector({bool isFlexible = false, Axis direction = Axis.horizontal}) => horizontalSelectorButton(
+  Widget diamondSelector({bool isFlexible = false, Axis direction = Axis.horizontal, required String categorySlug}) => horizontalSelectorButton(
         context,
         isFlexible: isFlexible,
-        selectedDiamond: RxString(diamondModel.diamond ?? ''),
+        categorySlug: categorySlug,
+        selectedDiamond: RxString(diamondModel.value ?? ''),
         sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
         selectableItemType: SelectableItemType.diamond,
         axisDirection: direction,
         rubyOnChanged: (value) {
           /// Return Selected Diamond
-          if ((value.runtimeType == Diamond)) {
+          if ((value.runtimeType == SizeModel)) {
             diamondModel = value;
 
             printYellow(diamondModel);
@@ -660,20 +675,15 @@ class _ProductTileState extends State<ProductTile> {
                       physics: const RangeMaintainingScrollPhysics(),
                       child: Row(
                         children: [
-                          sizeSelector(
-                            direction: Axis.vertical,
-                            isFlexible: true,
-                          ),
+                          sizeSelector(direction: Axis.vertical, isFlexible: true, categorySlug: widget.categorySlug ?? ''),
                           (defaultPadding / 4).horizontalSpace,
                           colorSelector(
                             direction: Axis.vertical,
                             isFlexible: true,
+                            categorySlug: widget.categorySlug ?? '',
                           ),
                           (defaultPadding / 4).horizontalSpace,
-                          diamondSelector(
-                            direction: Axis.vertical,
-                            isFlexible: true,
-                          ),
+                          diamondSelector(direction: Axis.vertical, isFlexible: true, categorySlug: widget.categorySlug ?? ''),
                           (defaultPadding / 4).horizontalSpace,
                           remarkSelector(
                             direction: Axis.vertical,

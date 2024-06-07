@@ -58,12 +58,12 @@ class Diamond {
   factory Diamond.fromJson(Map<String, dynamic> json) => Diamond(
         id: json["id"],
         value: json["value"],
-        diamond: json["diamond"],
+        diamond: json["label"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "value": value,
-        "diamond": diamond,
+        "label": diamond,
       };
 }

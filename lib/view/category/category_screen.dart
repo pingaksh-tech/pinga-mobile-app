@@ -108,7 +108,9 @@ class CategoryScreen extends StatelessWidget {
                           imageUrl: con.categoryList[index].image ?? "",
                           onTap: () => Get.toNamed(
                             AppRoutes.productScreen,
-                            arguments: {"categoryName": con.categoryList[index].catName},
+                            arguments: {
+                              "category": con.categoryList[index],
+                            },
                           ),
                         ),
                         itemCount: con.categoryList.length,
@@ -122,6 +124,7 @@ class CategoryScreen extends StatelessWidget {
                           width: double.infinity,
                           imageUrl: con.latestProductList[index],
                           fit: BoxFit.cover,
+                          boxShadow: defaultShadowAllSide,
                           borderRadius: BorderRadius.circular(defaultRadius),
                         ),
                         itemCount: con.latestProductList.length,

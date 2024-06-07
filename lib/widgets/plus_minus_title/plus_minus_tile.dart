@@ -40,7 +40,7 @@ Widget plusMinusTile(
             },
             icon: SvgPicture.asset(
               AppAssets.minusIcon,
-              colorFilter: ColorFilter.mode(textValue.value > 0 ? AppColors.primary : Theme.of(context).disabledColor, BlendMode.srcIn),
+              colorFilter: ColorFilter.mode(textValue.value > 0 ? Theme.of(context).colorScheme.primary : Theme.of(context).disabledColor, BlendMode.srcIn),
             ),
           ),
 

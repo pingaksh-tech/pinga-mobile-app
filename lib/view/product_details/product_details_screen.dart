@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import '../../data/model/product/product_colors_model.dart';
-import '../../data/model/product/product_diamond_model.dart';
-import '../../data/model/product/product_size_model.dart';
+import '../../data/model/predefined_model/predefined_model.dart';
 import '../../res/app_dialog.dart';
 import '../../widgets/plus_minus_title/plus_minus_tile.dart';
 import '../../widgets/size_selector/size_selector_botton.dart';
@@ -260,7 +258,9 @@ class ProductDetailsScreen extends StatelessWidget {
                 ProductInfo(),
 
                 /// VARIANTS TAB
-                VariantsTab(),
+                VariantsTab(
+                  productCategory: con.productCategory.value,
+                ),
 
                 /// FAMILY PRODUCT TAB
                 FamilyProductTab()
@@ -284,7 +284,8 @@ class ProductDetailsScreen extends StatelessWidget {
               /// Size Selector
               horizontalSelectorButton(
                 context,
-                selectedSize: RxString(con.selectedSize.value.size ?? ''),
+                categorySlug: con.productCategory.value,
+                selectedSize: RxString(con.selectedSize.value.value ?? ''),
                 selectableItemType: SelectableItemType.size,
                 sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
                 axisDirection: Axis.vertical,
@@ -300,13 +301,14 @@ class ProductDetailsScreen extends StatelessWidget {
               /// Color Selector
               horizontalSelectorButton(
                 context,
-                selectedColor: RxString(con.selectedColor.value.color ?? ''),
+                categorySlug: con.productCategory.value,
+                selectedColor: RxString(con.selectedColor.value.value ?? ''),
                 selectableItemType: SelectableItemType.color,
                 sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
                 axisDirection: Axis.vertical,
                 colorOnChanged: (value) {
                   /// Selected Color
-                  if ((value.runtimeType == ColorModel)) {
+                  if ((value.runtimeType == SizeModel)) {
                     con.selectedColor.value = value;
                   }
                 },
@@ -316,13 +318,14 @@ class ProductDetailsScreen extends StatelessWidget {
               /// Diamond Selector
               horizontalSelectorButton(
                 context,
-                selectedDiamond: RxString(con.selectedDiamond.value.diamond ?? ''),
+                categorySlug: con.productCategory.value,
+                selectedDiamond: RxString(con.selectedDiamond.value.value ?? ''),
                 selectableItemType: SelectableItemType.diamond,
                 sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
                 axisDirection: Axis.vertical,
                 rubyOnChanged: (value) {
                   /// Selected Diamond
-                  if ((value.runtimeType == Diamond)) {
+                  if ((value.runtimeType == SizeModel)) {
                     con.selectedDiamond.value = value;
                   }
                 },

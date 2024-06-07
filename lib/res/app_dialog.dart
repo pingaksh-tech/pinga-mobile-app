@@ -9,7 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-import '../controller/dialog_controller.dart';
+import '../data/model/predefined_model/predefined_model.dart';
 import '../exports.dart';
 
 class AppDialogs {
@@ -593,49 +593,51 @@ class AppDialogs {
   static Future<dynamic>? sizeSelector(
     BuildContext context, {
     Function(String?)? onChanged,
+    required RxList<SizeModel> sizeList,
   }) {
-    if (isRegistered<DialogController>()) {
-      final DialogController dialogCon = Get.find<DialogController>();
-      TextEditingController controller = TextEditingController();
-      return showGeneralDialog(
-          context: context,
-          pageBuilder: (context, animation, secondaryAnimation) {
-            return Scaffold(
-              backgroundColor: Theme.of(context).colorScheme.surface,
-              body: SafeArea(
-                child: Container(
-                  width: Get.width,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(defaultRadius / 2),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      /// Title
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: defaultPadding),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Select Size",
-                              style: AppTextStyle.titleStyle(context).copyWith(
-                                fontSize: 18.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
+    TextEditingController controller = TextEditingController();
+
+    return showGeneralDialog(
+        context: context,
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return Scaffold(
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            body: SafeArea(
+              child: Container(
+                width: Get.width,
+                padding: EdgeInsets.only(top: defaultPadding),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(defaultRadius / 2),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    /// Title
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Select Size",
+                            style: AppTextStyle.titleStyle(context).copyWith(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Theme.of(context).colorScheme.primary,
                             ),
-                            AppIconButton(
-                              size: 26.h,
-                              icon: SvgPicture.asset(AppAssets.crossIcon),
-                              onPressed: () {
-                                Get.back();
-                              },
-                            )
-                          ],
-                        ),
+                          ),
+                          AppIconButton(
+                            size: 26.h,
+                            icon: SvgPicture.asset(AppAssets.crossIcon),
+                            onPressed: () {
+                              Get.back();
+                            },
+                          )
+                        ],
                       ),
-                      defaultPadding.verticalSpace,
+                    ),
+                    defaultPadding.verticalSpace,
+                    if (sizeList.isNotEmpty)
                       AppTextField(
                         controller: controller,
                         hintText: 'Search',
@@ -645,83 +647,95 @@ class AppDialogs {
                         contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 4, horizontal: defaultPadding / 1.7),
                         onChanged: onChanged,
                       ),
-                      (defaultPadding / 1.4).verticalSpace,
+                    (defaultPadding / 1.4).verticalSpace,
 
-                      /// Records
-                      Expanded(
-                        child: ListView.separated(
-                          physics: const RangeMaintainingScrollPhysics(),
-                          itemCount: dialogCon.productSizeList.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) => ListTile(
-                            title: Text(
-                              dialogCon.productSizeList[index].size ?? '',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
+                    /// Records
+                    Expanded(
+                      child: sizeList.isNotEmpty
+                          ? ListView.separated(
+                              physics: const RangeMaintainingScrollPhysics(),
+                              itemCount: sizeList.length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) => ListTile(
+                                title: Text(
+                                  sizeList[index].label ?? '',
+                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
+                                ),
+                                onTap: () {
+                                  Get.back(
+                                    result: sizeList[index],
+                                  );
+                                },
+                              ),
+                              separatorBuilder: (context, index) => Divider(height: 1.h),
+                            )
+                          : Center(
+                              child: Text(
+                                "Size not available",
+                                style: AppTextStyle.titleStyle(context).copyWith(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                              ),
                             ),
-                            onTap: () {
-                              Get.back(result: dialogCon.productSizeList[index]);
-                            },
-                          ),
-                          separatorBuilder: (context, index) => Divider(height: 1.h),
-                        ),
-                      )
-                    ],
-                  ),
+                    )
+                  ],
                 ),
               ),
-            );
-          });
-    }
-    return null;
+            ),
+          );
+        });
   }
 
   // Select color dialog
   static Future<dynamic>? colorSelector(
     BuildContext context, {
     Function(String?)? onChanged,
+    required RxList<SizeModel> colorList,
   }) {
-    if (isRegistered<DialogController>()) {
-      final DialogController dialogCon = Get.find<DialogController>();
-      TextEditingController controller = TextEditingController();
-      return showGeneralDialog(
-          context: context,
-          pageBuilder: (context, animation, secondaryAnimation) {
-            return Scaffold(
-              backgroundColor: Theme.of(context).colorScheme.surface,
-              body: SafeArea(
-                child: Container(
-                  width: Get.width,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(defaultRadius / 2),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      /// Title
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: defaultPadding),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Select Color",
-                              style: AppTextStyle.titleStyle(context).copyWith(
-                                fontSize: 18.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
+    TextEditingController controller = TextEditingController();
+    return showGeneralDialog(
+        context: context,
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return Scaffold(
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            body: SafeArea(
+              child: Container(
+                width: Get.width,
+                padding: EdgeInsets.only(top: defaultPadding),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(defaultRadius / 2),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    /// Title
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Select Color",
+                            style: AppTextStyle.titleStyle(context).copyWith(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Theme.of(context).colorScheme.primary,
                             ),
-                            AppIconButton(
-                              size: 26.h,
-                              icon: SvgPicture.asset(AppAssets.crossIcon),
-                              onPressed: () {
-                                Get.back();
-                              },
-                            )
-                          ],
-                        ),
+                          ),
+                          AppIconButton(
+                            size: 26.h,
+                            icon: SvgPicture.asset(AppAssets.crossIcon),
+                            onPressed: () {
+                              Get.back();
+                            },
+                          )
+                        ],
                       ),
-                      defaultPadding.verticalSpace,
+                    ),
+                    defaultPadding.verticalSpace,
+                    if (colorList.isNotEmpty)
                       AppTextField(
                         controller: controller,
                         hintText: 'Search',
@@ -731,83 +745,92 @@ class AppDialogs {
                         contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 4, horizontal: defaultPadding / 1.7),
                         onChanged: onChanged,
                       ),
-                      (defaultPadding / 1.4).verticalSpace,
+                    (defaultPadding / 1.4).verticalSpace,
 
-                      /// Records
-                      Expanded(
-                        child: ListView.separated(
-                          physics: const RangeMaintainingScrollPhysics(),
-                          itemCount: dialogCon.productColorList.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) => ListTile(
-                            title: Text(
-                              dialogCon.productColorList[index].color ?? '',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
+                    /// Records
+                    Expanded(
+                      child: colorList.isNotEmpty
+                          ? ListView.separated(
+                              physics: const RangeMaintainingScrollPhysics(),
+                              itemCount: colorList.length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) => ListTile(
+                                title: Text(
+                                  colorList[index].label ?? '',
+                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
+                                ),
+                                onTap: () {
+                                  Get.back(result: colorList[index]);
+                                },
+                              ),
+                              separatorBuilder: (context, index) => Divider(height: 1.h),
+                            )
+                          : Center(
+                              child: Text(
+                                "Color not available",
+                                style: AppTextStyle.titleStyle(context).copyWith(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                              ),
                             ),
-                            onTap: () {
-                              Get.back(result: dialogCon.productColorList[index]);
-                            },
-                          ),
-                          separatorBuilder: (context, index) => Divider(height: 1.h),
-                        ),
-                      )
-                    ],
-                  ),
+                    )
+                  ],
                 ),
               ),
-            );
-          });
-    }
-    return null;
+            ),
+          );
+        });
   }
 
   // Select Diamond Dialog
   static Future<dynamic>? diamondSelector(
     BuildContext context, {
     Function(String?)? onChanged,
+    required RxList<SizeModel> diamondList,
   }) {
-    if (isRegistered<DialogController>()) {
-      final DialogController dialogCon = Get.find<DialogController>();
-      TextEditingController controller = TextEditingController();
-      return showGeneralDialog(
-          context: context,
-          pageBuilder: (context, animation, secondaryAnimation) {
-            return Scaffold(
-              backgroundColor: Theme.of(context).colorScheme.surface,
-              body: SafeArea(
-                child: Container(
-                  width: Get.width,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(defaultRadius / 2),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      /// Title
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: defaultPadding),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Select Diamond",
-                              style: AppTextStyle.titleStyle(context).copyWith(
-                                fontSize: 18.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
+    TextEditingController controller = TextEditingController();
+    return showGeneralDialog(
+        context: context,
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return Scaffold(
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            body: SafeArea(
+              child: Container(
+                width: Get.width,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(defaultRadius / 2),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    /// Title
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Select Diamond",
+                            style: AppTextStyle.titleStyle(context).copyWith(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Theme.of(context).colorScheme.primary,
                             ),
-                            AppIconButton(
-                              size: 26.h,
-                              icon: SvgPicture.asset(AppAssets.crossIcon),
-                              onPressed: () {
-                                Get.back();
-                              },
-                            )
-                          ],
-                        ),
+                          ),
+                          AppIconButton(
+                            size: 26.h,
+                            icon: SvgPicture.asset(AppAssets.crossIcon),
+                            onPressed: () {
+                              Get.back();
+                            },
+                          )
+                        ],
                       ),
-                      defaultPadding.verticalSpace,
+                    ),
+                    defaultPadding.verticalSpace,
+                    if (diamondList.isNotEmpty)
                       AppTextField(
                         controller: controller,
                         hintText: 'Search',
@@ -817,34 +840,43 @@ class AppDialogs {
                         contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 4, horizontal: defaultPadding / 1.7),
                         onChanged: onChanged,
                       ),
-                      (defaultPadding / 1.4).verticalSpace,
+                    (defaultPadding / 1.4).verticalSpace,
 
-                      /// Records
-                      Expanded(
-                        child: ListView.separated(
-                          physics: const RangeMaintainingScrollPhysics(),
-                          itemCount: dialogCon.productDiamondList.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) => ListTile(
-                            title: Text(
-                              dialogCon.productDiamondList[index].diamond ?? '',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
+                    /// Records
+                    Expanded(
+                      child: diamondList.isNotEmpty
+                          ? ListView.separated(
+                              physics: const RangeMaintainingScrollPhysics(),
+                              itemCount: diamondList.length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) => ListTile(
+                                title: Text(
+                                  diamondList[index].label ?? '',
+                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
+                                ),
+                                onTap: () {
+                                  Get.back(result: diamondList[index]);
+                                },
+                              ),
+                              separatorBuilder: (context, index) => Divider(height: 1.h),
+                            )
+                          : Center(
+                              child: Text(
+                                "Diamonds not available",
+                                style: AppTextStyle.titleStyle(context).copyWith(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                              ),
                             ),
-                            onTap: () {
-                              Get.back(result: dialogCon.productDiamondList[index]);
-                            },
-                          ),
-                          separatorBuilder: (context, index) => Divider(height: 1.h),
-                        ),
-                      )
-                    ],
-                  ),
+                    )
+                  ],
                 ),
               ),
-            );
-          });
-    }
-    return null;
+            ),
+          );
+        });
   }
 
   // ADD QUANTITY DIALOG

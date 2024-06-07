@@ -1,12 +1,15 @@
 import 'package:get/get.dart';
 
+import '../../data/model/category/category_model.dart';
 import '../../data/model/product/product_model.dart';
 import '../../data/repositories/product/product_repository.dart';
+import '../../exports.dart';
 
 class ProductController extends GetxController {
   RxBool isLike = false.obs;
 
   RxString categoryName = "".obs;
+  Rx<CategoryModel> category = CategoryModel().obs;
   RxBool isProductViewChange = true.obs;
 
   RxString selectPrice = "".obs;
@@ -21,8 +24,9 @@ class ProductController extends GetxController {
   void onInit() {
     super.onInit();
     if (Get.arguments != null) {
-      if (Get.arguments["categoryName"].runtimeType == String) {
-        categoryName.value = Get.arguments["categoryName"];
+      if (Get.arguments["category"].runtimeType == CategoryModel) {
+        category.value = Get.arguments["category"];
+        printOkStatus(category.value.slug);
       }
     }
   }

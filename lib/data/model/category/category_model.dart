@@ -11,7 +11,7 @@ String getCategoryModelToJson(GetCategoryModel data) => json.encode(data.toJson(
 class GetCategoryModel {
   final bool? success;
   final String? message;
-  final CategoryModel? data;
+  final CategoryDataModel? data;
 
   GetCategoryModel({
     this.success,
@@ -22,7 +22,7 @@ class GetCategoryModel {
   factory GetCategoryModel.fromJson(Map<String, dynamic> json) => GetCategoryModel(
         success: json["success"],
         message: json["message"],
-        data: json["data"] == null ? null : CategoryModel.fromJson(json["data"]),
+        data: json["data"] == null ? null : CategoryDataModel.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -32,15 +32,15 @@ class GetCategoryModel {
       };
 }
 
-class CategoryModel {
-  final List<CategoryList>? category;
+class CategoryDataModel {
+  final List<CategoryModel>? category;
 
-  CategoryModel({
+  CategoryDataModel({
     this.category,
   });
 
-  factory CategoryModel.fromJson(Map<String, dynamic> json) => CategoryModel(
-        category: json["category"] == null ? [] : List<CategoryList>.from(json["category"]!.map((x) => CategoryList.fromJson(x))),
+  factory CategoryDataModel.fromJson(Map<String, dynamic> json) => CategoryDataModel(
+        category: json["category"] == null ? [] : List<CategoryModel>.from(json["category"]!.map((x) => CategoryModel.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -48,25 +48,29 @@ class CategoryModel {
       };
 }
 
-class CategoryList {
+class CategoryModel {
   final String? catName;
+  final String? slug;
   final String? productAvailable;
   final String? image;
 
-  CategoryList({
+  CategoryModel({
     this.catName,
+    this.slug,
     this.productAvailable,
     this.image,
   });
 
-  factory CategoryList.fromJson(Map<String, dynamic> json) => CategoryList(
+  factory CategoryModel.fromJson(Map<String, dynamic> json) => CategoryModel(
         catName: json["catName"],
+        slug: json["slug"],
         productAvailable: json["productAvailable"],
         image: json["image"],
       );
 
   Map<String, dynamic> toJson() => {
         "catName": catName,
+        "slug": slug,
         "productAvailable": productAvailable,
         "image": image,
       };

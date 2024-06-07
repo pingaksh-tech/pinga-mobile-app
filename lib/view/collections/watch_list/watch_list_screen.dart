@@ -18,9 +18,9 @@ class WatchListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       return Scaffold(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: MyAppBar(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           showBackIcon: false,
           child: con.watchList.isNotEmpty
               ? PreferredSize(
@@ -28,8 +28,7 @@ class WatchListScreen extends StatelessWidget {
                   child: AppTextField(
                     hintText: "Search",
                     contentPadding: EdgeInsets.all(defaultPadding / 1.2),
-                    fillColor: AppColors.background,
-                    padding: EdgeInsets.only(bottom: defaultPadding),
+                    // fillColor: AppColors.background,
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(defaultRadius),
@@ -47,7 +46,7 @@ class WatchListScreen extends StatelessWidget {
         ),
         body: con.watchList.isNotEmpty
             ? ListView(
-                padding: EdgeInsets.all(defaultPadding).copyWith(top: 0),
+                padding: EdgeInsets.all(defaultPadding).copyWith(top: 10.h),
                 physics: const RangeMaintainingScrollPhysics(),
                 children: [
                   ListView.separated(
