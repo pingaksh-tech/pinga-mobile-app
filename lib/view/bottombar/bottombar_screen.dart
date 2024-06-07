@@ -6,13 +6,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import '../../controller/dialog_controller.dart';
-import '../../res/app_bar.dart';
-import 'components/app_drawer.dart';
 
+import '../../controller/dialog_controller.dart';
 import '../../exports.dart';
 import '../../packages/app_animated_cliprect.dart';
+import '../../res/app_bar.dart';
+import '../cart/components/cart_popup_menu.dart';
 import 'bottombar_controller.dart';
+import 'components/app_drawer.dart';
 
 class BottomBarScreen extends StatelessWidget {
   BottomBarScreen({super.key});
@@ -48,6 +49,9 @@ class BottomBarScreen extends StatelessWidget {
                   },
                 ),
               ),
+              actions: [
+                con.currentBottomIndex.value == 2 ?  CartPopUpMenu() : const SizedBox(),
+              ],
             ),
             body: con.isLoading.value
                 ? Padding(

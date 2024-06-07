@@ -1002,7 +1002,9 @@ class AppDialogs {
     );
   }
 
-  static Future<void> cartProductDetailDialog(BuildContext context) {
+// Cart Product Detail
+  static Future<void> cartProductDetailDialog(BuildContext context, {required String productName}) {
+    final DialogController dialogCon = Get.find<DialogController>();
     return Get.dialog(
       Dialog(
         insetPadding: REdgeInsets.all(defaultPadding * 1.5),
@@ -1017,7 +1019,7 @@ class AppDialogs {
                 children: [
                   Expanded(
                     child: Text(
-                      "KCP700(Sun Spring Ring)",
+                      productName,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500, fontSize: 16.sp),
                     ).paddingSymmetric(vertical: defaultPadding),
                   ),
@@ -1034,33 +1036,169 @@ class AppDialogs {
                   border: Border.all(color: AppColors.lightGrey),
                   borderRadius: BorderRadius.circular(defaultRadius),
                 ),
-                child: ListView.separated(
-                  shrinkWrap: true,
-                  separatorBuilder: (context, index) => const Divider(),
-                  padding: EdgeInsets.symmetric(vertical: defaultPadding, horizontal: defaultPadding),
-                  itemCount: 6,
-                  itemBuilder: (context, index) => Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(
-                        "Gold",
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 15.sp),
-                      ),
-                      Text(
-                        ":",
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 15.sp),
-                      ),
-                      Text(
-                        "Ring",
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 15.sp),
-                      ),
-                    ],
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight: Get.height * 0.5,
+                  ),
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    physics: const RangeMaintainingScrollPhysics(),
+                    separatorBuilder: (context, index) => const Divider(),
+                    padding: EdgeInsets.symmetric(vertical: defaultPadding, horizontal: defaultPadding),
+                    itemCount: dialogCon.cartProductDetailList.length,
+                    itemBuilder: (context, index) => Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: Text(
+                            dialogCon.cartProductDetailList[index].categoryName ?? "",
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 15.sp),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            ":",
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 15.sp),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Text(
+                            dialogCon.cartProductDetailList[index].value ?? "",
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 15.sp),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               )
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  // CART DIALOG
+  static Future<dynamic> cartDialog(
+    BuildContext context, {
+    required void Function()? onPressed,
+    Widget? content,
+    String? buttonTitle2,
+    String? dialogTitle,
+    String? contentText,
+    String? buttonTitle,
+  }) {
+    return Get.dialog(
+      AlertDialog(
+        backgroundColor: AppColors.background,
+        titlePadding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding).copyWith(bottom: 0),
+        contentPadding: EdgeInsets.all(defaultPadding * 1.2).copyWith(top: defaultPadding / 2),
+        actionsPadding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(bottom: defaultPadding / 1.4),
+        title: Text(
+          dialogTitle ?? "PINGAKSH",
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+        ),
+        content: content ??
+            Text(
+              contentText ?? "",
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+        actions: [
+          /// CANCEL
+          TextButton(
+            child: Text(
+              buttonTitle ?? "CANCEL",
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+            ),
+            onPressed: () {
+              Get.back();
+            },
+          ),
+
+          /// ADD
+          TextButton(
+            onPressed: onPressed,
+            child: Text(
+              buttonTitle2 ?? "YES",
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  static Future<dynamic> cartAlertDialog(
+    BuildContext context, {
+    required void Function()? onPressed,
+    Widget? content,
+    String? buttonTitle2,
+    String? dialogTitle,
+    String? contentText,
+    String? buttonTitle,
+  }) {
+    return Get.dialog(
+      AlertDialog(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        titlePadding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding).copyWith(bottom: 0),
+        contentPadding: EdgeInsets.all(defaultPadding * 1.2).copyWith(top: defaultPadding / 2),
+        actionsPadding: EdgeInsets.only(right: defaultPadding * 1.6).copyWith(bottom: defaultPadding),
+        title: Text(
+          "Alert",
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontSize: 17.sp,
+                fontWeight: FontWeight.w600,
+              ),
+        ),
+        content: Text(
+          "Do you want to empty cart after items are added in watchList",
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        actions: [
+          AppButton(
+            title: "Yes",
+            height: 28.h,
+            flexibleWidth: true,
+            onPressed: () {
+              Get.back();
+            },
+          ),
+          AppButton(
+            title: "No",
+            height: 28.h,
+            flexibleWidth: true,
+            onPressed: () {
+              Get.back();
+            },
+          ),
+          AppButton(
+            title: "Cancel",
+            height: 28.h,
+            flexibleWidth: true,
+            onPressed: () {
+              Get.back();
+            },
+          ),
+        ],
       ),
     );
   }

@@ -26,6 +26,8 @@ class ProductTile extends StatefulWidget {
   final Function(bool)? likeOnChanged;
   final VoidCallback? deleteOnTap;
   final VoidCallback? cartDetailOnTap;
+  final RxBool? isCartSelected;
+  final void Function(bool?)? onChanged;
 
   const ProductTile({
     super.key,
@@ -40,6 +42,8 @@ class ProductTile extends StatefulWidget {
     this.brandName,
     this.deleteOnTap,
     this.cartDetailOnTap,
+    this.isCartSelected,
+    this.onChanged,
   });
 
   @override
@@ -498,12 +502,10 @@ class _ProductTileState extends State<ProductTile> {
         textValue: widget.productQuantity ?? RxInt(0),
         onDecrement: (value) {
           widget.productQuantity?.value = value;
-
           printOkStatus(widget.productQuantity);
         },
         onIncrement: (value) {
           widget.productQuantity?.value = value;
-
           printOkStatus(widget.productQuantity);
         },
       );
@@ -533,9 +535,12 @@ class _ProductTileState extends State<ProductTile> {
     return GestureDetector(
       onTap: widget.onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding / 1.2),
+        margin: EdgeInsets.symmetric(horizontal: defaultPadding),
+        padding: EdgeInsets.symmetric(horizontal: defaultPadding / 1.2, vertical: defaultPadding / 1.2),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
+          borderRadius: BorderRadius.circular(defaultRadius),
+          boxShadow: defaultShadowAllSide,
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -564,13 +569,15 @@ class _ProductTileState extends State<ProductTile> {
                         width: Get.width * 0.25,
                         height: Get.width * 0.25,
                       ),
-                Positioned(
-                  top: -12.h,
-                  left: -5.w,
-                  child: CustomCheckboxTile(
-                    isSelected: false.obs,
+                if (widget.isCartSelected != null)
+                  Positioned(
+                    top: -12.w,
+                    left: -12.w,
+                    child: CustomCheckboxTile(
+                      isSelected: widget.isCartSelected!,
+                      onChanged: widget.onChanged,
+                    ),
                   ),
-                ),
               ],
             ),
             (defaultPadding / 2).horizontalSpace,
@@ -616,7 +623,7 @@ class _ProductTileState extends State<ProductTile> {
                               children: [
                                 AppIconButton(
                                   onPressed: () {
-                                    AppDialogs.cartProductDetailDialog(context);
+                                    AppDialogs.cartProductDetailDialog(context, productName: widget.productName);
                                   },
                                   size: 30.sp,
                                   icon: SvgPicture.asset(
@@ -629,7 +636,13 @@ class _ProductTileState extends State<ProductTile> {
                                 ),
                                 (defaultPadding / 3).horizontalSpace,
                                 AppIconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    AppDialogs.cartDialog(
+                                      context,
+                                      onPressed: widget.deleteOnTap,
+                                      contentText: "Are you sure\nYou want to remove this item from the cart?",
+                                    );
+                                  },
                                   size: 30.sp,
                                   icon: SvgPicture.asset(
                                     AppAssets.deleteIcon,
@@ -643,13 +656,7 @@ class _ProductTileState extends State<ProductTile> {
                               ],
                             ),
                             (defaultPadding / 6).verticalSpace,
-                            plusMinusTile(
-                              context,
-                              size: 20,
-                              textValue: RxInt(1),
-                              onIncrement: (p0) {},
-                              onDecrement: (p0) {},
-                            ),
+                            incrementDecrementTile(height: 20),
                           ],
                         ),
                       ],

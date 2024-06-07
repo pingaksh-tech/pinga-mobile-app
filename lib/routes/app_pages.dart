@@ -3,7 +3,8 @@ import 'package:get/get.dart';
 import '../view/auth_flow/auth_screen.dart';
 import '../view/bottombar/bottombar_screen.dart';
 import '../view/cart/cart_screen.dart';
-import '../view/cart/widget/cart_stock_screen.dart';
+import '../view/cart/widget/stock/cart_stock_screen.dart';
+import '../view/cart/widget/summary/summary_screen.dart';
 import '../view/category/category_screen.dart';
 import '../view/collections/watch_list/watch_list_screen.dart';
 import '../view/collections/widgets/add_watchlist/add_watchlist_screen.dart';
@@ -44,5 +45,6 @@ class AppPages {
     _getPage(name: AppRoutes.addWatchListScreen, page: () => AddWatchlistScreen()),
     _getPage(name: AppRoutes.remarkScreen, page: () => AddRemarkScreen()),
     _getPage(name: AppRoutes.cartStockScreen, page: () => CartStockScreen()),
+    _getPage(name: AppRoutes.summaryScreen, page: () =>  SummaryScreen()),
   ];
 }

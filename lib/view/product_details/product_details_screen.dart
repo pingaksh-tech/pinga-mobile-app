@@ -2,26 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
 import '../../data/model/product/product_colors_model.dart';
 import '../../data/model/product/product_diamond_model.dart';
 import '../../data/model/product/product_size_model.dart';
-import '../../res/app_dialog.dart';
-import '../../widgets/plus_minus_title/plus_minus_tile.dart';
-import '../../widgets/size_selector/size_selector_botton.dart';
-import '../products/components/cart_icon_button.dart';
-import 'widgets/family_product/family_product_tab.dart';
-import 'widgets/product_info/product_info.dart';
-import 'widgets/variants/variants.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
 import '../../exports.dart';
 import '../../res/app_bar.dart';
+import '../../res/app_dialog.dart';
 import '../../res/app_network_image.dart';
+import '../../widgets/plus_minus_title/plus_minus_tile.dart';
+import '../../widgets/size_selector/size_selector_botton.dart';
 import '../../widgets/sliver_delegate.dart';
 import '../../widgets/tab_bar.dart';
+import '../products/components/cart_icon_button.dart';
 import 'components/custom_product_watch_button.dart';
 import 'components/price_breakup_dialog.dart';
 import 'product_details_controller.dart';
+import 'widgets/family_product/family_product_tab.dart';
+import 'widgets/product_info/product_info.dart';
+import 'widgets/variants/variants.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   ProductDetailsScreen({super.key});

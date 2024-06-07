@@ -77,6 +77,9 @@ class AppAssets {
   static const String summaryIcon = '${svgPath}summary_icon.svg';
   static const String diamondWeight = '${svgPath}diamond_weight.svg';
   static const String metalWeight = '${svgPath}metal_weight.svg';
+  static const String deliveryIcon = '${svgPath}delivery_icon.svg';
+  static const String quantityIcon = '${svgPath}quantity_icon.svg';
+  static const String mrpIcon = '${svgPath}MRP_icon.svg';
 
   /// ***********************************************************************************
   ///                                   JSON

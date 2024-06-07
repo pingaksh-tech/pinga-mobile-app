@@ -1,0 +1,85 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+
+import '../../../exports.dart';
+import '../../../res/app_dialog.dart';
+import '../../../res/pop_up_menu_button.dart';
+import '../cart_controller.dart';
+
+// ignore: must_be_immutable
+class CartPopUpMenu extends StatelessWidget {
+  CartPopUpMenu({super.key});
+
+  CartController con = Get.find<CartController>();
+
+  @override
+  Widget build(BuildContext context) {
+    return AppPopUpMenuButton(
+      position: PopupMenuPosition.over,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(defaultRadius),
+      ),
+      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500, fontSize: 15.sp),
+      menuList: const [
+        "Download cart items",
+        "Add to watchList",
+        "Clear cart",
+      ],
+      child: Icon(
+        Icons.more_vert_rounded,
+        color: Theme.of(context).primaryColor,
+      ).paddingOnly(right: defaultPadding / 5),
+      onSelect: (value) {
+        switch (value) {
+          case "download cart items":
+            break;
+          case "add to watchlist":
+            AppDialogs.cartDialog(
+              context,
+              buttonTitle2: "ADD",
+              dialogTitle: "Add to watchList",
+              content: SizedBox(
+                width: Get.width,
+                child: AppTextField(
+                  title: "Add WatchList Name",
+                  titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontSize: 12.sp,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                  padding: EdgeInsets.only(top: defaultPadding / 2),
+                  hintText: "Enter new watchList Name",
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: defaultPadding / 1.4,
+                    horizontal: defaultPadding / 1.7,
+                  ),
+                ),
+              ),
+              onPressed: () {
+                Get.back();
+                AppDialogs.cartAlertDialog(
+                  context,
+                  onPressed: () {},
+                );
+              },
+            );
+            break;
+          case "clear cart":
+            AppDialogs.cartDialog(
+              context,
+              contentText: "Are you sure,\nyou want to clear cart?",
+              dialogTitle: "Alert",
+              buttonTitle2: "YES",
+              buttonTitle: "NO",
+              onPressed: () {
+                Get.back();
+                con.productsList.clear();
+              },
+            );
+            break;
+          default:
+        }
+      },
+    );
+  }
+}

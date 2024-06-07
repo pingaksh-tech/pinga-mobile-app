@@ -1,10 +1,12 @@
 import 'package:get/get.dart';
 
+import '../../../controller/dialog_controller.dart';
 import '../../../exports.dart';
 import '../../../view/bottombar/bottombar_controller.dart';
 import '../../../view/cart/cart_controller.dart';
-import '../../../view/cart/widget/cart_stock_controller.dart';
+import '../../../view/cart/widget/stock/cart_stock_controller.dart';
 import '../../model/cart/cart_model.dart';
+import '../../model/cart/product_detail_model.dart';
 import '../../model/cart/stock_model.dart';
 
 class CartRepository {
@@ -279,10 +281,33 @@ class CartRepository {
     }
   };
 
-  List productDetail = [
-    {"categoryName": "Metal", "value": "Gold"},
-  ];
-
+  static Map<String, dynamic> productDetail = {
+    "success": true,
+    "message": "Product fetched successfully",
+    "data": {
+      "productDetail": [
+        {"categoryName": "Metal", "value": "Gold"},
+        {"categoryName": "Keratage", "value": "18KT"},
+        {"categoryName": "Metal Wt", "value": "3.15"},
+        {"categoryName": "Shape", "value": "Gold"},
+        {"categoryName": "Stone", "value": "Diamond"},
+        {"categoryName": "Stone quality", "value": "SI"},
+        {"categoryName": "Stone Wt", "value": "0.30"}
+      ]
+    }
+  };
+  static Map<String, dynamic> summaryList = {
+    "success": true,
+    "message": "Product fetched successfully",
+    "data": {
+      "productDetail": [
+        {
+          "delivery": ["15 DAYS", "48 HOURS", "7 DAYS", "Immediate", "ORO - 15 Days"],
+          "quantity": ["680", "480", "20", "1", ""],
+        },
+      ]
+    }
+  };
   static Future<void> cartListApi() async {
     final CartController cartCon = Get.find<CartController>();
     CartDataModel model = CartDataModel.fromJson(demoJson /*response*/);
@@ -385,5 +410,14 @@ class CartRepository {
     final CartStockController stockCon = Get.find<CartStockController>();
     GetStockModel model = GetStockModel.fromJson(stockList /*response*/);
     stockCon.stockList.value = model.stockModel?.stocks ?? [];
+  }
+
+  /// ***********************************************************************************
+  ///                                     GET PRODUCT DETAIL
+  /// **********************************************************************************
+  static Future<void> getProductDetailAPI({RxBool? isLoader}) async {
+    final DialogController dialogCon = Get.find<DialogController>();
+    GetProductDetailModel model = GetProductDetailModel.fromJson(productDetail /*response*/);
+    dialogCon.cartProductDetailList.value = model.data?.productDetail ?? [];
   }
 }

@@ -65,4 +65,5 @@ class AppRoutes {
   ///                                 CART PAGES
   /// ***********************************************************************************
   static const String cartStockScreen = '/cart-stock-screen';
+  static const String summaryScreen = '/summary-screen';
 }

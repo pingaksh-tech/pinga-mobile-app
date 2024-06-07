@@ -79,7 +79,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             )
           : leading,
-      backgroundColor: backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: backgroundColor ?? Theme.of(context).colorScheme.surface,
       title: GestureDetector(
         onTap: titleOnTap,
         child: child ??
