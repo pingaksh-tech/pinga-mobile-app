@@ -80,6 +80,7 @@ class AppAssets {
   static const String deliveryIcon = '${svgPath}delivery_icon.svg';
   static const String quantityIcon = '${svgPath}quantity_icon.svg';
   static const String mrpIcon = '${svgPath}MRP_icon.svg';
+  static const String openBox = '${svgPath}open_box.svg';
 
   /// ***********************************************************************************
   ///                                   JSON

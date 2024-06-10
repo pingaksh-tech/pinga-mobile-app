@@ -29,9 +29,11 @@ class FilterController extends GetxController {
   ];
 
   final List<Map<String, dynamic>> ktList = [
+    {"title": "14KT (55)", "isChecked": false.obs},
     {"title": "22KT (30)", "isChecked": false.obs},
     {"title": "18KT (50)", "isChecked": false.obs},
     {"title": "24KT (55)", "isChecked": false.obs},
+    {"title": "950PT (32)", "isChecked": false.obs},
   ];
 
   final List<Map<String, dynamic>> deliveryList = [
