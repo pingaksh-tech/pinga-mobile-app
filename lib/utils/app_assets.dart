@@ -92,6 +92,7 @@ class AppAssets {
   static const String downArrow = "${svgPath}down_arrow.svg";
   static const String upArrow = "${svgPath}up_arrow.svg";
   static const String productReturn = "${svgPath}product_return.svg";
+  static const String openBox = '${svgPath}open_box.svg';
 
   /// ***********************************************************************************
   ///                                   JSON

@@ -101,7 +101,7 @@ enum DateRangeType { custom, today, yesterday, thisWeek, thisMonth, thisYear, la
 enum OrderStatus { all, pending, accepted, rejected, completed }
 
 ///* FILTER TYPES
-enum FilterType { range, available, gender, brand, kt, delivery, tag, collection, complexity, subComplexity, bestSeller, latestDesign }
+// enum FilterType { range, available, gender, diamond, kt, delivery, production, collection, complexity, subComplexity, bestSeller, latestDesign }
 
 ///* SIZE-COLOR SELECTOR BUTTON SIZE TYPE
 enum SizeColorSelectorButtonType { small, medium, large }
@@ -174,5 +174,72 @@ enum SelectableItemType {
 
   static SelectableItemType fromSlug(String slug) {
     return SelectableItemType.values.firstWhere((e) => e.slug == slug);
+  }
+}
+
+///* FILTER ITEM TYPE
+enum FilterItemType {
+  rang(
+    id: 1,
+    label: "Range",
+    slug: "range",
+  ),
+  available(
+    id: 2,
+    label: "Available",
+    slug: "available",
+  ),
+  gender(
+    id: 3,
+    label: "Gender",
+    slug: "gender",
+  ),
+  diamond(
+    id: 4,
+    label: "Diamond",
+    slug: "diamond",
+  ),
+  kt(
+    id: 5,
+    label: "KT",
+    slug: "kt",
+  ),
+  delivery(
+    id: 6,
+    label: "Delivery",
+    slug: "delivery",
+  ),
+  production(
+    id: 7,
+    label: "Production Name",
+    slug: "production name",
+  ),
+  /*  setting(
+    id: 8,
+    label: "Setting",
+    slug: "setting",
+  ), */
+  collection(
+    id: 9,
+    label: "Collection",
+    slug: "collection",
+  );
+
+  final int id;
+  final String label;
+  final String slug;
+
+  const FilterItemType({
+    required this.id,
+    required this.label,
+    required this.slug,
+  });
+
+  static FilterItemType fromId(int id) {
+    return FilterItemType.values.firstWhere((e) => e.id == id);
+  }
+
+  static FilterItemType fromSlug(String slug) {
+    return FilterItemType.values.firstWhere((e) => e.slug == slug);
   }
 }

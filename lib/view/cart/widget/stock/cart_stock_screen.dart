@@ -20,7 +20,7 @@ class CartStockScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: MyAppBar(
           centerTitle: false,
-          title: "Stock List for GRN22621L",
+          title: "Stock List for ${con.productName.value}",
           backgroundColor: Theme.of(context).colorScheme.surface,
           shadowColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.3),
         ),

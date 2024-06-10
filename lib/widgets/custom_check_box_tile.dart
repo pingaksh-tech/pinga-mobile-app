@@ -12,6 +12,7 @@ class CustomCheckboxTile extends StatelessWidget {
     this.titleStyle,
     required this.isSelected,
     this.borderWidth,
+    this.behavior,
   });
 
   final double? scale;
@@ -20,6 +21,7 @@ class CustomCheckboxTile extends StatelessWidget {
   final TextStyle? titleStyle;
   final RxBool isSelected;
   final double? borderWidth;
+  final HitTestBehavior? behavior;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,7 @@ class CustomCheckboxTile extends StatelessWidget {
 
     if (!isValEmpty(title)) {
       return GestureDetector(
-        behavior: HitTestBehavior.translucent,
+        behavior: behavior ?? HitTestBehavior.translucent,
         onTap: onTap,
         child: Row(
           children: [

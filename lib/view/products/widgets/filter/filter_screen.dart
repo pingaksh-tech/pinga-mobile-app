@@ -29,7 +29,7 @@ class FilterScreen extends StatelessWidget {
               flex: 1,
               child: ListView.separated(
                 physics: const RangeMaintainingScrollPhysics(),
-                itemCount: con.filterTypeList.length,
+                itemCount: FilterItemType.values.length,
                 separatorBuilder: (context, index) => Divider(
                   height: 0,
                   color: dividerColor,
@@ -37,12 +37,11 @@ class FilterScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return Obx(
                     () {
-                      bool isSelected = con.selectFilter.value == con.filterTypeList[index];
-                      int activeCount = con.getActiveFilterCount(con.filterTypeList[index]);
+                      bool isSelected = con.filterType.value == FilterItemType.values[index];
+                      // int activeCount = con.getActiveFilterCount(FilterItemType.values[index].label);
                       return GestureDetector(
                         onTap: () {
-                          con.filterCategoryType(index: index);
-                          con.selectFilter.value = con.filterTypeList[index];
+                          con.filterType.value = FilterItemType.values[index];
                         },
                         child: Container(
                           padding: EdgeInsets.symmetric(vertical: defaultPadding, horizontal: defaultPadding / 1.5),
@@ -52,12 +51,14 @@ class FilterScreen extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: Text(
-                                  con.filterTypeList[index],
+                                  FilterItemType.values[index].label,
                                   textAlign: TextAlign.start,
                                   style: AppTextStyle.titleStyle(context).copyWith(fontSize: 14.sp, fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400),
                                 ),
                               ),
-                              if (activeCount != 0)
+
+                              ///?Active filter count design
+                              /*   if (activeCount != 0)
                                 Container(
                                   height: 15.h,
                                   width: 15.h,
@@ -73,7 +74,7 @@ class FilterScreen extends StatelessWidget {
                                           fontSize: 10.sp,
                                         ),
                                   ),
-                                ),
+                                ), */
                             ],
                           ),
                         ),
@@ -87,18 +88,11 @@ class FilterScreen extends StatelessWidget {
             Expanded(
               flex: 2,
               child: switch (con.filterType.value) {
-                FilterType.range => Padding(
+                FilterItemType.rang => Padding(
                     padding: EdgeInsets.only(top: defaultPadding, left: defaultPadding, right: defaultPadding),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // AppTextField(
-                        //   title: "Item name",
-                        //   hintText: "Enter item name",
-                        //   controller: con.itemNameCon.value,
-                        //   contentPadding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding / 2),
-                        // ),
-                        // Divider(height: defaultPadding * 1.2),
                         Text(
                           "Metal WT",
                           style: Theme.of(context).textTheme.bodyLarge,
@@ -153,72 +147,43 @@ class FilterScreen extends StatelessWidget {
                   ),
 
                 //? Available Tab UI
-                FilterType.available => FilterListViewWidget(filterTabList: con.stockAvailableList),
+                FilterItemType.available => ListView.separated(
+                    physics: const RangeMaintainingScrollPhysics(),
+                    padding: EdgeInsets.symmetric(vertical: defaultPadding / 2),
+                    itemBuilder: (context, index) => CheckBoxWithTitleTile(
+                      title: con.availableList[index].title ?? "",
+                      isCheck: (con.availableList[index].isChecked?.value ?? true).obs,
+                    ),
+                    separatorBuilder: (context, index) => separateDivider,
+                    itemCount: con.availableList.length,
+                  ),
 
                 //? Gender Tab UI
-                FilterType.gender => FilterListViewWidget(filterTabList: con.genderList),
+                FilterItemType.gender => ListView.separated(
+                    physics: const RangeMaintainingScrollPhysics(),
+                    padding: EdgeInsets.symmetric(vertical: defaultPadding / 2),
+                    itemBuilder: (context, index) => CheckBoxWithTitleTile(
+                      title: con.genderList[index].title ?? "",
+                      isCheck: RxBool(con.genderList[index].isChecked ?? false),
+                    ),
+                    separatorBuilder: (context, index) => separateDivider,
+                    itemCount: con.genderList.length,
+                  ),
 
-                //? Brand Tab UI
-                FilterType.brand => FilterListViewWidget(filterTabList: con.brandList),
+                //? diamond Type Tab UI
+                FilterItemType.diamond => FilterListViewWidget(filterTabList: con.diamondList),
 
                 //? KT Tab UI
-                FilterType.kt => FilterListViewWidget(filterTabList: con.ktList),
+                FilterItemType.kt => FilterListViewWidget(filterTabList: con.ktList),
+
                 //? Delivery Tab UI
-                FilterType.delivery => FilterListViewWidget(filterTabList: con.deliveryList),
+                FilterItemType.delivery => FilterListViewWidget(filterTabList: con.deliveryList),
+
                 //? Tag Tab UI
-                FilterType.tag => FilterListViewWidget(filterTabList: con.tagList),
+                FilterItemType.production => FilterListViewWidget(filterTabList: con.productionNameList),
+
                 //? Collection Tab UI
-                FilterType.collection => FilterListViewWidget(filterTabList: con.collectionList),
-                //? Complexity Tab UI
-                FilterType.complexity => FilterListViewWidget(filterTabList: con.complexityList),
-                //? SubComplexity Tab UI
-                FilterType.subComplexity => FilterListViewWidget(filterTabList: con.subComplexityList),
-
-                //? BestSeller Tab UI
-                FilterType.bestSeller => ListView.separated(
-                    itemCount: con.bestSellerList.length,
-                    itemBuilder: (context, index) => Obx(
-                      () => CheckBoxWithTitleTile(
-                        isMultiSelection: false,
-                        onChanged: (_) {
-                          con.selectSeller.value = con.bestSellerList[index];
-                        },
-                        onTap: () {
-                          con.selectSeller.value = con.bestSellerList[index];
-                        },
-                        isCheck: (con.selectSeller.value == con.bestSellerList[index]).obs,
-                        title: con.bestSellerList[index],
-                      ),
-                    ),
-                    separatorBuilder: (context, index) => Divider(
-                      height: defaultPadding / 2,
-                      indent: defaultPadding,
-                      endIndent: defaultPadding,
-                    ),
-                  ),
-
-                //? Latest Design Tab UI
-                FilterType.latestDesign => ListView.separated(
-                    itemCount: con.latestDesignList.length,
-                    itemBuilder: (context, index) => Obx(
-                      () => CheckBoxWithTitleTile(
-                        isMultiSelection: false,
-                        onChanged: (_) {
-                          con.selectLatestDesign.value = con.latestDesignList[index];
-                        },
-                        onTap: () {
-                          con.selectLatestDesign.value = con.latestDesignList[index];
-                        },
-                        isCheck: (con.selectLatestDesign.value == con.latestDesignList[index]).obs,
-                        title: con.latestDesignList[index],
-                      ),
-                    ),
-                    separatorBuilder: (context, index) => Divider(
-                      height: defaultPadding / 2,
-                      indent: defaultPadding,
-                      endIndent: defaultPadding,
-                    ),
-                  ),
+                FilterItemType.collection => FilterListViewWidget(filterTabList: con.collectionList)
               },
             ),
           ],
@@ -232,7 +197,7 @@ class FilterScreen extends StatelessWidget {
                   height: 30.h,
                   title: "Clear All",
                   buttonType: ButtonType.outline,
-                  onPressed: () => con.clearAllFilters(),
+                  onPressed: () {},
                 ),
               ),
               defaultPadding.horizontalSpace,
@@ -249,4 +214,6 @@ class FilterScreen extends StatelessWidget {
       ),
     );
   }
+
+  Divider get separateDivider => Divider(height: defaultPadding / 2, indent: defaultPadding, endIndent: defaultPadding);
 }

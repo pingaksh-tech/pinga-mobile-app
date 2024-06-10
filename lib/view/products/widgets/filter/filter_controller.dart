@@ -1,6 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
+import '../../../../data/model/filter/gender_model.dart';
+import '../../../../data/model/filter/stock_available_model.dart';
+import '../../../../data/repositories/filter/filter_repository.dart';
 import '../../../../exports.dart';
 
 class FilterController extends GetxController {
@@ -8,94 +11,29 @@ class FilterController extends GetxController {
   RxDouble maxMetalWt = 12.0.obs;
   RxDouble minDiamondWt = 0.0.obs;
   RxDouble maxDiamondWt = 50.0.obs;
-
   RxString selectSeller = "".obs;
   RxString selectLatestDesign = "".obs;
 
   Rx<TextEditingController> itemNameCon = TextEditingController().obs;
-
   RxString selectFilter = "Range".obs;
-  Rx<FilterType> filterType = FilterType.range.obs;
+  Rx<FilterItemType> filterType = FilterItemType.rang.obs;
 
-  RxList<String> filterTypeList = [
-    "Range",
-    "Available",
-    "Gender",
-    "Brand",
-    "KT",
-    "Delivery",
-    "Tag",
-    "Collection",
-    "Complexity",
-    "Sub Complexity",
-    "Best Sellers",
-    "Latest Design",
-  ].obs;
+  RxList<StockAvailableList> availableList = <StockAvailableList>[].obs;
+  RxList<Product> genderList = <Product>[].obs;
 
-  void filterCategoryType({required int index}) {
-    switch (index) {
-      case 0:
-        filterType.value = FilterType.range;
-        break;
-      case 1:
-        filterType.value = FilterType.available;
-        break;
-      case 2:
-        filterType.value = FilterType.gender;
-        break;
-      case 3:
-        filterType.value = FilterType.brand;
-        break;
-      case 4:
-        filterType.value = FilterType.kt;
-        break;
-      case 5:
-        filterType.value = FilterType.delivery;
-        break;
-      case 6:
-        filterType.value = FilterType.tag;
-        break;
-      case 7:
-        filterType.value = FilterType.collection;
-        break;
-      case 8:
-        filterType.value = FilterType.complexity;
-        break;
-      case 9:
-        filterType.value = FilterType.subComplexity;
-        break;
-      case 10:
-        filterType.value = FilterType.bestSeller;
-        break;
-      case 11:
-        filterType.value = FilterType.latestDesign;
-        break;
-    }
-  }
-
-  final List<Map<String, dynamic>> brandList = [
-    {"title": "OroKraft", "isChecked": false.obs},
-    {"title": "Rare Solitaire", "isChecked": false.obs},
-    {"title": "Platinum", "isChecked": false.obs},
-    {"title": "Rang Tarang", "isChecked": false.obs},
-  ];
-
-  final List<Map<String, dynamic>> stockAvailableList = [
-    {"title": "In Stock Available Only", "isChecked": false.obs},
-    {"title": "Family Products Only", "isChecked": false.obs},
-    {"title": "Wear It Items Only", "isChecked": false.obs},
-    {"title": "Try On Items Only", "isChecked": false.obs},
-  ];
-
-  final List<Map<String, dynamic>> genderList = [
-    {"title": "Male", "isChecked": false.obs},
-    {"title": "Female", "isChecked": false.obs},
+  final List<Map<String, dynamic>> diamondList = [
+    {"title": "VVS-EF", "isChecked": false.obs},
+    {"title": "VS-SI-GH", "isChecked": false.obs},
+    {"title": "VS-SI-HI", "isChecked": false.obs},
+    {"title": "SI-HI", "isChecked": false.obs},
   ];
 
   final List<Map<String, dynamic>> ktList = [
+    {"title": "14KT (55)", "isChecked": false.obs},
     {"title": "22KT (30)", "isChecked": false.obs},
     {"title": "18KT (50)", "isChecked": false.obs},
     {"title": "24KT (55)", "isChecked": false.obs},
+    {"title": "950PT (32)", "isChecked": false.obs},
   ];
 
   final List<Map<String, dynamic>> deliveryList = [
@@ -103,22 +41,13 @@ class FilterController extends GetxController {
     {"title": "56 Hours", "isChecked": false.obs},
     {"title": "15 Days", "isChecked": false.obs},
   ];
-  final List<Map<String, dynamic>> tagList = [
+  final List<Map<String, dynamic>> productionNameList = [
     {"title": "Anantam", "isChecked": false.obs},
     {"title": "Celebration", "isChecked": false.obs},
     {"title": "Tvamev", "isChecked": false.obs},
     {"title": "Rista", "isChecked": false.obs},
     {"title": "Shine Forever", "isChecked": false.obs},
     {"title": "Ghoomar", "isChecked": false.obs},
-  ];
-
-  final List<Map<String, dynamic>> complexityList = [
-    {"title": "Band (3)", "isChecked": false.obs},
-    {"title": "Broad (4)", "isChecked": false.obs},
-    {"title": "Classic (1)", "isChecked": false.obs},
-    {"title": "Dual Shank (1)", "isChecked": false.obs},
-    {"title": "Regular (6)", "isChecked": false.obs},
-    {"title": "Split Shank (5)", "isChecked": false.obs},
   ];
 
   final List<Map<String, dynamic>> collectionList = [
@@ -131,41 +60,12 @@ class FilterController extends GetxController {
     {"title": "Crafting The Sparkle", "isChecked": false.obs},
   ];
 
-  final List<Map<String, dynamic>> subComplexityList = [
-    {"title": "Beads (3)", "isChecked": false.obs},
-    {"title": "Cluster (4)", "isChecked": false.obs},
-    {"title": "Promise (1)", "isChecked": false.obs},
-    {"title": "Hero (3)", "isChecked": false.obs},
-    {"title": "Fancy (2)", "isChecked": false.obs},
-    {"title": "Floral (1)", "isChecked": false.obs},
-    {"title": "Cut Out (2)", "isChecked": false.obs},
-  ];
-
-  final RxList<String> bestSellerList = [
-    "Sold in your Store",
-    "Sold in your City",
-    "Sold in your State",
-    "Sold in all India",
-  ].obs;
-
-  final RxList<String> latestDesignList = [
-    "Last 30 days",
-    "Last 90 days",
-    "Last 180 days",
-  ].obs;
-
 //? Clear All Filter
   void clearAllFilters() {
     minMetalWt.value = 0.0;
     maxMetalWt.value = 12.0;
 
-    for (var available in stockAvailableList) {
-      available["isChecked"].textValue = false;
-    }
-    for (var gender in genderList) {
-      gender["isChecked"].textValue = false;
-    }
-    for (var brand in brandList) {
+    for (var brand in diamondList) {
       brand["isChecked"].textValue = false;
     }
     for (var kt in ktList) {
@@ -174,17 +74,11 @@ class FilterController extends GetxController {
     for (var delivery in deliveryList) {
       delivery["isChecked"].textValue = false;
     }
-    for (var tag in tagList) {
+    for (var tag in productionNameList) {
       tag["isChecked"].textValue = false;
     }
     for (var collection in collectionList) {
       collection["isChecked"].textValue = false;
-    }
-    for (var complexity in complexityList) {
-      complexity["isChecked"].textValue = false;
-    }
-    for (var subComplexity in subComplexityList) {
-      subComplexity["isChecked"].textValue = false;
     }
 
     selectSeller.value = "";
@@ -210,28 +104,26 @@ class FilterController extends GetxController {
         return rangeCount();
       case "Gender":
         return genderList.where((gender) => false /*gender["isChecked"].textValue*/).length;
-      case "Brand":
-        return brandList.where((brand) => false /*brand["isChecked"].textValue*/).length;
-      case "Available":
-        return stockAvailableList.where((item) => false /*item["isChecked"].textValue*/).length;
+      case "Diamond":
+        return diamondList.where((brand) => false /*brand["isChecked"].textValue*/).length;
+
       case "KT":
         return ktList.where((kt) => false /*kt["isChecked"].textValue*/).length;
       case "Delivery":
         return deliveryList.where((delivery) => false /*delivery["isChecked"].textValue*/).length;
-      case "Tag":
-        return tagList.where((tag) => false /*tag["isChecked"].textValue*/).length;
+      case "Production Name":
+        return productionNameList.where((tag) => false /*tag["isChecked"].textValue*/).length;
       case "Collection":
         return collectionList.where((collection) => false /*collection["isChecked"].textValue*/).length;
-      case "Complexity":
-        return complexityList.where((complexity) => false /*complexity["isChecked"].textValue*/).length;
-      case "Sub Complexity":
-        return subComplexityList.where((subComplexity) => false /*subComplexity["isChecked"].textValue*/).length;
-      case "Best Sellers":
-        return selectSeller.value.isEmpty ? 0 : 1;
-      case "Latest Design":
-        return selectLatestDesign.value.isEmpty ? 0 : 1;
       default:
         return 0;
     }
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    FilterRepository.stockAvailableList();
+    FilterRepository.genderListAPI();
   }
 }

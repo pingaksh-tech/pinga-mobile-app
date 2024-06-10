@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import '../../data/repositories/orders/orders_repository.dart';
+
 import '../../exports.dart';
-import '../../packages/cached_network_image/cached_network_image.dart';
+import '../../packages/marquee_widget/marquee_widget.dart';
 import '../../res/empty_element.dart';
 import 'components/order_simmer_tile.dart';
 import 'orders_controller.dart';
@@ -19,7 +19,7 @@ class OrdersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       // appBar: MyAppBar(
       //   title: "My orders",
       //   actions: [
@@ -30,7 +30,7 @@ class OrdersScreen extends StatelessWidget {
         () => SafeArea(
           child: Column(
             children: [
-              Align(
+              /*   Align(
                 alignment: Alignment.centerLeft,
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -76,7 +76,8 @@ class OrdersScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
+              ), */
+              SizedBox(height: defaultPadding),
               con.isLoading.isFalse
                   ? (con.orderProductList.isNotEmpty
                       ? Expanded(
@@ -85,114 +86,108 @@ class OrdersScreen extends StatelessWidget {
                             padding: EdgeInsets.all(defaultPadding / 1.5).copyWith(top: defaultPadding / 2),
                             separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
                             itemBuilder: (context, index) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Order ID : FN84561435851",
-                                    style: Theme.of(context).textTheme.titleMedium?.copyWith(/*fontWeight: FontWeight.w600*/ fontSize: 12.sp, color: AppColors.subText),
+                              return Container(
+                                padding: EdgeInsets.all(defaultPadding / 1.5).copyWith(top: 0, right: 0),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.surface,
+                                  borderRadius: BorderRadius.circular(
+                                    defaultRadius,
                                   ),
-                                  (defaultPadding / 10).verticalSpace,
-                                  GestureDetector(
-                                    onTap: () {
-                                      // Get.toNamed(
-                                      //   AppRoutes.orderProductDetailScreen,
-                                      //   arguments: {
-                                      //     "productDetail": con.orderProductList[index],
-                                      //     "isOrder": true,
-                                      //   },
-                                      // );
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.all(defaultPadding / 2),
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context).colorScheme.surface /*Colors.red*/,
-                                        borderRadius: BorderRadius.circular(defaultRadius),
-                                        boxShadow: [
-                                          BoxShadow(color: Theme.of(context).iconTheme.color!.withOpacity(0.05), blurRadius: 10, spreadRadius: 1),
-                                        ],
-                                      ),
-                                      clipBehavior: Clip.antiAlias,
-                                      child: Column(
+                                  boxShadow: defaultShadowAllSide,
+                                ),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    // Get.toNamed(
+                                    //   AppRoutes.orderProductDetailScreen,
+                                    //   arguments: {
+                                    //     "productDetail": con.orderProductList[index],
+                                    //     "isOrder": true,
+                                    //   },
+                                    // );
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
                                         children: [
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              con.orderProductList[index].products?[0].product?.productImages != null && con.orderProductList[index].products![0].product!.productImages!.isNotEmpty
-                                                  ? AppNetworkImage(
-                                                      height: imageWidth,
-                                                      width: imageWidth,
-                                                      fit: BoxFit.cover,
-                                                      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                                                      borderRadius: BorderRadius.circular(defaultRadius),
-                                                      imageUrl: "https://i.pinimg.com/564x/0c/10/de/0c10defc33ccee0ec274d5cd3c761273.jpg" /* con.orderProductList[index].products?[0].product?.productImages?[0].image ?? ""*/,
-                                                    )
-                                                  : SizedBox(height: imageWidth, width: imageWidth),
-                                              SizedBox(width: defaultPadding / 2),
-                                              Expanded(
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    orderDetailsKeyValuePairWidget(context, key: "Order No", value: "#${con.orderProductList[index].id.toString()}"),
-                                                    orderDetailsKeyValuePairWidget(context, key: "Quantity", value: con.orderProductList[index].products?.length.toString() ?? ""),
-                                                    // const SizedBox(height: 3),
-                                                    // Text(
-                                                    //   con.orderProductList[index].products?[0].title ?? "",
-                                                    //   maxLines: 1,
-                                                    //   overflow: TextOverflow.ellipsis,
-                                                    //   style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600, fontSize: 13.sp),
-                                                    // ),
-                                                    5.verticalSpace,
-                                                    Text(
-                                                      UiUtils.amountFormat(con.orderProductList[index].totalAmount.toString()),
-                                                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700, fontSize: 13.sp),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
+                                          SvgPicture.asset(
+                                            AppAssets.openBox,
+                                            // ignore: deprecated_member_use
+                                            color: Theme.of(context).primaryColor,
+                                            height: 25.sp,
                                           ),
-                                          const Divider(),
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          (defaultPadding / 2).horizontalSpace,
+                                          Column(
                                             children: [
-                                              RichText(
-                                                text: TextSpan(
-                                                  children: [
-                                                    TextSpan(
-                                                      text: "Order On: ",
-                                                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600, fontSize: 12.sp),
-                                                    ),
-                                                    TextSpan(
-                                                      text: DateFormat('MM/dd/y h:mm a').format(con.orderProductList[index].products?[0].product?.createdAt ?? DateTime.now()),
-                                                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(.7)),
-                                                    ),
-                                                  ],
-                                                ),
+                                              Text(
+                                                "71205484114-1/1",
+                                                style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 14.sp, fontWeight: FontWeight.w500, height: 0),
                                               ),
-                                              Container(
-                                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                                decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(defaultRadius / 2),
-                                                  color: con.orderProductList[index].status?.toLowerCase() == OrderStatus.rejected.name ? Colors.red.withOpacity(.1) : (con.orderProductList[index].status?.toLowerCase() == OrderStatus.pending.name ? Colors.orangeAccent.withOpacity(.1) : Colors.green.withOpacity(.1)),
-                                                ),
-                                                child: Text(
-                                                  con.orderProductList[index].status?.toUpperCase() ?? "",
-                                                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                                        fontWeight: FontWeight.w600,
-                                                        fontSize: 12,
-                                                        color: con.orderProductList[index].status?.toLowerCase() == OrderStatus.rejected.name ? Colors.red.withOpacity(.7) : (con.orderProductList[index].status?.toLowerCase() == OrderStatus.pending.name ? Colors.orange.withOpacity(.8) : Colors.green),
-                                                      ),
-                                                ),
-                                              ),
+                                              Text(
+                                                "05/10/2024 02:52:10",
+                                                style: AppTextStyle.subtitleStyle(context).copyWith(fontSize: 12.sp),
+                                              )
                                             ],
+                                          )
+                                        ],
+                                      ),
+                                      const Divider(),
+                                      // SizedBox(width: defaultPadding / 2),
+                                      orderDetailsKeyValuePairWidget1(
+                                        context,
+                                        title: "Name",
+                                        subtitleText: "Hari Ambe Jewellers",
+                                        titleFlex: 2,
+                                        subTitleFlex: 7,
+                                      ),
+                                      SizedBox(height: defaultPadding / 2),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: orderDetailsKeyValuePairWidget1(
+                                              context,
+                                              title: "EMR ID",
+                                              subtitleText: "0/24/PNK/39536",
+                                              subTitleFlex: 2,
+                                              titleFlex: 2,
+                                            ),
+                                          ),
+                                          defaultPadding.horizontalSpace,
+                                          Expanded(
+                                            child: orderDetailsKeyValuePairWidget1(
+                                              context,
+                                              title: "Quantity",
+                                              subtitleText: "1.0",
+                                            ),
                                           ),
                                         ],
                                       ),
-                                    ),
+                                      SizedBox(height: defaultPadding / 2),
+
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: orderDetailsKeyValuePairWidget1(
+                                              context,
+                                              title: "Total DP",
+                                              subtitleText: "21632.2",
+                                              subTitleFlex: 2,
+                                              titleFlex: 2,
+                                            ),
+                                          ),
+                                          defaultPadding.horizontalSpace,
+                                          Expanded(
+                                            child: orderDetailsKeyValuePairWidget1(
+                                              context,
+                                              title: "MRP",
+                                              subtitleText: "257100.0",
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ],
                                   ),
-                                ],
+                                ),
                               );
                             },
                             itemCount: con.orderProductList.length,
@@ -220,25 +215,45 @@ class OrdersScreen extends StatelessWidget {
     );
   }
 
-  Widget orderDetailsKeyValuePairWidget(
+  Widget orderDetailsKeyValuePairWidget1(
     BuildContext context, {
-    required String key,
-    required String value,
+    required String title,
+    required String subtitleText,
+    int? titleFlex,
+    int? subTitleFlex,
   }) {
-    return RichText(
-      text: TextSpan(
-        children: [
-          TextSpan(
-            text: "$key : ",
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600, fontSize: 12.sp),
+    return Row(
+      children: [
+        Expanded(
+          flex: titleFlex ?? 0,
+          child: Text(
+            title,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontSize: 14.sp,
+                  color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(.7),
+                ),
           ),
-          TextSpan(
-            // text: "#${con.orderProductList[index].products?[0].id?.substring(14)}",
-            text: value,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(.7)),
+        ),
+        Text(
+          ":",
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600,
+                color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(.7),
+              ),
+        ).paddingOnly(right: defaultPadding / 2),
+        Expanded(
+          flex: subTitleFlex ?? 0,
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: MarqueeWidget(
+                child: Text(
+              subtitleText,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600, fontSize: 14.sp),
+            )),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
