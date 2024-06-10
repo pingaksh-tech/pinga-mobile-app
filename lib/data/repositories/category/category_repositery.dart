@@ -35,7 +35,7 @@ class CategoryRepository {
         },
         {
           "catName": "Necklace",
-          "slug": "neck_less",
+          "slug": "necklace",
           "productAvailable": "Available 3598",
           "image": "https://media.istockphoto.com/id/176026236/photo/diamond-necklace-and-earring-set.webp?b=1&s=170667a&w=0&k=20&c=XQODMknL5tfcXxYWz38tUpf0WyGghxIUNu5RSat0pSQ=",
         },
