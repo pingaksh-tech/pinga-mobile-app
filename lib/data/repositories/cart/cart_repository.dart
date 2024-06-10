@@ -271,7 +271,7 @@ class CartRepository {
     "message": "Stock fetched successfully",
     "data": {
       "stocks": [
-        {"id": "stock1", "value": "Pear", "stock": "Diamond Type", "image": AppAssets.diamondIcon},
+        {"id": "stock1", "value": "VVS-EF", "stock": "Diamond", "image": AppAssets.diamondIcon},
         {"id": "stock2", "value": "0.00 ct", "stock": "Diamond Wt", "image": AppAssets.diamondWeight},
         {"id": "stock3", "value": "2.86 gm", "stock": "Metal Wt", "image": AppAssets.metalWeight},
         {"id": "stock4", "value": "Yellow + White", "stock": "Color", "image": AppAssets.colorIcon},

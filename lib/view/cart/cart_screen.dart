@@ -43,6 +43,7 @@ class CartScreen extends StatelessWidget {
                         ),
                         child: CustomCheckboxTile(
                           title: "Select all items",
+                          behavior: HitTestBehavior.deferToChild,
                           isSelected: RxBool(con.selectedList.length == con.productsList.length),
                           titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
                                 fontWeight: FontWeight.w500,
@@ -50,12 +51,13 @@ class CartScreen extends StatelessWidget {
                           scale: 1.1,
                           borderWidth: 1.6,
                           onChanged: (_) {
-                            if (con.selectedList.isEmpty || con.selectedList.length != con.productsList.length) {
-                              con.selectedList.addAllIf(con.selectedList.isEmpty, con.productsList);
+                            if (con.selectedList.length != con.productsList.length) {
+                              con.selectedList.addAll(con.productsList.where((item) => !con.selectedList.contains(item)));
                             } else {
                               con.selectedList.clear();
                             }
                             con.calculateSelectedItemPrice();
+                            con.calculateSelectedQue();
                           },
                         ).paddingOnly(left: defaultPadding),
                       ),
@@ -65,31 +67,45 @@ class CartScreen extends StatelessWidget {
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
-                        itemBuilder: (context, index) => ProductTile(
-                          productTileType: ProductTileType.cartTile,
-                          categorySlug: "ring",
-                          isCartSelected: RxBool(con.selectedList.contains(con.productsList[index])),
-                          imageUrl: con.productsList[index].product?.productImages?[0].image ?? "",
-                          productName: (con.productsList[index].product?.title ?? ""),
-                          productPrice: con.productsList[index].product?.price.toString() ?? "",
-                          brandName: con.productsList[index].product?.brandName ?? "Unknown",
-                          productQuantity: con.productsList[index].quantity,
-                          deleteOnTap: () => con.removeProductFromCart(context, index: index),
-                          onChanged: (_) {
-                            if (!con.selectedList.contains(con.productsList[index])) {
-                              con.selectedList.add(con.productsList[index]);
-                            } else {
-                              con.selectedList.remove(con.productsList[index]);
-                            }
-                            con.calculateSelectedItemPrice();
-                          },
-                          onTap: () {
-                            Get.toNamed(
-                              AppRoutes.productDetailsScreen,
-                              arguments: {},
-                            );
-                          },
-                        ),
+                        itemBuilder: (context, index) {
+                          return ProductTile(
+                            item: con.productsList[index],
+                            productTileType: ProductTileType.cartTile,
+                            categorySlug: "ring",
+                            isCartSelected: RxBool(con.selectedList.contains(con.productsList[index])),
+                            imageUrl: con.productsList[index].product?.productImages?[0].image ?? "",
+                            productName: (con.productsList[index].product?.title ?? ""),
+                            productPrice: con.productsList[index].product?.price.toString() ?? "",
+                            brandName: con.productsList[index].product?.brandName ?? "Unknown",
+                            productQuantity: con.productsList[index].quantity,
+                            deleteOnTap: () {
+                              if (con.selectedList.contains(con.productsList[index])) {
+                                con.selectedList.remove(con.productsList[index]);
+                                con.calculateSelectedQue();
+                              }
+                              con.productsList.removeAt(index);
+                              con.calculateSelectedItemPrice();
+                              con.calculateSelectedQue();
+                              Get.back();
+                            },
+                            onChanged: (_) {
+                              if (!con.selectedList.contains(con.productsList[index])) {
+                                con.selectedList.add(con.productsList[index]);
+                                con.calculateSelectedQue();
+                              } else {
+                                con.selectedList.remove(con.productsList[index]);
+                              }
+                              con.calculateSelectedItemPrice();
+                              con.calculateSelectedQue();
+                            },
+                            onTap: () {
+                              Get.toNamed(
+                                AppRoutes.productDetailsScreen,
+                                arguments: {},
+                              );
+                            },
+                          );
+                        },
                       )
                     ],
                   )
@@ -126,17 +142,17 @@ class CartScreen extends StatelessWidget {
                               padding: EdgeInsets.symmetric(horizontal: defaultPadding),
                               child: Column(
                                 children: [
-                                  paymentSummaryItem(
+                                  cartSummaryItem(
                                     context,
                                     title: "Cart items",
                                     price: "${con.selectedList.length}/${con.productsList.length}",
                                   ),
-                                  paymentSummaryItem(
+                                  cartSummaryItem(
                                     context,
                                     title: "Cart quantity",
-                                    price: "0/${con.totalQuantity.value}",
+                                    price: "${con.selectedQuantity.value}/${con.totalQuantity.value}",
                                   ),
-                                  paymentSummaryItem(
+                                  cartSummaryItem(
                                     context,
                                     title: "Cart amount",
                                     price: "${UiUtils.amountFormat(con.selectedPrice.value, decimalDigits: 0)} / ${UiUtils.amountFormat(con.totalPrice.value, decimalDigits: 0)}",
@@ -169,9 +185,24 @@ class CartScreen extends StatelessWidget {
                                           height: 30.h,
                                           flexibleWidth: true,
                                           title: "Check - out",
+                                          disableButton: con.selectedList.isEmpty,
                                           titleStyle: AppTextStyle.appButtonStyle(context).copyWith(
                                             color: con.selectedList.isEmpty ? null : Theme.of(context).colorScheme.surface,
                                           ),
+                                          onPressed: () {
+                                            AppDialogs.cartDialog(
+                                              context,
+                                              contentText: "Your service is temporary disable,Please contact to back office!",
+                                              dialogTitle: "Alert",
+                                              buttonTitle2: "OK",
+                                              titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                                    fontSize: 17.sp,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Theme.of(context).primaryColor,
+                                                  ),
+                                              onPressed: () => Get.back(),
+                                            );
+                                          },
                                         ),
                                       ),
                                       Expanded(
@@ -180,6 +211,7 @@ class CartScreen extends StatelessWidget {
                                           height: 30.h,
                                           flexibleWidth: true,
                                           title: "Delete",
+                                          disableButton: con.selectedList.isEmpty,
                                           titleStyle: AppTextStyle.appButtonStyle(context).copyWith(
                                             color: con.selectedList.isEmpty ? null : Theme.of(context).colorScheme.surface,
                                           ),
@@ -187,9 +219,11 @@ class CartScreen extends StatelessWidget {
                                             AppDialogs.cartDialog(
                                               context,
                                               contentText: "Are you sure\nYou want to remove this item from the cart?",
+                                              buttonTitle: "NO",
                                               onPressed: () {
                                                 Get.back();
-                                                con.productsList.clear();
+                                                con.productsList.removeWhere((item) => con.selectedList.contains(item));
+                                                con.selectedList.clear();
                                               },
                                             );
                                           },
@@ -211,7 +245,7 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Widget paymentSummaryItem(BuildContext context, {required String title, required String price}) {
+  Widget cartSummaryItem(BuildContext context, {required String title, required String price}) {
     return Container(
       padding: EdgeInsets.only(bottom: defaultPadding / 2),
       child: Row(
@@ -227,24 +261,6 @@ class CartScreen extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Widget dialogText(
-    BuildContext context, {
-    required String title,
-    required void Function()? onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Text(
-        title,
-        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w500,
-              fontSize: 15.sp,
-              color: Theme.of(context).primaryColor,
-            ),
-      ).paddingOnly(bottom: defaultPadding),
     );
   }
 }

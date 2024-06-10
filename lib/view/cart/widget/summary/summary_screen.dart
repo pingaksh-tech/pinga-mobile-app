@@ -56,7 +56,7 @@ class SummaryScreen extends StatelessWidget {
                           physics: const RangeMaintainingScrollPhysics(),
                           padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding),
                           shrinkWrap: true,
-                          itemCount: con.summaryList.length,
+                          itemCount: 3,
                           itemBuilder: (context, index) => Column(
                             children: [
                               summaryTile(
@@ -121,14 +121,14 @@ class SummaryScreen extends StatelessWidget {
                           physics: const RangeMaintainingScrollPhysics(),
                           padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding),
                           shrinkWrap: true,
-                          itemCount: con.summaryList.length,
+                          itemCount: 3,
                           itemBuilder: (context, index) => Column(
                             children: [
                               summaryTile(
                                 context,
                                 image: AppAssets.diamondIcon,
-                                titleText: "Diamond Type",
-                                subtitleText: "Solitare",
+                                titleText: "Diamond",
+                                subtitleText: "VVS-EF",
                               ),
                               (defaultPadding / 4).verticalSpace,
                               summaryTile(

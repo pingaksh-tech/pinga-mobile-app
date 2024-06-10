@@ -3,11 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
+import '../data/model/cart/cart_model.dart';
 import '../data/model/predefined_model/predefined_model.dart';
 import '../exports.dart';
 import '../res/app_dialog.dart';
 import '../res/app_network_image.dart';
 import '../res/pop_up_menu_button.dart';
+import '../view/cart/cart_controller.dart';
 import 'custom_check_box_tile.dart';
 import 'plus_minus_title/plus_minus_tile.dart';
 import 'size_selector/size_selector_botton.dart';
@@ -27,6 +29,7 @@ class ProductTile extends StatefulWidget {
   final VoidCallback? cartDetailOnTap;
   final RxBool? isCartSelected;
   final void Function(bool?)? onChanged;
+  final CartItemModel? item;
 
   const ProductTile({
     super.key,
@@ -44,6 +47,7 @@ class ProductTile extends StatefulWidget {
     this.categorySlug,
     this.isCartSelected,
     this.onChanged,
+    this.item,
   });
 
   @override
@@ -544,173 +548,199 @@ class _ProductTileState extends State<ProductTile> {
         selectableItemType: SelectableItemType.stock,
         sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
         axisDirection: direction,
+        productName: widget.productName.obs,
       );
 
   Widget productCartTile() {
-    return GestureDetector(
-      onTap: widget.onTap,
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal: defaultPadding),
-        padding: EdgeInsets.symmetric(horizontal: defaultPadding / 1.2, vertical: defaultPadding / 1.2),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(defaultRadius),
-          boxShadow: defaultShadowAllSide,
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              clipBehavior: Clip.none,
-              alignment: Alignment.topLeft,
-              children: [
-                widget.imageUrl.isNotEmpty
-                    ? AppNetworkImage(
-                        height: Get.width * 0.25,
-                        width: Get.width * 0.25,
-                        fit: BoxFit.cover,
-                        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                        borderRadius: BorderRadius.circular(defaultRadius),
-                        imageUrl: widget.imageUrl,
-                        boxShadow: [
-                          BoxShadow(
-                            blurRadius: 2,
-                            spreadRadius: 0.5,
-                            color: AppColors.lightGrey.withOpacity(0.5),
-                          ),
-                        ],
-                      )
-                    : SizedBox(
-                        width: Get.width * 0.25,
-                        height: Get.width * 0.25,
-                      ),
-                if (widget.isCartSelected != null)
-                  Positioned(
-                    top: -12.w,
-                    left: -12.w,
-                    child: CustomCheckboxTile(
-                      isSelected: widget.isCartSelected!,
-                      onChanged: widget.onChanged,
-                    ),
-                  ),
-              ],
+    return Obx(
+      () {
+        final CartController cartCon = Get.find<CartController>();
+        return GestureDetector(
+          onTap: widget.onTap,
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: defaultPadding),
+            padding: EdgeInsets.symmetric(horizontal: defaultPadding / 1.2, vertical: defaultPadding / 1.2),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: BorderRadius.circular(defaultRadius),
+              boxShadow: defaultShadowAllSide,
             ),
-            (defaultPadding / 2).horizontalSpace,
-            Expanded(
-              child: Obx(
-                () => Column(
+            child: Column(
+              children: [
+                Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
+                    Stack(
+                      clipBehavior: Clip.none,
+                      alignment: Alignment.topLeft,
                       children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                widget.productName,
-                                maxLines: 2,
-                                style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500, fontSize: 13.sp),
+                        widget.imageUrl.isNotEmpty
+                            ? AppNetworkImage(
+                                height: Get.width * 0.2,
+                                width: Get.width * 0.2,
+                                fit: BoxFit.cover,
+                                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                                borderRadius: BorderRadius.circular(defaultRadius),
+                                imageUrl: widget.imageUrl,
+                                boxShadow: [
+                                  BoxShadow(
+                                    blurRadius: 2,
+                                    spreadRadius: 0.5,
+                                    color: AppColors.lightGrey.withOpacity(0.5),
+                                  ),
+                                ],
+                              )
+                            : SizedBox(
+                                width: Get.width * 0.25,
+                                height: Get.width * 0.25,
                               ),
-                              Text(
-                                "Brand: ${widget.brandName}",
-                                style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w400),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(right: defaultPadding, top: defaultPadding / 5),
-                                child: Text(
-                                  UiUtils.amountFormat(widget.productPrice),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(Get.context!).textTheme.titleMedium?.copyWith(fontSize: 16.sp, fontWeight: FontWeight.w700),
-                                ),
-                              ),
-                            ],
+                        if (widget.isCartSelected != null)
+                          Positioned(
+                            top: -12.w,
+                            left: -12.w,
+                            child: CustomCheckboxTile(
+                              isSelected: widget.isCartSelected!,
+                              onChanged: widget.onChanged,
+                            ),
                           ),
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                      ],
+                    ),
+                    (defaultPadding / 2).horizontalSpace,
+                    Expanded(
+                      child: Obx(
+                        () => Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
                               children: [
-                                AppIconButton(
-                                  onPressed: () {
-                                    AppDialogs.cartProductDetailDialog(context, productName: widget.productName);
-                                  },
-                                  size: 30.sp,
-                                  icon: SvgPicture.asset(
-                                    AppAssets.boxIcon,
-                                    colorFilter: ColorFilter.mode(
-                                      Theme.of(context).primaryColor,
-                                      BlendMode.srcIn,
-                                    ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        widget.productName,
+                                        maxLines: 2,
+                                        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500, fontSize: 13.sp),
+                                      ),
+                                      Text(
+                                        "Brand: ${widget.brandName}",
+                                        style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w400),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(right: defaultPadding, top: defaultPadding / 5),
+                                        child: Text(
+                                          UiUtils.amountFormat(widget.productPrice),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: Theme.of(Get.context!).textTheme.titleMedium?.copyWith(fontSize: 16.sp, fontWeight: FontWeight.w700),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                (defaultPadding / 3).horizontalSpace,
-                                AppIconButton(
-                                  onPressed: () {
-                                    AppDialogs.cartDialog(
-                                      context,
-                                      onPressed: widget.deleteOnTap,
-                                      contentText: "Are you sure\nYou want to remove this item from the cart?",
-                                    );
-                                  },
-                                  size: 30.sp,
-                                  icon: SvgPicture.asset(
-                                    AppAssets.deleteIcon,
-                                    height: 17.h,
-                                    colorFilter: ColorFilter.mode(
-                                      Theme.of(context).primaryColor,
-                                      BlendMode.srcIn,
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        AppIconButton(
+                                          onPressed: () {
+                                            AppDialogs.cartProductDetailDialog(context, productName: widget.productName);
+                                          },
+                                          size: 30.sp,
+                                          icon: SvgPicture.asset(
+                                            AppAssets.boxIcon,
+                                            colorFilter: ColorFilter.mode(
+                                              Theme.of(context).primaryColor,
+                                              BlendMode.srcIn,
+                                            ),
+                                          ),
+                                        ),
+                                        (defaultPadding / 3).horizontalSpace,
+                                        AppIconButton(
+                                          onPressed: () {
+                                            AppDialogs.cartDialog(
+                                              context,
+                                              onPressed: widget.deleteOnTap,
+                                              buttonTitle: "NO",
+                                              contentText: "Are you sure\nYou want to remove this item from the cart?",
+                                            );
+                                          },
+                                          size: 30.sp,
+                                          icon: SvgPicture.asset(
+                                            AppAssets.deleteIcon,
+                                            height: 17.h,
+                                            colorFilter: ColorFilter.mode(
+                                              Theme.of(context).primaryColor,
+                                              BlendMode.srcIn,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
+                                    (defaultPadding / 6).verticalSpace,
+                                    plusMinusTile(
+                                      context,
+                                      item: widget.item,
+                                      textValue: widget.productQuantity ?? RxInt(0),
+                                      onIncrement: (value) {
+                                        cartCon.incrementQuantity(widget.item ?? CartItemModel());
+                                      },
+                                      onDecrement: (value) {
+                                        cartCon.decrementQuantity(widget.item ?? CartItemModel());
+                                        widget.productQuantity?.value == 0
+                                            ? AppDialogs.cartDialog(
+                                                context,
+                                                buttonTitle: "NO",
+                                                onPressed: widget.deleteOnTap,
+                                                contentText: "Are you sure\nYou want to remove this item from the cart?",
+                                              )
+                                            : null;
+                                      },
+                                      size: 20,
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                            (defaultPadding / 6).verticalSpace,
-                            incrementDecrementTile(height: 20),
                           ],
                         ),
-                      ],
-                    ),
-                    (defaultPadding / 2).verticalSpace,
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      physics: const RangeMaintainingScrollPhysics(),
-                      child: Row(
-                        children: [
-                          sizeSelector(direction: Axis.vertical, isFlexible: true, categorySlug: widget.categorySlug ?? ''),
-                          (defaultPadding / 4).horizontalSpace,
-                          colorSelector(
-                            direction: Axis.vertical,
-                            isFlexible: true,
-                            categorySlug: widget.categorySlug ?? '',
-                          ),
-                          (defaultPadding / 4).horizontalSpace,
-                          diamondSelector(direction: Axis.vertical, isFlexible: true, categorySlug: widget.categorySlug ?? ''),
-                          (defaultPadding / 4).horizontalSpace,
-                          remarkSelector(
-                            direction: Axis.vertical,
-                            isFlexible: true,
-                          ),
-                          (defaultPadding / 4).horizontalSpace,
-                          stockSelector(
-                            direction: Axis.vertical,
-                            isFlexible: true,
-                          )
-                        ],
                       ),
-                    )
+                    ),
                   ],
                 ),
-              ),
+                (defaultPadding / 2).verticalSpace,
+                Row(
+                  children: [
+                    sizeSelector(direction: Axis.vertical, isFlexible: true, categorySlug: widget.categorySlug ?? ''),
+                    (defaultPadding / 4).horizontalSpace,
+                    colorSelector(
+                      direction: Axis.vertical,
+                      isFlexible: true,
+                      categorySlug: widget.categorySlug ?? '',
+                    ),
+                    (defaultPadding / 4).horizontalSpace,
+                    diamondSelector(direction: Axis.vertical, isFlexible: true, categorySlug: widget.categorySlug ?? ''),
+                    (defaultPadding / 4).horizontalSpace,
+                    remarkSelector(
+                      direction: Axis.vertical,
+                      isFlexible: true,
+                    ),
+                    (defaultPadding / 4).horizontalSpace,
+                    stockSelector(
+                      direction: Axis.vertical,
+                      isFlexible: true,
+                    )
+                  ],
+                )
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

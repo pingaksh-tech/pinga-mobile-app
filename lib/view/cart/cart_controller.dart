@@ -12,7 +12,9 @@ class CartController extends GetxController {
   RxList<CartItemModel> productsList = <CartItemModel>[].obs;
   RxList<CartItemModel> selectedList = <CartItemModel>[].obs;
   RxDouble totalPrice = 0.0.obs;
-  RxDouble totalQuantity = 0.0.obs;
+  RxInt totalQuantity = 0.obs;
+  RxInt selectedQuantity = 0.obs;
+
   RxDouble selectedPrice = 0.0.obs;
   Timer? updateCartDebounce;
   RxBool isCartItemSelected = false.obs;
@@ -27,7 +29,7 @@ class CartController extends GetxController {
 
   num calculateTotalPrice() {
     List<num> priceList = productsList.map((element) => (element.product?.price ?? 1)).toList();
-    List<int> quantityList = productsList.map((element) => (element.quantity.value)).toList();
+    List<int> quantityList = productsList.map((element) => (element.quantity?.value ?? 1)).toList();
     num totalPrices = 0;
     for (int i = 0; i < priceList.length; i++) {
       totalPrices = totalPrices + quantityList[i] * priceList[i];
@@ -36,25 +38,53 @@ class CartController extends GetxController {
     return totalPrice.value;
   }
 
-  num calculateQuantity() {
-    List<int> quantityList = productsList.map((element) => (element.quantity.value)).toList();
-    num quantity = 0;
-    for (int i = 0; i < quantityList.length; i++) {
-      quantity = quantity + quantityList[i];
-    }
-    totalQuantity.value = double.tryParse(quantity.toString()) ?? 0.0;
-    return totalQuantity.value;
-  }
-
   num calculateSelectedItemPrice() {
     List<num> priceList = selectedList.map((element) => (element.product?.price ?? 1)).toList();
-    List<int> quantityList = selectedList.map((element) => (element.quantity.value)).toList();
+    List<int> quantityList = selectedList.map((element) => (element.quantity?.value ?? 1)).toList();
     num price = 0;
     for (int i = 0; i < priceList.length; i++) {
       price = price + quantityList[i] * priceList[i];
     }
     selectedPrice.value = double.tryParse(price.toString()) ?? 0.0;
     return selectedPrice.value;
+  }
+
+  int calculateQuantity() {
+    List<int> quantityList = productsList.map((element) => (element.quantity?.value ?? 1)).toList();
+    num quantity = 0;
+    for (int i = 0; i < quantityList.length; i++) {
+      quantity = quantity + quantityList[i];
+    }
+    totalQuantity.value = quantity.toInt();
+    return totalQuantity.value;
+  }
+
+  int calculateSelectedQue() {
+    List<int> quantityList = selectedList.map((element) => (element.quantity?.value ?? 1)).toList();
+    num selectQuantity = 0;
+    for (int i = 0; i < quantityList.length; i++) {
+      selectQuantity = selectQuantity + quantityList[i];
+    }
+    selectedQuantity.value = selectQuantity.toInt();
+    return selectedQuantity.value;
+  }
+
+  void decrementQuantity(CartItemModel item) {
+    calculateTotalPrice();
+    calculateQuantity();
+    if (selectedList.contains(item)) {
+      calculateSelectedItemPrice();
+      calculateSelectedQue();
+    }
+  }
+
+  void incrementQuantity(CartItemModel item) {
+    calculateTotalPrice();
+    calculateQuantity();
+    if (selectedList.contains(item)) {
+      calculateSelectedItemPrice();
+      calculateSelectedQue();
+    }
   }
 
   Future<void> removeProductFromCart(BuildContext context, {required int index}) async {

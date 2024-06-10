@@ -1126,6 +1126,7 @@ class AppDialogs {
     String? dialogTitle,
     String? contentText,
     String? buttonTitle,
+    TextStyle? titleStyle,
   }) {
     return Get.dialog(
       AlertDialog(
@@ -1135,11 +1136,12 @@ class AppDialogs {
         actionsPadding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(bottom: defaultPadding / 1.4),
         title: Text(
           dialogTitle ?? "PINGAKSH",
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w500,
-                color: Theme.of(context).colorScheme.primary,
-              ),
+          style: titleStyle ??
+              Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
         ),
         content: content ??
             Text(
@@ -1148,19 +1150,20 @@ class AppDialogs {
             ),
         actions: [
           /// CANCEL
-          TextButton(
-            child: Text(
-              buttonTitle ?? "CANCEL",
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w500,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
+          if (!isValEmpty(buttonTitle))
+            TextButton(
+              child: Text(
+                buttonTitle ?? "CANCEL",
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+              ),
+              onPressed: () {
+                Get.back();
+              },
             ),
-            onPressed: () {
-              Get.back();
-            },
-          ),
 
           /// ADD
           TextButton(
@@ -1193,7 +1196,6 @@ class AppDialogs {
         backgroundColor: Theme.of(context).colorScheme.surface,
         titlePadding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding).copyWith(bottom: 0),
         contentPadding: EdgeInsets.all(defaultPadding * 1.2).copyWith(top: defaultPadding / 2),
-        actionsPadding: EdgeInsets.only(right: defaultPadding * 1.6).copyWith(bottom: defaultPadding),
         title: Text(
           "Alert",
           textAlign: TextAlign.center,

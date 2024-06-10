@@ -15,6 +15,7 @@ Widget horizontalSelectorButton(
   RxString? selectedColor,
   RxString? selectedDiamond,
   RxString? remarkSelected,
+  RxString? productName,
   required SelectableItemType selectableItemType,
   SizeColorSelectorButtonType sizeColorSelectorButtonType = SizeColorSelectorButtonType.medium,
   Color? backgroundColor,
@@ -112,7 +113,7 @@ Widget horizontalSelectorButton(
 
             break;
           case SelectableItemType.stock:
-            Get.toNamed(AppRoutes.cartStockScreen);
+            Get.toNamed(AppRoutes.cartStockScreen, arguments: {"productName": productName?.value ?? ""});
             break;
         }
       },

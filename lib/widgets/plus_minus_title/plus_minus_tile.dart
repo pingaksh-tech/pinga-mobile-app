@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../../../exports.dart';
+import '../../data/model/cart/cart_model.dart';
 import '../../res/app_dialog.dart';
 
 Widget plusMinusTile(
@@ -12,6 +13,7 @@ Widget plusMinusTile(
   double? size,
   required Function(int) onIncrement,
   required Function(int) onDecrement,
+  CartItemModel? item,
 }) {
   return Obx(() {
     return Container(
@@ -27,21 +29,26 @@ Widget plusMinusTile(
           /// Decrement Button
           incrementDecrementButton(
             onPressed: () {
-              /// DECREMENT
+              // /// DECREMENT
               if (textValue.value > 0) {
                 textValue.value--;
                 onDecrement(textValue.value);
 
                 /// Debounce
-                commonDebounce(callback: () async {
-                  /*API CALL*/
-                  await null;
-                });
+                commonDebounce(
+                  callback: () async {
+                    /*API CALL*/
+                    await null;
+                  },
+                );
               }
             },
             icon: SvgPicture.asset(
               AppAssets.minusIcon,
-              colorFilter: ColorFilter.mode(textValue.value > 0 ? Theme.of(context).colorScheme.primary : Theme.of(context).disabledColor, BlendMode.srcIn),
+              colorFilter: ColorFilter.mode(
+                textValue.value > 0 ? Theme.of(context).colorScheme.primary : Theme.of(context).disabledColor,
+                BlendMode.srcIn,
+              ),
             ),
           ),
 
@@ -67,7 +74,7 @@ Widget plusMinusTile(
           incrementDecrementButton(
             borderRadius: BorderRadius.horizontal(right: Radius.circular(defaultRadius)),
             onPressed: () {
-              /// INCREMENT
+              // /// INCREMENT
               if (textValue.value >= 0) {
                 textValue.value++;
                 onIncrement(textValue.value);

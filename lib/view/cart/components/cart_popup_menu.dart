@@ -12,6 +12,19 @@ class CartPopUpMenu extends StatelessWidget {
   CartPopUpMenu({super.key});
 
   CartController con = Get.find<CartController>();
+  Rx<TextEditingController> nameCon = TextEditingController().obs;
+
+  RxBool nameValidation = true.obs;
+  RxString nameError = ''.obs;
+  bool validation() {
+    if (nameCon.value.text.trim().isEmpty) {
+      nameError.value = "Please enter watchList name";
+      nameValidation.value = false;
+    } else {
+      nameValidation.value = true;
+    }
+    return nameValidation.isTrue;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,28 +52,40 @@ class CartPopUpMenu extends StatelessWidget {
               context,
               buttonTitle2: "ADD",
               dialogTitle: "Add to watchList",
+              buttonTitle: "CANCEL",
               content: SizedBox(
                 width: Get.width,
-                child: AppTextField(
-                  title: "Add WatchList Name",
-                  titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontSize: 12.sp,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                  padding: EdgeInsets.only(top: defaultPadding / 2),
-                  hintText: "Enter new watchList Name",
-                  contentPadding: EdgeInsets.symmetric(
-                    vertical: defaultPadding / 1.4,
-                    horizontal: defaultPadding / 1.7,
+                child: Obx(
+                  () => AppTextField(
+                    controller: nameCon.value,
+                    title: "Add WatchList Name",
+                    validation: nameValidation.value,
+                    errorMessage: nameError.value,
+                    errorStyle: const TextStyle(color: Colors.red),
+                    titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontSize: 12.sp,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                    padding: EdgeInsets.only(top: defaultPadding / 2),
+                    hintText: "Enter new watchList Name",
+                    contentPadding: EdgeInsets.symmetric(
+                      vertical: defaultPadding / 1.4,
+                      horizontal: defaultPadding / 1.7,
+                    ),
+                    onChanged: (value) {
+                      nameValidation.value = true;
+                    },
                   ),
                 ),
               ),
               onPressed: () {
-                Get.back();
-                AppDialogs.cartAlertDialog(
-                  context,
-                  onPressed: () {},
-                );
+                if (validation()) {
+                  Get.back();
+                  AppDialogs.cartAlertDialog(
+                    context,
+                    onPressed: () {},
+                  );
+                }
               },
             );
             break;

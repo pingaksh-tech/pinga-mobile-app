@@ -58,7 +58,7 @@ class CartItemModel {
   final String? id;
   final String? user;
   final ProductProduct? product;
-  RxInt quantity = 1.obs;
+  RxInt? quantity;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
@@ -66,7 +66,7 @@ class CartItemModel {
     this.id,
     this.user,
     this.product,
-    required this.quantity,
+    this.quantity,
     this.createdAt,
     this.updatedAt,
   });
