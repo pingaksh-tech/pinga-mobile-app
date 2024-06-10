@@ -81,6 +81,17 @@ class AppAssets {
   static const String quantityIcon = '${svgPath}quantity_icon.svg';
   static const String mrpIcon = '${svgPath}MRP_icon.svg';
   static const String doneSmall = "${svgPath}done_small.svg";
+  static const String changePasswordSVG = "${svgPath}change_password.svg";
+  static const String clearDataSVG = "${svgPath}clear_data.svg";
+  static const String distributorPriceSVG = "${svgPath}distributor_price.svg";
+  static const String goldPriceSVG = "${svgPath}gold_price.svg";
+  static const String mrpBifurcationSVG = "${svgPath}mrp_bifurcation.svg";
+  static const String priceBreakupSVG = "${svgPath}price_breakup.svg";
+  static const String productDetailSVG = "${svgPath}product_detail.svg";
+  static const String lightModeSVG = "${svgPath}theme_mode.svg";
+  static const String downArrow = "${svgPath}down_arrow.svg";
+  static const String upArrow = "${svgPath}up_arrow.svg";
+  static const String productReturn = "${svgPath}product_return.svg";
 
   /// ***********************************************************************************
   ///                                   JSON

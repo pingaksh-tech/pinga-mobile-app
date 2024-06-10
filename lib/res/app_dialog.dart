@@ -653,8 +653,8 @@ class AppDialogs {
                             padding: EdgeInsets.all(defaultPadding / 1.4),
                             child: SvgPicture.asset(
                               AppAssets.search,
-                              height: 24,
-                              width: 24,
+                              height: 22,
+                              width: 22,
                               color: UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400, // ignore: deprecated_member_use
                             ),
                           ),
@@ -776,8 +776,8 @@ class AppDialogs {
                           padding: EdgeInsets.all(defaultPadding / 1.4),
                           child: SvgPicture.asset(
                             AppAssets.search,
-                            height: 24,
-                            width: 24,
+                            height: 22,
+                            width: 22,
                             color: UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400, // ignore: deprecated_member_use
                           ),
                         ),
@@ -896,8 +896,8 @@ class AppDialogs {
                           padding: EdgeInsets.all(defaultPadding / 1.4),
                           child: SvgPicture.asset(
                             AppAssets.search,
-                            height: 24,
-                            width: 24,
+                            height: 22,
+                            width: 22,
                             color: UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400, // ignore: deprecated_member_use
                           ),
                         ),

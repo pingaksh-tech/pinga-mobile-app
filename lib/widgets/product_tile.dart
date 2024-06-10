@@ -418,7 +418,7 @@ class _ProductTileState extends State<ProductTile> {
                         incrementDecrementTile(height: 20.h),
                       ],
                     ),
-                    6.verticalSpace,
+                    8.verticalSpace,
                     Row(
                       children: [
                         /// Size Selector

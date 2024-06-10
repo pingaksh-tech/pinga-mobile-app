@@ -21,6 +21,7 @@ class PriceBreakupDialog {
             alignment: Alignment.bottomCenter,
             children: [
               ListView(
+                physics: const RangeMaintainingScrollPhysics(),
                 padding: EdgeInsets.zero,
                 shrinkWrap: true,
                 children: [

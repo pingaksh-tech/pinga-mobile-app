@@ -56,7 +56,7 @@ class HomeScreen extends StatelessWidget {
                 crossAxisCount: 2,
                 mainAxisSpacing: defaultPadding / 2,
                 crossAxisSpacing: defaultPadding / 1.8,
-                mainAxisExtent: 170.h,
+                mainAxisExtent: 135.h,
               ),
               itemCount: con.brandList.length,
               itemBuilder: (context, index) => GestureDetector(

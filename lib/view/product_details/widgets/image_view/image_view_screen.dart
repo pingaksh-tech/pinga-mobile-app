@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../../../exports.dart';
@@ -82,23 +83,48 @@ class ImageViewScreen extends StatelessWidget {
                       width: defaultPadding / 2,
                     ),
                     itemBuilder: (context, index) => Obx(() {
-                      return Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                              color: con.currentPage.value == index ? Theme.of(context).primaryColor : Theme.of(context).primaryColor.withOpacity(.2),
-                              width: 1.3,
+                      return Stack(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: con.currentPage.value == index ? Theme.of(context).primaryColor : Theme.of(context).primaryColor.withOpacity(.2),
+                                  width: 1.3,
+                                ),
+                                borderRadius: BorderRadius.circular(10.r)),
+                            child: AppNetworkImage(
+                              height: 60.h,
+                              width: 60.h,
+                              fit: BoxFit.cover,
+                              imageUrl: con.imageList[index],
+                              borderRadius: BorderRadius.circular(10.r),
+                              onTap: () {
+                                con.imagesPageController.value.animateToPage(index, duration: const Duration(milliseconds: 400), curve: Curves.easeIn);
+                              },
                             ),
-                            borderRadius: BorderRadius.circular(10.r)),
-                        child: AppNetworkImage(
-                          height: 60.h,
-                          width: 60.h,
-                          fit: BoxFit.cover,
-                          imageUrl: con.imageList[index],
-                          borderRadius: BorderRadius.circular(10.r),
-                          onTap: () {
-                            con.imagesPageController.value.animateToPage(index, duration: const Duration(milliseconds: 400), curve: Curves.easeIn);
-                          },
-                        ),
+                          ),
+                          if (con.currentPage.value == index)
+                            Container(
+                              height: 60.h,
+                              width: 62.h,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.primary.withOpacity(.2),
+                                borderRadius: BorderRadius.circular(10.r),
+                              ),
+                              padding: EdgeInsets.all(defaultPadding * 1.5),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(width: 2, color: Theme.of(context).primaryColor.withOpacity(.9)),
+                                  shape: BoxShape.circle,
+                                ),
+                                padding: EdgeInsets.all(defaultPadding / 4),
+                                child: SvgPicture.asset(
+                                  AppAssets.doneSmall,
+                                  colorFilter: ColorFilter.mode(Theme.of(context).primaryColor.withOpacity(.9), BlendMode.srcIn),
+                                ),
+                              ),
+                            ),
+                        ],
                       );
                     }),
                   ),

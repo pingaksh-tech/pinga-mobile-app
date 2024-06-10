@@ -105,6 +105,7 @@ class AddWatchlistScreen extends StatelessWidget {
                     );
                   }
                   con.nameCon.value.clear();
+                  Get.back();
                 },
               ),
             ],

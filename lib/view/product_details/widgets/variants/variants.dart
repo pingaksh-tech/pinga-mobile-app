@@ -19,7 +19,12 @@ class VariantsTab extends StatelessWidget {
       padding: EdgeInsets.only(top: 48, bottom: defaultPadding * 5),
       itemCount: con.variantList.length,
       itemBuilder: (context, index) => ProductTile(
-        onTap: () {},
+        onTap: () => Get.toNamed(AppRoutes.productDetailsScreen,
+            arguments: {
+              "category": productCategory,
+              'isSize': isSize,
+            },
+            preventDuplicates: false),
         categorySlug: productCategory,
         isSizeAvailable: isSize,
         productTileType: ProductTileType.variant,

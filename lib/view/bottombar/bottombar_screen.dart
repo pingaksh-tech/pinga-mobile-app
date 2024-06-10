@@ -8,11 +8,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import '../../controller/predefine_value_controller.dart';
 import '../../res/app_bar.dart';
-import 'components/app_drawer.dart';
 
 import '../../exports.dart';
 import '../../packages/app_animated_cliprect.dart';
 import '../cart/components/cart_popup_menu.dart';
+import '../drawer/app_drawer.dart';
 import 'bottombar_controller.dart';
 
 class BottomBarScreen extends StatelessWidget {
@@ -49,14 +49,33 @@ class BottomBarScreen extends StatelessWidget {
               title: con.bottomBarDataList[con.currentBottomIndex.value].screenName,
               leading: Builder(
                 builder: (context) => IconButton(
-                  icon: SvgPicture.asset(AppAssets.menuIcon),
+                  icon: SvgPicture.asset(
+                    AppAssets.menuIcon,
+                    colorFilter: ColorFilter.mode(
+                      Theme.of(context).primaryColor,
+                      BlendMode.srcIn,
+                    ),
+                  ),
                   onPressed: () {
                     Scaffold.of(context).openDrawer();
                   },
                 ),
               ),
               actions: [
-                con.currentBottomIndex.value == 2 ? CartPopUpMenu() : const SizedBox(),
+                con.currentBottomIndex.value == 2
+                    ? CartPopUpMenu()
+                    : con.currentBottomIndex.value == 0
+                        ? AppIconButton(
+                            onPressed: () => Get.toNamed(AppRoutes.settingsScreen),
+                            icon: SvgPicture.asset(
+                              AppAssets.settingIcon,
+                              colorFilter: ColorFilter.mode(
+                                Theme.of(context).primaryColor,
+                                BlendMode.srcIn,
+                              ),
+                            ),
+                          )
+                        : const SizedBox(),
               ],
             ),
             body: con.isLoading.value

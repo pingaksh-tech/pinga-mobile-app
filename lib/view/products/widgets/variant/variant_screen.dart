@@ -25,7 +25,10 @@ class VariantScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: defaultPadding).copyWith(top: 0),
           itemCount: con.variantList.length,
           itemBuilder: (context, index) => ProductTile(
-            onTap: () {},
+            onTap: () => Get.toNamed(AppRoutes.productDetailsScreen, arguments: {
+              "category": con.category.value,
+              'isSize': con.isSize.value,
+            }),
             categorySlug: con.category.value,
             isSizeAvailable: con.isSize.value,
             productTileType: ProductTileType.variant,

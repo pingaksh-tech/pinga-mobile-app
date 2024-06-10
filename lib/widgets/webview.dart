@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../exports.dart';
+import '../res/app_bar.dart';
 
 class MyWebView extends StatefulWidget {
   final String webURL;
@@ -56,8 +57,8 @@ class _MyWebViewState extends State<MyWebView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: !isValEmpty(widget.title)
-          ? AppBar(
-              title: Text(widget.title ?? ""),
+          ? MyAppBar(
+              title: widget.title ?? "",
             )
           : null,
       body: Obx(

@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
 import '../../../controller/predefine_value_controller.dart';
+import '../../../view/drawer/widgets/wishlist/wishlist_controller.dart';
 import '../../../view/product_details/widgets/variants/variants_tab_controller.dart';
 import '../../../view/products/product_controller.dart';
 import '../../../view/products/widgets/variant/variant_controller.dart';
@@ -256,10 +257,16 @@ class ProductRepository {
   /// ***********************************************************************************
   ///                                     GET PRODUCT LIST
   /// ***********************************************************************************
-  static Future<void> productListApi() async {
-    final ProductController productCon = Get.find<ProductController>();
-    GetProductModel model = GetProductModel.fromJson(productList /*response*/);
-    productCon.productsList.value = model.data?.products ?? [];
+  static Future<void> productListApi({isWishlist = false}) async {
+    if (isWishlist) {
+      final WishlistController wishlistCon = Get.find<WishlistController>();
+      GetProductModel model = GetProductModel.fromJson(productList /*response*/);
+      wishlistCon.productsList.value = model.data?.products ?? [];
+    } else {
+      final ProductController productCon = Get.find<ProductController>();
+      GetProductModel model = GetProductModel.fromJson(productList /*response*/);
+      productCon.productsList.value = model.data?.products ?? [];
+    }
   }
 
   /// ***********************************************************************************

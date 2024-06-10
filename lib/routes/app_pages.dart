@@ -9,6 +9,8 @@ import '../view/category/category_screen.dart';
 import '../view/collections/watch_list/watch_list_screen.dart';
 import '../view/collections/widgets/add_watchlist/add_watchlist_screen.dart';
 import '../view/dashboard/dashboard_screen.dart';
+import '../view/drawer/widgets/settings/settings_screen.dart';
+import '../view/drawer/widgets/wishlist/wishlist_screen.dart';
 import '../view/product_details/product_details_screen.dart';
 import '../view/product_details/widgets/image_view/image_view_screen.dart';
 import '../view/products/product_screen.dart';
@@ -50,5 +52,7 @@ class AppPages {
     _getPage(name: AppRoutes.summaryScreen, page: () => SummaryScreen()),
     _getPage(name: AppRoutes.variantsScreen, page: () => VariantScreen()),
     _getPage(name: AppRoutes.imageViewScreen, page: () => ImageViewScreen()),
+    _getPage(name: AppRoutes.wishlistScreen, page: () => WishlistScreen()),
+    _getPage(name: AppRoutes.settingsScreen, page: () => SettingsScreen()),
   ];
 }
