@@ -10,8 +10,10 @@ import '../view/collections/watch_list/watch_list_screen.dart';
 import '../view/collections/widgets/add_watchlist/add_watchlist_screen.dart';
 import '../view/dashboard/dashboard_screen.dart';
 import '../view/product_details/product_details_screen.dart';
+import '../view/product_details/widgets/image_view/image_view_screen.dart';
 import '../view/products/product_screen.dart';
 import '../view/products/widgets/filter/filter_screen.dart';
+import '../view/products/widgets/variant/variant_screen.dart';
 import '../view/profile/profile_screen.dart';
 import '../view/splash/splash_screen.dart';
 import '../widgets/add_remark/add_remark_screen.dart';
@@ -45,6 +47,8 @@ class AppPages {
     _getPage(name: AppRoutes.addWatchListScreen, page: () => AddWatchlistScreen()),
     _getPage(name: AppRoutes.remarkScreen, page: () => AddRemarkScreen()),
     _getPage(name: AppRoutes.cartStockScreen, page: () => CartStockScreen()),
-    _getPage(name: AppRoutes.summaryScreen, page: () =>  SummaryScreen()),
+    _getPage(name: AppRoutes.summaryScreen, page: () => SummaryScreen()),
+    _getPage(name: AppRoutes.variantsScreen, page: () => VariantScreen()),
+    _getPage(name: AppRoutes.imageViewScreen, page: () => ImageViewScreen()),
   ];
 }

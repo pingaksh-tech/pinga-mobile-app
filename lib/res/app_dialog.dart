@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 import '../controller/predefine_value_controller.dart';
 import '../data/model/predefined_model/predefined_model.dart';
 import '../exports.dart';
+import '../widgets/custom_radio_button.dart';
 
 class AppDialogs {
   // Function to show the Android-style dialog
@@ -595,97 +596,123 @@ class AppDialogs {
     BuildContext context, {
     Function(String?)? onChanged,
     required RxList<SizeModel> sizeList,
+    required RxString selectedSize,
   }) {
-    TextEditingController controller = TextEditingController();
+    Rx<TextEditingController> controller = TextEditingController().obs;
 
     return showGeneralDialog(
         context: context,
         pageBuilder: (context, animation, secondaryAnimation) {
-          return Scaffold(
-            backgroundColor: Theme.of(context).colorScheme.surface,
-            body: SafeArea(
-              child: Container(
-                width: Get.width,
-                padding: EdgeInsets.only(top: defaultPadding),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(defaultRadius / 2),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    /// Title
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: defaultPadding),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Select Size",
-                            style: AppTextStyle.titleStyle(context).copyWith(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Theme.of(context).colorScheme.primary,
+          return Obx(() {
+            return Scaffold(
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              body: SafeArea(
+                child: Container(
+                  width: Get.width,
+                  padding: EdgeInsets.only(top: defaultPadding),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(defaultRadius / 2),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      /// Title
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Select Size",
+                              style: AppTextStyle.titleStyle(context).copyWith(
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                            ),
+                            AppIconButton(
+                              size: 26.h,
+                              icon: SvgPicture.asset(AppAssets.crossIcon),
+                              onPressed: () {
+                                Get.back();
+                              },
+                            )
+                          ],
+                        ),
+                      ),
+                      defaultPadding.verticalSpace,
+                      if (sizeList.isNotEmpty)
+                        AppTextField(
+                          controller: controller.value,
+                          hintText: 'Search',
+                          textInputAction: TextInputAction.search,
+                          padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                          contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 4, horizontal: defaultPadding / 1.7),
+                          onChanged: onChanged,
+                          prefixIcon: Padding(
+                            padding: EdgeInsets.all(defaultPadding / 1.4),
+                            child: SvgPicture.asset(
+                              AppAssets.search,
+                              height: 24,
+                              width: 24,
+                              color: UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400, // ignore: deprecated_member_use
                             ),
                           ),
-                          AppIconButton(
-                            size: 26.h,
-                            icon: SvgPicture.asset(AppAssets.crossIcon),
-                            onPressed: () {
-                              Get.back();
-                            },
-                          )
-                        ],
-                      ),
-                    ),
-                    defaultPadding.verticalSpace,
-                    if (sizeList.isNotEmpty)
-                      AppTextField(
-                        controller: controller,
-                        hintText: 'Search',
-                        textFieldType: TextFieldType.search,
-                        textInputAction: TextInputAction.done,
-                        padding: EdgeInsets.symmetric(horizontal: defaultPadding),
-                        contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 4, horizontal: defaultPadding / 1.7),
-                        onChanged: onChanged,
-                      ),
-                    (defaultPadding / 1.4).verticalSpace,
+                          suffixIcon: controller.value.text.trim().isNotEmpty
+                              ? Center(
+                                  child: SvgPicture.asset(
+                                    AppAssets.crossIcon,
+                                    color: Theme.of(context).primaryColor, // ignore: deprecated_member_use
+                                  ),
+                                )
+                              : null,
+                          suffixOnTap: () {
+                            FocusScope.of(context).unfocus();
+                            controller.value.clear();
+                          },
+                        ),
+                      (defaultPadding / 1.4).verticalSpace,
 
-                    /// Records
-                    Expanded(
-                      child: sizeList.isNotEmpty
-                          ? ListView.separated(
-                              physics: const RangeMaintainingScrollPhysics(),
-                              itemCount: sizeList.length,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) => ListTile(
-                                title: Text(
-                                  sizeList[index].label ?? '',
-                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
+                      /// Records
+                      Expanded(
+                        child: sizeList.isNotEmpty
+                            ? ListView.separated(
+                                physics: const RangeMaintainingScrollPhysics(),
+                                itemCount: sizeList.length,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) => ListTile(
+                                  title: Text(
+                                    sizeList[index].label ?? '',
+                                    style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
+                                  ),
+                                  trailing: AppRadioButton(
+                                    isSelected: (sizeList[index].id == selectedSize.value).obs,
+                                  ),
+                                  onTap: () {
+                                    Get.back(
+                                      result: sizeList[index],
+                                    );
+                                  },
                                 ),
-                                onTap: () {
-                                  Get.back(
-                                    result: sizeList[index],
-                                  );
-                                },
-                              ),
-                              separatorBuilder: (context, index) => Divider(height: 1.h),
-                            )
-                          : Center(
-                              child: Text(
-                                "Size not available",
-                                style: AppTextStyle.titleStyle(context).copyWith(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: Theme.of(context).colorScheme.primary,
+                                separatorBuilder: (context, index) => Divider(height: 1.h),
+                              )
+                            : Center(
+                                child: Text(
+                                  "Size not available",
+                                  style: AppTextStyle.titleStyle(context).copyWith(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Theme.of(context).colorScheme.primary,
+                                  ),
                                 ),
                               ),
-                            ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
+            );
+          });
         });
   }
 
@@ -694,6 +721,7 @@ class AppDialogs {
     BuildContext context, {
     Function(String?)? onChanged,
     required RxList<SizeModel> colorList,
+    required RxString selectedColor,
   }) {
     TextEditingController controller = TextEditingController();
     return showGeneralDialog(
@@ -740,11 +768,31 @@ class AppDialogs {
                       AppTextField(
                         controller: controller,
                         hintText: 'Search',
-                        textFieldType: TextFieldType.search,
-                        textInputAction: TextInputAction.done,
+                        textInputAction: TextInputAction.search,
                         padding: EdgeInsets.symmetric(horizontal: defaultPadding),
                         contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 4, horizontal: defaultPadding / 1.7),
                         onChanged: onChanged,
+                        prefixIcon: Padding(
+                          padding: EdgeInsets.all(defaultPadding / 1.4),
+                          child: SvgPicture.asset(
+                            AppAssets.search,
+                            height: 24,
+                            width: 24,
+                            color: UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400, // ignore: deprecated_member_use
+                          ),
+                        ),
+                        suffixIcon: controller.text.trim().isNotEmpty
+                            ? Center(
+                                child: SvgPicture.asset(
+                                  AppAssets.crossIcon,
+                                  color: Theme.of(context).primaryColor, // ignore: deprecated_member_use
+                                ),
+                              )
+                            : null,
+                        suffixOnTap: () {
+                          FocusScope.of(context).unfocus();
+                          controller.clear();
+                        },
                       ),
                     (defaultPadding / 1.4).verticalSpace,
 
@@ -759,6 +807,9 @@ class AppDialogs {
                                 title: Text(
                                   colorList[index].label ?? '',
                                   style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
+                                ),
+                                trailing: AppRadioButton(
+                                  isSelected: (colorList[index].id == selectedColor.value).obs,
                                 ),
                                 onTap: () {
                                   Get.back(result: colorList[index]);
@@ -790,6 +841,7 @@ class AppDialogs {
     BuildContext context, {
     Function(String?)? onChanged,
     required RxList<SizeModel> diamondList,
+    required RxString selectedDiamond,
   }) {
     TextEditingController controller = TextEditingController();
     return showGeneralDialog(
@@ -836,11 +888,31 @@ class AppDialogs {
                       AppTextField(
                         controller: controller,
                         hintText: 'Search',
-                        textFieldType: TextFieldType.search,
-                        textInputAction: TextInputAction.done,
+                        textInputAction: TextInputAction.search,
                         padding: EdgeInsets.symmetric(horizontal: defaultPadding),
                         contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 4, horizontal: defaultPadding / 1.7),
                         onChanged: onChanged,
+                        prefixIcon: Padding(
+                          padding: EdgeInsets.all(defaultPadding / 1.4),
+                          child: SvgPicture.asset(
+                            AppAssets.search,
+                            height: 24,
+                            width: 24,
+                            color: UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400, // ignore: deprecated_member_use
+                          ),
+                        ),
+                        suffixIcon: controller.text.trim().isNotEmpty
+                            ? Center(
+                                child: SvgPicture.asset(
+                                  AppAssets.crossIcon,
+                                  color: Theme.of(context).primaryColor, // ignore: deprecated_member_use
+                                ),
+                              )
+                            : null,
+                        suffixOnTap: () {
+                          FocusScope.of(context).unfocus();
+                          controller.clear();
+                        },
                       ),
                     (defaultPadding / 1.4).verticalSpace,
 
@@ -855,6 +927,9 @@ class AppDialogs {
                                 title: Text(
                                   diamondList[index].label ?? '',
                                   style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
+                                ),
+                                trailing: AppRadioButton(
+                                  isSelected: (diamondList[index].id == selectedDiamond.value).obs,
                                 ),
                                 onTap: () {
                                   Get.back(result: diamondList[index]);

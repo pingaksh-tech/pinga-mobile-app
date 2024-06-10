@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../../exports.dart';
 import '../../../../widgets/product_tile.dart';
-import 'variants_controller.dart';
+import 'variants_tab_controller.dart';
 
 class VariantsTab extends StatelessWidget {
   final String productCategory;
@@ -11,7 +11,7 @@ class VariantsTab extends StatelessWidget {
 
   VariantsTab({super.key, required this.productCategory, this.isSize = true});
 
-  final VariantsController con = Get.put(VariantsController());
+  final VariantsTabController con = Get.put(VariantsTabController());
 
   @override
   Widget build(BuildContext context) {

@@ -57,6 +57,7 @@ class _ProductTileState extends State<ProductTile> {
   SizeModel colorModel = SizeModel();
   SizeModel diamondModel = SizeModel();
   RxString selectedRemark = "".obs;
+  RxBool isSelected = false.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -122,6 +123,10 @@ class _ProductTileState extends State<ProductTile> {
                     onSelect: (value) {
                       switch (value) {
                         case "variants":
+                          Get.toNamed(AppRoutes.variantsScreen, arguments: {
+                            'isSize': widget.isSizeAvailable,
+                            'category': widget.categorySlug,
+                          });
                           break;
                         case "add to watchlist":
                           Get.toNamed(AppRoutes.addWatchListScreen);
@@ -363,15 +368,6 @@ class _ProductTileState extends State<ProductTile> {
             ),
             boxShadow: defaultShadowAllSide,
           ),
-          // decoration: BoxDecoration(
-          //   color: AppColors.background,
-          //   border: Border.all(
-          //     color: Theme.of(context).dividerColor.withOpacity(.15),
-          //   ),
-          //   borderRadius: BorderRadius.vertical(
-          //     bottom: Radius.circular(4.r),
-          //   ),
-          // ),
           padding: EdgeInsets.all(defaultPadding / 1.5),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,

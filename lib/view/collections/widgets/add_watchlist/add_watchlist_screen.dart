@@ -17,6 +17,7 @@ class AddWatchlistScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: MyAppBar(title: "Add to watch"),
       body: Obx(() {
         return ListView(
@@ -61,44 +62,53 @@ class AddWatchlistScreen extends StatelessWidget {
         );
       }),
       bottomSheet: Obx(() {
-        return ListView(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          children: [
-            AppTextField(
-              title: "Add Watch list",
-              hintText: "Enter watchlist name",
-              contentPadding: EdgeInsets.all(defaultPadding / 1.2),
-              padding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(top: defaultPadding),
-              textInputAction: TextInputAction.done,
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(defaultRadius),
+        return Container(
+          decoration: BoxDecoration(
+            boxShadow: defaultShadowAllSide,
+            color: AppColors.background,
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(defaultRadius * 2),
+            ),
+          ),
+          child: ListView(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            children: [
+              AppTextField(
+                title: "Add Watch list",
+                hintText: "Enter watchlist name",
+                contentPadding: EdgeInsets.all(defaultPadding / 1.2),
+                padding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(top: defaultPadding),
+                textInputAction: TextInputAction.done,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(defaultRadius),
+                  ),
+                  borderSide: BorderSide.none,
                 ),
-                borderSide: BorderSide.none,
+                controller: con.nameCon.value,
+                validation: con.nameValidation.value,
+                errorMessage: con.nameError.value,
+                onChanged: (value) {
+                  con.checkDisableButton();
+                },
               ),
-              controller: con.nameCon.value,
-              validation: con.nameValidation.value,
-              errorMessage: con.nameError.value,
-              onChanged: (value) {
-                con.checkDisableButton();
-              },
-            ),
-            AppButton(
-              title: "Add",
-              disableButton: con.disableButton.value,
-              padding: EdgeInsets.all(defaultPadding).copyWith(bottom: MediaQuery.of(context).padding.bottom + defaultPadding),
-              onPressed: () {
-                FocusScope.of(context).unfocus();
-                if (con.nameCon.value.text.trim().isNotEmpty) {
-                  con.watchList.add(
-                    WatchlistModel(id: con.watchList.length.toString(), name: con.nameCon.value.text.trim(), noOfItem: 45, createdBy: "Guest"),
-                  );
-                }
-                con.nameCon.value.clear();
-              },
-            ),
-          ],
+              AppButton(
+                title: "Add",
+                disableButton: con.disableButton.value,
+                padding: EdgeInsets.all(defaultPadding).copyWith(bottom: MediaQuery.of(context).padding.bottom + defaultPadding),
+                onPressed: () {
+                  FocusScope.of(context).unfocus();
+                  if (con.nameCon.value.text.trim().isNotEmpty) {
+                    con.watchList.add(
+                      WatchlistModel(id: con.watchList.length.toString(), name: con.nameCon.value.text.trim(), noOfItem: 45, createdBy: "Guest"),
+                    );
+                  }
+                  con.nameCon.value.clear();
+                },
+              ),
+            ],
+          ),
         );
       }),
     );

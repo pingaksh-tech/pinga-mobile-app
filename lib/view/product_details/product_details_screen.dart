@@ -56,74 +56,80 @@ class ProductDetailsScreen extends StatelessWidget {
                         if (con.productImages.isNotEmpty)
                           AspectRatio(
                             aspectRatio: 1,
-                            child: Stack(
-                              children: [
-                                /// IMAGES
-                                PageView.builder(
-                                  controller: con.imagesPageController.value,
-                                  itemCount: con.productImages.length,
-                                  onPageChanged: (index) {
-                                    con.currentPage.value = index;
-                                  },
-                                  itemBuilder: (context, index) {
-                                    return AppNetworkImage(
-                                      imageUrl: con.productImages[index],
-                                      fit: BoxFit.cover,
-                                      borderRadius: BorderRadius.zero,
-                                    );
-                                  },
-                                ),
+                            child: GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              onTap: () {
+                                Get.toNamed(AppRoutes.imageViewScreen, arguments: {'imageList': con.productImages});
+                              },
+                              child: Stack(
+                                children: [
+                                  /// IMAGES
+                                  PageView.builder(
+                                    controller: con.imagesPageController.value,
+                                    itemCount: con.productImages.length,
+                                    onPageChanged: (index) {
+                                      con.currentPage.value = index;
+                                    },
+                                    itemBuilder: (context, index) {
+                                      return AppNetworkImage(
+                                        imageUrl: con.productImages[index],
+                                        fit: BoxFit.cover,
+                                        borderRadius: BorderRadius.zero,
+                                      );
+                                    },
+                                  ),
 
-                                /// PAGE INDEX INDICATOR
-                                Positioned(
-                                  bottom: defaultPadding,
-                                  left: Get.width / 2.3,
-                                  child: Obx(() {
-                                    return Container(
-                                      decoration: BoxDecoration(
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Theme.of(context).colorScheme.surface.withOpacity(.1),
-                                            blurRadius: 20,
-                                            spreadRadius: 5,
-                                          )
-                                        ],
-                                      ),
-                                      child: AnimatedSmoothIndicator(
-                                        activeIndex: con.currentPage.value,
-                                        count: con.productImages.length,
-                                        effect: ScrollingDotsEffect(
-                                          dotHeight: 8.0,
-                                          dotWidth: 8.0,
-                                          spacing: 5.0,
-                                          dotColor: Theme.of(context).primaryColor.withOpacity(0.15),
-                                          activeDotColor: Theme.of(context).primaryColor,
+                                  /// PAGE INDEX INDICATOR
+                                  Positioned(
+                                    bottom: defaultPadding,
+                                    left: Get.width / 2.3,
+                                    child: Obx(() {
+                                      return Container(
+                                        decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Theme.of(context).colorScheme.surface.withOpacity(.1),
+                                              blurRadius: 20,
+                                              spreadRadius: 5,
+                                            )
+                                          ],
                                         ),
-                                      ),
-                                    );
-                                  }),
-                                ),
+                                        child: AnimatedSmoothIndicator(
+                                          activeIndex: con.currentPage.value,
+                                          count: con.productImages.length,
+                                          effect: ScrollingDotsEffect(
+                                            dotHeight: 8.0,
+                                            dotWidth: 8.0,
+                                            spacing: 5.0,
+                                            dotColor: Theme.of(context).primaryColor.withOpacity(0.15),
+                                            activeDotColor: Theme.of(context).primaryColor,
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                                  ),
 
-                                /// LIKE
-                                Positioned(
-                                  bottom: defaultPadding * 1,
-                                  right: defaultPadding * 1,
-                                  child: Obx(() {
-                                    return AppIconButton(
-                                      backgroundColor: Theme.of(context).cardColor.withOpacity(1),
-                                      icon: SvgPicture.asset(
-                                        con.isLike.value ? AppAssets.likeFill : AppAssets.like,
-                                        colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
-                                      ),
-                                      onPressed: () {
-                                        con.isLike.value = !con.isLike.value;
-                                        con.isLike.refresh();
-                                      },
-                                      shadowColor: Theme.of(context).colorScheme.surface.withOpacity(.1),
-                                    );
-                                  }),
-                                ),
-                              ],
+                                  /// LIKE
+                                  Positioned(
+                                    bottom: defaultPadding * 1,
+                                    right: defaultPadding * 1,
+                                    child: Obx(() {
+                                      return AppIconButton(
+                                        backgroundColor: Theme.of(context).cardColor.withOpacity(1),
+                                        icon: SvgPicture.asset(
+                                          con.isLike.value ? AppAssets.likeFill : AppAssets.like,
+                                          colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                                        ),
+                                        onPressed: () {
+                                          con.isLike.value = !con.isLike.value;
+                                          con.isLike.refresh();
+                                        },
+                                        shadowColor: Theme.of(context).colorScheme.surface.withOpacity(.1),
+                                      );
+                                    }),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
 

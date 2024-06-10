@@ -1,8 +1,9 @@
 import 'package:get/get.dart';
 
 import '../../../controller/predefine_value_controller.dart';
-import '../../../view/product_details/widgets/variants/variants_controller.dart';
+import '../../../view/product_details/widgets/variants/variants_tab_controller.dart';
 import '../../../view/products/product_controller.dart';
+import '../../../view/products/widgets/variant/variant_controller.dart';
 import '../../model/product/product_model.dart';
 import '../../model/product/variant_product_model.dart';
 
@@ -264,10 +265,16 @@ class ProductRepository {
   /// ***********************************************************************************
   ///                                       GET PRODUCT VARIANT
   /// ***********************************************************************************
-  static Future<void> getProductVariantAPI({RxBool? isLoader}) async {
-    final VariantsController variantsCon = Get.find<VariantsController>();
-    GetVariantProductModel model = GetVariantProductModel.fromJson(variantList /*response*/);
-    variantsCon.variantList.value = model.data?.products ?? [];
+  static Future<void> getProductVariantAPI({RxBool? isLoader, isProductFlow = false}) async {
+    if (isProductFlow) {
+      final VariantController variantsCon = Get.find<VariantController>();
+      GetVariantProductModel model = GetVariantProductModel.fromJson(variantList /*response*/);
+      variantsCon.variantList.value = model.data?.products ?? [];
+    } else {
+      final VariantsTabController variantsTabCon = Get.find<VariantsTabController>();
+      GetVariantProductModel model = GetVariantProductModel.fromJson(variantList /*response*/);
+      variantsTabCon.variantList.value = model.data?.products ?? [];
+    }
   }
 
   static Future<dynamic> getPredefineValueAPI() async {

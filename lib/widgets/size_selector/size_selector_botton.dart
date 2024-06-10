@@ -38,7 +38,7 @@ Widget horizontalSelectorButton(
               List<SizeModel> sizeList = await preValueCon.checkHasPreValue(categorySlug ?? '', type: selectableItemType.slug);
 
               /// Size Selector
-              AppDialogs.sizeSelector(context, sizeList: sizeList.obs)?.then(
+              AppDialogs.sizeSelector(context, sizeList: sizeList.obs, selectedSize: selectedSize ?? ''.obs)?.then(
                 (value) {
                   if (value != null && (value.runtimeType == SizeModel)) {
                     final SizeModel sizeModel = (value as SizeModel);
@@ -60,7 +60,7 @@ Widget horizontalSelectorButton(
               List<SizeModel> colorList = await preValueCon.checkHasPreValue(categorySlug ?? '', type: selectableItemType.slug);
 
               /// Color Selector
-              AppDialogs.colorSelector(context, colorList: colorList.obs)?.then(
+              AppDialogs.colorSelector(context, colorList: colorList.obs, selectedColor: selectedColor ?? ''.obs)?.then(
                 (value) {
                   if (value != null && (value.runtimeType == SizeModel)) {
                     final SizeModel colorModel = (value as SizeModel);
@@ -80,11 +80,12 @@ Widget horizontalSelectorButton(
             if (isRegistered<PreValueController>()) {
               final PreValueController preValueCon = Get.find<PreValueController>();
               List<SizeModel> diamondList = await preValueCon.checkHasPreValue(categorySlug ?? '', type: selectableItemType.slug);
-
-              printOkStatus(diamondList);
+              if (selectedDiamond != null && selectedDiamond.isEmpty) {
+                selectedDiamond.value = diamondList[0].id ?? '';
+              }
 
               /// Diamond Selector
-              AppDialogs.diamondSelector(context, diamondList: diamondList.obs)?.then(
+              AppDialogs.diamondSelector(context, diamondList: diamondList.obs, selectedDiamond: selectedDiamond ?? ''.obs)?.then(
                 (value) {
                   if (value != null && (value.runtimeType == SizeModel)) {
                     final SizeModel diamondModel = (value as SizeModel);
@@ -145,7 +146,7 @@ Widget horizontalSelectorButton(
                       switch (selectableItemType) {
                         SelectableItemType.size => ("Size ${isValEmpty(selectedSize?.value) ? "(0)" : "(${selectedSize?.value.split(" ").first})"}"),
                         SelectableItemType.color => ("Color ${isValEmpty(selectedColor?.value) ? "(-)" : "(${selectedColor?.value})"}"),
-                        SelectableItemType.diamond => isValEmpty(selectedDiamond?.value) ? "Diamond" : selectedDiamond?.value ?? '',
+                        SelectableItemType.diamond => isValEmpty(selectedDiamond?.value) ? "VVS-EF" : selectedDiamond?.value ?? '',
                         SelectableItemType.remarks => "Remark",
                         SelectableItemType.stock => "Stock",
                       },
@@ -180,7 +181,7 @@ Widget horizontalSelectorButton(
                       switch (selectableItemType) {
                         SelectableItemType.size => ("Size ${isValEmpty(selectedSize?.value) ? "(0)" : "(${selectedSize?.value.split(" ").first})"}"),
                         SelectableItemType.color => ("Color ${isValEmpty(selectedColor?.value) ? "(-)" : "(${selectedColor?.value.split(" ").first})"}"),
-                        SelectableItemType.diamond => isValEmpty(selectedDiamond?.value) ? "Diamond" : selectedDiamond?.value ?? '',
+                        SelectableItemType.diamond => isValEmpty(selectedDiamond?.value) ? "VVS-EF" : selectedDiamond?.value ?? '',
                         SelectableItemType.remarks => "Remark",
                         SelectableItemType.stock => "Stock",
                       },

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import '../../../exports.dart';
 import '../../../res/app_bar.dart';
@@ -31,17 +32,47 @@ class WatchListScreen extends StatelessWidget {
                       hintText: "Search",
                       contentPadding: EdgeInsets.all(defaultPadding / 1.2),
                       fillColor: AppColors.background,
+                      textInputAction: TextInputAction.search,
+                      controller: con.searchCon.value,
+                      validation: con.searchValidation.value,
+                      errorMessage: con.searchError.value,
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(
                           Radius.circular(defaultRadius),
                         ),
                         borderSide: BorderSide.none,
                       ),
-                      textFieldType: TextFieldType.search,
-                      textInputAction: TextInputAction.search,
-                      controller: con.searchCon.value,
-                      validation: con.searchValidation.value,
-                      errorMessage: con.searchError.value,
+                      prefixIcon: Padding(
+                        padding: EdgeInsets.all(defaultPadding / 1.4),
+                        child: SvgPicture.asset(
+                          AppAssets.search,
+                          height: 24,
+                          width: 24,
+                          color: UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400, // ignore: deprecated_member_use
+                        ),
+                      ),
+                      suffixIcon: con.showCloseButton.isTrue
+                          ? Center(
+                              child: SvgPicture.asset(
+                                AppAssets.crossIcon,
+                                color: Theme.of(context).primaryColor, // ignore: deprecated_member_use
+                              ),
+                            )
+                          : null,
+                      suffixOnTap: con.showCloseButton.isTrue
+                          ? () {
+                              FocusScope.of(context).unfocus();
+                              con.showCloseButton.value = false;
+                              con.searchCon.value.clear();
+                            }
+                          : null,
+                      onChanged: (_) {
+                        if (con.searchCon.value.text.isNotEmpty) {
+                          con.showCloseButton.value = true;
+                        } else {
+                          con.showCloseButton.value = false;
+                        }
+                      },
                     ),
                   ),
                 )

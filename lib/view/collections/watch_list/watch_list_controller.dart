@@ -9,6 +9,7 @@ class WatchListController extends GetxController {
   RxString searchError = ''.obs;
 
   RxList<WatchlistModel> watchList = <WatchlistModel>[].obs;
+  RxBool showCloseButton = false.obs;
 
   /// Download watchlist rows
   // RxList<List<dynamic>> rows = <List<dynamic>>[].obs;

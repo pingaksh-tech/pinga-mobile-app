@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import '../../../../data/model/product/variant_product_model.dart';
 import '../../../../data/repositories/product/product_repository.dart';
 
-class VariantsController extends GetxController {
+class VariantsTabController extends GetxController {
   RxList<ProductVariant> variantList = <ProductVariant>[].obs;
 
   @override

@@ -53,6 +53,8 @@ class AppRoutes {
   /// ***********************************************************************************
   static const String productDetailsScreen = '/product-details-screen';
   static const String filterScreen = '/filter-screen';
+  static const String variantsScreen = '/variant-screen';
+  static const String imageViewScreen = '/image-view-screen';
 
   /// ***********************************************************************************
   ///                                 COLLECTIONS PAGES

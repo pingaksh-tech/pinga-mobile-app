@@ -32,40 +32,56 @@ class CategoryScreen extends StatelessWidget {
               preferredSize: Size.fromHeight(40.h),
               child: Column(
                 children: [
-                  AppTextField(
-                    hintText: "Search",
-                    controller: con.searchCon.value,
-                    padding: EdgeInsets.only(left: defaultPadding, right: defaultPadding),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(defaultRadius),
-                      ),
-                      borderSide: BorderSide.none,
+                  Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(color: Theme.of(context).primaryColor.withOpacity(0.02), blurRadius: 4, spreadRadius: 3),
+                      ],
                     ),
-                    textFieldType: TextFieldType.search,
-                    contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.3, horizontal: defaultPadding),
-                    suffixIcon: con.showCloseButton.isTrue
-                        ? Center(
-                            child: SvgPicture.asset(
-                              AppAssets.crossIcon,
-                              color: Theme.of(context).primaryColor, // ignore: deprecated_member_use
-                            ),
-                          )
-                        : null,
-                    suffixOnTap: con.showCloseButton.isTrue
-                        ? () {
-                            FocusScope.of(context).unfocus();
-                            con.showCloseButton.value = false;
-                            con.searchCon.value.clear();
-                          }
-                        : null,
-                    onChanged: (value) {
-                      if (con.searchCon.value.text.isNotEmpty) {
-                        con.showCloseButton.value = true;
-                      } else {
-                        con.showCloseButton.value = false;
-                      }
-                    },
+                    child: AppTextField(
+                      hintText: "Search",
+                      controller: con.searchCon.value,
+                      padding: EdgeInsets.only(left: defaultPadding, right: defaultPadding),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(defaultRadius),
+                        ),
+                        borderSide: BorderSide.none,
+                      ),
+                      prefixIcon: Padding(
+                        padding: EdgeInsets.all(defaultPadding / 1.4),
+                        child: SvgPicture.asset(
+                          AppAssets.search,
+                          height: 24,
+                          width: 24,
+                          color: UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400, // ignore: deprecated_member_use
+                        ),
+                      ),
+                      textInputAction: TextInputAction.search,
+                      contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.3, horizontal: defaultPadding),
+                      suffixIcon: con.showCloseButton.isTrue
+                          ? Center(
+                              child: SvgPicture.asset(
+                                AppAssets.crossIcon,
+                                color: Theme.of(context).primaryColor, // ignore: deprecated_member_use
+                              ),
+                            )
+                          : null,
+                      suffixOnTap: con.showCloseButton.isTrue
+                          ? () {
+                              FocusScope.of(context).unfocus();
+                              con.showCloseButton.value = false;
+                              con.searchCon.value.clear();
+                            }
+                          : null,
+                      onChanged: (value) {
+                        if (con.searchCon.value.text.isNotEmpty) {
+                          con.showCloseButton.value = true;
+                        } else {
+                          con.showCloseButton.value = false;
+                        }
+                      },
+                    ),
                   ),
                   (defaultPadding / 2).verticalSpace,
                 ],

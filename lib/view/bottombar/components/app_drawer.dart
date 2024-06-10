@@ -5,7 +5,9 @@ import '../../../exports.dart';
 import '../../../packages/cached_network_image/cached_network_image.dart';
 
 class AppDrawer extends StatelessWidget {
-  const AppDrawer({super.key});
+  final VoidCallback? homeOnPressed;
+
+  const AppDrawer({super.key, this.homeOnPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +55,7 @@ class AppDrawer extends StatelessWidget {
               "Home",
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            onTap: () {},
+            onTap: homeOnPressed,
           ),
           const Divider(height: 1),
           ListTile(

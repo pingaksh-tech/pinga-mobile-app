@@ -37,7 +37,12 @@ class BottomBarScreen extends StatelessWidget {
         () => AnnotatedRegion<SystemUiOverlayStyle>(
           value: UiUtils.systemUiOverlayStyle(systemNavigationBarColor: Theme.of(context).colorScheme.surface),
           child: Scaffold(
-            drawer: const AppDrawer(),
+            drawer: AppDrawer(
+              homeOnPressed: () {
+                con.currentBottomIndex.value = 0;
+                Get.back();
+              },
+            ),
             appBar: MyAppBar(
               backgroundColor: Theme.of(context).colorScheme.surface,
               showBackIcon: false,
