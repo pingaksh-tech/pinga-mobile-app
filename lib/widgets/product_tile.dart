@@ -600,143 +600,113 @@ class _ProductTileState extends State<ProductTile> {
                     ),
                     (defaultPadding / 2).horizontalSpace,
                     Expanded(
-                      child: Obx(
-                        () => Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        widget.productName,
-                                        maxLines: 2,
-                                        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500, fontSize: 13.sp),
-                                      ),
-                                      Text(
-                                        "Brand: ${widget.brandName}",
-                                        style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w400),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(right: defaultPadding, top: defaultPadding / 5),
-                                        child: Text(
-                                          UiUtils.amountFormat(widget.productPrice),
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: Theme.of(Get.context!).textTheme.titleMedium?.copyWith(fontSize: 16.sp, fontWeight: FontWeight.w700),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Row(
+                      child: Obx(() => Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        AppIconButton(
-                                          onPressed: () {
-                                            AppDialogs.cartProductDetailDialog(context, productName: widget.productName);
-                                          },
-                                          size: 30.sp,
-                                          icon: SvgPicture.asset(
-                                            AppAssets.boxIcon,
-                                            colorFilter: ColorFilter.mode(
-                                              Theme.of(context).primaryColor,
-                                              BlendMode.srcIn,
-                                            ),
-                                          ),
+                                        Text(
+                                          widget.productName,
+                                          maxLines: 2,
+                                          style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500, fontSize: 13.sp),
                                         ),
-                                        (defaultPadding / 3).horizontalSpace,
-                                        AppIconButton(
-                                          onPressed: () {
-                                            AppDialogs.cartDialog(
-                                              context,
-                                              onPressed: widget.deleteOnTap,
-                                              buttonTitle: "NO",
-                                              contentText: "Are you sure\nYou want to remove this item from the cart?",
-                                            );
-                                          },
-                                          size: 30.sp,
-                                          icon: SvgPicture.asset(
-                                            AppAssets.deleteIcon,
-                                            height: 17.h,
-                                            colorFilter: ColorFilter.mode(
-                                              Theme.of(context).primaryColor,
-                                              BlendMode.srcIn,
-                                            ),
+                                        Text(
+                                          "Brand: ${widget.brandName}",
+                                          style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w400),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(right: defaultPadding, top: defaultPadding / 5),
+                                          child: Text(
+                                            UiUtils.amountFormat(widget.productPrice),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: Theme.of(Get.context!).textTheme.titleMedium?.copyWith(fontSize: 16.sp, fontWeight: FontWeight.w700),
                                           ),
                                         ),
                                       ],
                                     ),
-                                    (defaultPadding / 6).verticalSpace,
-                                    plusMinusTile(
-                                      context,
-                                      item: widget.item,
-                                      textValue: widget.productQuantity ?? RxInt(0),
-                                      onIncrement: (value) {
-                                        cartCon.incrementQuantity(widget.item ?? CartItemModel());
-                                      },
-                                      onDecrement: (value) {
-                                        cartCon.decrementQuantity(widget.item ?? CartItemModel());
-                                        widget.productQuantity?.value == 0
-                                            ? AppDialogs.cartDialog(
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          AppIconButton(
+                                            onPressed: () {
+                                              AppDialogs.cartProductDetailDialog(context, productName: widget.productName);
+                                            },
+                                            size: 30.sp,
+                                            icon: SvgPicture.asset(
+                                              AppAssets.boxIcon,
+                                              colorFilter: ColorFilter.mode(
+                                                Theme.of(context).primaryColor,
+                                                BlendMode.srcIn,
+                                              ),
+                                            ),
+                                          ),
+                                          (defaultPadding / 3).horizontalSpace,
+                                          AppIconButton(
+                                            onPressed: () {
+                                              AppDialogs.cartDialog(
                                                 context,
-                                                buttonTitle: "NO",
                                                 onPressed: widget.deleteOnTap,
+                                                buttonTitle: "NO",
                                                 contentText: "Are you sure\nYou want to remove this item from the cart?",
-                                              )
-                                            : null;
-                                      },
-                                      size: 20,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    (defaultPadding / 2).verticalSpace,
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      physics: const RangeMaintainingScrollPhysics(),
-                      child: Row(
-                        children: [
-                          if (widget.isSizeAvailable) sizeSelector(direction: Axis.vertical, isFlexible: true, categorySlug: widget.categorySlug ?? ''),
-                          (defaultPadding / 4).horizontalSpace,
-                          colorSelector(
-                            direction: Axis.vertical,
-                            isFlexible: true,
-                            categorySlug: widget.categorySlug ?? '',
-                          ),
-                          (defaultPadding / 4).horizontalSpace,
-                          diamondSelector(direction: Axis.vertical, isFlexible: true, categorySlug: widget.categorySlug ?? ''),
-                          (defaultPadding / 4).horizontalSpace,
-                          remarkSelector(
-                            direction: Axis.vertical,
-                            isFlexible: true,
-                          ),
-                          (defaultPadding / 4).horizontalSpace,
-                          stockSelector(
-                            direction: Axis.vertical,
-                            isFlexible: true,
-                          )
-                        ],
-                      ),
+                                              );
+                                            },
+                                            size: 30.sp,
+                                            icon: SvgPicture.asset(
+                                              AppAssets.deleteIcon,
+                                              height: 17.h,
+                                              colorFilter: ColorFilter.mode(
+                                                Theme.of(context).primaryColor,
+                                                BlendMode.srcIn,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      (defaultPadding / 6).verticalSpace,
+                                      plusMinusTile(
+                                        context,
+                                        item: widget.item,
+                                        textValue: widget.productQuantity ?? RxInt(0),
+                                        onIncrement: (value) {
+                                          cartCon.incrementQuantity(widget.item ?? CartItemModel());
+                                        },
+                                        onDecrement: (value) {
+                                          cartCon.decrementQuantity(widget.item ?? CartItemModel());
+                                          widget.productQuantity?.value == 0
+                                              ? AppDialogs.cartDialog(
+                                                  context,
+                                                  buttonTitle: "NO",
+                                                  onPressed: widget.deleteOnTap,
+                                                  contentText: "Are you sure\nYou want to remove this item from the cart?",
+                                                )
+                                              : null;
+                                        },
+                                        size: 20,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )),
                     ),
                   ],
                 ),
                 (defaultPadding / 2).verticalSpace,
                 Row(
                   children: [
-                    sizeSelector(direction: Axis.vertical, isFlexible: true, categorySlug: widget.categorySlug ?? ''),
+                    if (widget.isSizeAvailable) sizeSelector(direction: Axis.vertical, isFlexible: true, categorySlug: widget.categorySlug ?? ''),
                     (defaultPadding / 4).horizontalSpace,
                     colorSelector(
                       direction: Axis.vertical,
@@ -756,7 +726,7 @@ class _ProductTileState extends State<ProductTile> {
                       isFlexible: true,
                     )
                   ],
-                )
+                ),
               ],
             ),
           ),
