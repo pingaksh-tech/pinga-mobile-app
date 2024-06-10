@@ -7,8 +7,9 @@ import 'variants_controller.dart';
 
 class VariantsTab extends StatelessWidget {
   final String productCategory;
+  final bool isSize;
 
-  VariantsTab({super.key, required this.productCategory});
+  VariantsTab({super.key, required this.productCategory, this.isSize = true});
 
   final VariantsController con = Get.put(VariantsController());
 
@@ -20,6 +21,7 @@ class VariantsTab extends StatelessWidget {
       itemBuilder: (context, index) => ProductTile(
         onTap: () {},
         categorySlug: productCategory,
+        isSizeAvailable: isSize,
         productTileType: ProductTileType.variant,
         imageUrl: con.variantList[index].image ?? "",
         productName: con.variantList[index].name ?? "",

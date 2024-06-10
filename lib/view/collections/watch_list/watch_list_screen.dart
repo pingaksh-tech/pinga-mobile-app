@@ -25,21 +25,24 @@ class WatchListScreen extends StatelessWidget {
           child: con.watchList.isNotEmpty
               ? PreferredSize(
                   preferredSize: Size.fromHeight(40.h),
-                  child: AppTextField(
-                    hintText: "Search",
-                    contentPadding: EdgeInsets.all(defaultPadding / 1.2),
-                    // fillColor: AppColors.background,
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(defaultRadius),
+                  child: Container(
+                    decoration: BoxDecoration(boxShadow: defaultShadow(context)),
+                    child: AppTextField(
+                      hintText: "Search",
+                      contentPadding: EdgeInsets.all(defaultPadding / 1.2),
+                      fillColor: AppColors.background,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(defaultRadius),
+                        ),
+                        borderSide: BorderSide.none,
                       ),
-                      borderSide: BorderSide.none,
+                      textFieldType: TextFieldType.search,
+                      textInputAction: TextInputAction.search,
+                      controller: con.searchCon.value,
+                      validation: con.searchValidation.value,
+                      errorMessage: con.searchError.value,
                     ),
-                    textFieldType: TextFieldType.search,
-                    textInputAction: TextInputAction.search,
-                    controller: con.searchCon.value,
-                    validation: con.searchValidation.value,
-                    errorMessage: con.searchError.value,
                   ),
                 )
               : null,
@@ -60,7 +63,7 @@ class WatchListScreen extends StatelessWidget {
                       onTap: () {
                         Get.toNamed(
                           AppRoutes.productScreen,
-                          arguments: {"categoryName": con.watchList[index].name},
+                          arguments: {"watchlistName": con.watchList[index].name},
                         );
                       },
                       child: WatchlistTile(

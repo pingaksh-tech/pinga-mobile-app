@@ -439,6 +439,34 @@ class ProductRepository {
             {"id": "5", "value": "5", "label": "5 (B5 (127 MM ))"}
           ],
         },
+        "pendants": {
+          "diamond": [
+            {"id": "VVS-EF", "value": "VVS-EF", "label": "VVS-EF"},
+            {"id": "VS-SI-GH", "value": "VS-SI-GH", "label": "VS-SI-GH"},
+            {"id": "VS-SI-HI", "value": "VS-SI-HI", "label": "VS-SI-HI"},
+            {"id": "SI-HI", "value": "SI-HI", "label": "SI-HI"},
+          ],
+          "colors": [
+            {"id": "Y", "value": "Y", "label": "Y (Yellow)"},
+            {"id": "W", "value": "W", "label": "W (White)"},
+            {"id": "P", "value": "P", "label": "P (Pink)"}
+          ],
+          "size": [],
+        },
+        "necklace": {
+          "diamond": [
+            {"id": "VVS-EF", "value": "VVS-EF", "label": "VVS-EF"},
+            {"id": "VS-SI-GH", "value": "VS-SI-GH", "label": "VS-SI-GH"},
+            {"id": "VS-SI-HI", "value": "VS-SI-HI", "label": "VS-SI-HI"},
+            {"id": "SI-HI", "value": "SI-HI", "label": "SI-HI"},
+          ],
+          "colors": [
+            {"id": "Y", "value": "Y", "label": "Y (Yellow)"},
+            {"id": "W", "value": "W", "label": "W (White)"},
+            {"id": "P", "value": "P", "label": "P (Pink)"}
+          ],
+          "size": [],
+        },
       }
     };
 

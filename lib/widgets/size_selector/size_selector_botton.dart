@@ -7,6 +7,7 @@ import '../../../../../exports.dart';
 import '../../../../../res/app_dialog.dart';
 import '../../controller/predefine_value_controller.dart';
 import '../../data/model/predefined_model/predefined_model.dart';
+import '../../packages/marquee_widget/marquee_widget.dart';
 
 Widget horizontalSelectorButton(
   BuildContext context, {
@@ -123,38 +124,42 @@ Widget horizontalSelectorButton(
             color: backgroundColor ?? Theme.of(context).primaryColor.withOpacity(0.06),
             borderRadius: BorderRadius.circular(defaultRadius),
           ),
+          alignment: Alignment.center,
           child: switch (axisDirection) {
             /// Horizontal Selector
-            Axis.horizontal => Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SvgPicture.asset(
-                    remarkSelected?.isNotEmpty ?? false ? selectableItemType.selectedIcon ?? '' : selectableItemType.icon,
-                    height: switch (sizeColorSelectorButtonType) {
-                      SizeColorSelectorButtonType.small => 12.h,
-                      SizeColorSelectorButtonType.medium => 14.h,
-                      SizeColorSelectorButtonType.large => 16.h,
-                    },
-                    colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
-                  ),
-                  (defaultPadding / 4).horizontalSpace,
-                  Text(
-                    switch (selectableItemType) {
-                      SelectableItemType.size => ("Size ${isValEmpty(selectedSize?.value) ? "(0)" : "(${selectedSize?.value.split(" ").first})"}"),
-                      SelectableItemType.color => ("Color ${isValEmpty(selectedColor?.value) ? "(-)" : "(${selectedColor?.value})"}"),
-                      SelectableItemType.diamond => isValEmpty(selectedDiamond?.value) ? "Diamond" : selectedDiamond?.value ?? '',
-                      SelectableItemType.remarks => "Remark",
-                      SelectableItemType.stock => "Stock",
-                    },
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontSize: switch (sizeColorSelectorButtonType) {
-                          SizeColorSelectorButtonType.small => 8.h,
-                          SizeColorSelectorButtonType.medium => 10.h,
-                          SizeColorSelectorButtonType.large => 14.h,
-                        },
-                        color: AppColors.primary),
-                  )
-                ],
+            Axis.horizontal => MarqueeWidget(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      remarkSelected?.isNotEmpty ?? false ? selectableItemType.selectedIcon ?? '' : selectableItemType.icon,
+                      height: switch (sizeColorSelectorButtonType) {
+                        SizeColorSelectorButtonType.small => 12.h,
+                        SizeColorSelectorButtonType.medium => 14.h,
+                        SizeColorSelectorButtonType.large => 16.h,
+                      },
+                      colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                    ),
+                    (defaultPadding / 5).horizontalSpace,
+                    Text(
+                      switch (selectableItemType) {
+                        SelectableItemType.size => ("Size ${isValEmpty(selectedSize?.value) ? "(0)" : "(${selectedSize?.value.split(" ").first})"}"),
+                        SelectableItemType.color => ("Color ${isValEmpty(selectedColor?.value) ? "(-)" : "(${selectedColor?.value})"}"),
+                        SelectableItemType.diamond => isValEmpty(selectedDiamond?.value) ? "Diamond" : selectedDiamond?.value ?? '',
+                        SelectableItemType.remarks => "Remark",
+                        SelectableItemType.stock => "Stock",
+                      },
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontSize: switch (sizeColorSelectorButtonType) {
+                            SizeColorSelectorButtonType.small => 8.h,
+                            SizeColorSelectorButtonType.medium => 10.h,
+                            SizeColorSelectorButtonType.large => 14.h,
+                          },
+                          color: AppColors.primary),
+                    )
+                  ],
+                ),
               ),
 
             /// Vertical Selector
@@ -170,22 +175,24 @@ Widget horizontalSelectorButton(
                     },
                     colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
                   ),
-                  Text(
-                    switch (selectableItemType) {
-                      SelectableItemType.size => ("Size ${isValEmpty(selectedSize?.value) ? "(0)" : "(${selectedSize?.value.split(" ").first})"}"),
-                      SelectableItemType.color => ("Color ${isValEmpty(selectedColor?.value) ? "(-)" : "(${selectedColor?.value.split(" ").first})"}"),
-                      SelectableItemType.diamond => isValEmpty(selectedDiamond?.value) ? "Diamond" : selectedDiamond?.value ?? '',
-                      SelectableItemType.remarks => "Remark",
-                      SelectableItemType.stock => "Stock",
-                    },
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontSize: switch (sizeColorSelectorButtonType) {
-                          SizeColorSelectorButtonType.small => 8.h,
-                          SizeColorSelectorButtonType.medium => 10.h,
-                          SizeColorSelectorButtonType.large => 14.h,
-                        },
-                        color: AppColors.primary),
+                  MarqueeWidget(
+                    child: Text(
+                      switch (selectableItemType) {
+                        SelectableItemType.size => ("Size ${isValEmpty(selectedSize?.value) ? "(0)" : "(${selectedSize?.value.split(" ").first})"}"),
+                        SelectableItemType.color => ("Color ${isValEmpty(selectedColor?.value) ? "(-)" : "(${selectedColor?.value.split(" ").first})"}"),
+                        SelectableItemType.diamond => isValEmpty(selectedDiamond?.value) ? "Diamond" : selectedDiamond?.value ?? '',
+                        SelectableItemType.remarks => "Remark",
+                        SelectableItemType.stock => "Stock",
+                      },
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontSize: switch (sizeColorSelectorButtonType) {
+                            SizeColorSelectorButtonType.small => 8.h,
+                            SizeColorSelectorButtonType.medium => 10.h,
+                            SizeColorSelectorButtonType.large => 14.h,
+                          },
+                          color: AppColors.primary),
+                    ),
                   )
                 ],
               ),

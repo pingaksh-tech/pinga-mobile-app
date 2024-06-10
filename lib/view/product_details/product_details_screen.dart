@@ -259,6 +259,7 @@ class ProductDetailsScreen extends StatelessWidget {
                 /// VARIANTS TAB
                 VariantsTab(
                   productCategory: con.productCategory.value,
+                  isSize: con.isSize.value,
                 ),
 
                 /// FAMILY PRODUCT TAB
@@ -281,20 +282,21 @@ class ProductDetailsScreen extends StatelessWidget {
           child: Row(
             children: [
               /// Size Selector
-              horizontalSelectorButton(
-                context,
-                categorySlug: con.productCategory.value,
-                selectedSize: RxString(con.selectedSize.value.value ?? ''),
-                selectableItemType: SelectableItemType.size,
-                sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
-                axisDirection: Axis.vertical,
-                sizeOnChanged: (value) {
-                  /// Selected Size
-                  if ((value.runtimeType == SizeModel)) {
-                    con.selectedSize.value = value;
-                  }
-                },
-              ),
+              if (con.isSize.isTrue)
+                horizontalSelectorButton(
+                  context,
+                  categorySlug: con.productCategory.value,
+                  selectedSize: RxString(con.selectedSize.value.value ?? ''),
+                  selectableItemType: SelectableItemType.size,
+                  sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+                  axisDirection: Axis.vertical,
+                  sizeOnChanged: (value) {
+                    /// Selected Size
+                    if ((value.runtimeType == SizeModel)) {
+                      con.selectedSize.value = value;
+                    }
+                  },
+                ),
               (defaultPadding / 5).horizontalSpace,
 
               /// Color Selector

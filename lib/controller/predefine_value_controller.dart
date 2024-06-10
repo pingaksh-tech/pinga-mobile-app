@@ -35,15 +35,19 @@ class PreValueController extends GetxController {
       if (predefineResponse['data'][slug][type] == null) {
         // API
         return await ProductRepository.getPredefineValueAPI().then((value) {
-          if (!isValEmpty(value) && value['data'][slug][type] != null) {
-            return List<SizeModel>.from(predefineResponse['data'][slug][type].map((x) => SizeModel.fromJson(x)));
-          } else {
-            return [];
-          }
+          return slugTypeList(value: value, slug: slug, type: type);
         });
       } else {
         return List<SizeModel>.from(predefineResponse['data'][slug][type].map((x) => SizeModel.fromJson(x)));
       }
+    }
+  }
+
+  List<SizeModel> slugTypeList({dynamic value, required String slug, required String type}) {
+    if (!isValEmpty(value) && value['data'][slug][type] != null) {
+      return List<SizeModel>.from(predefineResponse['data'][slug][type].map((x) => SizeModel.fromJson(x)));
+    } else {
+      return [];
     }
   }
 }

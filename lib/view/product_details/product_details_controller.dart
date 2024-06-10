@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../data/model/predefined_model/predefined_model.dart';
-import '../../exports.dart';
 
 class ProductDetailsController extends GetxController {
   Rx<ScrollController> scrollController = ScrollController().obs;
@@ -22,6 +21,7 @@ class ProductDetailsController extends GetxController {
   ].obs;
 
   RxBool isLike = false.obs;
+  RxBool isSize = true.obs;
 
   Rx<SizeModel> selectedSize = SizeModel().obs;
   Rx<SizeModel> selectedColor = SizeModel().obs;
@@ -35,7 +35,9 @@ class ProductDetailsController extends GetxController {
     if (Get.arguments != null) {
       if (Get.arguments['category'].runtimeType == String) {
         productCategory.value = Get.arguments['category'];
-        printOkStatus(productCategory);
+      }
+      if (Get.arguments['isSize'].runtimeType == bool) {
+        isSize.value = Get.arguments['isSize'];
       }
     }
   }

@@ -14,7 +14,7 @@ class FamilyProductTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       physics: const RangeMaintainingScrollPhysics(),
-      padding: EdgeInsets.all(defaultPadding / 2).copyWith(top: 48, bottom: defaultPadding * 5),
+      padding: EdgeInsets.all(defaultPadding / 2).copyWith(top: 52, bottom: defaultPadding * 5),
       children: [
         Wrap(
           children: List.generate(

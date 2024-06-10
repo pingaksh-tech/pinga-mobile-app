@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+import '../../controller/predefine_value_controller.dart';
 import '../../data/model/category/category_model.dart';
 import '../../data/model/product/product_model.dart';
 import '../../data/repositories/product/product_repository.dart';
@@ -7,6 +8,7 @@ import '../../exports.dart';
 
 class ProductController extends GetxController {
   RxBool isLike = false.obs;
+  RxBool isSizeAvailable = true.obs;
 
   RxString categoryName = "".obs;
   Rx<CategoryModel> category = CategoryModel().obs;
@@ -26,7 +28,9 @@ class ProductController extends GetxController {
     if (Get.arguments != null) {
       if (Get.arguments["category"].runtimeType == CategoryModel) {
         category.value = Get.arguments["category"];
-        printOkStatus(category.value.slug);
+      }
+      if (Get.arguments["watchlistName"].runtimeType == String) {
+        categoryName.value = Get.arguments["watchlistName"];
       }
     }
   }
@@ -35,6 +39,7 @@ class ProductController extends GetxController {
   void onReady() {
     super.onReady();
     ProductRepository.productListApi();
+    preValueAvailable();
   }
 
   final RxList sortWithPriceList = [
@@ -60,6 +65,18 @@ class ProductController extends GetxController {
 
     if (isMostOrder.value) {
       sortList.add("Most Ordered");
+    }
+  }
+
+  Future<void> preValueAvailable() async {
+    if (isRegistered<PreValueController>()) {
+      final PreValueController preValueCon = Get.find<PreValueController>();
+
+      await preValueCon.checkHasPreValue(category.value.slug ?? '', type: SelectableItemType.size.slug).then(
+        (value) {
+          isSizeAvailable.value = value.isNotEmpty;
+        },
+      );
     }
   }
 }

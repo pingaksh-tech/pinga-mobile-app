@@ -18,6 +18,7 @@ class ProductTile extends StatefulWidget {
   final String productName;
   final String? categorySlug;
   final String productPrice;
+  final bool isSizeAvailable;
   final RxInt? productQuantity;
   final String? brandName;
   final RxBool? isLike;
@@ -44,6 +45,7 @@ class ProductTile extends StatefulWidget {
     this.categorySlug,
     this.isCartSelected,
     this.onChanged,
+    this.isSizeAvailable = true,
   });
 
   @override
@@ -162,11 +164,11 @@ class _ProductTileState extends State<ProductTile> {
               child: Row(
                 children: [
                   /// Size
-                  sizeSelector(categorySlug: widget.categorySlug ?? ''),
+                  if (widget.isSizeAvailable) sizeSelector(categorySlug: widget.categorySlug ?? ''),
                   (defaultPadding / 4).horizontalSpace,
 
-                  /// Color
-                  colorSelector(categorySlug: widget.categorySlug ?? ''),
+                  /// Diamond
+                  diamondSelector(categorySlug: widget.categorySlug ?? ''),
                 ],
               ),
             ),
@@ -175,8 +177,8 @@ class _ProductTileState extends State<ProductTile> {
               padding: EdgeInsets.symmetric(horizontal: defaultPadding / 6),
               child: Row(
                 children: [
-                  /// Diamond
-                  diamondSelector(categorySlug: widget.categorySlug ?? ''),
+                  /// Color
+                  colorSelector(categorySlug: widget.categorySlug ?? ''),
                   (defaultPadding / 4).horizontalSpace,
 
                   /// Remark
@@ -289,30 +291,25 @@ class _ProductTileState extends State<ProductTile> {
                                 ),
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(right: defaultPadding / 2),
-                              child: AppPopUpMenuButton(
-                                menuList: const ["Variants", "Add to Watchlist"],
-                                onSelect: (value) {
-                                  switch (value) {
-                                    case "variants":
-                                      break;
-                                    case "add to watchlist":
-                                      Get.toNamed(AppRoutes.addWatchListScreen);
-                                      break;
+                            AppIconButton(
+                              onPressed: () {
+                                if (widget.isLike != null) {
+                                  widget.isLike?.value = !widget.isLike!.value;
+
+                                  if (widget.likeOnChanged != null) {
+                                    widget.likeOnChanged!(widget.isLike!.value);
                                   }
-                                },
-                                child: Icon(
-                                  shadows: const [Shadow(color: AppColors.background, blurRadius: 4)],
-                                  Icons.more_vert_rounded,
-                                  size: 18.sp,
-                                ),
+                                }
+                              },
+                              icon: SvgPicture.asset(
+                                widget.isLike?.value ?? false ? AppAssets.likeFill : AppAssets.like,
+                                height: 19.sp,
+                                width: 19.sp,
+                                colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
                               ),
                             ),
                           ],
                         ),
-
-                        // 4.verticalSpace,
                       ],
                     ),
                   ),
@@ -326,7 +323,7 @@ class _ProductTileState extends State<ProductTile> {
                 child: Row(
                   children: [
                     /// Size Selector
-                    sizeSelector(direction: Axis.vertical, categorySlug: widget.categorySlug ?? ''),
+                    if (widget.isSizeAvailable) sizeSelector(direction: Axis.vertical, categorySlug: widget.categorySlug ?? ''),
                     6.horizontalSpace,
 
                     /// Color Selector
@@ -429,7 +426,7 @@ class _ProductTileState extends State<ProductTile> {
                     Row(
                       children: [
                         /// Size Selector
-                        sizeSelector(isFlexible: true, direction: Axis.vertical, categorySlug: widget.categorySlug ?? ''),
+                        if (widget.isSizeAvailable) sizeSelector(isFlexible: true, direction: Axis.vertical, categorySlug: widget.categorySlug ?? ''),
                         6.horizontalSpace,
 
                         /// Color Selector
@@ -464,7 +461,7 @@ class _ProductTileState extends State<ProductTile> {
       sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
       selectableItemType: SelectableItemType.size,
       axisDirection: direction,
-      sizeOnChanged: (value) {
+      sizeOnChanged: (value) async {
         /// Return Selected Size
         if ((value.runtimeType == SizeModel)) {
           sizeModel = value;
@@ -682,7 +679,7 @@ class _ProductTileState extends State<ProductTile> {
                       physics: const RangeMaintainingScrollPhysics(),
                       child: Row(
                         children: [
-                          sizeSelector(direction: Axis.vertical, isFlexible: true, categorySlug: widget.categorySlug ?? ''),
+                          if (widget.isSizeAvailable) sizeSelector(direction: Axis.vertical, isFlexible: true, categorySlug: widget.categorySlug ?? ''),
                           (defaultPadding / 4).horizontalSpace,
                           colorSelector(
                             direction: Axis.vertical,
