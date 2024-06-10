@@ -108,19 +108,19 @@ class ImageViewScreen extends StatelessWidget {
                               height: 60.h,
                               width: 62.h,
                               decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.primary.withOpacity(.2),
+                                color: Theme.of(context).colorScheme.primary.withOpacity(.5),
                                 borderRadius: BorderRadius.circular(10.r),
                               ),
                               padding: EdgeInsets.all(defaultPadding * 1.5),
                               child: Container(
                                 decoration: BoxDecoration(
-                                  border: Border.all(width: 2, color: Theme.of(context).primaryColor.withOpacity(.9)),
+                                  border: Border.all(width: 2, color: Theme.of(context).colorScheme.surface),
                                   shape: BoxShape.circle,
                                 ),
                                 padding: EdgeInsets.all(defaultPadding / 4),
                                 child: SvgPicture.asset(
                                   AppAssets.doneSmall,
-                                  colorFilter: ColorFilter.mode(Theme.of(context).primaryColor.withOpacity(.9), BlendMode.srcIn),
+                                  colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.surface, BlendMode.srcIn),
                                 ),
                               ),
                             ),
