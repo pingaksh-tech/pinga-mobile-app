@@ -87,7 +87,7 @@ class OrdersScreen extends StatelessWidget {
                             separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
                             itemBuilder: (context, index) {
                               return Container(
-                                padding: EdgeInsets.all(defaultPadding / 1.5).copyWith(top: 0, right: 0),
+                                padding: EdgeInsets.all(defaultPadding),
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).colorScheme.surface,
                                   borderRadius: BorderRadius.circular(
