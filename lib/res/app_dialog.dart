@@ -1372,9 +1372,12 @@ class AppDialogs {
                 },
               ),
               DownloadSelectionTile(
-                onTap: () {},
                 image: AppAssets.downloadListIcon,
                 title: "Downloaded list",
+                onTap: () {
+                  Get.back();
+                  Get.toNamed(AppRoutes.catalogueScreen);
+                },
               ),
             ],
           ),
@@ -1448,7 +1451,7 @@ class AppDialogs {
       AlertDialog(
         insetPadding: EdgeInsets.all(defaultPadding * 1.2),
         backgroundColor: AppColors.background,
-        titlePadding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding).copyWith(bottom: 0),
+        titlePadding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding / 2).copyWith(bottom: 0),
         contentPadding: EdgeInsets.all(defaultPadding * 1.2).copyWith(top: defaultPadding / 2, bottom: defaultPadding / 1.5),
         actionsPadding: EdgeInsets.symmetric(horizontal: defaultPadding),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(defaultRadius)),
@@ -1468,7 +1471,7 @@ class AppDialogs {
               icon: SvgPicture.asset(AppAssets.crossIcon, height: 25.h),
             ),
           ],
-        ).paddingSymmetric(vertical: defaultPadding / 2),
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
