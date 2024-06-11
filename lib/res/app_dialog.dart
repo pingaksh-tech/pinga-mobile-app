@@ -957,8 +957,8 @@ class AppDialogs {
   }
 
   // ADD QUANTITY DIALOG
-  static Future<dynamic> addQuantityDialog(BuildContext context, {required RxInt quantity, required Function(int) onChanged}) {
-    TextEditingController controller = TextEditingController(text: quantity.toString());
+  static Future<dynamic> addQuantityDialog(BuildContext context, {RxInt? quantity, required Function(int) onChanged, String? title, String? dialogTitle}) {
+    TextEditingController controller = TextEditingController(text: (quantity ?? '').toString());
     return Get.dialog(
       AlertDialog(
         backgroundColor: AppColors.background,
@@ -966,19 +966,20 @@ class AppDialogs {
         contentPadding: EdgeInsets.all(defaultPadding * 1.2).copyWith(top: defaultPadding / 2),
         actionsPadding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(bottom: defaultPadding / 1.4),
         title: Text(
-          "Add to cart",
+          dialogTitle ?? "Add to cart",
           style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 16.sp, fontWeight: FontWeight.w500, color: Theme.of(context).colorScheme.primary),
         ),
         content: AppTextField(
-          title: "Quantity",
+          title: title ?? "Quantity",
+          hintText: !isValEmpty(title) ? "Enter name" : null,
           controller: controller,
           autofocus: true,
           titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: Theme.of(context).colorScheme.primary),
           contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.4, horizontal: defaultPadding / 1.7),
-          keyboardType: TextInputType.number,
+          keyboardType: isValEmpty(title) ? TextInputType.number : TextInputType.text,
           textInputAction: TextInputAction.done,
           inputFormatters: [
-            LengthLimitingTextInputFormatter(4),
+            if (isValEmpty(title)) LengthLimitingTextInputFormatter(4),
           ],
         ),
         actions: [
@@ -1000,7 +1001,7 @@ class AppDialogs {
           /// ADD
           TextButton(
             child: Text(
-              "ADD",
+              isValEmpty(title) ? "ADD" : "SAVE",
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w500,

@@ -6,6 +6,8 @@ import '../../../../data/repositories/home/catalogue_repository.dart';
 class CatalogueController extends GetxController {
   RxList<CatalogueModel> catalogueList = <CatalogueModel>[].obs;
 
+  get watchList => null;
+
   @override
   void onReady() {
     super.onReady();

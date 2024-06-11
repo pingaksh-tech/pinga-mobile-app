@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../../exports.dart';
 import '../../../../res/app_bar.dart';
+import '../../../../res/app_dialog.dart';
+import '../../../../res/pop_up_menu_button.dart';
 import '../../../../utils/app_datetime_formator.dart';
 import 'catalogue_controller.dart';
 
@@ -28,6 +31,7 @@ class CatalogueScreen extends StatelessWidget {
           separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
           itemBuilder: (context, index) => catalogueTile(
             context,
+            index: index,
             title: con.catalogueList[index].title,
             subtitle: con.catalogueList[index].subtitle,
             date: con.catalogueList[index].createdAt.toString(),
@@ -37,7 +41,7 @@ class CatalogueScreen extends StatelessWidget {
     );
   }
 
-  Widget catalogueTile(BuildContext context, {String? title, String? subtitle, String? date}) {
+  Widget catalogueTile(BuildContext context, {String? title, String? subtitle, String? date, int index = 0}) {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
@@ -94,17 +98,53 @@ class CatalogueScreen extends StatelessWidget {
               ],
             ),
           ),
-          AppIconButton(
-            size: 20.sp,
-            icon: Icon(
+          AppPopUpMenuButton(
+            menuList: const ["Show", "Download", "Share", "Rename", "Delete"],
+            child: Icon(
               shadows: const [Shadow(color: AppColors.background, blurRadius: 4)],
               Icons.more_vert_rounded,
               size: 18.sp,
             ),
-            onPressed: () {
-              Get.toNamed(AppRoutes.pdfViewerScreen, arguments: {"title": title});
+            onSelect: (val) async {
+              switch (val) {
+                case "show":
+                  Get.toNamed(AppRoutes.pdfViewerScreen, arguments: {"title": title});
+                  break;
+                case "download":
+                  UiUtils.toast("Downloading...");
+                  break;
+                case "share":
+
+                  /// share wishlist
+                  await Share.share(
+                    "Catalogue : $title\nCreated Date : $date",
+                  );
+                  break;
+                case "rename":
+                  AppDialogs.addQuantityDialog(
+                    context,
+                    onChanged: (val) {},
+                    dialogTitle: "Rename Catalogue",
+                    title: "Enter name",
+                  );
+                  break;
+                case "delete":
+                  con.catalogueList.removeAt(index);
+                  break;
+              }
             },
           )
+          // AppIconButton(
+          //   size: 20.sp,
+          //   icon: Icon(
+          //     shadows: const [Shadow(color: AppColors.background, blurRadius: 4)],
+          //     Icons.more_vert_rounded,
+          //     size: 18.sp,
+          //   ),
+          //   onPressed: () {
+          //     Get.toNamed(AppRoutes.pdfViewerScreen, arguments: {"title": title});
+          //   },
+          // )
         ],
       ),
     );
