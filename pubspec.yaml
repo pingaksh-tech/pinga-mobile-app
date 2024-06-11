@@ -61,6 +61,9 @@ dependencies:
   like_button: ^2.0.5
   smooth_page_indicator: ^1.1.0
   csv: ^6.0.0
+  image_picker: ^1.1.2
+  image_cropper: ^7.0.4
+  flutter_image_compress: ^2.3.0
 
 dev_dependencies:
   flutter_test:

@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import '../../../exports.dart';
 import '../../../packages/cached_network_image/cached_network_image.dart';
-import '../../theme/app_style.dart';
 import '../../widgets/webview.dart';
 import 'app_drawer_controller.dart';
 
@@ -249,7 +248,7 @@ class AppDrawer extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             onTap: () {
-              // Get.back();
+              Get.toNamed(AppRoutes.feedbackScreen);
             },
           ),
           const Divider(height: 1),

@@ -74,4 +74,5 @@ class AppRoutes {
   /// ***********************************************************************************
   static const String wishlistScreen = '/wishlist-screen';
   static const String settingsScreen = '/settings-screen';
+  static const String feedbackScreen = '/feedback-screen';
 }

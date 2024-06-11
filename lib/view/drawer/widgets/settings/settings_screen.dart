@@ -33,10 +33,12 @@ class SettingsScreen extends StatelessWidget {
                 secondary: SvgPicture.asset(
                   con.settingMenu[index]['icon'],
                   height: con.settingMenu[index]['icon_height'],
+                  colorFilter: ColorFilter.mode(Theme.of(context).primaryColor, BlendMode.srcIn),
                 ),
+
                 title: Text(con.settingMenu[index]['title'], style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font)),
                 subtitle: Text(con.settingMenu[index]['subtitle'], style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w400, fontSize: 10.4.sp)),
-                activeColor: Theme.of(context).colorScheme.primary.withOpacity(.3),
+                // activeColor: Theme.of(context).colorScheme.primary.withOpacity(.3),
                 overlayColor: WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
                   return Theme.of(context).colorScheme.primary.withOpacity(.0);
                 }),
@@ -55,7 +57,7 @@ class SettingsScreen extends StatelessWidget {
               );
             }),
           ),
-          const Divider(
+          /*    const Divider(
             height: 0,
           ),
           4.verticalSpace,
@@ -80,7 +82,7 @@ class SettingsScreen extends StatelessWidget {
             ),
             onTap: () {},
           ),
-          const Divider(height: 0),
+          const Divider(height: 0),*/
         ],
       ),
     );

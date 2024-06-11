@@ -1225,20 +1225,19 @@ class AppDialogs {
             ),
         actions: [
           /// CANCEL
-          if (!isValEmpty(buttonTitle))
-            TextButton(
-              child: Text(
-                buttonTitle ?? "CANCEL",
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-              ),
-              onPressed: () {
-                Get.back();
-              },
+          TextButton(
+            child: Text(
+              buttonTitle ?? "CANCEL",
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
             ),
+            onPressed: () {
+              Get.back();
+            },
+          ),
 
           /// ADD
           TextButton(
@@ -1310,6 +1309,90 @@ class AppDialogs {
             },
           ),
         ],
+      ),
+    );
+  }
+
+  static Future<dynamic> addAttachmentDialog(BuildContext context) {
+    return Get.dialog(
+      AlertDialog(
+        backgroundColor: AppColors.background,
+        titlePadding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding).copyWith(bottom: 0),
+        contentPadding: EdgeInsets.all(defaultPadding * 1.2).copyWith(top: defaultPadding / 2),
+        actionsPadding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(bottom: defaultPadding / 1.4),
+        title: Row(
+          children: [
+            Expanded(
+              child: Text(
+                "Choose",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontSize: 15.4.sp,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.font,
+                    ),
+              ),
+            ),
+            AppIconButton(
+              size: 24.h,
+              splashColor: Theme.of(context).scaffoldBackgroundColor,
+              icon: SvgPicture.asset(
+                AppAssets.crossIcon,
+                colorFilter: const ColorFilter.mode(AppColors.font, BlendMode.srcIn),
+              ),
+              onPressed: () {
+                Get.back();
+              },
+            ),
+          ],
+        ),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            IconButton(
+              icon: Padding(
+                padding: EdgeInsets.symmetric(vertical: defaultPadding / 1.2, horizontal: defaultPadding * 1.3),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SvgPicture.asset(
+                      height: 20.h,
+                      AppAssets.addPhotoSVG,
+                      colorFilter: ColorFilter.mode(AppColors.font.withOpacity(.6), BlendMode.srcIn),
+                    ),
+                    4.verticalSpace,
+                    Text(
+                      "Photos",
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 10.sp),
+                    ),
+                  ],
+                ),
+              ),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: Padding(
+                padding: EdgeInsets.symmetric(vertical: defaultPadding, horizontal: defaultPadding / 1.2),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SvgPicture.asset(
+                      height: 20.h,
+                      AppAssets.documentFill,
+                      colorFilter: ColorFilter.mode(AppColors.font.withOpacity(.6), BlendMode.srcIn),
+                    ),
+                    4.verticalSpace,
+                    Text(
+                      "Documents",
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 10.sp),
+                    ),
+                  ],
+                ),
+              ),
+              onPressed: () {},
+            ),
+          ],
+        ),
       ),
     );
   }

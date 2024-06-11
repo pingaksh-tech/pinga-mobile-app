@@ -12,6 +12,7 @@ class CustomRadioButton extends StatelessWidget {
   final double? buttonSize;
   final VoidCallback? onPressed;
   final TextStyle? titleStyle;
+  final Color? color;
 
   const CustomRadioButton({
     super.key,
@@ -21,6 +22,7 @@ class CustomRadioButton extends StatelessWidget {
     this.buttonSize,
     this.onPressed,
     this.titleStyle,
+    this.color,
   });
 
   @override
@@ -34,6 +36,7 @@ class CustomRadioButton extends StatelessWidget {
             isSelected: isSelected,
             radioButtonType: radioButtonType,
             buttonSize: buttonSize,
+            color: color,
           ),
           8.horizontalSpace,
           AnimatedDefaultTextStyle(
@@ -108,7 +111,7 @@ class AppRadioButton extends StatelessWidget {
           height: size,
           width: size,
           padding: EdgeInsets.all(2.h),
-          decoration: BoxDecoration(border: Border.all(color: isSelected.isTrue ? Theme.of(context).primaryColor : AppColors.lightGrey, width: 1.3), shape: BoxShape.circle),
+          decoration: BoxDecoration(border: Border.all(color: isSelected.isTrue ? Theme.of(context).primaryColor : color ?? AppColors.lightGrey, width: 1.3), shape: BoxShape.circle),
           child: CircleAvatar(backgroundColor: isSelected.isTrue ? Theme.of(context).primaryColor : Colors.transparent),
         );
 
