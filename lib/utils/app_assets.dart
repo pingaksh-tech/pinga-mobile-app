@@ -5,13 +5,6 @@ class AppAssets {
   static const String svgPath = "assets/svg/";
   static const String gifPath = "assets/gif/";
   static const String jsonPath = "assets/lottie_json/";
-  static const String pdfPath = "assets/pdf/";
-
-  /// ***********************************************************************************
-  ///                                   PDF
-  /// ***********************************************************************************
-
-  static const String ringCatalogue = '${pdfPath}ring_catalogue.pdf';
 
   /// ***********************************************************************************
   ///                                   IMAGES
