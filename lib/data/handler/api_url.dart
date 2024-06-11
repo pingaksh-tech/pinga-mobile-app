@@ -28,5 +28,5 @@ class ApiUrls {
 // static String latLng = "user/update-lat-long";
 
   /// WISHLIST
-  static String wishlistGet = "wishlist/get";
+  static String watchlistGet = "wishlist/get";
 }

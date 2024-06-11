@@ -6,7 +6,10 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
@@ -313,7 +316,7 @@ class Restart {
   static Future<bool> restartApp({String? webOrigin}) async => (await _channel.invokeMethod('restartApp', webOrigin)) == "ok";
 }
 
-/* Future<void> pickImages(
+Future<void> pickImages(
   BuildContext context, {
   bool isSingleImage = true,
   bool withCropper = true,
@@ -389,7 +392,7 @@ Future<CroppedFile?> singleImageCropper(
 
   CroppedFile? cropper = await ImageCropper().cropImage(
     sourcePath: fileImage.path,
-    cropStyle: cropStyle ?? CropStyle.rectangle,
+    // cropStyle: cropStyle ?? CropStyle.rectangle,
     aspectRatio: aspectRatio ??
         const CropAspectRatio(
           ratioX: 100,
@@ -422,7 +425,7 @@ Future<CroppedFile?> singleImageCropper(
   );
 
   return cropper;
-} */
+}
 
 Future<void> shareAppLink({required String link}) async {
   final result = await Share.share(link, subject: AppStrings.appName.value);
@@ -508,4 +511,20 @@ void removeOverlay() {
     overlayEntry.value?.remove();
     overlayEntry.value = null;
   }
+}
+
+Future<void> makePhoneCall(String phoneNumber) async {
+  final Uri launchUri = Uri(
+    scheme: 'tel',
+    path: phoneNumber,
+  );
+  await launchUrl(launchUri);
+}
+
+Future<void> sendEmail(String email) async {
+  final Uri launchUri = Uri(
+    scheme: 'mailto',
+    path: email,
+  );
+  await launchUrl(launchUri);
 }

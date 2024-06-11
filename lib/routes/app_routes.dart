@@ -79,4 +79,7 @@ class AppRoutes {
   ///                                 DRAWER PAGES
   /// ***********************************************************************************
   static const String orderFilterScreen = '/order-filter-screen';
+  static const String feedbackScreen = '/feedback-screen';
+  static const String catalogueScreen = '/catalogue-screen';
+  static const String pdfViewerScreen = '/pdf-viewer-screen';
 }

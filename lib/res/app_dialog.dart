@@ -958,8 +958,8 @@ class AppDialogs {
   }
 
   // ADD QUANTITY DIALOG
-  static Future<dynamic> addQuantityDialog(BuildContext context, {required RxInt quantity, required Function(int) onChanged}) {
-    TextEditingController controller = TextEditingController(text: quantity.toString());
+  static Future<dynamic> addQuantityDialog(BuildContext context, {RxInt? quantity, required Function(int) onChanged, String? title, String? dialogTitle}) {
+    TextEditingController controller = TextEditingController(text: (quantity ?? '').toString());
     return Get.dialog(
       AlertDialog(
         backgroundColor: AppColors.background,
@@ -967,18 +967,20 @@ class AppDialogs {
         contentPadding: EdgeInsets.all(defaultPadding * 1.2).copyWith(top: defaultPadding / 2),
         actionsPadding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(bottom: defaultPadding / 1.4),
         title: Text(
-          "Add to cart",
+          dialogTitle ?? "Add to cart",
           style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 16.sp, fontWeight: FontWeight.w500, color: Theme.of(context).colorScheme.primary),
         ),
         content: AppTextField(
-          title: "Quantity",
+          title: title ?? "Quantity",
+          hintText: !isValEmpty(title) ? "Enter name" : null,
           controller: controller,
+          autofocus: true,
           titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: Theme.of(context).colorScheme.primary),
           contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.4, horizontal: defaultPadding / 1.7),
-          keyboardType: TextInputType.number,
+          keyboardType: isValEmpty(title) ? TextInputType.number : TextInputType.text,
           textInputAction: TextInputAction.done,
           inputFormatters: [
-            LengthLimitingTextInputFormatter(4),
+            if (isValEmpty(title)) LengthLimitingTextInputFormatter(4),
           ],
         ),
         actions: [
@@ -1000,7 +1002,7 @@ class AppDialogs {
           /// ADD
           TextButton(
             child: Text(
-              "ADD",
+              isValEmpty(title) ? "ADD" : "SAVE",
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w500,
@@ -1059,6 +1061,7 @@ class AppDialogs {
               title: "Metal Wt",
               hintText: "Add extra metal weight",
               controller: controller.value,
+              autofocus: true,
               contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.4, horizontal: defaultPadding / 1.7),
               titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontSize: 13.sp,
@@ -1094,7 +1097,7 @@ class AppDialogs {
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
-                      color: AppColors.font.withOpacity(.7),
+                      color: AppColors.font.withOpacity(.5),
                     ),
               );
             }),
@@ -1226,20 +1229,19 @@ class AppDialogs {
             ),
         actions: [
           /// CANCEL
-          if (!isValEmpty(buttonTitle))
-            TextButton(
-              child: Text(
-                buttonTitle ?? "CANCEL",
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-              ),
-              onPressed: () {
-                Get.back();
-              },
+          TextButton(
+            child: Text(
+              buttonTitle ?? "CANCEL",
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
             ),
+            onPressed: () {
+              Get.back();
+            },
+          ),
 
           /// ADD
           TextButton(
@@ -1454,26 +1456,19 @@ class AppDialogs {
           children: [
             Expanded(
               child: Text(
-                "File Name",
+                "Select an option",
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontSize: 15.4.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.font,
-                    ),
-              ),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500),
+              ).paddingOnly(top: defaultPadding, bottom: defaultPadding, left: defaultPadding),
             ),
             AppIconButton(
               onPressed: () {
                 Get.back();
               },
-              icon: SvgPicture.asset(
-                AppAssets.crossIcon,
-                height: 25.h,
-              ),
+              icon: SvgPicture.asset(AppAssets.crossIcon, height: 25.h),
             ),
           ],
-        ),
+        ).paddingSymmetric(vertical: defaultPadding / 2),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1507,7 +1502,91 @@ class AppDialogs {
               onPressed: () {
                 Get.back();
               },
-            )
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  static Future<dynamic> addAttachmentDialog(BuildContext context) {
+    return Get.dialog(
+      AlertDialog(
+        backgroundColor: AppColors.background,
+        titlePadding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding).copyWith(bottom: 0),
+        contentPadding: EdgeInsets.all(defaultPadding * 1.2).copyWith(top: defaultPadding / 2),
+        actionsPadding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(bottom: defaultPadding / 1.4),
+        title: Row(
+          children: [
+            Expanded(
+              child: Text(
+                "Choose",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontSize: 15.4.sp,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.font,
+                    ),
+              ),
+            ),
+            AppIconButton(
+              size: 24.h,
+              splashColor: Theme.of(context).scaffoldBackgroundColor,
+              icon: SvgPicture.asset(
+                AppAssets.crossIcon,
+                colorFilter: const ColorFilter.mode(AppColors.font, BlendMode.srcIn),
+              ),
+              onPressed: () {
+                Get.back();
+              },
+            ),
+          ],
+        ),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            IconButton(
+              icon: Padding(
+                padding: EdgeInsets.symmetric(vertical: defaultPadding / 1.2, horizontal: defaultPadding * 1.3),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SvgPicture.asset(
+                      height: 20.h,
+                      AppAssets.addPhotoSVG,
+                      colorFilter: ColorFilter.mode(AppColors.font.withOpacity(.6), BlendMode.srcIn),
+                    ),
+                    4.verticalSpace,
+                    Text(
+                      "Photos",
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 10.sp),
+                    ),
+                  ],
+                ),
+              ),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: Padding(
+                padding: EdgeInsets.symmetric(vertical: defaultPadding, horizontal: defaultPadding / 1.2),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SvgPicture.asset(
+                      height: 20.h,
+                      AppAssets.documentFill,
+                      colorFilter: ColorFilter.mode(AppColors.font.withOpacity(.6), BlendMode.srcIn),
+                    ),
+                    4.verticalSpace,
+                    Text(
+                      "Documents",
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 10.sp),
+                    ),
+                  ],
+                ),
+              ),
+              onPressed: () {},
+            ),
           ],
         ),
       ),

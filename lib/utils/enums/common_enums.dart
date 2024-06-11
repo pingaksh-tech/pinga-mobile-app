@@ -267,3 +267,44 @@ enum OrderFilterType {
     return OrderFilterType.values.firstWhere((e) => e.slug == slug);
   }
 }
+
+enum FeedbackType {
+  newDesign(
+    id: 1,
+    slug: "new_design",
+    label: "New Design Feedback",
+  ),
+  appImprovement(
+    id: 2,
+    slug: "app_improvement",
+    label: "App Improvement",
+  ),
+  orderProcessing(
+    id: 3,
+    slug: "order_processing",
+    label: "Order Processing",
+  ),
+  areaImprovement(
+    id: 4,
+    slug: "area_improvement",
+    label: "Area Of Improvement",
+  );
+
+  final int id;
+  final String label;
+  final String slug;
+
+  const FeedbackType({
+    required this.id,
+    required this.label,
+    required this.slug,
+  });
+
+  static FeedbackType fromId(int id) {
+    return FeedbackType.values.firstWhere((e) => e.id == id);
+  }
+
+  static FeedbackType fromSlug(String slug) {
+    return FeedbackType.values.firstWhere((e) => e.slug == slug);
+  }
+}

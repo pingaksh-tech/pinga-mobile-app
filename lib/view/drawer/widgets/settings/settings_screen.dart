@@ -28,37 +28,50 @@ class SettingsScreen extends StatelessWidget {
             itemCount: con.settingMenu.length,
             separatorBuilder: (context, index) => const Divider(height: 0),
             itemBuilder: (context, index) => Obx(() {
-              return SwitchListTile(
-                value: con.settingMenu[index]['isTrue'].value,
-                secondary: SvgPicture.asset(
-                  con.settingMenu[index]['icon'],
-                  height: con.settingMenu[index]['icon_height'],
+              return ListTileTheme(
+                data: const ListTileThemeData(
+                  titleAlignment: ListTileTitleAlignment.center,
                 ),
-                title: Text(con.settingMenu[index]['title'], style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font)),
-                subtitle: Text(con.settingMenu[index]['subtitle'], style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w400, fontSize: 10.4.sp)),
-                activeColor: Theme.of(context).colorScheme.primary.withOpacity(.3),
-                overlayColor: WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
-                  return Theme.of(context).colorScheme.primary.withOpacity(.0);
-                }),
-                trackOutlineColor: WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
-                  return Theme.of(context).colorScheme.primary.withOpacity(.4);
-                }),
-                thumbColor: WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
-                  if (states.contains(WidgetState.selected)) {
-                    return AppColors.background;
-                  }
-                  return Theme.of(context).colorScheme.primary.withOpacity(.8);
-                }),
-                onChanged: (value) {
-                  con.settingMenu[index]['isTrue'].value = value;
-                },
+                child: SwitchListTile(
+                  value: con.settingMenu[index]['isTrue'].value,
+                  secondary: SvgPicture.asset(
+                    con.settingMenu[index]['icon'],
+                    height: con.settingMenu[index]['icon_height'],
+                    colorFilter: ColorFilter.mode(Theme.of(context).primaryColor, BlendMode.srcIn),
+                  ),
+
+                  title: Padding(
+                    padding: isValEmpty(con.settingMenu[index]['subtitle']) ? EdgeInsets.symmetric(vertical: 10.h) : EdgeInsets.zero,
+                    child: Text(con.settingMenu[index]['title'], style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font)),
+                  ),
+                  subtitle: !isValEmpty(con.settingMenu[index]['subtitle'])
+                      ? Text(
+                          con.settingMenu[index]['subtitle'],
+                          style: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.font.withOpacity(.8), fontWeight: FontWeight.w400, fontSize: 10.4.sp),
+                        )
+                      : null,
+                  // activeColor: Theme.of(context).colorScheme.primary.withOpacity(.3),
+                  overlayColor: WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+                    return Theme.of(context).colorScheme.primary.withOpacity(.0);
+                  }),
+                  trackOutlineColor: WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+                    return Theme.of(context).colorScheme.primary.withOpacity(.4);
+                  }),
+                  thumbColor: WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+                    if (states.contains(WidgetState.selected)) {
+                      return AppColors.background;
+                    }
+                    return Theme.of(context).colorScheme.primary.withOpacity(.8);
+                  }),
+                  onChanged: (value) {
+                    con.settingMenu[index]['isTrue'].value = value;
+                  },
+                ),
               );
             }),
           ),
-          const Divider(
-            height: 0,
-          ),
-          4.verticalSpace,
+          const Divider(height: 0),
+          /*  4.verticalSpace,
           ListTile(
             leading: SvgPicture.asset(AppAssets.changePasswordSVG),
             title: Text("Change password", style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font)),
@@ -80,7 +93,7 @@ class SettingsScreen extends StatelessWidget {
             ),
             onTap: () {},
           ),
-          const Divider(height: 0),
+          const Divider(height: 0),*/
         ],
       ),
     );

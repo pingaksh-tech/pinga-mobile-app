@@ -23,7 +23,7 @@ class AuthScreen extends StatelessWidget {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: UiUtils.systemUiOverlayStyle(
         isReverse: true,
-        systemNavigationBarColor: Theme.of(context).scaffoldBackgroundColor,
+        systemNavigationBarColor: Theme.of(context).colorScheme.surface,
       ),
       child: Obx(
         () => PopScope(
@@ -36,6 +36,7 @@ class AuthScreen extends StatelessWidget {
             }
           },
           child: Scaffold(
+            backgroundColor: Theme.of(context).colorScheme.surface,
             body: Stack(
               fit: StackFit.expand,
               children: [
@@ -327,7 +328,7 @@ class AuthScreen extends StatelessWidget {
                         ),
                         AnimatedContainer(
                           duration: defaultDuration,
-                          color: !UiUtils.keyboardIsOpen.value ? Theme.of(context).scaffoldBackgroundColor : null,
+                          // color: !UiUtils.keyboardIsOpen.value ? Theme.of(context).colorScheme.surface : null,
                           margin: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + defaultPadding * 1.5),
                           child: RichText(
                             textAlign: TextAlign.center,
