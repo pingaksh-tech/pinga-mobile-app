@@ -74,4 +74,9 @@ class AppRoutes {
   /// ***********************************************************************************
   static const String wishlistScreen = '/wishlist-screen';
   static const String settingsScreen = '/settings-screen';
+
+  /// ***********************************************************************************
+  ///                                 DRAWER PAGES
+  /// ***********************************************************************************
+  static const String orderFilterScreen = '/order-filter-screen';
 }

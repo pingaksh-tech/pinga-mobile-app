@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../exports.dart';
 import '../../packages/marquee_widget/marquee_widget.dart';
@@ -14,76 +15,21 @@ class OrdersScreen extends StatelessWidget {
 
   final OrdersController con = Get.put(OrdersController());
 
-  double get imageWidth => Get.width * 0.25;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      // appBar: MyAppBar(
-      //   title: "My orders",
-      //   actions: [
-      //     UiUtils.notificationButton(),
-      //   ],
-      // ),
       body: Obx(
         () => SafeArea(
           child: Column(
             children: [
-              /*   Align(
-                alignment: Alignment.centerLeft,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2.2),
-                  child: Row(
-                    children: List.generate(
-                      con.statusList.length,
-                      (index) {
-                        return GestureDetector(
-                          onTap: () async {
-                            if (con.tabIndex.value != index) {
-                              con.tabIndex.value = index;
-                              con.selectedType.value = con.statusList[index];
-                              await OrdersRepository.getAllOrdersAPI();
-                            }
-                          },
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 250),
-                            margin: EdgeInsets.symmetric(horizontal: defaultPadding / 2.4, vertical: defaultPadding / 1.5).copyWith(bottom: defaultPadding / 2),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(defaultPadding),
-                              color: con.tabIndex.value == index ? Theme.of(context).primaryColor : Theme.of(context).colorScheme.surface,
-                              border: Border.all(color: Theme.of(context).primaryColor.withOpacity(.1), width: .7),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: defaultPadding / 1.3, vertical: 7),
-                              child: AnimatedDefaultTextStyle(
-                                duration: const Duration(milliseconds: 100),
-                                style: TextStyle(
-                                  fontSize: 13.sp,
-                                  color: con.tabIndex.value == index ? Theme.of(context).colorScheme.surface : Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                  fontFamily: AppTheme.fontFamilyName,
-                                ),
-                                child: Text(
-                                  con.statusList[index].capitalize!,
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ), */
-              SizedBox(height: defaultPadding),
               con.isLoading.isFalse
                   ? (con.orderProductList.isNotEmpty
                       ? Expanded(
                           child: ListView.separated(
                             controller: con.scrollController,
-                            padding: EdgeInsets.all(defaultPadding / 1.5).copyWith(top: defaultPadding / 2),
+                            padding: EdgeInsets.all(defaultPadding / 1.5),
+                            itemCount: con.orderProductList.length,
                             separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
                             itemBuilder: (context, index) {
                               return Container(
@@ -96,15 +42,7 @@ class OrdersScreen extends StatelessWidget {
                                   boxShadow: defaultShadowAllSide,
                                 ),
                                 child: GestureDetector(
-                                  onTap: () {
-                                    // Get.toNamed(
-                                    //   AppRoutes.orderProductDetailScreen,
-                                    //   arguments: {
-                                    //     "productDetail": con.orderProductList[index],
-                                    //     "isOrder": true,
-                                    //   },
-                                    // );
-                                  },
+                                  onTap: () {},
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
@@ -112,9 +50,8 @@ class OrdersScreen extends StatelessWidget {
                                         children: [
                                           SvgPicture.asset(
                                             AppAssets.openBox,
-                                            // ignore: deprecated_member_use
-                                            color: Theme.of(context).primaryColor,
-                                            height: 25.sp,
+                                            colorFilter: ColorFilter.mode(Theme.of(context).primaryColor, BlendMode.srcIn),
+                                            height: 27.sp,
                                           ),
                                           (defaultPadding / 2).horizontalSpace,
                                           Column(
@@ -124,7 +61,7 @@ class OrdersScreen extends StatelessWidget {
                                                 style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 14.sp, fontWeight: FontWeight.w500, height: 0),
                                               ),
                                               Text(
-                                                "05/10/2024 02:52:10",
+                                                DateFormat('MM/dd/yyyy HH:mm:ss').format(con.orderProductList[index].createdAt ?? DateTime.now()),
                                                 style: AppTextStyle.subtitleStyle(context).copyWith(fontSize: 12.sp),
                                               )
                                             ],
@@ -132,13 +69,12 @@ class OrdersScreen extends StatelessWidget {
                                         ],
                                       ),
                                       const Divider(),
-                                      // SizedBox(width: defaultPadding / 2),
                                       orderDetailsKeyValuePairWidget1(
                                         context,
                                         title: "Name",
-                                        subtitleText: "Hari Ambe Jewellers",
+                                        subtitleText: con.orderProductList[index].products?.first.product?.title ?? "",
                                         titleFlex: 2,
-                                        subTitleFlex: 7,
+                                        subTitleFlex: 8,
                                       ),
                                       SizedBox(height: defaultPadding / 2),
                                       Row(
@@ -148,8 +84,8 @@ class OrdersScreen extends StatelessWidget {
                                               context,
                                               title: "EMR ID",
                                               subtitleText: "0/24/PNK/39536",
-                                              subTitleFlex: 2,
-                                              titleFlex: 2,
+                                              subTitleFlex: 4,
+                                              titleFlex: 3,
                                             ),
                                           ),
                                           defaultPadding.horizontalSpace,
@@ -157,13 +93,14 @@ class OrdersScreen extends StatelessWidget {
                                             child: orderDetailsKeyValuePairWidget1(
                                               context,
                                               title: "Quantity",
-                                              subtitleText: "1.0",
+                                              subtitleText: (con.orderProductList[index].products?.first.quantity ?? 0).toString(),
+                                              titleFlex: 3,
+                                              subTitleFlex: 4,
                                             ),
                                           ),
                                         ],
                                       ),
                                       SizedBox(height: defaultPadding / 2),
-
                                       Row(
                                         children: [
                                           Expanded(
@@ -171,8 +108,8 @@ class OrdersScreen extends StatelessWidget {
                                               context,
                                               title: "Total DP",
                                               subtitleText: "21632.2",
-                                              subTitleFlex: 2,
-                                              titleFlex: 2,
+                                              subTitleFlex: 4,
+                                              titleFlex: 3,
                                             ),
                                           ),
                                           defaultPadding.horizontalSpace,
@@ -180,7 +117,12 @@ class OrdersScreen extends StatelessWidget {
                                             child: orderDetailsKeyValuePairWidget1(
                                               context,
                                               title: "MRP",
-                                              subtitleText: "257100.0",
+                                              subtitleText: UiUtils.amountFormat(
+                                                (con.orderProductList[index].products?.first.price ?? 0).toString(),
+                                                decimalDigits: 2,
+                                              ),
+                                              titleFlex: 3,
+                                              subTitleFlex: 4,
                                             ),
                                           ),
                                         ],
@@ -190,7 +132,6 @@ class OrdersScreen extends StatelessWidget {
                                 ),
                               );
                             },
-                            itemCount: con.orderProductList.length,
                           ),
                         )
                       : const Expanded(
@@ -208,6 +149,24 @@ class OrdersScreen extends StatelessWidget {
                         itemBuilder: (context, index) => const OrderShimmerTile(),
                       ),
                     ),
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: IntrinsicHeight(
+        child: Container(
+          padding: EdgeInsets.all(defaultPadding).copyWith(bottom: MediaQuery.of(context).padding.bottom + defaultPadding),
+          decoration: BoxDecoration(
+            color: Theme.of(context).primaryColor.withAlpha(20),
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(defaultRadius),
+            ),
+          ),
+          child: Column(
+            children: [
+              orderSummaryItem(context, title: "Total items", subTitle: "5"),
+              orderSummaryItem(context, title: "Total DP", subTitle: UiUtils.amountFormat("219850", decimalDigits: 0)),
+              orderSummaryItem(context, title: "Total Amount", subTitle: UiUtils.amountFormat("284523", decimalDigits: 0)),
             ],
           ),
         ),
@@ -247,11 +206,35 @@ class OrdersScreen extends StatelessWidget {
           child: Align(
             alignment: Alignment.centerLeft,
             child: MarqueeWidget(
-                child: Text(
-              subtitleText,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600, fontSize: 14.sp),
-            )),
+              child: Text(
+                subtitleText,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600, fontSize: 14.sp),
+              ),
+            ),
           ),
+        ),
+      ],
+    );
+  }
+
+  Widget orderSummaryItem(BuildContext context, {required String title, required String subTitle}) {
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            title,
+            style: Theme.of(Get.context!).textTheme.titleMedium?.copyWith(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w500,
+                ),
+          ),
+        ),
+        Text(
+          subTitle,
+          style: Theme.of(Get.context!).textTheme.titleMedium?.copyWith(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w500,
+              ),
         ),
       ],
     );

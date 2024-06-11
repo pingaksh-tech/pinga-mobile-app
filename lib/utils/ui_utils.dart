@@ -242,4 +242,17 @@ class UiUtils {
       ),
     );
   }
+
+  static convertDateToDotSeptate(DateTime date) {
+    String convertedDate = '';
+    try {
+      final DateTime now = DateTime.parse(date.toString());
+      final DateFormat format = DateFormat('dd MMM yyyy');
+      final String formatted = format.format(now);
+      convertedDate = formatted.toString();
+    } catch (e) {
+      convertedDate = '';
+    }
+    return convertedDate;
+  }
 }

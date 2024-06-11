@@ -243,3 +243,27 @@ enum FilterItemType {
     return FilterItemType.values.firstWhere((e) => e.slug == slug);
   }
 }
+
+///* ORDER FILTER ITEM TYPE
+enum OrderFilterType {
+  type(id: 1, label: "Type", slug: "type"),
+  date(id: 1, label: "Date", slug: "date");
+
+  final int id;
+  final String label;
+  final String slug;
+
+  const OrderFilterType({
+    required this.id,
+    required this.label,
+    required this.slug,
+  });
+
+  static OrderFilterType fromId(int id) {
+    return OrderFilterType.values.firstWhere((e) => e.id == id);
+  }
+
+  static OrderFilterType fromSlug(String slug) {
+    return OrderFilterType.values.firstWhere((e) => e.slug == slug);
+  }
+}

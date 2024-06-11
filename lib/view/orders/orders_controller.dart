@@ -16,10 +16,6 @@ class OrdersController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool paginationLoading = false.obs;
 
-  RxString selectedType = "All".obs;
-  RxInt tabIndex = 0.obs;
-  RxList<String> statusList = <String>["All", "Pending", "Accepted", "Rejected", "Completed"].obs;
-
   @override
   void onInit() {
     super.onInit();

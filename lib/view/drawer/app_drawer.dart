@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+
 import '../../../exports.dart';
 import '../../../packages/cached_network_image/cached_network_image.dart';
-import '../../theme/app_style.dart';
 import '../../widgets/webview.dart';
 import 'app_drawer_controller.dart';
 

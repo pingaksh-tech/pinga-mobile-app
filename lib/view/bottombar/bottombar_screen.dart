@@ -6,11 +6,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import '../../controller/predefine_value_controller.dart';
-import '../../res/app_bar.dart';
 
+import '../../controller/predefine_value_controller.dart';
 import '../../exports.dart';
 import '../../packages/app_animated_cliprect.dart';
+import '../../res/app_bar.dart';
 import '../cart/components/cart_popup_menu.dart';
 import '../drawer/app_drawer.dart';
 import 'bottombar_controller.dart';
@@ -75,7 +75,18 @@ class BottomBarScreen extends StatelessWidget {
                               ),
                             ),
                           )
-                        : const SizedBox(),
+                        : con.currentBottomIndex.value == 3
+                            ? AppIconButton(
+                                onPressed: () => Get.toNamed(AppRoutes.orderFilterScreen),
+                                icon: SvgPicture.asset(
+                                  AppAssets.filter,
+                                  colorFilter: ColorFilter.mode(
+                                    Theme.of(context).primaryColor,
+                                    BlendMode.srcIn,
+                                  ),
+                                ),
+                              )
+                            : const SizedBox(),
               ],
             ),
             body: con.isLoading.value

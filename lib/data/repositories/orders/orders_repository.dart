@@ -16,7 +16,7 @@ class OrdersRepository {
             {
               "product": {
                 "_id": "prod1",
-                "title": "Apple iPhone 13",
+                "title": "Hari Ambe Jewellers",
                 "description": "Latest model of Apple iPhone",
                 "price": 999,
                 "color": "Black",
@@ -32,7 +32,7 @@ class OrdersRepository {
                 ]
               },
               "quantity": 1,
-              "price": 999,
+              "price": 10420,
               "_id": "item1"
             },
             {
@@ -68,7 +68,7 @@ class OrdersRepository {
             {
               "product": {
                 "_id": "prod3",
-                "title": "Sony WH-1000XM4",
+                "title": "Golden Jewellers",
                 "description": "Noise Cancelling Wireless Headphones",
                 "price": 349,
                 "color": "Black",
@@ -83,7 +83,7 @@ class OrdersRepository {
                 ]
               },
               "quantity": 2,
-              "price": 698,
+              "price": 68560,
               "_id": "item3"
             },
             {
@@ -119,7 +119,7 @@ class OrdersRepository {
             {
               "product": {
                 "_id": "prod5",
-                "title": "Nike Air Max 270",
+                "title": "Riv Jewellers",
                 "description": "Comfortable and stylish running shoes",
                 "price": 149,
                 "color": "Blue",
@@ -134,7 +134,7 @@ class OrdersRepository {
                 ]
               },
               "quantity": 1,
-              "price": 149,
+              "price": 145811,
               "_id": "item5"
             },
             {
@@ -170,7 +170,7 @@ class OrdersRepository {
             {
               "product": {
                 "_id": "prod7",
-                "title": "Logitech MX Master 3",
+                "title": "Hari Om Jewellers",
                 "description": "Advanced wireless mouse",
                 "price": 99,
                 "color": "Gray",
@@ -185,7 +185,7 @@ class OrdersRepository {
                 ]
               },
               "quantity": 3,
-              "price": 297,
+              "price": 28127,
               "_id": "item7"
             },
             {
@@ -221,7 +221,7 @@ class OrdersRepository {
             {
               "product": {
                 "_id": "prod9",
-                "title": "Bose QuietComfort 35 II",
+                "title": "Suvarn Jewellers",
                 "description": "Noise Cancelling Wireless Headphones",
                 "price": 299,
                 "color": "Silver",
@@ -236,7 +236,7 @@ class OrdersRepository {
                 ]
               },
               "quantity": 2,
-              "price": 598,
+              "price": 12088,
               "_id": "item9"
             },
             {
