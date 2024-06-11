@@ -7,11 +7,13 @@ import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../exports.dart';
+import '../../res/app_dialog.dart';
+import 'profile_controller.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  ProfileScreen({super.key});
 
-  // final ProfileController con = Get.put(ProfileController());
+  final ProfileController con = Get.put(ProfileController());
 
   @override
   Widget build(BuildContext context) {
@@ -22,17 +24,19 @@ class ProfileScreen extends StatelessWidget {
       //   backgroundColor: Theme.of(context).colorScheme.surfaceBright,
       //   shadowColor: Theme.of(context).scaffoldBackgroundColor,
       // ),
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: ListView(
+        physics: const RangeMaintainingScrollPhysics(),
         padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + defaultPadding),
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: Get.width / 4.w,
-                  width: Get.width / 4.w,
+                  height: Get.width / 3.8.w,
+                  width: Get.width / 3.8.w,
                   child: Stack(
                     children: [
                       Container(
@@ -67,30 +71,23 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 5.w),
-                SizedBox(
-                  height: Get.width / 4.7.w,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-
-                    // mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(top: defaultPadding / 2),
-                        child: Text(
-                          "Dishank Gajera",
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700, color: Theme.of(context).primaryColor.withOpacity(0.8)),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: defaultPadding / 2),
-                        child: Text(
-                          "+91 7777990666",
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500, color: Theme.of(context).primaryColor.withOpacity(0.8)),
-                        ),
-                      ),
-                    ],
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Dishank Gajera",
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
+                    ),
+                    Text(
+                      "+91 7777990666",
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500),
+                    ),
+                    Text(
+                      "Seller",
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500),
+                    ),
+                  ],
                 )
               ],
             ),
@@ -117,7 +114,7 @@ class ProfileScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.circular(defaultRadius),
-                    // boxShadow: defaultShadow(context),
+                    boxShadow: defaultShadow(context),
                   ),
                   child: Center(
                     child: Column(
@@ -135,7 +132,7 @@ class ProfileScreen extends StatelessWidget {
                           padding: EdgeInsets.symmetric(vertical: defaultPadding / 2),
                           child: Text(
                             index == 0 ? "14" : "8",
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 27, fontWeight: FontWeight.w600, color: AppColors.primary),
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 27, fontWeight: FontWeight.w600),
                           ),
                         ),
                         Text(index == 0 ? "Total Cart Items" : "Total Orders", style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, fontWeight: FontWeight.w400, color: AppColors.subText)),
@@ -149,13 +146,6 @@ class ProfileScreen extends StatelessWidget {
           SizedBox(height: defaultPadding * 2),
           cardTile(
             context,
-            title: 'Privacy Policy',
-            url: 'https:// /policies/privacy-policy',
-            svgPath: AppAssets.privacy,
-          ),
-          Divider(height: defaultPadding * 1.3),
-          cardTile(
-            context,
             title: 'Terms and Conditions',
             url: 'https:// /pages/terms-and-condition',
             svgPath: AppAssets.tc,
@@ -163,11 +153,19 @@ class ProfileScreen extends StatelessWidget {
           Divider(height: defaultPadding * 1.3),
           cardTile(
             context,
+            title: 'Privacy Policy',
+            url: 'https:// /policies/privacy-policy',
+            svgPath: AppAssets.privacy,
+          ),
+          Divider(height: defaultPadding * 1.3),
+
+          /*  cardTile(
+            context,
             title: 'Shipping Policy',
             url: 'https:// /policies/shipping-policy',
             svgPath: AppAssets.cart,
           ),
-          Divider(height: defaultPadding * 1.3),
+          Divider(height: defaultPadding  * 1.3),*/
           cardTile(
             context,
             title: 'Return Policy',
@@ -213,7 +211,17 @@ class ProfileScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (isLogout) {
-          Get.offAllNamed(AppRoutes.authScreen);
+          AppDialogs.logoutDialog(
+            Get.context!,
+            isLoader: con.isLoading,
+            fullName: "Dishank Gajera",
+            onCancellation: () {
+              Get.back();
+            },
+            onLogout: () async {
+              Get.offAllNamed(AppRoutes.authScreen);
+            },
+          );
         } else {
           _launchInBrowser(Uri.parse(url ?? ""));
         }
@@ -234,21 +242,23 @@ class ProfileScreen extends StatelessWidget {
                       Icons.logout,
                       color: Colors.red,
                     )
-                  : SvgPicture.asset(svgPath, height: 19.sp, color: Theme.of(context).primaryColor),
+                  : SvgPicture.asset(
+                      svgPath,
+                      height: 19.sp,
+                    ),
             ),
             Text(
               title,
               style: Theme.of(Get.context!).textTheme.titleMedium?.copyWith(
                     fontSize: 13.sp,
                     fontWeight: FontWeight.w500,
-                    color: isLogout ? Colors.red : Theme.of(Get.context!).primaryColor,
+                    color: isLogout ? Colors.red : null,
                   ),
             ),
             const Spacer(),
-            Icon(
+            const Icon(
               Icons.arrow_forward_ios_rounded,
               size: 15,
-              color: Theme.of(context).primaryColor,
             )
           ],
         ),

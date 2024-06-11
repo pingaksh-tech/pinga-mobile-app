@@ -8,8 +8,7 @@ class OrderFilterController extends GetxController {
   RxString selectUserType = "".obs;
   RxList<String> userType = [
     "Sellers",
-    "Buyer",
-    "Admin",
+    "Retailer",
   ].obs;
 
   Rx<TextEditingController> startDateCon = TextEditingController().obs;

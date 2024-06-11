@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../../../exports.dart';
 import '../../../packages/cached_network_image/cached_network_image.dart';
+import '../../res/app_dialog.dart';
 import '../../widgets/webview.dart';
 import 'app_drawer_controller.dart';
 
@@ -266,7 +267,17 @@ class AppDrawer extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             onTap: () {
-              Get.offAllNamed(AppRoutes.authScreen);
+              AppDialogs.logoutDialog(
+                Get.context!,
+                isLoader: false.obs,
+                fullName: "Dishank Gajera",
+                onCancellation: () {
+                  Get.back();
+                },
+                onLogout: () async {
+                  Get.offAllNamed(AppRoutes.authScreen);
+                },
+              );
             },
           ),
         ],
