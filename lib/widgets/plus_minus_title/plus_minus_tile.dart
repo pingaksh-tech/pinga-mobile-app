@@ -14,6 +14,7 @@ Widget plusMinusTile(
   required Function(int) onIncrement,
   required Function(int) onDecrement,
   CartItemModel? item,
+  VoidCallback? onTap,
 }) {
   return Obx(() {
     return Container(
@@ -55,9 +56,14 @@ Widget plusMinusTile(
           GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
-              AppDialogs.addQuantityDialog(context, quantity: textValue, onChanged: (value) {
-                textValue.value = value;
-              });
+              AppDialogs.addQuantityDialog(
+                context,
+                quantity: textValue,
+                onChanged: (value) {
+                  textValue.value = value;
+                  onTap!();
+                },
+              );
             },
             child: SizedBox(
               width: 32.w,

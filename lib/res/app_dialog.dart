@@ -13,6 +13,7 @@ import '../controller/predefine_value_controller.dart';
 import '../data/model/predefined_model/predefined_model.dart';
 import '../exports.dart';
 import '../widgets/custom_radio_button.dart';
+import '../widgets/download_selection_tile.dart';
 
 class AppDialogs {
   // Function to show the Android-style dialog
@@ -1260,11 +1261,8 @@ class AppDialogs {
   static Future<dynamic> cartAlertDialog(
     BuildContext context, {
     required void Function()? onPressed,
-    Widget? content,
-    String? buttonTitle2,
-    String? dialogTitle,
     String? contentText,
-    String? buttonTitle,
+    bool isCancelButtonShow = false,
   }) {
     return Get.dialog(
       AlertDialog(
@@ -1280,19 +1278,11 @@ class AppDialogs {
               ),
         ),
         content: Text(
-          "Do you want to empty cart after items are added in watchList",
+          contentText ?? "It will take more than 10 minutes to download the catalogue. Do you want to continue?",
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleMedium,
         ),
         actions: [
-          AppButton(
-            title: "Yes",
-            height: 28.h,
-            flexibleWidth: true,
-            onPressed: () {
-              Get.back();
-            },
-          ),
           AppButton(
             title: "No",
             height: 28.h,
@@ -1302,14 +1292,139 @@ class AppDialogs {
             },
           ),
           AppButton(
-            title: "Cancel",
+            title: "Yes",
             height: 28.h,
             flexibleWidth: true,
             onPressed: () {
               Get.back();
             },
           ),
+          if (isCancelButtonShow)
+            AppButton(
+              title: "Cancel",
+              height: 28.h,
+              flexibleWidth: true,
+              onPressed: () {
+                Get.back();
+              },
+            ),
         ],
+      ),
+    );
+  }
+
+  // Product Download Dialog
+  static Future<void> productDownloadDialog(BuildContext context) {
+    return Get.dialog(
+      Dialog(
+        insetPadding: REdgeInsets.all(defaultPadding * 1.2),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(defaultRadius)),
+        child: Padding(
+          padding: EdgeInsets.all(defaultPadding).copyWith(top: 0, bottom: defaultPadding / 2.5),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      "Select an option",
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500),
+                    ).paddingOnly(top: defaultPadding, bottom: defaultPadding, left: defaultPadding),
+                  ),
+                  AppIconButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: SvgPicture.asset(AppAssets.crossIcon, height: 25.h),
+                  ),
+                ],
+              ),
+              DownloadSelectionTile(
+                title: "Catalogue (digital)",
+                onTap: () {
+                  Get.back();
+                  AppDialogs.cartAlertDialog(
+                    context,
+                    onPressed: () {},
+                  );
+                },
+              ),
+              DownloadSelectionTile(
+                title: "List format",
+                onTap: () {
+                  Get.back();
+                  AppDialogs.cartAlertDialog(
+                    context,
+                    onPressed: () {},
+                  );
+                },
+              ),
+              DownloadSelectionTile(
+                onTap: () {},
+                title: "Downloaded list",
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // WatchList Download Dialog
+  static Future<void> watchListDownloadDialog(BuildContext context) {
+    return Get.dialog(
+      Dialog(
+        insetPadding: REdgeInsets.all(defaultPadding * 1.2),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(defaultRadius)),
+        child: Padding(
+          padding: EdgeInsets.all(defaultPadding).copyWith(top: 0, bottom: defaultPadding / 2.5),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      "Select an option",
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500),
+                    ).paddingOnly(top: defaultPadding, bottom: defaultPadding, left: defaultPadding),
+                  ),
+                  AppIconButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: SvgPicture.asset(AppAssets.crossIcon, height: 25.h),
+                  ),
+                ],
+              ),
+              DownloadSelectionTile(
+                title: "Download pdf",
+                onTap: () {},
+              ),
+              DownloadSelectionTile(
+                title: "Download detailed pdf",
+                onTap: () {
+                  Get.back();
+                  AppDialogs.cartAlertDialog(
+                    context,
+                    onPressed: () {},
+                  );
+                },
+              ),
+              DownloadSelectionTile(
+                title: "Catalogue",
+                onTap: () {},
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../../exports.dart';
 import '../../res/app_bar.dart';
+import '../../res/app_dialog.dart';
 import '../../widgets/product_tile.dart';
 import 'components/cart_icon_button.dart';
 import 'components/sort_filter_button.dart';
@@ -124,8 +125,13 @@ class ProductScreen extends StatelessWidget {
                   },
                 ),
               ),
-            )
+            ),
           ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            AppDialogs.productDownloadDialog(context);
+          },
         ),
       ),
     );

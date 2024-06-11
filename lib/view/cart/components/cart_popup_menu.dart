@@ -83,6 +83,8 @@ class CartPopUpMenu extends StatelessWidget {
                   Get.back();
                   AppDialogs.cartAlertDialog(
                     context,
+                    isCancelButtonShow: true,
+                    contentText: "Do you want to empty cart after items are added in watchList",
                     onPressed: () {},
                   );
                 }

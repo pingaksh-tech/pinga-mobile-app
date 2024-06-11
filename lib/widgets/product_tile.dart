@@ -678,6 +678,10 @@ class _ProductTileState extends State<ProductTile> {
                                         context,
                                         item: widget.item,
                                         textValue: widget.productQuantity ?? RxInt(0),
+                                        onTap: () {
+                                          cartCon.incrementQuantity(widget.item ?? CartItemModel());
+                                          cartCon.decrementQuantity(widget.item ?? CartItemModel());
+                                        },
                                         onIncrement: (value) {
                                           cartCon.incrementQuantity(widget.item ?? CartItemModel());
                                         },
