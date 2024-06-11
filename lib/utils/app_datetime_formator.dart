@@ -50,4 +50,14 @@ class AppDateTimeFormatter {
     DateFormat formatter = DateFormat("EEEE");
     return formatter.format(dateTime);
   }
+
+  /// ***********************************************************************************
+  ///                                   11/06/2024
+  /// ***********************************************************************************
+
+  static String formatDateInDigit(String dateString) {
+    DateTime dateTime = DateTime.parse(dateString).toLocal();
+    DateFormat formatter = DateFormat("dd/MM/yyyy");
+    return formatter.format(dateTime);
+  }
 }

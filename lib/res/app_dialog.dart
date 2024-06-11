@@ -972,6 +972,7 @@ class AppDialogs {
         content: AppTextField(
           title: "Quantity",
           controller: controller,
+          autofocus: true,
           titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: Theme.of(context).colorScheme.primary),
           contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.4, horizontal: defaultPadding / 1.7),
           keyboardType: TextInputType.number,
@@ -1058,6 +1059,7 @@ class AppDialogs {
               title: "Metal Wt",
               hintText: "Add extra metal weight",
               controller: controller.value,
+              autofocus: true,
               contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.4, horizontal: defaultPadding / 1.7),
               titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontSize: 13.sp,
@@ -1093,7 +1095,7 @@ class AppDialogs {
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
-                      color: AppColors.font.withOpacity(.7),
+                      color: AppColors.font.withOpacity(.5),
                     ),
               );
             }),

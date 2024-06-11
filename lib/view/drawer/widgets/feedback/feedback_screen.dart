@@ -156,6 +156,7 @@ class FeedbackScreen extends StatelessWidget {
                   child: Row(
                     children: [
                       SvgPicture.asset(
+                        height: 16.h,
                         AppAssets.pictureIcon,
                         colorFilter: ColorFilter.mode(AppColors.font.withOpacity(.7), BlendMode.srcIn),
                       ),
@@ -190,7 +191,6 @@ class FeedbackScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: defaultPadding * 2),
               title: "Submit",
               onPressed: () {
-                UiUtils.toast("Saved Feedback");
                 Get.back();
               },
             )

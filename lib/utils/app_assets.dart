@@ -5,6 +5,13 @@ class AppAssets {
   static const String svgPath = "assets/svg/";
   static const String gifPath = "assets/gif/";
   static const String jsonPath = "assets/lottie_json/";
+  static const String pdfPath = "assets/pdf/";
+
+  /// ***********************************************************************************
+  ///                                   PDF
+  /// ***********************************************************************************
+
+  static const String ringCatalogue = '${pdfPath}ring_catalogue.pdf';
 
   /// ***********************************************************************************
   ///                                   IMAGES
@@ -98,6 +105,7 @@ class AppAssets {
   static const String addPhotoSVG = '${svgPath}add_photo.svg';
   static const String documentFill = '${svgPath}document_fill.svg';
   static const String pictureIcon = '${svgPath}picture_icon.svg';
+  static const String catalogueAlt = '${svgPath}catalog_alt.svg';
 
   /// ***********************************************************************************
   ///                                   JSON

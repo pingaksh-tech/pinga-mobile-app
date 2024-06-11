@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import '../../../exports.dart';
 import '../../../packages/cached_network_image/cached_network_image.dart';
+import '../../packages/app_animated_cliprect.dart';
 import '../../widgets/webview.dart';
 import 'app_drawer_controller.dart';
 
@@ -89,7 +90,7 @@ class AppDrawer extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             onTap: () {
-              // Get.back();
+              Get.toNamed(AppRoutes.catalogueScreen);
             },
           ),
           const Divider(height: 1),
@@ -128,8 +129,9 @@ class AppDrawer extends StatelessWidget {
               con.isShowCare.value = !con.isShowCare.value;
             },
           ),
-          if (con.isShowCare.isTrue)
-            Padding(
+          AnimatedClipRect(
+            open: con.isShowCare.value,
+            child: Padding(
               padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -142,16 +144,16 @@ class AppDrawer extends StatelessWidget {
                   const Spacer(),
                   AppIconButton(
                     size: 40,
-                    onPressed: () {},
                     icon: Icon(
                       Icons.call,
                       color: Theme.of(context).colorScheme.primary,
                       size: 20,
                     ),
+                    onPressed: () => makePhoneCall('+91 9409349493'),
                   ),
                   AppIconButton(
                     size: 40,
-                    onPressed: () {},
+                    onPressed: () => sendEmail("demo@gmail.com"),
                     icon: Icon(
                       Icons.email_rounded,
                       color: Theme.of(context).colorScheme.primary,
@@ -161,6 +163,7 @@ class AppDrawer extends StatelessWidget {
                 ],
               ),
             ),
+          ),
           const Divider(height: 1),
 
           /// Policies
@@ -182,8 +185,10 @@ class AppDrawer extends StatelessWidget {
               con.isShowPolicies.value = !con.isShowPolicies.value;
             },
           ),
-          if (con.isShowPolicies.isTrue)
-            Column(
+
+          AnimatedClipRect(
+            open: con.isShowPolicies.value,
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 InkWell(
@@ -218,7 +223,7 @@ class AppDrawer extends StatelessWidget {
                         children: [
                           40.horizontalSpace,
                           SvgPicture.asset(
-                            AppAssets.productReturn,
+                            AppAssets.rtp,
                             height: 20,
                             colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.primary, BlendMode.srcIn),
                           ),
@@ -234,6 +239,7 @@ class AppDrawer extends StatelessWidget {
                 ),
               ],
             ),
+          ),
           const Divider(height: 1),
 
           /// Feedback
