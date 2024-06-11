@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:get/get.dart';
-import '../../../../data/model/watchlist/watchlist_model.dart';
-import '../../../../res/app_bar.dart';
-import 'add_watchlist_controller.dart';
 
+import '../../../../data/model/watchlist/watchlist_model.dart';
 import '../../../../exports.dart';
+import '../../../../res/app_bar.dart';
 import '../../watch_list/components/watchlist_tile.dart';
+import 'add_watchlist_controller.dart';
 
 class AddWatchlistScreen extends StatelessWidget {
   AddWatchlistScreen({super.key});
@@ -19,48 +18,50 @@ class AddWatchlistScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: MyAppBar(title: "Add to watch"),
-      body: Obx(() {
-        return ListView(
-          physics: const RangeMaintainingScrollPhysics(),
-          padding: EdgeInsets.all(defaultPadding),
-          children: [
-            ListView.separated(
-              shrinkWrap: true,
-              padding: EdgeInsets.only(bottom: 136.h),
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: con.watchList.length,
-              separatorBuilder: (context, index) => SizedBox(
-                height: defaultPadding / 1.5,
-              ),
-              itemBuilder: (context, index) => Obx(() {
-                return WatchlistTile(
-                  name: con.watchList[index].name,
-                  noOfItem: con.watchList[index].noOfItem,
-                  createdBy: con.watchList[index].createdBy,
-                  isShowButtons: false,
-                  selected: RxBool(con.selectedList.contains(con.watchList[index])),
-                  onPressed: () {
-                    if (!con.selectedList.contains(con.watchList[index])) {
-                      con.selectedList.add(con.watchList[index]);
-                    } else {
-                      con.selectedList.remove(con.watchList[index]);
-                    }
-                    con.checkDisableButton();
-                  },
-                  onChanged: (_) {
-                    if (!con.selectedList.contains(con.watchList[index])) {
-                      con.selectedList.add(con.watchList[index]);
-                    } else {
-                      con.selectedList.remove(con.watchList[index]);
-                    }
-                    con.checkDisableButton();
-                  },
-                );
-              }),
-            )
-          ],
-        );
-      }),
+      body: Obx(
+        () {
+          return ListView(
+            physics: const RangeMaintainingScrollPhysics(),
+            padding: EdgeInsets.all(defaultPadding),
+            children: [
+              ListView.separated(
+                shrinkWrap: true,
+                padding: EdgeInsets.only(bottom: 136.h),
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: con.watchList.length,
+                separatorBuilder: (context, index) => SizedBox(
+                  height: defaultPadding / 1.5,
+                ),
+                itemBuilder: (context, index) => Obx(() {
+                  return WatchlistTile(
+                    name: con.watchList[index].name,
+                    noOfItem: con.watchList[index].noOfItem,
+                    createdBy: con.watchList[index].createdBy,
+                    isShowButtons: false,
+                    selected: RxBool(con.selectedList.contains(con.watchList[index])),
+                    onPressed: () {
+                      if (!con.selectedList.contains(con.watchList[index])) {
+                        con.selectedList.add(con.watchList[index]);
+                      } else {
+                        con.selectedList.remove(con.watchList[index]);
+                      }
+                      con.checkDisableButton();
+                    },
+                    onChanged: (_) {
+                      if (!con.selectedList.contains(con.watchList[index])) {
+                        con.selectedList.add(con.watchList[index]);
+                      } else {
+                        con.selectedList.remove(con.watchList[index]);
+                      }
+                      con.checkDisableButton();
+                    },
+                  );
+                }),
+              )
+            ],
+          );
+        },
+      ),
       bottomSheet: Obx(() {
         return Container(
           decoration: BoxDecoration(

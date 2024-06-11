@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../../exports.dart';
+import '../../../../res/app_dialog.dart';
 import '../../../../widgets/custom_check_box_tile.dart';
 import 'icon_title_button.dart';
 
@@ -74,7 +75,9 @@ class WatchlistTile extends StatelessWidget {
                           IconTitleButton(
                             title: "Download",
                             icon: AppAssets.downloadIcon,
-                            onPressed: downloadOnPressed,
+                            onPressed: () {
+                              AppDialogs.watchListDownloadDialog(context);
+                            },
                           ),
 
                           /// SHARE

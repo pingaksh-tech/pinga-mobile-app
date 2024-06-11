@@ -1314,10 +1314,10 @@ class AppDialogs {
   }
 
   // Product Download Dialog
-  static Future<void> productDownloadDialog(BuildContext context) {
+  static Future<void> productDownloadDialog(BuildContext context, {bool isDownloadFileNameChange = false}) {
     return Get.dialog(
       Dialog(
-        insetPadding: REdgeInsets.all(defaultPadding * 1.2),
+        insetPadding: EdgeInsets.all(defaultPadding * 1.2),
         backgroundColor: Theme.of(context).colorScheme.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(defaultRadius)),
         child: Padding(
@@ -1342,29 +1342,36 @@ class AppDialogs {
                     icon: SvgPicture.asset(AppAssets.crossIcon, height: 25.h),
                   ),
                 ],
-              ),
+              ).paddingSymmetric(vertical: defaultPadding / 2),
               DownloadSelectionTile(
                 title: "Catalogue (digital)",
+                image: AppAssets.catalogueIcon,
                 onTap: () {
                   Get.back();
-                  AppDialogs.cartAlertDialog(
-                    context,
-                    onPressed: () {},
-                  );
+                  isDownloadFileNameChange
+                      ? addFileName(context)
+                      : AppDialogs.cartAlertDialog(
+                          context,
+                          onPressed: () {},
+                        );
                 },
               ),
               DownloadSelectionTile(
                 title: "List format",
+                image: AppAssets.listFormateIcon,
                 onTap: () {
                   Get.back();
-                  AppDialogs.cartAlertDialog(
-                    context,
-                    onPressed: () {},
-                  );
+                  isDownloadFileNameChange
+                      ? addFileName(context)
+                      : AppDialogs.cartAlertDialog(
+                          context,
+                          onPressed: () {},
+                        );
                 },
               ),
               DownloadSelectionTile(
                 onTap: () {},
+                image: AppAssets.downloadListIcon,
                 title: "Downloaded list",
               ),
             ],
@@ -1378,7 +1385,7 @@ class AppDialogs {
   static Future<void> watchListDownloadDialog(BuildContext context) {
     return Get.dialog(
       Dialog(
-        insetPadding: REdgeInsets.all(defaultPadding * 1.2),
+        insetPadding: EdgeInsets.all(defaultPadding * 1.2),
         backgroundColor: Theme.of(context).colorScheme.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(defaultRadius)),
         child: Padding(
@@ -1403,27 +1410,105 @@ class AppDialogs {
                     icon: SvgPicture.asset(AppAssets.crossIcon, height: 25.h),
                   ),
                 ],
-              ),
+              ).paddingSymmetric(vertical: defaultPadding / 2),
               DownloadSelectionTile(
                 title: "Download pdf",
-                onTap: () {},
+                image: AppAssets.pdfIcon,
+                onTap: () {
+                  Get.back();
+                },
               ),
               DownloadSelectionTile(
                 title: "Download detailed pdf",
+                image: AppAssets.detailPdfIcon,
                 onTap: () {
                   Get.back();
-                  AppDialogs.cartAlertDialog(
-                    context,
-                    onPressed: () {},
-                  );
                 },
               ),
               DownloadSelectionTile(
                 title: "Catalogue",
-                onTap: () {},
+                image: AppAssets.catalogueIcon,
+                onTap: () {
+                  Get.back();
+                  productDownloadDialog(context, isDownloadFileNameChange: true);
+                },
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  static Future<dynamic> addFileName(BuildContext context) {
+    Rx<TextEditingController> controller = TextEditingController().obs;
+    return Get.dialog(
+      AlertDialog(
+        insetPadding: EdgeInsets.all(defaultPadding * 1.2),
+        backgroundColor: AppColors.background,
+        titlePadding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding).copyWith(bottom: 0),
+        contentPadding: EdgeInsets.all(defaultPadding * 1.2).copyWith(top: defaultPadding / 2, bottom: defaultPadding / 1.5),
+        actionsPadding: EdgeInsets.symmetric(horizontal: defaultPadding),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(defaultRadius)),
+        title: Row(
+          children: [
+            Expanded(
+              child: Text(
+                "File Name",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontSize: 15.4.sp,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.font,
+                    ),
+              ),
+            ),
+            AppIconButton(
+              onPressed: () {
+                Get.back();
+              },
+              icon: SvgPicture.asset(
+                AppAssets.crossIcon,
+                height: 25.h,
+              ),
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "File Name",
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.w400,
+                  ),
+            ).paddingOnly(bottom: defaultPadding / 3),
+            Text(
+              "PS: Avoid using special characters. Use'_'instead of space",
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontSize: 11.sp,
+                    fontWeight: FontWeight.w400,
+                  ),
+            ).paddingOnly(bottom: defaultPadding / 2),
+            AppTextField(
+              hintText: "Add file name",
+              controller: controller.value,
+              contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.4, horizontal: defaultPadding / 1.7),
+              keyboardType: TextInputType.number,
+              textInputAction: TextInputAction.done,
+              onChanged: (_) {},
+            ),
+            (defaultPadding).verticalSpace,
+            AppButton(
+              title: "Submit",
+              flexibleHeight: true,
+              onPressed: () {
+                Get.back();
+              },
+            )
+          ],
         ),
       ),
     );

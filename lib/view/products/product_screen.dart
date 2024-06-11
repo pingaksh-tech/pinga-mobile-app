@@ -129,6 +129,14 @@ class ProductScreen extends StatelessWidget {
           ],
         ),
         floatingActionButton: FloatingActionButton(
+          child: SvgPicture.asset(
+            AppAssets.productDownload,
+            height: 22.h,
+            colorFilter: ColorFilter.mode(
+              Theme.of(context).colorScheme.surface,
+              BlendMode.srcIn,
+            ),
+          ),
           onPressed: () {
             AppDialogs.productDownloadDialog(context);
           },

@@ -93,6 +93,12 @@ class AppAssets {
   static const String upArrow = "${svgPath}up_arrow.svg";
   static const String productReturn = "${svgPath}product_return.svg";
   static const String openBox = '${svgPath}open_box.svg';
+  static const String catalogueIcon = '${svgPath}catalogue_icon.svg';
+  static const String detailPdfIcon = '${svgPath}detail_pdf_icon.svg';
+  static const String pdfIcon = '${svgPath}download_pdf_icon.svg';
+  static const String productDownload = '${svgPath}product_download.svg';
+  static const String listFormateIcon = '${svgPath}list_formate_icon.svg';
+  static const String downloadListIcon = '${svgPath}download_list_icon.svg';
 
   /// ***********************************************************************************
   ///                                   JSON
