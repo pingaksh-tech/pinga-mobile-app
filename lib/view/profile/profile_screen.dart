@@ -116,7 +116,7 @@ class ProfileScreen extends StatelessWidget {
                         child: Container(
                           height: 22.h,
                           width: 22.h,
-                          padding: EdgeInsets.all(defaultPadding / 2.2),
+                          padding: EdgeInsets.all(6.w),
                           decoration: BoxDecoration(
                             color: Theme.of(context).primaryColor,
                             shape: BoxShape.circle,
@@ -132,16 +132,15 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ],
             ),
-            defaultPadding.verticalSpace,
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+              padding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(top: defaultPadding * 1.3),
               child: Column(
                 children: [
                   profileTile(
                     context,
                     title: "User name",
                     subTitle: "Dishank Gajera",
-                    iconImage: AppAssets.userIcon,
+                    iconImage: AppAssets.usernameIcon,
                   ),
                   divider,
                   profileTile(

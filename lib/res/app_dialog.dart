@@ -1624,7 +1624,7 @@ class AppDialogs {
     );
   }
 
-// Image Picker Option Dialog
+  // Image Picker Option Dialog
   static Future<void> imagePickOptionDialog(
     BuildContext context, {
     required VoidCallback cameraOnTap,

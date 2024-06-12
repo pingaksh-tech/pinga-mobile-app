@@ -110,6 +110,7 @@ class AppAssets {
   static const String contactIcon = '${svgPath}contact_icon.svg';
   static const String gstIcon = '${svgPath}gst_icon.svg';
   static const String userIcon = '${svgPath}user_icon.svg';
+  static const String usernameIcon = '${svgPath}username_icon.svg';
 
   /// ***********************************************************************************
   ///                                   JSON
