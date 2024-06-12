@@ -138,7 +138,7 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   profileTile(
                     context,
-                    title: "User name",
+                    title: "Username",
                     subTitle: "Dishank Gajera",
                     iconImage: AppAssets.usernameIcon,
                   ),
@@ -171,12 +171,48 @@ class ProfileScreen extends StatelessWidget {
                     subTitle: "27AAAAP0267H2ZN",
                     iconImage: AppAssets.gstIcon,
                   ),
+                  divider,
+                  GestureDetector(
+                    onTap: () {
+                      AppDialogs.logoutDialog(
+                        Get.context!,
+                        isLoader: con.isLoading,
+                        fullName: "Dishank Gajera",
+                        onCancellation: () {
+                          Get.back();
+                        },
+                        onLogout: () async {
+                          Get.offAllNamed(AppRoutes.authScreen);
+                        },
+                      );
+                    },
+                    child: Row(
+                      children: [
+                        SvgPicture.asset(
+                          AppAssets.logOutIcon,
+                          color: Theme.of(context).primaryColor,
+                          height: 19.h,
+                        ).paddingOnly(left: defaultPadding / 1.8),
+                        (defaultPadding / 1.4).horizontalSpace,
+                        Text(
+                          "Log out",
+                          style: AppTextStyle.subtitleStyle(context).copyWith(
+                            fontSize: 14.sp,
+                            height: 0,
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  divider,
                 ],
               ),
             ),
           ],
         ),
-        bottomNavigationBar: AppButton(
+        /*  bottomNavigationBar: AppButton(
           padding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(bottom: MediaQuery.of(context).padding.bottom + defaultPadding),
           title: "Log out",
           borderRadius: BorderRadius.circular(40.r),
@@ -193,14 +229,14 @@ class ProfileScreen extends StatelessWidget {
               },
             );
           },
-        ),
+        ), */
       ),
     );
   }
 
   Widget profileTile(
     BuildContext context, {
-    required String title,
+    String? title,
     required String subTitle,
     required String iconImage,
     double? height,
@@ -219,13 +255,13 @@ class ProfileScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                title,
+                title ?? "",
                 style: AppTextStyle.subtitleStyle(context).copyWith(fontSize: 12.sp, color: AppColors.font, height: 1.4),
               ),
               Text(
                 subTitle,
                 style: AppTextStyle.subtitleStyle(context).copyWith(
-                  fontSize: 12.sp,
+                  fontSize: 12.5.sp,
                   height: 0,
                   color: Theme.of(context).primaryColor,
                   fontWeight: FontWeight.w500,
