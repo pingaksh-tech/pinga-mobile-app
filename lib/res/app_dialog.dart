@@ -228,7 +228,7 @@ class AppDialogs {
                 ),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor,
+                    color: Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.circular(defaultRadius),
                   ),
                   padding: EdgeInsets.only(top: defaultPadding),
@@ -1539,6 +1539,7 @@ class AppDialogs {
     );
   }
 
+// Add Attachment Dialog
   static Future<dynamic> addAttachmentDialog(BuildContext context) {
     return Get.dialog(
       AlertDialog(
@@ -1618,6 +1619,94 @@ class AppDialogs {
               onPressed: () {},
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+// Image Picker Option Dialog
+  static Future<void> imagePickOptionDialog(
+    BuildContext context, {
+    required VoidCallback cameraOnTap,
+    required VoidCallback galleryOnTap,
+  }) {
+    Widget iconButton({
+      required IconData? icon,
+      required String title,
+      required VoidCallback onTap,
+    }) {
+      return GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: onTap,
+        child: Column(
+          children: [
+            Icon(
+              icon,
+              size: 40.h,
+              color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(.55),
+            ),
+            Text(
+              title,
+              style: AppTextStyle.subtitleStyle(context),
+            )
+          ],
+        ),
+      );
+    }
+
+    return Get.dialog(
+      Dialog(
+        insetPadding: EdgeInsets.all(defaultPadding * 2),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(defaultRadius)),
+        child: Padding(
+          padding: EdgeInsets.all(defaultPadding).copyWith(top: 0, bottom: defaultPadding / 2.5),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Choose",
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+              ).paddingSymmetric(vertical: defaultPadding),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  iconButton(
+                    icon: Icons.camera_alt_rounded,
+                    title: "Camera",
+                    onTap: cameraOnTap,
+                  ),
+                  5.horizontalSpace,
+                  iconButton(
+                    icon: Icons.photo_rounded,
+                    title: "Gallery",
+                    onTap: galleryOnTap,
+                  )
+                ],
+              ),
+              (defaultPadding).verticalSpace,
+              Align(
+                alignment: Alignment.bottomRight,
+                child: TextButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  child: Text(
+                    "CANCEL",
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

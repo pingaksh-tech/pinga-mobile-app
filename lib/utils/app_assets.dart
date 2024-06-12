@@ -105,6 +105,11 @@ class AppAssets {
   static const String documentFill = '${svgPath}document_fill.svg';
   static const String pictureIcon = '${svgPath}picture_icon.svg';
   static const String catalogueAlt = '${svgPath}catalog_alt.svg';
+  static const String editIcon = '${svgPath}edit.svg';
+  static const String addressIcon = '${svgPath}address_icon.svg';
+  static const String contactIcon = '${svgPath}contact_icon.svg';
+  static const String gstIcon = '${svgPath}gst_icon.svg';
+  static const String userIcon = '${svgPath}user_icon.svg';
 
   /// ***********************************************************************************
   ///                                   JSON

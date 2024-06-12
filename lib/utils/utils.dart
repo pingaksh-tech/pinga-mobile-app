@@ -326,6 +326,7 @@ Future<void> pickImages(
   void Function(XFile?)? xFileChange,
   void Function(List<XFile>?)? imageListOnChange,
   void Function(CroppedFile?)? croppedFileChange,
+  bool isCircleCrop = false,
 }) async {
   void callingAllNull() {
     xFileChange != null ? xFileChange(null) : null;
@@ -342,10 +343,10 @@ Future<void> pickImages(
       XFile? compressedFile = await _compressImage(image.path);
 
       CroppedFile? cropper = await singleImageCropper(
-        context, // ignore: use_build_context_synchronously
+        context,
         fileImage: compressedFile!,
-        // cropStyle: cropStyle,
         aspectRatio: aspectRatio,
+        isCircleCrop: isCircleCrop,
       );
 
       if (withCropper) {
@@ -387,43 +388,36 @@ Future<CroppedFile?> singleImageCropper(
   String? cropperTitle,
   CropStyle? cropStyle,
   CropAspectRatio? aspectRatio,
+  bool isCircleCrop = false,
 }) async {
   String toolbarTitle = cropperTitle ?? "Cropper";
 
   CroppedFile? cropper = await ImageCropper().cropImage(
     sourcePath: fileImage.path,
-    // cropStyle: cropStyle ?? CropStyle.rectangle,
-    aspectRatio: aspectRatio ??
-        const CropAspectRatio(
-          ratioX: 100,
-          ratioY: 100,
-        ),
+    aspectRatio: aspectRatio,
     uiSettings: [
       AndroidUiSettings(
         toolbarTitle: toolbarTitle,
-        lockAspectRatio: true,
         initAspectRatio: CropAspectRatioPreset.original,
         cropGridColor: Colors.grey,
+        cropStyle: isCircleCrop ? CropStyle.circle : CropStyle.rectangle,
+        hideBottomControls: false,
         cropFrameColor: Colors.grey,
         toolbarColor: Theme.of(context).primaryColor,
-        // ignore: use_build_context_synchronously
         toolbarWidgetColor: AppColors.getColorOnBackground(Theme.of(context).primaryColor),
-        // ignore: use_build_context_synchronously
         statusBarColor: Theme.of(context).primaryColor,
-        // ignore: use_build_context_synchronously
         activeControlsWidgetColor: Theme.of(context).primaryColor,
       ),
       IOSUiSettings(
         title: toolbarTitle,
-        minimumAspectRatio: 1,
         resetButtonHidden: true,
         rotateClockwiseButtonHidden: true,
         rotateButtonsHidden: true,
         aspectRatioPickerButtonHidden: true,
+        minimumAspectRatio: 1,
       ),
     ],
   );
-
   return cropper;
 }
 

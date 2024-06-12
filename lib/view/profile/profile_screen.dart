@@ -1,10 +1,13 @@
 // ignore_for_file: deprecated_member_use
 
+import 'dart:io';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../exports.dart';
 import '../../res/app_dialog.dart';
@@ -17,252 +20,227 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // appBar: MyAppBar(
-      //   title: "Profile",
-      //   showBackIcon: false,
-      //   backgroundColor: Theme.of(context).colorScheme.surfaceBright,
-      //   shadowColor: Theme.of(context).scaffoldBackgroundColor,
-      // ),
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      body: ListView(
-        physics: const RangeMaintainingScrollPhysics(),
-        padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + defaultPadding),
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
+    return Obx(
+      () => Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        body: ListView(
+          physics: const RangeMaintainingScrollPhysics(),
+          children: [
+            Stack(
+              alignment: Alignment.topCenter,
               children: [
-                SizedBox(
-                  height: Get.width / 3.8.w,
-                  width: Get.width / 3.8.w,
-                  child: Stack(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.all(defaultPadding / 3),
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(alignment: Alignment.topCenter, image: NetworkImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBE3Jjpigpv57mkc0yD2MEVK19vFBZVF_G9f0y8GfVgYk1cxdHHMMTQAkidmjXD_r0o6s&usqp=CAU"), fit: BoxFit.cover),
+                Container(
+                  height: Get.height * 0.25,
+                  width: Get.width,
+                  color: Theme.of(context).colorScheme.surface,
+                ),
+                Stack(
+                  children: [
+                    Container(
+                      height: Get.height * 0.2,
+                      width: Get.width,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage("https://media.designrush.com/tinymce_images/316674/conversions/Desiree-Qelaj-content.jpg"),
+                          fit: BoxFit.cover,
                         ),
                       ),
-                      // Align(
-                      //   alignment: Alignment.bottomRight,
-                      //   child: GestureDetector(
-                      //     onTap: () => UiUtils.toast("Coming Soon!"),
-                      //     child: Container(
-                      //       height: 36.h,
-                      //       width: 36.h,
-                      //       padding: EdgeInsets.all(defaultPadding / 2),
-                      //       margin: EdgeInsets.all(defaultPadding / 5),
-                      //       decoration: BoxDecoration(
-                      //           color: AppColors.goldColor,
-                      //           shape: BoxShape.circle,
-                      //           border: Border.all(width: 3, color: AppColors.white)),
-                      //       child: Center(
-                      //         child: Image.asset(
-                      //           AppAssets.editIcon,
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
+                    ),
+                    Positioned.fill(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(defaultRadius),
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
+                          child: Container(
+                            color: Colors.black.withOpacity(0.20),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Positioned(
+                  bottom: 0,
+                  left: defaultPadding,
+                  child: Stack(
+                    alignment: Alignment.bottomRight,
+                    children: [
+                      Container(
+                        height: Get.width / 4.w,
+                        width: Get.width / 4.w,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            alignment: Alignment.topCenter,
+                            image: con.selectUserProfile.value.isEmpty
+                                ? const NetworkImage(
+                                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBE3Jjpigpv57mkc0yD2MEVK19vFBZVF_G9f0y8GfVgYk1cxdHHMMTQAkidmjXD_r0o6s&usqp=CAU",
+                                  )
+                                : FileImage(File(con.selectUserProfile.value)),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          AppDialogs.imagePickOptionDialog(
+                            context,
+                            cameraOnTap: () {
+                              Get.back();
+                              pickImages(
+                                context,
+                                isCircleCrop: true,
+                                source: ImageSource.camera,
+                                croppedFileChange: (cropper) {
+                                  if (cropper != null) {
+                                    con.selectUserProfile.value = cropper.path;
+                                  }
+                                },
+                              );
+                            },
+                            galleryOnTap: () {
+                              Get.back();
+                              pickImages(
+                                context,
+                                isCircleCrop: true,
+                                source: ImageSource.gallery,
+                                croppedFileChange: (cropper) {
+                                  if (cropper != null) {
+                                    con.selectUserProfile.value = cropper.path;
+                                  }
+                                },
+                              );
+                            },
+                          );
+                        },
+                        child: Container(
+                          height: 22.h,
+                          width: 22.h,
+                          padding: EdgeInsets.all(defaultPadding / 2.2),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            shape: BoxShape.circle,
+                          ),
+                          child: SvgPicture.asset(
+                            AppAssets.editIcon,
+                            color: Theme.of(context).colorScheme.surface,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
-                SizedBox(width: 5.w),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Dishank Gajera",
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
-                    ),
-                    Text(
-                      "+91 7777990666",
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500),
-                    ),
-                    Text(
-                      "Seller",
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500),
-                    ),
-                  ],
-                )
               ],
             ),
-          ),
-          GridView.builder(
-            itemCount: 2,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 1.05, crossAxisSpacing: defaultPadding),
-            padding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(top: defaultPadding),
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () {
-                  // if (Get.isRegistered<BottomBarController>()) {
-                  //   final BottomBarController bottomCon = Get.find<BottomBarController>();
-                  //   if (index == 0) {
-                  //     bottomCon.onBottomBarTap(1);
-                  //   } else if (index == 1) {
-                  //     bottomCon.onBottomBarTap(2);
-                  //   }
-                  // }
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
-                    borderRadius: BorderRadius.circular(defaultRadius),
-                    boxShadow: defaultShadow(context),
-                  ),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(shape: BoxShape.circle, color: Theme.of(context).primaryColor.withOpacity(0.03)),
-                          padding: EdgeInsets.all(defaultPadding),
-                          child: SvgPicture.asset(
-                            index == 0 ? AppAssets.cart : AppAssets.orders,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: defaultPadding / 2),
-                          child: Text(
-                            index == 0 ? "14" : "8",
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 27, fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                        Text(index == 0 ? "Total Cart Items" : "Total Orders", style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, fontWeight: FontWeight.w400, color: AppColors.subText)),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
-          SizedBox(height: defaultPadding * 2),
-          cardTile(
-            context,
-            title: 'Terms and Conditions',
-            url: 'https:// /pages/terms-and-condition',
-            svgPath: AppAssets.tc,
-          ),
-          Divider(height: defaultPadding * 1.3),
-          cardTile(
-            context,
-            title: 'Privacy Policy',
-            url: 'https:// /policies/privacy-policy',
-            svgPath: AppAssets.privacy,
-          ),
-          Divider(height: defaultPadding * 1.3),
-
-          /*  cardTile(
-            context,
-            title: 'Shipping Policy',
-            url: 'https:// /policies/shipping-policy',
-            svgPath: AppAssets.cart,
-          ),
-          Divider(height: defaultPadding  * 1.3),*/
-          cardTile(
-            context,
-            title: 'Return Policy',
-            url: 'https:// /pages/cancellation-returns',
-            svgPath: AppAssets.rtp,
-          ),
-          Divider(height: defaultPadding * 1.3),
-          cardTile(
-            context,
-            title: 'FAQs',
-            url: 'https:// /pages/faqs',
-            svgPath: AppAssets.faq,
-          ),
-          Divider(height: defaultPadding * 1.3),
-          cardTile(
-            context,
-            isLogout: true,
-            title: 'Log out',
-            svgPath: AppAssets.faq,
-          ),
-          const SizedBox(height: 20),
-        ],
-      ),
-    );
-  }
-
-  Future<void> _launchInBrowser(Uri url) async {
-    if (!await launchUrl(
-      url,
-      mode: LaunchMode.externalApplication,
-    )) {
-      throw Exception('Could not launch $url');
-    }
-  }
-
-  Widget cardTile(
-    BuildContext context, {
-    required String title,
-    String? url,
-    required String svgPath,
-    bool isLogout = false,
-  }) {
-    return GestureDetector(
-      onTap: () {
-        if (isLogout) {
-          AppDialogs.logoutDialog(
-            Get.context!,
-            isLoader: con.isLoading,
-            fullName: "Dishank Gajera",
-            onCancellation: () {
-              Get.back();
-            },
-            onLogout: () async {
-              Get.offAllNamed(AppRoutes.authScreen);
-            },
-          );
-        } else {
-          _launchInBrowser(Uri.parse(url ?? ""));
-        }
-      },
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-        padding: const EdgeInsets.symmetric(horizontal: 14),
-        // decoration: BoxDecoration(
-        //   color: Theme.of(context).primaryColor.withOpacity(0.03),
-        //   borderRadius: BorderRadius.circular(10),
-        // ),
-        child: Row(
-          children: [
+            defaultPadding.verticalSpace,
             Padding(
-              padding: const EdgeInsets.only(right: 15.0),
-              child: isLogout
-                  ? const Icon(
-                      Icons.logout,
-                      color: Colors.red,
-                    )
-                  : SvgPicture.asset(
-                      svgPath,
-                      height: 19.sp,
-                    ),
-            ),
-            Text(
-              title,
-              style: Theme.of(Get.context!).textTheme.titleMedium?.copyWith(
-                    fontSize: 13.sp,
-                    fontWeight: FontWeight.w500,
-                    color: isLogout ? Colors.red : null,
+              padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+              child: Column(
+                children: [
+                  profileTile(
+                    context,
+                    title: "User name",
+                    subTitle: "Dishank Gajera",
+                    iconImage: AppAssets.userIcon,
                   ),
+                  divider,
+                  profileTile(
+                    context,
+                    title: "User type",
+                    subTitle: "GUEST",
+                    iconImage: AppAssets.userIcon,
+                  ),
+                  divider,
+                  profileTile(
+                    context,
+                    title: "Contact no.",
+                    subTitle: "9558277156",
+                    iconImage: AppAssets.contactIcon,
+                  ),
+                  divider,
+                  profileTile(
+                    context,
+                    title: "Address",
+                    subTitle: "B-450,9th Floor,The Capital,Bkc , Bandra,Mumbai-408051 -408051",
+                    iconImage: AppAssets.addressIcon,
+                    height: 30.h,
+                  ),
+                  divider,
+                  profileTile(
+                    context,
+                    title: "GST no.",
+                    subTitle: "27AAAAP0267H2ZN",
+                    iconImage: AppAssets.gstIcon,
+                  ),
+                ],
+              ),
             ),
-            const Spacer(),
-            const Icon(
-              Icons.arrow_forward_ios_rounded,
-              size: 15,
-            )
           ],
+        ),
+        bottomNavigationBar: AppButton(
+          padding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(bottom: MediaQuery.of(context).padding.bottom + defaultPadding),
+          title: "Log out",
+          borderRadius: BorderRadius.circular(40.r),
+          onPressed: () {
+            AppDialogs.logoutDialog(
+              Get.context!,
+              isLoader: con.isLoading,
+              fullName: "Dishank Gajera",
+              onCancellation: () {
+                Get.back();
+              },
+              onLogout: () async {
+                Get.offAllNamed(AppRoutes.authScreen);
+              },
+            );
+          },
         ),
       ),
     );
   }
+
+  Widget profileTile(
+    BuildContext context, {
+    required String title,
+    required String subTitle,
+    required String iconImage,
+    double? height,
+  }) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SvgPicture.asset(
+          iconImage,
+          color: Theme.of(context).primaryColor,
+          height: height ?? 28.h,
+        ),
+        (defaultPadding / 1.5).horizontalSpace,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: AppTextStyle.subtitleStyle(context).copyWith(fontSize: 12.sp, color: AppColors.font, height: 1.4),
+              ),
+              Text(
+                subTitle,
+                style: AppTextStyle.subtitleStyle(context).copyWith(
+                  fontSize: 12.sp,
+                  height: 0,
+                  color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  Divider get divider => Divider(
+        color: Theme.of(Get.context!).primaryColor.withOpacity(0.06),
+        height: 20.h,
+      );
 }
