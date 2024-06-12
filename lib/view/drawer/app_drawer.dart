@@ -67,17 +67,19 @@ class AppDrawer extends StatelessWidget {
           ),
           const Divider(height: 1),
           ListTile(
-            leading: SvgPicture.asset(
-              AppAssets.like,
-              height: 16.h,
-              colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
-            ),
-            title: Text(
-              "Wishlist",
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            onTap: () => Get.toNamed(AppRoutes.wishlistScreen),
-          ),
+              leading: SvgPicture.asset(
+                AppAssets.like,
+                height: 16.h,
+                colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+              ),
+              title: Text(
+                "Wishlist",
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              onTap: () {
+                Get.back();
+                Get.toNamed(AppRoutes.wishlistScreen);
+              }),
           const Divider(height: 1),
 
           /// My Catalog
@@ -92,6 +94,7 @@ class AppDrawer extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             onTap: () {
+              Get.back();
               Get.toNamed(AppRoutes.catalogueScreen);
             },
           ),
@@ -99,17 +102,19 @@ class AppDrawer extends StatelessWidget {
 
           /// My Catalog
           ListTile(
-            leading: SvgPicture.asset(
-              AppAssets.settingIcon,
-              height: 16.h,
-              colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
-            ),
-            title: Text(
-              "Setting",
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            onTap: () => Get.toNamed(AppRoutes.settingsScreen),
-          ),
+              leading: SvgPicture.asset(
+                AppAssets.settingIcon,
+                height: 16.h,
+                colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+              ),
+              title: Text(
+                "Setting",
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              onTap: () {
+                Get.back();
+                Get.toNamed(AppRoutes.settingsScreen);
+              }),
           const Divider(height: 1),
 
           /// Customer Care
@@ -131,39 +136,43 @@ class AppDrawer extends StatelessWidget {
               con.isShowCare.value = !con.isShowCare.value;
             },
           ),
-          const Divider(height: 1, indent: 50),
 
           AnimatedClipRect(
             open: con.isShowCare.value,
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+              child: Column(
                 children: [
-                  40.horizontalSpace,
-                  Text(
-                    "Contact us On",
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 13.sp),
+                  const Divider(height: 1, indent: 50),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      40.horizontalSpace,
+                      Text(
+                        "Contact us On",
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 13.sp),
+                      ),
+                      const Spacer(),
+                      AppIconButton(
+                        size: 40,
+                        icon: Icon(
+                          Icons.call,
+                          color: Theme.of(context).colorScheme.primary,
+                          size: 20,
+                        ),
+                        onPressed: () => makePhoneCall('+91 9409349493'),
+                      ),
+                      AppIconButton(
+                        size: 40,
+                        onPressed: () => sendEmail("demo@gmail.com"),
+                        icon: Icon(
+                          Icons.email_rounded,
+                          color: Theme.of(context).colorScheme.primary,
+                          size: 22,
+                        ),
+                      )
+                    ],
                   ),
-                  const Spacer(),
-                  AppIconButton(
-                    size: 40,
-                    icon: Icon(
-                      Icons.call,
-                      color: Theme.of(context).colorScheme.primary,
-                      size: 20,
-                    ),
-                    onPressed: () => makePhoneCall('+91 9409349493'),
-                  ),
-                  AppIconButton(
-                    size: 40,
-                    onPressed: () => sendEmail("demo@gmail.com"),
-                    icon: Icon(
-                      Icons.email_rounded,
-                      color: Theme.of(context).colorScheme.primary,
-                      size: 22,
-                    ),
-                  )
                 ],
               ),
             ),
@@ -199,22 +208,18 @@ class AppDrawer extends StatelessWidget {
                 const Divider(height: 1),
 
                 /// Privacy Policy
-                subOptionTile(
-                  context,
-                  icon: AppAssets.productDetailSVG,
-                  title: "Privacy Policy",
-                  onPressed: () => Get.to(const MyWebView(title: "Privacy Policy", webURL: "https://api.flutter.dev/flutter/material/Switch/thumbColor.html")),
-                ),
+                subOptionTile(context, icon: AppAssets.productDetailSVG, title: "Privacy Policy", onPressed: () {
+                  Get.back();
+                  Get.to(const MyWebView(title: "Privacy Policy", webURL: "https://api.flutter.dev/flutter/material/Switch/thumbColor.html"));
+                }),
 
                 const Divider(height: 1, indent: 40),
 
                 /// Return Policy
-                subOptionTile(
-                  context,
-                  icon: AppAssets.rtp,
-                  title: "Return Policy",
-                  onPressed: () => Get.to(const MyWebView(title: "Return Policy", webURL: "https://api.flutter.dev/flutter/material/Switch/thumbColor.html")),
-                ),
+                subOptionTile(context, icon: AppAssets.rtp, title: "Return Policy", onPressed: () {
+                  Get.back();
+                  Get.to(const MyWebView(title: "Return Policy", webURL: "https://api.flutter.dev/flutter/material/Switch/thumbColor.html"));
+                }),
               ],
             ),
           ),
@@ -249,21 +254,17 @@ class AppDrawer extends StatelessWidget {
                 const Divider(height: 1),
 
                 /// Add Feedback
-                subOptionTile(
-                  context,
-                  icon: AppAssets.addFeedbackSVG,
-                  title: "Add Feedback",
-                  onPressed: () => Get.toNamed(AppRoutes.feedbackScreen),
-                ),
+                subOptionTile(context, icon: AppAssets.addFeedbackSVG, title: "Add Feedback", onPressed: () {
+                  Get.back();
+                  Get.toNamed(AppRoutes.feedbackScreen);
+                }),
                 const Divider(height: 1, indent: 40),
 
                 /// Feedback History
-                subOptionTile(
-                  context,
-                  icon: AppAssets.feedbackHistorySVG,
-                  title: "Feedback History",
-                  onPressed: () => Get.toNamed(AppRoutes.feedbackHistoryScreen),
-                ),
+                subOptionTile(context, icon: AppAssets.feedbackHistorySVG, title: "Feedback History", onPressed: () {
+                  Get.back();
+                  Get.toNamed(AppRoutes.feedbackHistoryScreen);
+                }),
               ],
             ),
           ),

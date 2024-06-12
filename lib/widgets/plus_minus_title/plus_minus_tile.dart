@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../../../exports.dart';
-import '../../data/model/cart/cart_model.dart';
 import '../../res/app_dialog.dart';
 
 Widget plusMinusTile(
@@ -13,7 +12,7 @@ Widget plusMinusTile(
   double? size,
   required Function(int) onIncrement,
   required Function(int) onDecrement,
-  CartItemModel? item,
+  bool isCart = false,
   VoidCallback? onTap,
 }) {
   return Obx(() {
@@ -58,10 +57,13 @@ Widget plusMinusTile(
             onTap: () {
               AppDialogs.addQuantityDialog(
                 context,
+                isCart: isCart,
                 quantity: textValue,
                 onChanged: (value) {
                   textValue.value = value;
-                  onTap!();
+                  if (onTap != null) {
+                    onTap();
+                  }
                 },
               );
             },

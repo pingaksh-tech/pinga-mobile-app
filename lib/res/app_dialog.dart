@@ -958,8 +958,10 @@ class AppDialogs {
   }
 
   // ADD QUANTITY DIALOG
-  static Future<dynamic> addQuantityDialog(BuildContext context, {required RxInt quantity, required Function(int) onChanged}) {
+  static Future<dynamic> addQuantityDialog(BuildContext context, {required RxInt quantity, required Function(int) onChanged, bool isCart = false}) {
     TextEditingController controller = TextEditingController(text: (quantity).toString());
+    RxString errorMessage = "".obs;
+    RxBool isValidate = true.obs;
     return Get.dialog(
       AlertDialog(
         backgroundColor: AppColors.background,
@@ -974,23 +976,27 @@ class AppDialogs {
             ),
           ],
         ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            AppTextField(
-              title: "Quantity",
-              controller: controller,
-              autofocus: true,
-              titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: Theme.of(context).colorScheme.primary),
-              contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.4, horizontal: defaultPadding / 1.7),
-              keyboardType: TextInputType.number,
-              textInputAction: TextInputAction.done,
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(4),
-              ],
-            ),
-          ],
-        ),
+        content: Obx(() {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AppTextField(
+                title: "Quantity",
+                controller: controller,
+                autofocus: true,
+                errorMessage: errorMessage.value,
+                validation: isValidate.value,
+                titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: Theme.of(context).colorScheme.primary),
+                contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.4, horizontal: defaultPadding / 1.7),
+                keyboardType: TextInputType.number,
+                textInputAction: TextInputAction.done,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(4),
+                ],
+              ),
+            ],
+          );
+        }),
         actions: [
           /// CANCEL
           TextButton(
@@ -1018,8 +1024,18 @@ class AppDialogs {
                   ),
             ),
             onPressed: () {
-              Get.back();
-              onChanged(int.tryParse(controller.value.text.trim()) ?? 0);
+              if (isCart) {
+                if ((int.tryParse(controller.value.text.trim()) ?? 0) <= 0) {
+                  isValidate.value = false;
+                  errorMessage.value = "Quantity must be greater than 0";
+                } else {
+                  Get.back();
+                  onChanged(int.tryParse(controller.value.text.trim()) ?? 0);
+                }
+              } else {
+                Get.back();
+                onChanged(int.tryParse(controller.value.text.trim()) ?? 0);
+              }
             },
           ),
         ],
@@ -1313,7 +1329,7 @@ class AppDialogs {
                   ),
             ),
             onPressed: () {
-              Get.back();
+              Get.back(result: false);
             },
           ),
 

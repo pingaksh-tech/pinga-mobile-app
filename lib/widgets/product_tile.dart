@@ -676,9 +676,12 @@ class _ProductTileState extends State<ProductTile> {
                                       (defaultPadding / 6).verticalSpace,
                                       plusMinusTile(
                                         context,
-                                        item: widget.item,
+                                        isCart: true,
                                         textValue: widget.productQuantity ?? RxInt(0),
                                         onTap: () {
+                                          if (widget.productQuantity?.value == 0) {
+                                            widget.deleteOnTap;
+                                          }
                                           cartCon.incrementQuantity(widget.item ?? CartItemModel());
                                           cartCon.decrementQuantity(widget.item ?? CartItemModel());
                                         },
@@ -693,6 +696,14 @@ class _ProductTileState extends State<ProductTile> {
                                                   buttonTitle: "NO",
                                                   onPressed: widget.deleteOnTap,
                                                   contentText: "Are you sure\nYou want to remove this item from the cart?",
+                                                ).then(
+                                                  (value) {
+                                                    if (value != null) {
+                                                      if (value == false) {
+                                                        widget.productQuantity?.value = 1;
+                                                      }
+                                                    }
+                                                  },
                                                 )
                                               : null;
                                         },
