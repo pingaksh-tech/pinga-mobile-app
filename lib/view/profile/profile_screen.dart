@@ -191,13 +191,13 @@ class ProfileScreen extends StatelessWidget {
                         SvgPicture.asset(
                           AppAssets.logOutIcon,
                           color: Theme.of(context).primaryColor,
-                          height: 19.h,
+                          height: 18.h,
                         ).paddingOnly(left: defaultPadding / 1.8),
-                        (defaultPadding / 1.4).horizontalSpace,
+                        (defaultPadding / 1.1).horizontalSpace,
                         Text(
                           "Log out",
                           style: AppTextStyle.subtitleStyle(context).copyWith(
-                            fontSize: 14.sp,
+                            fontSize: 13.sp,
                             height: 0,
                             color: Theme.of(context).primaryColor,
                             fontWeight: FontWeight.w500,
@@ -247,7 +247,7 @@ class ProfileScreen extends StatelessWidget {
         SvgPicture.asset(
           iconImage,
           color: Theme.of(context).primaryColor,
-          height: height ?? 28.h,
+          height: height ?? 26.h,
         ),
         (defaultPadding / 1.5).horizontalSpace,
         Expanded(
@@ -256,12 +256,13 @@ class ProfileScreen extends StatelessWidget {
             children: [
               Text(
                 title ?? "",
-                style: AppTextStyle.subtitleStyle(context).copyWith(fontSize: 12.sp, color: AppColors.font, height: 1.4),
+                style: AppTextStyle.subtitleStyle(context).copyWith(fontSize: 12.2.sp, color: AppColors.font, height: 1.4),
               ),
+              (1.6).verticalSpace,
               Text(
                 subTitle,
                 style: AppTextStyle.subtitleStyle(context).copyWith(
-                  fontSize: 12.5.sp,
+                  fontSize: 12.6.sp,
                   height: 0,
                   color: Theme.of(context).primaryColor,
                   fontWeight: FontWeight.w500,

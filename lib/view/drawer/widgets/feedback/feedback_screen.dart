@@ -202,7 +202,7 @@ class FeedbackScreen extends StatelessWidget {
                   isNewDesign: con.isNewDesign.value,
                   isOldDesign: con.isOldDesign.value,
                 );
-                // Get.back();
+                Get.back();
               },
             )
           ],

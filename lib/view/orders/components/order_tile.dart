@@ -14,6 +14,7 @@ class OrderTile extends StatelessWidget {
   final String quantity;
   final String totalDp;
   final String mrpPrice;
+
   const OrderTile({
     super.key,
     required this.orderId,
@@ -50,14 +51,15 @@ class OrderTile extends StatelessWidget {
                 ),
                 (defaultPadding / 2).horizontalSpace,
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       orderId,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 14.sp, fontWeight: FontWeight.w500, height: 0),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 13.sp, fontWeight: FontWeight.w500, height: 0),
                     ),
                     Text(
                       DateFormat('MM/dd/yyyy HH:mm:ss').format(dateTime),
-                      style: AppTextStyle.subtitleStyle(context).copyWith(fontSize: 12.sp),
+                      style: AppTextStyle.subtitleStyle(context).copyWith(fontSize: 11.5.sp),
                     )
                   ],
                 )
@@ -148,7 +150,7 @@ class OrderTile extends StatelessWidget {
           child: Text(
             title,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontSize: 13.sp,
+                  fontSize: 12.5.sp,
                   color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(.7),
                 ),
           ),
@@ -156,7 +158,7 @@ class OrderTile extends StatelessWidget {
         Text(
           ":",
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontSize: 14.sp,
+                fontSize: 13.sp,
                 fontWeight: FontWeight.w600,
                 color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(.7),
               ),
@@ -167,7 +169,7 @@ class OrderTile extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: Text(
               subtitleText,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600, fontSize: 13.sp),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600, fontSize: 12.5.sp),
             ),
           ),
         ),
