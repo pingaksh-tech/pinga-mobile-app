@@ -658,7 +658,7 @@ class _ProductTileState extends State<ProductTile> {
                                                 context,
                                                 onPressed: widget.deleteOnTap,
                                                 buttonTitle: "NO",
-                                                contentText: "Are you sure\nYou want to remove this item from the cart?",
+                                                contentText: "Are you sure?\nYou want to remove this item from the cart?",
                                               );
                                             },
                                             size: 30.sp,

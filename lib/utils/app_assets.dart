@@ -20,6 +20,9 @@ class AppAssets {
   /// ***********************************************************************************
   ///                                    SVG
   /// ***********************************************************************************
+  static const String pingakshFillLogo = '${svgPath}pingaksh_fill_logo.svg';
+  static const String pingakshLightLogo = '${svgPath}pingaksh_light_logo.svg';
+
   static const String bell = '${svgPath}bell.svg';
   static const String cart = '${svgPath}cart.svg';
   static const String fillCart = '${svgPath}fillCart.svg';

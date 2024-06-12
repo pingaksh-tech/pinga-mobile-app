@@ -131,6 +131,8 @@ class AppDrawer extends StatelessWidget {
               con.isShowCare.value = !con.isShowCare.value;
             },
           ),
+          const Divider(height: 1, indent: 50),
+
           AnimatedClipRect(
             open: con.isShowCare.value,
             child: Padding(
@@ -194,6 +196,8 @@ class AppDrawer extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const Divider(height: 1),
+
                 /// Privacy Policy
                 subOptionTile(
                   context,
@@ -201,6 +205,8 @@ class AppDrawer extends StatelessWidget {
                   title: "Privacy Policy",
                   onPressed: () => Get.to(const MyWebView(title: "Privacy Policy", webURL: "https://api.flutter.dev/flutter/material/Switch/thumbColor.html")),
                 ),
+
+                const Divider(height: 1, indent: 40),
 
                 /// Return Policy
                 subOptionTile(
@@ -233,7 +239,6 @@ class AppDrawer extends StatelessWidget {
               con.isShowFeedback.value = !con.isShowFeedback.value;
             },
           ),
-          const Divider(height: 1),
 
           /// Feedback Sub Option
           AnimatedClipRect(
@@ -241,6 +246,8 @@ class AppDrawer extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const Divider(height: 1),
+
                 /// Add Feedback
                 subOptionTile(
                   context,
@@ -248,6 +255,7 @@ class AppDrawer extends StatelessWidget {
                   title: "Add Feedback",
                   onPressed: () => Get.toNamed(AppRoutes.feedbackScreen),
                 ),
+                const Divider(height: 1, indent: 40),
 
                 /// Feedback History
                 subOptionTile(

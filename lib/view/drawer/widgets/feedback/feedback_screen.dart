@@ -145,6 +145,7 @@ class FeedbackScreen extends StatelessWidget {
             if (con.attachmentList.isNotEmpty)
               ListView.separated(
                 shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.zero,
                 itemCount: con.attachmentList.length,
                 separatorBuilder: (context, index) => SizedBox(height: defaultPadding / 1.3),
