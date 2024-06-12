@@ -1445,8 +1445,24 @@ class AppDialogs {
     );
   }
 
+  // Add FileName Dialog
   static Future<dynamic> addFileName(BuildContext context) {
-    Rx<TextEditingController> controller = TextEditingController().obs;
+    Rx<TextEditingController> fileCon = TextEditingController().obs;
+    RxBool fileNameValidation = true.obs;
+    RxString nameError = ''.obs;
+    bool validation() {
+      if (fileCon.value.text.trim().isEmpty) {
+        nameError.value = "Please enter filename";
+        fileNameValidation.value = false;
+      } else if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(fileCon.value.text)) {
+        nameError.value = "File name contains invalid characters";
+        fileNameValidation.value = false;
+      } else {
+        fileNameValidation.value = true;
+      }
+      return fileNameValidation.isTrue;
+    }
+
     return Get.dialog(
       AlertDialog(
         insetPadding: EdgeInsets.all(defaultPadding * 1.2),
@@ -1490,20 +1506,31 @@ class AppDialogs {
                     fontWeight: FontWeight.w400,
                   ),
             ).paddingOnly(bottom: defaultPadding / 2),
-            AppTextField(
-              hintText: "Add file name",
-              controller: controller.value,
-              contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.4, horizontal: defaultPadding / 1.7),
-              keyboardType: TextInputType.number,
-              textInputAction: TextInputAction.done,
-              onChanged: (_) {},
+            Obx(
+              () => AppTextField(
+                hintText: "Add file name",
+                controller: fileCon.value,
+                contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.4, horizontal: defaultPadding / 1.7),
+                keyboardType: TextInputType.text,
+                validation: fileNameValidation.value,
+                errorMessage: nameError.value,
+                textInputAction: TextInputAction.done,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9_]')),
+                ],
+                onChanged: (value) {
+                  fileNameValidation.value = true;
+                },
+              ),
             ),
             (defaultPadding).verticalSpace,
             AppButton(
               title: "Submit",
               flexibleHeight: true,
               onPressed: () {
-                Get.back();
+                if (validation()) {
+                  Get.back();
+                }
               },
             ),
           ],
