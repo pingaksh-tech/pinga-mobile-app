@@ -16,64 +16,43 @@ class BottomBarController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isLoadingLatLng = false.obs;
 
-  List<BottomBarModel> bottomBarDataList = <BottomBarModel>[].obs;
-
-  @override
-  void onReady() {
-    super.onReady();
-    bottomBarDataList.clear();
-    bottomBarDataList.insert(
-      0,
-      BottomBarModel(
-        screenName: "Home",
-        bottomItem: BottomItem(
-          selectedImage: AppAssets.homeOutlinedSVG,
-        ),
-        screenWidget: HomeScreen(),
+  RxList<BottomBarModel> bottomBarDataList = <BottomBarModel>[
+    BottomBarModel(
+      screenName: "Home",
+      bottomItem: BottomItem(
+        selectedImage: AppAssets.homeOutlinedSVG,
       ),
-    );
-    bottomBarDataList.insert(
-      1,
-      BottomBarModel(
-        screenName: "Watchlist",
-        bottomItem: BottomItem(
-          selectedImage: AppAssets.watchlistFilled,
-        ),
-        screenWidget: WatchListScreen(),
+      screenWidget: HomeScreen(),
+    ),
+    BottomBarModel(
+      screenName: "Watchlist",
+      bottomItem: BottomItem(
+        selectedImage: AppAssets.watchlistFilled,
       ),
-    );
-    bottomBarDataList.insert(
-      2,
-      BottomBarModel(
-        screenName: "Cart",
-        bottomItem: BottomItem(
-          selectedImage: AppAssets.cart,
-        ),
-        screenWidget: CartScreen(),
+      screenWidget: WatchListScreen(),
+    ),
+    BottomBarModel(
+      screenName: "Cart",
+      bottomItem: BottomItem(
+        selectedImage: AppAssets.cart,
       ),
-    );
-    bottomBarDataList.insert(
-      3,
-      BottomBarModel(
-        screenName: "Orders",
-        bottomItem: BottomItem(
-          selectedImage: AppAssets.orders,
-        ),
-        screenWidget: OrdersScreen(),
+      screenWidget: CartScreen(),
+    ),
+    BottomBarModel(
+      screenName: "Orders",
+      bottomItem: BottomItem(
+        selectedImage: AppAssets.orders,
       ),
-    );
-
-    bottomBarDataList.insert(
-      4,
-      BottomBarModel(
-        screenName: "Profile",
-        bottomItem: BottomItem(
-          selectedImage: AppAssets.profile,
-        ),
-        screenWidget: ProfileScreen(),
+      screenWidget: OrdersScreen(),
+    ),
+    BottomBarModel(
+      screenName: "Profile",
+      bottomItem: BottomItem(
+        selectedImage: AppAssets.profile,
       ),
-    );
-  }
+      screenWidget: ProfileScreen(),
+    ),
+  ].obs;
 
   SharedAxisTransitionType? transitionType = SharedAxisTransitionType.horizontal;
   RxBool isLoggedIn = true.obs;

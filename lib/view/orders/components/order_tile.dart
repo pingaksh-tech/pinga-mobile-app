@@ -169,7 +169,7 @@ class OrderTile extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: Text(
               subtitleText,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600, fontSize: 12.5.sp),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500, fontSize: 12.5.sp),
             ),
           ),
         ),

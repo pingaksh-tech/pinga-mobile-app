@@ -218,7 +218,7 @@ class CartScreen extends StatelessWidget {
                                           onPressed: () {
                                             AppDialogs.cartDialog(
                                               context,
-                                              contentText: "Are you sure\nYou want to remove this item from the cart?",
+                                              contentText: "Are you sure?\nYou want to remove this item from the cart?",
                                               buttonTitle: "NO",
                                               onPressed: () {
                                                 Get.back();

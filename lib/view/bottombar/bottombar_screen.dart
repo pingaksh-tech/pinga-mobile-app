@@ -125,84 +125,80 @@ class BottomBarScreen extends StatelessWidget {
                     },
                     child: con.bottomBarDataList.isNotEmpty ? con.bottomBarDataList[con.currentBottomIndex.value].screenWidget! : const SizedBox(),
                   ),
-            bottomNavigationBar: Obx(
-              () => con.bottomBarDataList.length >= 2
-                  ? IntrinsicHeight(
-                      child: BottomAppBar(
-                        notchMargin: 6,
-                        elevation: 30,
-                        shadowColor: Theme.of(context).colorScheme.primary,
-                        color: Theme.of(context).colorScheme.surface,
-                        padding: EdgeInsets.symmetric(vertical: defaultPadding / 1.2, horizontal: defaultPadding / 2),
-                        shape: const CircularNotchedRectangle(),
-                        child: Obx(
-                          () => Row(
-                            children: List.generate(
-                              con.bottomBarDataList.length,
-                              (index) => Expanded(
-                                child: InkWell(
-                                  overlayColor: MaterialStateProperty.all(Colors.transparent),
-                                  onTap: () {
-                                    con.onBottomBarTap(index, hapticFeedback: true);
-                                  },
-                                  child: Center(
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        AnimatedContainer(
-                                          duration: const Duration(milliseconds: 250),
-                                          padding: EdgeInsets.all(defaultPadding / 1.5),
-                                          decoration: BoxDecoration(
-                                            color: con.currentBottomIndex.value == index ? Theme.of(context).primaryColor : null,
-                                            border: Border.all(color: con.currentBottomIndex.value == index ? Theme.of(context).primaryColor : Theme.of(context).colorScheme.surface, strokeAlign: 5),
-                                            shape: BoxShape.circle,
-                                          ),
-                                          child: con.currentBottomIndex.value == index
-                                              ? (isValEmpty(con.bottomBarDataList[index].bottomItem?.selectedImage)
-                                                  ? Icon(
-                                                      con.bottomBarDataList[index].bottomItem?.selectedIcon,
-                                                      size: con.bottomBarDataList[index].bottomItem?.selectedSize,
-                                                      color: AppColors.lightSecondary,
-                                                    )
-                                                  : SvgPicture.asset(
-                                                      con.bottomBarDataList[index].bottomItem?.selectedImage ?? "",
-                                                      height: con.bottomBarDataList[index].bottomItem?.selectedSize ?? 21,
-                                                      color: AppColors.lightSecondary,
-                                                    ))
-                                              : isValEmpty(con.bottomBarDataList[index].bottomItem?.selectedImage)
-                                                  ? Icon(
-                                                      con.bottomBarDataList[index].bottomItem?.unselectIcon ?? con.bottomBarDataList[index].bottomItem?.selectedIcon,
-                                                      size: con.bottomBarDataList[index].bottomItem?.unselectSize,
-                                                      color: Theme.of(context).primaryColor.withOpacity(.9),
-                                                    )
-                                                  : SvgPicture.asset(
-                                                      con.bottomBarDataList[index].bottomItem?.unselectImage ?? con.bottomBarDataList[index].bottomItem?.selectedImage ?? "",
-                                                      height: con.bottomBarDataList[index].bottomItem?.unselectSize ?? 21,
-                                                      color: Theme.of(context).primaryColor.withOpacity(.9),
-                                                    ),
+            bottomNavigationBar: IntrinsicHeight(
+              child: BottomAppBar(
+                notchMargin: 6,
+                elevation: 30,
+                shadowColor: Theme.of(context).colorScheme.primary,
+                color: Theme.of(context).colorScheme.surface,
+                padding: EdgeInsets.symmetric(vertical: defaultPadding / 1.2, horizontal: defaultPadding / 2),
+                shape: const CircularNotchedRectangle(),
+                child: Obx(
+                  () => Row(
+                    children: List.generate(
+                      con.bottomBarDataList.length,
+                      (index) => Expanded(
+                        child: InkWell(
+                          overlayColor: MaterialStateProperty.all(Colors.transparent),
+                          onTap: () {
+                            con.onBottomBarTap(index, hapticFeedback: true);
+                          },
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                AnimatedContainer(
+                                  duration: const Duration(milliseconds: 250),
+                                  padding: EdgeInsets.all(defaultPadding / 1.5),
+                                  decoration: BoxDecoration(
+                                    color: con.currentBottomIndex.value == index ? Theme.of(context).primaryColor : null,
+                                    border: Border.all(color: con.currentBottomIndex.value == index ? Theme.of(context).primaryColor : Theme.of(context).colorScheme.surface, strokeAlign: 5),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: con.currentBottomIndex.value == index
+                                      ? (isValEmpty(con.bottomBarDataList[index].bottomItem?.selectedImage)
+                                          ? Icon(
+                                              con.bottomBarDataList[index].bottomItem?.selectedIcon,
+                                              size: con.bottomBarDataList[index].bottomItem?.selectedSize,
+                                              color: AppColors.lightSecondary,
+                                            )
+                                          : SvgPicture.asset(
+                                              con.bottomBarDataList[index].bottomItem?.selectedImage ?? "",
+                                              height: con.bottomBarDataList[index].bottomItem?.selectedSize ?? 21,
+                                              color: AppColors.lightSecondary,
+                                            ))
+                                      : isValEmpty(con.bottomBarDataList[index].bottomItem?.selectedImage)
+                                          ? Icon(
+                                              con.bottomBarDataList[index].bottomItem?.unselectIcon ?? con.bottomBarDataList[index].bottomItem?.selectedIcon,
+                                              size: con.bottomBarDataList[index].bottomItem?.unselectSize,
+                                              color: Theme.of(context).primaryColor.withOpacity(.9),
+                                            )
+                                          : SvgPicture.asset(
+                                              con.bottomBarDataList[index].bottomItem?.unselectImage ?? con.bottomBarDataList[index].bottomItem?.selectedImage ?? "",
+                                              height: con.bottomBarDataList[index].bottomItem?.unselectSize ?? 21,
+                                              color: Theme.of(context).primaryColor.withOpacity(.9),
+                                            ),
+                                ),
+                                AnimatedClipRect(
+                                  open: con.currentBottomIndex.value != index,
+                                  child: Text(
+                                    con.bottomBarDataList[index].screenName ?? "",
+                                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                          color: Theme.of(context).primaryColor.withOpacity(.9),
+                                          fontSize: 9.sp,
+                                          fontWeight: FontWeight.w600,
                                         ),
-                                        AnimatedClipRect(
-                                          open: con.currentBottomIndex.value != index,
-                                          child: Text(
-                                            con.bottomBarDataList[index].screenName ?? "",
-                                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                                  color: Theme.of(context).primaryColor.withOpacity(.9),
-                                                  fontSize: 9.sp,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
                                   ),
                                 ),
-                              ),
+                              ],
                             ),
                           ),
                         ),
                       ),
-                    )
-                  : const SizedBox(),
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
         ),
