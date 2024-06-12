@@ -228,7 +228,7 @@ class AppDialogs {
                 ),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor,
+                    color: Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.circular(defaultRadius),
                   ),
                   padding: EdgeInsets.only(top: defaultPadding),
@@ -1535,8 +1535,24 @@ class AppDialogs {
     );
   }
 
+  // Add FileName Dialog
   static Future<dynamic> addFileName(BuildContext context) {
-    Rx<TextEditingController> controller = TextEditingController().obs;
+    Rx<TextEditingController> fileCon = TextEditingController().obs;
+    RxBool fileNameValidation = true.obs;
+    RxString nameError = ''.obs;
+    bool validation() {
+      if (fileCon.value.text.trim().isEmpty) {
+        nameError.value = "Please enter filename";
+        fileNameValidation.value = false;
+      } else if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(fileCon.value.text)) {
+        nameError.value = "File name contains invalid characters";
+        fileNameValidation.value = false;
+      } else {
+        fileNameValidation.value = true;
+      }
+      return fileNameValidation.isTrue;
+    }
+
     return Get.dialog(
       AlertDialog(
         insetPadding: EdgeInsets.all(defaultPadding * 1.2),
@@ -1580,20 +1596,31 @@ class AppDialogs {
                     fontWeight: FontWeight.w400,
                   ),
             ).paddingOnly(bottom: defaultPadding / 2),
-            AppTextField(
-              hintText: "Add file name",
-              controller: controller.value,
-              contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.4, horizontal: defaultPadding / 1.7),
-              keyboardType: TextInputType.number,
-              textInputAction: TextInputAction.done,
-              onChanged: (_) {},
+            Obx(
+              () => AppTextField(
+                hintText: "Add file name",
+                controller: fileCon.value,
+                contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.4, horizontal: defaultPadding / 1.7),
+                keyboardType: TextInputType.text,
+                validation: fileNameValidation.value,
+                errorMessage: nameError.value,
+                textInputAction: TextInputAction.done,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9_]')),
+                ],
+                onChanged: (value) {
+                  fileNameValidation.value = true;
+                },
+              ),
             ),
             (defaultPadding).verticalSpace,
             AppButton(
               title: "Submit",
               flexibleHeight: true,
               onPressed: () {
-                Get.back();
+                if (validation()) {
+                  Get.back();
+                }
               },
             ),
           ],
@@ -1602,6 +1629,7 @@ class AppDialogs {
     );
   }
 
+// Add Attachment Dialog
   static Future<dynamic> addAttachmentDialog(BuildContext context) {
     return Get.dialog(
       AlertDialog(
@@ -1681,6 +1709,94 @@ class AppDialogs {
               onPressed: () {},
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  // Image Picker Option Dialog
+  static Future<void> imagePickOptionDialog(
+    BuildContext context, {
+    required VoidCallback cameraOnTap,
+    required VoidCallback galleryOnTap,
+  }) {
+    Widget iconButton({
+      required IconData? icon,
+      required String title,
+      required VoidCallback onTap,
+    }) {
+      return GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: onTap,
+        child: Column(
+          children: [
+            Icon(
+              icon,
+              size: 40.h,
+              color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(.55),
+            ),
+            Text(
+              title,
+              style: AppTextStyle.subtitleStyle(context),
+            )
+          ],
+        ),
+      );
+    }
+
+    return Get.dialog(
+      Dialog(
+        insetPadding: EdgeInsets.all(defaultPadding * 2),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(defaultRadius)),
+        child: Padding(
+          padding: EdgeInsets.all(defaultPadding).copyWith(top: 0, bottom: defaultPadding / 2.5),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Choose",
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+              ).paddingSymmetric(vertical: defaultPadding),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  iconButton(
+                    icon: Icons.camera_alt_rounded,
+                    title: "Camera",
+                    onTap: cameraOnTap,
+                  ),
+                  5.horizontalSpace,
+                  iconButton(
+                    icon: Icons.photo_rounded,
+                    title: "Gallery",
+                    onTap: galleryOnTap,
+                  )
+                ],
+              ),
+              (defaultPadding).verticalSpace,
+              Align(
+                alignment: Alignment.bottomRight,
+                child: TextButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  child: Text(
+                    "CANCEL",
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

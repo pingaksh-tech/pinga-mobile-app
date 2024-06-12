@@ -110,6 +110,12 @@ class AppAssets {
   static const String addFeedbackSVG = '${svgPath}add_feedback.svg';
   static const String feedbackHistorySVG = '${svgPath}feedback_history.svg';
   static const String catalogueAlt = '${svgPath}catalog_alt.svg';
+  static const String editIcon = '${svgPath}edit.svg';
+  static const String addressIcon = '${svgPath}address_icon.svg';
+  static const String contactIcon = '${svgPath}contact_icon.svg';
+  static const String gstIcon = '${svgPath}gst_icon.svg';
+  static const String userIcon = '${svgPath}user_icon.svg';
+  static const String usernameIcon = '${svgPath}username_icon.svg';
 
   /// ***********************************************************************************
   ///                                   JSON
