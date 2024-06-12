@@ -6,13 +6,13 @@ class SettingsController extends GetxController {
   RxBool isOn = false.obs;
 
   RxList<Map> settingMenu = [
-    {
+/*    {
       "title": "Light Mode",
       "icon": AppAssets.lightModeSVG,
       "icon_height": 23.0,
       "subtitle": "",
       "isTrue": false.obs,
-    },
+    },*/
     {
       "title": "Product Detail",
       "icon": AppAssets.productDetailSVG,

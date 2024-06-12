@@ -30,7 +30,7 @@ class GetCatalogueModel {
 
 class CatalogueModel {
   final String? id;
-  final String? title;
+  String? title;
   final String? subtitle;
   final DateTime? createdAt;
   final String? pdf;

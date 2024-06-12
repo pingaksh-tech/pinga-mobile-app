@@ -958,29 +958,37 @@ class AppDialogs {
   }
 
   // ADD QUANTITY DIALOG
-  static Future<dynamic> addQuantityDialog(BuildContext context, {RxInt? quantity, required Function(int) onChanged, String? title, String? dialogTitle}) {
-    TextEditingController controller = TextEditingController(text: (quantity ?? '').toString());
+  static Future<dynamic> addQuantityDialog(BuildContext context, {required RxInt quantity, required Function(int) onChanged}) {
+    TextEditingController controller = TextEditingController(text: (quantity).toString());
     return Get.dialog(
       AlertDialog(
         backgroundColor: AppColors.background,
         titlePadding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding).copyWith(bottom: 0),
         contentPadding: EdgeInsets.all(defaultPadding * 1.2).copyWith(top: defaultPadding / 2),
         actionsPadding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(bottom: defaultPadding / 1.4),
-        title: Text(
-          dialogTitle ?? "Add to cart",
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 16.sp, fontWeight: FontWeight.w500, color: Theme.of(context).colorScheme.primary),
+        title: Row(
+          children: [
+            Text(
+              "Add to cart",
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 16.sp, fontWeight: FontWeight.w500, color: Theme.of(context).colorScheme.primary),
+            ),
+          ],
         ),
-        content: AppTextField(
-          title: title ?? "Quantity",
-          hintText: !isValEmpty(title) ? "Enter name" : null,
-          controller: controller,
-          autofocus: true,
-          titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: Theme.of(context).colorScheme.primary),
-          contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.4, horizontal: defaultPadding / 1.7),
-          keyboardType: isValEmpty(title) ? TextInputType.number : TextInputType.text,
-          textInputAction: TextInputAction.done,
-          inputFormatters: [
-            if (isValEmpty(title)) LengthLimitingTextInputFormatter(4),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AppTextField(
+              title: "Quantity",
+              controller: controller,
+              autofocus: true,
+              titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: Theme.of(context).colorScheme.primary),
+              contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.4, horizontal: defaultPadding / 1.7),
+              keyboardType: TextInputType.number,
+              textInputAction: TextInputAction.done,
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(4),
+              ],
+            ),
           ],
         ),
         actions: [
@@ -1002,7 +1010,7 @@ class AppDialogs {
           /// ADD
           TextButton(
             child: Text(
-              isValEmpty(title) ? "ADD" : "SAVE",
+              "ADD",
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w500,
@@ -1010,8 +1018,74 @@ class AppDialogs {
                   ),
             ),
             onPressed: () {
-              Get.back(/*result: RxInt(int.tryParse(controller.value.text.trim()) ?? 1)*/);
+              Get.back();
               onChanged(int.tryParse(controller.value.text.trim()) ?? 0);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  // RENAME CATALOGUE
+  static Future<dynamic> renameCatalogueDialog(BuildContext context, {String? name, required Function(String) onChanged, required String title, required String dialogTitle}) {
+    TextEditingController controller = TextEditingController(text: name ?? '');
+    return Get.dialog(
+      AlertDialog(
+        backgroundColor: AppColors.background,
+        titlePadding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding).copyWith(bottom: 0),
+        contentPadding: EdgeInsets.all(defaultPadding * 1.2).copyWith(top: defaultPadding / 2),
+        actionsPadding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(bottom: defaultPadding / 1.4),
+        title: Row(
+          children: [
+            Text(
+              dialogTitle,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 16.sp, fontWeight: FontWeight.w500, color: Theme.of(context).colorScheme.primary),
+            ),
+          ],
+        ),
+        content: SizedBox(
+          width: Get.width,
+          child: AppTextField(
+            title: title,
+            hintText: "Enter name",
+            controller: controller,
+            autofocus: true,
+            titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: Theme.of(context).colorScheme.primary),
+            contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.4, horizontal: defaultPadding / 1.7),
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+          ),
+        ),
+        actions: [
+          /// CANCEL
+          TextButton(
+            child: Text(
+              "CANCEL",
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+            ),
+            onPressed: () {
+              Get.back();
+            },
+          ),
+
+          /// ADD
+          TextButton(
+            child: Text(
+              "SAVE",
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+            ),
+            onPressed: () {
+              Get.back();
+              onChanged(controller.value.text.trim());
             },
           ),
         ],

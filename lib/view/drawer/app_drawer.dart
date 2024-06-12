@@ -188,56 +188,26 @@ class AppDrawer extends StatelessWidget {
             },
           ),
 
+          /// Policies Sub Option
           AnimatedClipRect(
             open: con.isShowPolicies.value,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                InkWell(
-                  onTap: () => Get.to(const MyWebView(title: "Privacy Policy", webURL: "https://api.flutter.dev/flutter/material/Switch/thumbColor.html")),
-                  child: Ink(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: defaultPadding / 2),
-                      child: Row(
-                        children: [
-                          40.horizontalSpace,
-                          SvgPicture.asset(
-                            AppAssets.productDetailSVG,
-                            height: 20,
-                            colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.primary, BlendMode.srcIn),
-                          ),
-                          (defaultPadding / 2).horizontalSpace,
-                          Text(
-                            "Privacy Policy",
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 13.sp),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                /// Privacy Policy
+                subOptionTile(
+                  context,
+                  icon: AppAssets.productDetailSVG,
+                  title: "Privacy Policy",
+                  onPressed: () => Get.to(const MyWebView(title: "Privacy Policy", webURL: "https://api.flutter.dev/flutter/material/Switch/thumbColor.html")),
                 ),
-                InkWell(
-                  onTap: () => Get.to(const MyWebView(title: "Return Policy", webURL: "https://api.flutter.dev/flutter/material/Switch/thumbColor.html")),
-                  child: Ink(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: defaultPadding / 2),
-                      child: Row(
-                        children: [
-                          40.horizontalSpace,
-                          SvgPicture.asset(
-                            AppAssets.rtp,
-                            height: 20,
-                            colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.primary, BlendMode.srcIn),
-                          ),
-                          (defaultPadding / 2).horizontalSpace,
-                          Text(
-                            "Return Policy",
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 13.sp),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+
+                /// Return Policy
+                subOptionTile(
+                  context,
+                  icon: AppAssets.rtp,
+                  title: "Return Policy",
+                  onPressed: () => Get.to(const MyWebView(title: "Return Policy", webURL: "https://api.flutter.dev/flutter/material/Switch/thumbColor.html")),
                 ),
               ],
             ),
@@ -255,9 +225,39 @@ class AppDrawer extends StatelessWidget {
               "Feedback",
               style: Theme.of(context).textTheme.titleMedium,
             ),
+            trailing: SvgPicture.asset(
+              con.isShowFeedback.isTrue ? AppAssets.upArrow : AppAssets.downArrow,
+              height: 8,
+            ),
             onTap: () {
-              Get.toNamed(AppRoutes.feedbackScreen);
+              con.isShowFeedback.value = !con.isShowFeedback.value;
             },
+          ),
+          const Divider(height: 1),
+
+          /// Feedback Sub Option
+          AnimatedClipRect(
+            open: con.isShowFeedback.value,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                /// Add Feedback
+                subOptionTile(
+                  context,
+                  icon: AppAssets.addFeedbackSVG,
+                  title: "Add Feedback",
+                  onPressed: () => Get.toNamed(AppRoutes.feedbackScreen),
+                ),
+
+                /// Feedback History
+                subOptionTile(
+                  context,
+                  icon: AppAssets.feedbackHistorySVG,
+                  title: "Feedback History",
+                  onPressed: () => Get.toNamed(AppRoutes.feedbackHistoryScreen),
+                ),
+              ],
+            ),
           ),
           const Divider(height: 1),
 
@@ -287,6 +287,32 @@ class AppDrawer extends StatelessWidget {
             },
           ),
         ],
+      ),
+    );
+  }
+
+  Widget subOptionTile(BuildContext context, {required VoidCallback onPressed, required String icon, required String title}) {
+    return InkWell(
+      onTap: onPressed,
+      child: Ink(
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: defaultPadding / 2),
+          child: Row(
+            children: [
+              40.horizontalSpace,
+              SvgPicture.asset(
+                icon,
+                height: 20,
+                colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.primary, BlendMode.srcIn),
+              ),
+              (defaultPadding / 2).horizontalSpace,
+              Text(
+                title,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 13.sp),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

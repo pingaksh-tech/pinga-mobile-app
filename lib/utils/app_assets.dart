@@ -104,6 +104,8 @@ class AppAssets {
   static const String addPhotoSVG = '${svgPath}add_photo.svg';
   static const String documentFill = '${svgPath}document_fill.svg';
   static const String pictureIcon = '${svgPath}picture_icon.svg';
+  static const String addFeedbackSVG = '${svgPath}add_feedback.svg';
+  static const String feedbackHistorySVG = '${svgPath}feedback_history.svg';
   static const String catalogueAlt = '${svgPath}catalog_alt.svg';
 
   /// ***********************************************************************************

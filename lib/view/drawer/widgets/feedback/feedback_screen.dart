@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
+import '../../../../data/repositories/home/feedback_repository.dart';
 import '../../../../exports.dart';
 import '../../../../packages/cached_network_image/cached_network_image.dart';
 import '../../../../res/app_bar.dart';
@@ -190,8 +191,17 @@ class FeedbackScreen extends StatelessWidget {
             AppButton(
               padding: EdgeInsets.symmetric(vertical: defaultPadding * 2),
               title: "Submit",
-              onPressed: () {
-                Get.back();
+              onPressed: () async {
+                /// API CALL
+                await FeedbackRepository.addFeedback(
+                  isLoading: con.isLoading,
+                  feedbackType: con.feedbackType.value.slug,
+                  details: con.detailCon.value.text.trim(),
+                  category: con.selectedArea.value,
+                  isNewDesign: con.isNewDesign.value,
+                  isOldDesign: con.isOldDesign.value,
+                );
+                // Get.back();
               },
             )
           ],
@@ -217,18 +227,18 @@ class FeedbackScreen extends StatelessWidget {
                 con.satisfyNewOrOldDesignList.length,
                 (index) => CustomRadioButton(
                   title: con.satisfyNewOrOldDesignList[index],
-                  isSelected: (con.isSatisfiedDesign.value == con.satisfyNewOrOldDesignList[index]).obs,
+                  isSelected: (con.isOldDesign.value == con.satisfyNewOrOldDesignList[index]).obs,
                   titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
                   color: AppColors.font,
                   onPressed: () {
-                    con.isSatisfiedDesign.value = con.satisfyNewOrOldDesignList[index];
+                    con.isOldDesign.value = con.satisfyNewOrOldDesignList[index];
                   },
                 ),
               ),
             ),
             AppTextField(
               hintText: "Enter design detail",
-              controller: con.existingDesignCon.value,
+              controller: con.detailCon.value,
               maxLines: 2,
               textInputAction: TextInputAction.done,
               contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.5, horizontal: defaultPadding / 1.5),
@@ -264,9 +274,9 @@ class FeedbackScreen extends StatelessWidget {
           ],
         );
       case FeedbackType.appImprovement:
-        return commonTextField(context, controller: con.appImprovementCon.value);
+        return commonTextField(context, controller: con.detailCon.value);
       case FeedbackType.orderProcessing:
-        return commonTextField(context, controller: con.orderProcessingCon.value);
+        return commonTextField(context, controller: con.detailCon.value);
       case FeedbackType.areaImprovement:
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -302,7 +312,7 @@ class FeedbackScreen extends StatelessWidget {
                 }),
               ),
             ),
-            commonTextField(context, controller: con.areaImprovementCon.value)
+            commonTextField(context, controller: con.detailCon.value)
           ],
         );
     }

@@ -10,6 +10,7 @@ import '../view/collections/watch_list/watch_list_screen.dart';
 import '../view/collections/widgets/add_watchlist/add_watchlist_screen.dart';
 import '../view/dashboard/dashboard_screen.dart';
 import '../view/drawer/widgets/catalog/catalogue_screen.dart';
+import '../view/drawer/widgets/feedback/feedback_history/feedback_history_screen.dart';
 import '../view/drawer/widgets/feedback/feedback_screen.dart';
 import '../view/drawer/widgets/pdf_viewer/pdf_viewer.dart';
 import '../view/drawer/widgets/settings/settings_screen.dart';
@@ -60,6 +61,7 @@ class AppPages {
     _getPage(name: AppRoutes.settingsScreen, page: () => SettingsScreen()),
     _getPage(name: AppRoutes.orderFilterScreen, page: () => OrderFilterScreen()),
     _getPage(name: AppRoutes.feedbackScreen, page: () => FeedbackScreen()),
+    _getPage(name: AppRoutes.feedbackHistoryScreen, page: () => FeedbackHistoryScreen()),
     _getPage(name: AppRoutes.catalogueScreen, page: () => CatalogueScreen()),
     _getPage(name: AppRoutes.pdfViewerScreen, page: () => PdfViewerScreen()),
   ];
