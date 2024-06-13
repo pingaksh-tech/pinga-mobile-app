@@ -16,10 +16,15 @@ class FilterController extends GetxController {
 
   Rx<TextEditingController> itemNameCon = TextEditingController().obs;
   RxString selectFilter = "Range".obs;
-  Rx<FilterItemType> filterType = FilterItemType.rang.obs;
+  Rx<FilterItemType> filterType = FilterItemType.range.obs;
 
   RxList<StockAvailableList> availableList = <StockAvailableList>[].obs;
   RxList<Product> genderList = <Product>[].obs;
+
+  RxString selectedMrp = ''.obs;
+  RxList mrpList = ["upto 25,000", "25,001 - 50,000", "50,001 - 75,000", "75,001 - 1,00,000", "1,00,001 to above"].obs;
+  Rx<TextEditingController> mrpFromCon = TextEditingController().obs;
+  Rx<TextEditingController> mrpToCon = TextEditingController().obs;
 
   final List<Map<String, dynamic>> diamondList = [
     {"title": "VVS-EF", "isChecked": false.obs},

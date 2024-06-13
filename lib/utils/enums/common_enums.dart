@@ -179,60 +179,77 @@ enum SelectableItemType {
 
 ///* FILTER ITEM TYPE
 enum FilterItemType {
-  rang(
+  range(
     id: 1,
     label: "Range",
     slug: "range",
+    icon: AppAssets.rangeSVG,
+  ),
+  mrp(
+    id: 2,
+    label: "MRP",
+    slug: "mrp",
+    icon: AppAssets.mrpSVG,
   ),
   available(
-    id: 2,
+    id: 3,
     label: "Available",
     slug: "available",
+    icon: AppAssets.availableSVG,
   ),
   gender(
-    id: 3,
+    id: 4,
     label: "Gender",
     slug: "gender",
+    icon: AppAssets.genderSVG,
   ),
   diamond(
-    id: 4,
+    id: 5,
     label: "Diamond",
     slug: "diamond",
+    icon: AppAssets.diamondSVg,
   ),
   kt(
-    id: 5,
+    id: 6,
     label: "KT",
     slug: "kt",
+    icon: AppAssets.ktSVG,
   ),
   delivery(
-    id: 6,
+    id: 7,
     label: "Delivery",
     slug: "delivery",
+    icon: AppAssets.deliveryIcon,
   ),
   production(
-    id: 7,
+    id: 8,
     label: "Production Name",
     slug: "production name",
+    icon: AppAssets.productNameSVG,
   ),
   /*  setting(
-    id: 8,
+    id: 9,
     label: "Setting",
     slug: "setting",
+    icon: '',
   ), */
   collection(
-    id: 9,
+    id: 10,
     label: "Collection",
     slug: "collection",
+    icon: AppAssets.collectionSVG,
   );
 
   final int id;
   final String label;
   final String slug;
+  final String icon;
 
   const FilterItemType({
     required this.id,
     required this.label,
     required this.slug,
+    required this.icon,
   });
 
   static FilterItemType fromId(int id) {

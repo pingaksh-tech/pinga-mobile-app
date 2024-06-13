@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../../../exports.dart';
 import '../../../../res/app_bar.dart';
 import '../../../../widgets/checkbox_title_tile.dart';
+import '../../../../widgets/custom_check_box_tile.dart';
 import '../../../../widgets/filter_listview_widget.dart';
 import 'filter_controller.dart';
 
@@ -12,6 +14,7 @@ class FilterScreen extends StatelessWidget {
   FilterScreen({super.key});
 
   final FilterController con = Get.put(FilterController());
+
   Color get dividerColor => Theme.of(Get.context!).dividerColor.withOpacity(0.08);
 
   @override
@@ -26,7 +29,6 @@ class FilterScreen extends StatelessWidget {
         body: Row(
           children: [
             Expanded(
-              flex: 1,
               child: ListView.separated(
                 physics: const RangeMaintainingScrollPhysics(),
                 itemCount: FilterItemType.values.length,
@@ -45,36 +47,19 @@ class FilterScreen extends StatelessWidget {
                         },
                         child: Container(
                           padding: EdgeInsets.symmetric(vertical: defaultPadding, horizontal: defaultPadding / 1.5),
-                          alignment: Alignment.centerLeft,
+                          alignment: Alignment.center,
                           color: isSelected ? Theme.of(context).colorScheme.surface : Theme.of(context).scaffoldBackgroundColor,
-                          child: Row(
+                          child: Column(
                             children: [
-                              Expanded(
-                                child: Text(
-                                  FilterItemType.values[index].label,
-                                  textAlign: TextAlign.start,
-                                  style: AppTextStyle.titleStyle(context).copyWith(fontSize: 14.sp, fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400),
-                                ),
+                              SvgPicture.asset(
+                                FilterItemType.values[index].icon,
+                                height: 19.h,
                               ),
-
-                              ///?Active filter count design
-                              /*   if (activeCount != 0)
-                                Container(
-                                  height: 15.h,
-                                  width: 15.h,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context).primaryColor,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Text(
-                                    activeCount.toString(),
-                                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                          color: Theme.of(context).colorScheme.surface,
-                                          fontSize: 10.sp,
-                                        ),
-                                  ),
-                                ), */
+                              Text(
+                                FilterItemType.values[index].label,
+                                textAlign: TextAlign.center,
+                                style: AppTextStyle.titleStyle(context).copyWith(fontSize: 13.sp, fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400),
+                              ),
                             ],
                           ),
                         ),
@@ -88,7 +73,7 @@ class FilterScreen extends StatelessWidget {
             Expanded(
               flex: 2,
               child: switch (con.filterType.value) {
-                FilterItemType.rang => Padding(
+                FilterItemType.range => Padding(
                     padding: EdgeInsets.only(top: defaultPadding, left: defaultPadding, right: defaultPadding),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,6 +129,86 @@ class FilterScreen extends StatelessWidget {
                         ),
                       ],
                     ),
+                  ),
+                FilterItemType.mrp => Column(
+                    children: [
+                      ListView.separated(
+                        shrinkWrap: true,
+                        physics: const RangeMaintainingScrollPhysics(),
+                        padding: EdgeInsets.symmetric(vertical: defaultPadding / 2),
+                        itemBuilder: (context, index) => Obx(() {
+                          return CustomCheckboxTile(
+                            isSelected: (con.selectedMrp.value == con.mrpList[index]).obs,
+                            title: con.mrpList[index],
+                            titleStyle: TextStyle(fontSize: 13.sp, fontWeight: con.selectedMrp.value == con.mrpList[index] ? FontWeight.w500 : FontWeight.w400),
+                            onChanged: (value) {
+                              if (value == false) {
+                                con.selectedMrp.value = "";
+                              } else {
+                                con.selectedMrp.value = con.mrpList[index];
+                              }
+                            },
+                          );
+                        }),
+                        separatorBuilder: (context, index) => separateDivider,
+                        itemCount: con.mrpList.length,
+                      ),
+                      CustomCheckboxTile(
+                        isSelected: (con.selectedMrp.value.toLowerCase() == 'customs').obs,
+                        title: "Customs",
+                        titleStyle: TextStyle(fontSize: 13.sp, fontWeight: con.selectedMrp.value.toLowerCase() == 'customs' ? FontWeight.w500 : FontWeight.w400),
+                        onChanged: (value) {
+                          if (value == false) {
+                            con.selectedMrp.value = "";
+                          } else {
+                            con.selectedMrp.value = "customs";
+                          }
+                        },
+                      ),
+                      10.verticalSpace,
+                      if (con.selectedMrp.value == "customs")
+                        Row(
+                          children: [
+                            Expanded(
+                              child: AppTextField(
+                                hintText: "From",
+                                hintStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500, color: AppColors.font.withOpacity(.5)),
+                                controller: con.mrpFromCon.value,
+                                padding: EdgeInsets.symmetric(horizontal: defaultPadding / 1.4).copyWith(right: 0),
+                                contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.5, horizontal: defaultPadding),
+                                fillColor: Theme.of(context).scaffoldBackgroundColor,
+                                textInputAction: TextInputAction.next,
+                                keyboardType: TextInputType.number,
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(defaultRadius),
+                                  ),
+                                  borderSide: BorderSide.none,
+                                ),
+                              ),
+                            ),
+                            10.horizontalSpace,
+                            Expanded(
+                              child: AppTextField(
+                                hintText: "To",
+                                hintStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500, color: AppColors.font.withOpacity(.5)),
+                                controller: con.mrpToCon.value,
+                                padding: EdgeInsets.symmetric(horizontal: defaultPadding / 1.4).copyWith(left: 0),
+                                contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.5, horizontal: defaultPadding),
+                                fillColor: Theme.of(context).scaffoldBackgroundColor,
+                                textInputAction: TextInputAction.done,
+                                keyboardType: TextInputType.number,
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(defaultRadius),
+                                  ),
+                                  borderSide: BorderSide.none,
+                                ),
+                              ),
+                            )
+                          ],
+                        )
+                    ],
                   ),
 
                 //? Available Tab UI

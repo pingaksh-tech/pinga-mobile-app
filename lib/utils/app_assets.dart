@@ -117,6 +117,15 @@ class AppAssets {
   static const String userIcon = '${svgPath}user_icon.svg';
   static const String usernameIcon = '${svgPath}username_icon.svg';
 
+  static const String availableSVG = '${svgPath}available_icon.svg';
+  static const String collectionSVG = '${svgPath}collection_icon.svg';
+  static const String genderSVG = '${svgPath}gender_icon.svg';
+  static const String ktSVG = '${svgPath}KT_icon.svg';
+  static const String mrpSVG = '${svgPath}mrp_icon.svg';
+  static const String productNameSVG = '${svgPath}product_name_icon.svg';
+  static const String rangeSVG = '${svgPath}range_icon.svg';
+  static const String diamondSVg = '${svgPath}diamond_ic.svg';
+
   /// ***********************************************************************************
   ///                                   JSON
   /// ***********************************************************************************
