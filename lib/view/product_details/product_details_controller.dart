@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../controller/predefine_value_controller.dart';
 import '../../data/model/predefined_model/predefined_model.dart';
+import '../../exports.dart';
 
 class ProductDetailsController extends GetxController {
   Rx<ScrollController> scrollController = ScrollController().obs;
@@ -29,6 +31,21 @@ class ProductDetailsController extends GetxController {
   RxString selectedRemark = "".obs;
   RxString productCategory = "".obs;
 
+  /// Set Default Select Value Of Product
+  Future<void> predefinedValue() async {
+    if (isRegistered<PreValueController>()) {
+      final PreValueController preValueCon = Get.find<PreValueController>();
+      List<SizeModel> colorList = await preValueCon.checkHasPreValue(productCategory.value, type: SelectableItemType.color.slug);
+      List<SizeModel> sizeList = await preValueCon.checkHasPreValue(productCategory.value, type: SelectableItemType.size.slug);
+      List<SizeModel> diamondList = await preValueCon.checkHasPreValue(productCategory.value, type: SelectableItemType.diamond.slug);
+      selectedColor.value = colorList[0];
+      if (sizeList.isNotEmpty) {
+        selectedSize.value = sizeList[0];
+      }
+      selectedDiamond.value = diamondList[0];
+    }
+  }
+
   @override
   void onInit() {
     super.onInit();
@@ -39,6 +56,7 @@ class ProductDetailsController extends GetxController {
       if (Get.arguments['isSize'].runtimeType == bool) {
         isSize.value = Get.arguments['isSize'];
       }
+      predefinedValue();
     }
   }
 }

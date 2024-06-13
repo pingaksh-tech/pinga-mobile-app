@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:get/get.dart';
+
 GetPredefinedModel getPredefinedModelFromJson(String str) => GetPredefinedModel.fromJson(json.decode(str));
 
 String getPredefinedModelToJson(GetPredefinedModel data) => json.encode(data.toJson());
@@ -78,7 +80,7 @@ class CategoryModel {
 
 class SizeModel {
   final String? id;
-  final String? value;
+  final RxString? value;
   final String? label;
 
   SizeModel({
@@ -89,7 +91,7 @@ class SizeModel {
 
   factory SizeModel.fromJson(Map<String, dynamic> json) => SizeModel(
         id: json["id"],
-        value: json["value"],
+        value: RxString(json["value"].toString()),
         label: json["label"],
       );
 

@@ -83,7 +83,7 @@ class ProductScreen extends StatelessWidget {
           ),
         ),
         body: ListView(
-          padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2, vertical: defaultPadding).copyWith(top: 0),
+          padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2, vertical: defaultPadding).copyWith(top: 0, bottom: defaultPadding * 5),
           children: [
             Divider(
               height: 2.h,

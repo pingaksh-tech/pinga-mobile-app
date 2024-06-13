@@ -725,6 +725,7 @@ class AppDialogs {
     required RxString selectedColor,
   }) {
     TextEditingController controller = TextEditingController();
+
     return showGeneralDialog(
         context: context,
         pageBuilder: (context, animation, secondaryAnimation) {

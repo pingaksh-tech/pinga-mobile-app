@@ -292,7 +292,7 @@ class ProductDetailsScreen extends StatelessWidget {
                 horizontalSelectorButton(
                   context,
                   categorySlug: con.productCategory.value,
-                  selectedSize: RxString(con.selectedSize.value.value ?? ''),
+                  selectedSize: con.selectedSize.value.value,
                   selectableItemType: SelectableItemType.size,
                   sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
                   axisDirection: Axis.vertical,
@@ -309,7 +309,7 @@ class ProductDetailsScreen extends StatelessWidget {
               horizontalSelectorButton(
                 context,
                 categorySlug: con.productCategory.value,
-                selectedColor: RxString(con.selectedColor.value.value ?? ''),
+                selectedColor: con.selectedColor.value.value,
                 selectableItemType: SelectableItemType.color,
                 sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
                 axisDirection: Axis.vertical,
@@ -326,7 +326,7 @@ class ProductDetailsScreen extends StatelessWidget {
               horizontalSelectorButton(
                 context,
                 categorySlug: con.productCategory.value,
-                selectedDiamond: RxString(con.selectedDiamond.value.value ?? ''),
+                selectedDiamond: con.selectedDiamond.value.value,
                 selectableItemType: SelectableItemType.diamond,
                 sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
                 axisDirection: Axis.vertical,

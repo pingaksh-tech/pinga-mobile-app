@@ -59,6 +59,9 @@ Widget horizontalSelectorButton(
             if (isRegistered<PreValueController>()) {
               final PreValueController preValueCon = Get.find<PreValueController>();
               List<SizeModel> colorList = await preValueCon.checkHasPreValue(categorySlug ?? '', type: selectableItemType.slug);
+              if (selectedColor != null && selectedColor.isEmpty) {
+                selectedColor.value = colorList[0].id ?? '';
+              }
 
               /// Color Selector
               AppDialogs.colorSelector(context, colorList: colorList.obs, selectedColor: selectedColor ?? ''.obs)?.then(
@@ -66,7 +69,7 @@ Widget horizontalSelectorButton(
                   if (value != null && (value.runtimeType == SizeModel)) {
                     final SizeModel colorModel = (value as SizeModel);
 
-                    selectedColor?.value = colorModel.value ?? "-";
+                    selectedColor?.value = colorModel.value?.value ?? "-";
 
                     if (colorOnChanged != null) {
                       colorOnChanged(colorModel);
@@ -91,7 +94,7 @@ Widget horizontalSelectorButton(
                   if (value != null && (value.runtimeType == SizeModel)) {
                     final SizeModel diamondModel = (value as SizeModel);
 
-                    selectedDiamond?.value = diamondModel.value ?? "";
+                    selectedDiamond?.value = diamondModel.value?.value ?? "";
 
                     if (rubyOnChanged != null) {
                       rubyOnChanged(diamondModel);
@@ -146,7 +149,7 @@ Widget horizontalSelectorButton(
                     Text(
                       switch (selectableItemType) {
                         SelectableItemType.size => ("Size ${isValEmpty(selectedSize?.value) ? "(0)" : "(${selectedSize?.value.split(" ").first})"}"),
-                        SelectableItemType.color => ("Color ${isValEmpty(selectedColor?.value) ? "(-)" : "(${selectedColor?.value})"}"),
+                        SelectableItemType.color => ("Color ${isValEmpty(selectedColor?.value) ? "(Y)" : "(${selectedColor?.value})"}"),
                         SelectableItemType.diamond => isValEmpty(selectedDiamond?.value) ? "VVS-EF" : selectedDiamond?.value ?? '',
                         SelectableItemType.remarks => "Remark",
                         SelectableItemType.stock => "Stock",

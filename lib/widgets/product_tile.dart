@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
+import '../controller/predefine_value_controller.dart';
 import '../data/model/cart/cart_model.dart';
 import '../data/model/predefined_model/predefined_model.dart';
 import '../exports.dart';
@@ -57,11 +60,26 @@ class ProductTile extends StatefulWidget {
 }
 
 class _ProductTileState extends State<ProductTile> {
-  SizeModel sizeModel = SizeModel();
+  Rx<SizeModel> sizeModel = SizeModel().obs;
   SizeModel colorModel = SizeModel();
   SizeModel diamondModel = SizeModel();
   RxString selectedRemark = "".obs;
   RxBool isSelected = false.obs;
+
+  /// Set Default Select Value Of Product
+  Future<void> predefinedValue() async {
+    if (isRegistered<PreValueController>()) {
+      final PreValueController preValueCon = Get.find<PreValueController>();
+      List<SizeModel> colorList = await preValueCon.checkHasPreValue(widget.categorySlug ?? '', type: SelectableItemType.color.slug);
+      List<SizeModel> sizeList = await preValueCon.checkHasPreValue(widget.categorySlug ?? '', type: SelectableItemType.size.slug);
+      List<SizeModel> diamondList = await preValueCon.checkHasPreValue(widget.categorySlug ?? '', type: SelectableItemType.diamond.slug);
+      colorModel = colorList[0];
+      if (sizeList.isNotEmpty) {
+        sizeModel.value = sizeList[0];
+      }
+      diamondModel = diamondList[0];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -457,14 +475,14 @@ class _ProductTileState extends State<ProductTile> {
       context,
       categorySlug: categorySlug,
       isFlexible: isFlexible,
-      selectedSize: RxString(sizeModel.value ?? ""),
+      selectedSize: sizeModel.value.value,
       sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
       selectableItemType: SelectableItemType.size,
       axisDirection: direction,
       sizeOnChanged: (value) async {
         /// Return Selected Size
         if ((value.runtimeType == SizeModel)) {
-          sizeModel = value;
+          sizeModel.value = value;
 
           printYellow(sizeModel);
         }
@@ -472,29 +490,31 @@ class _ProductTileState extends State<ProductTile> {
     );
   }
 
-  Widget colorSelector({bool isFlexible = false, Axis direction = Axis.horizontal, required String categorySlug}) => horizontalSelectorButton(
-        context,
-        isFlexible: isFlexible,
-        categorySlug: categorySlug,
-        selectedColor: RxString(colorModel.value ?? ""),
-        sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
-        selectableItemType: SelectableItemType.color,
-        axisDirection: direction,
-        colorOnChanged: (value) {
-          /// Return Selected Color
-          if ((value.runtimeType == SizeModel)) {
-            colorModel = value;
+  Widget colorSelector({bool isFlexible = false, Axis direction = Axis.horizontal, required String categorySlug}) {
+    predefinedValue();
 
-            printYellow(colorModel);
-          }
-        },
-      );
+    return horizontalSelectorButton(
+      context,
+      isFlexible: isFlexible,
+      categorySlug: categorySlug,
+      selectedColor: colorModel.value,
+      sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+      selectableItemType: SelectableItemType.color,
+      axisDirection: direction,
+      colorOnChanged: (value) {
+        /// Return Selected Color
+        if ((value.runtimeType == SizeModel)) {
+          colorModel = value;
+        }
+      },
+    );
+  }
 
   Widget diamondSelector({bool isFlexible = false, Axis direction = Axis.horizontal, required String categorySlug}) => horizontalSelectorButton(
         context,
         isFlexible: isFlexible,
         categorySlug: categorySlug,
-        selectedDiamond: RxString(diamondModel.value ?? ''),
+        selectedDiamond: diamondModel.value,
         sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
         selectableItemType: SelectableItemType.diamond,
         axisDirection: direction,
