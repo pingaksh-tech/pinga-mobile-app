@@ -1,4 +1,4 @@
-package com.micrasol.pingakshMobile
+package com.micrasol.pingaksh
 
 import io.flutter.embedding.android.FlutterActivity
 
