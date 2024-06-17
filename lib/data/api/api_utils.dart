@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 
 import '../../exports.dart';
@@ -22,7 +23,7 @@ class ApiUtils {
     await Future.delayed(
       const Duration(seconds: 2),
       () async {
-        if (!LocalStorage.accessToken.isNotEmpty) {
+        if (LocalStorage.accessToken.isNotEmpty) {
           Get.offAllNamed(AppRoutes.bottomBarScreen);
         } else {
           Get.offAllNamed(AppRoutes.authScreen);
@@ -47,5 +48,39 @@ class ApiUtils {
     //       }
     //     },
     //   );
+  }
+
+  static Future<String?> getFCMToken() async {
+    return await FirebaseMessaging.instance.requestPermission().then(
+          (_) {
+        try {
+          return FirebaseMessaging.instance.getToken().then(
+                (token) {
+              storeDeviceInformation(token);
+              return token;
+            },
+          );
+        } catch (e) {
+          return null;
+        }
+      },
+    );
+  }
+
+  static Future<Map<String, dynamic>> devicesInfo() async {
+    if (LocalStorage.deviceId.isEmpty || LocalStorage.deviceType.isEmpty) {
+      if (LocalStorage.deviceToken.isEmpty) {
+        await getFCMToken();
+      } else {
+        await storeDeviceInformation(LocalStorage.deviceToken);
+      }
+    }
+
+    return {
+      "device_name": LocalStorage.deviceName,
+      "device_id": LocalStorage.deviceId,
+      "device_type": LocalStorage.deviceType,
+      "device_token": LocalStorage.deviceToken,
+    };
   }
 }

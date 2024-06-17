@@ -26,7 +26,7 @@ class SplashScreen extends StatelessWidget {
                 opacity: value == 20 ? 0 : 1,
                 duration: const Duration(milliseconds: 700),
                 child: SvgPicture.asset(
-                  width: Get.width / 1.3,
+                  width: Get.width / 1.8,
                   AppAssets.pingakshFillLogo,
                 ),
               ),

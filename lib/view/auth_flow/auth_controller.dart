@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../exports.dart';
+import '../../utils/country_list.dart';
 
 class AuthController extends GetxController {
   // Common
@@ -21,11 +22,10 @@ class AuthController extends GetxController {
   bool mobileValidation() {
     // Phone number validation
     if (numberCon.value.text.trim().isEmpty) {
-      numberError.value = "Please enter number";
+      numberError.value = "Please enter phone number";
       numberValidation.value = false;
-      //? number.length > 16 || number.length < 9
-    } else if (!GetUtils.isPhoneNumber(numberCon.value.text.trim())) {
-      numberError.value = "Please enter valid number";
+    } else if (numberCon.value.text.trim().length < 10) {
+      numberError.value = "Phone number must be 10 digits long";
       numberValidation.value = false;
     } else {
       numberValidation.value = true;
@@ -73,4 +73,14 @@ class AuthController extends GetxController {
       disableButton.value = false;
     }
   }
+
+  /// COUNTRY CODE
+  Rx<Country> countryObject = const Country(
+    name: "India",
+    flag: "🇮🇳",
+    code: "IN",
+    dialCode: "+91",
+    minLength: 10,
+    maxLength: 10,
+  ).obs;
 }

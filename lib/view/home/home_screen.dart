@@ -47,7 +47,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-            (defaultPadding / 2).verticalSpace,
+            // (defaultPadding / 2).verticalSpace,
             GridView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -60,12 +60,6 @@ class HomeScreen extends StatelessWidget {
               ),
               itemCount: con.brandList.length,
               itemBuilder: (context, index) => GestureDetector(
-                /* onTap: () => Get.toNamed(
-                  AppRoutes.productDetailsScreen,
-                  arguments: {
-                    // "brandName": con.brandList[index]["brandName"],
-                  },
-                ),*/
                 onTap: () => Get.toNamed(
                   AppRoutes.categoryScreen,
                   arguments: {

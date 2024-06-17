@@ -59,7 +59,7 @@ class AuthScreen extends StatelessWidget {
                           UiUtils.fadeSwitcherWidget(
                             child: Text(
                               switch (con.screenType.value) {
-                                AuthScreenType.login => 'Log In / Sign Up',
+                                AuthScreenType.login => 'Log In',
                                 AuthScreenType.forgotPassword => "Enter Verification Code",
                               },
                               key: ValueKey(con.screenType.value),
@@ -67,37 +67,40 @@ class AuthScreen extends StatelessWidget {
                             ),
                           ),
                           UiUtils.fadeSwitcherWidget(
-                              child: SizedBox(
-                            key: ValueKey(con.screenType.value),
-                            child: switch (con.screenType.value) {
-                              AuthScreenType.login => Text(
-                                  'Enter your phone number to get OTP',
-                                  key: ValueKey(con.screenType.value),
-                                  style: AppTextStyle.subtitleStyle(context),
-                                ),
-                              AuthScreenType.forgotPassword => RichText(
-                                  key: ValueKey(con.screenType.value),
-                                  textAlign: TextAlign.center,
-                                  text: TextSpan(
-                                    text: "We just sent an OTP to ",
+                            child: SizedBox(
+                              key: ValueKey(con.screenType.value),
+                              child: switch (con.screenType.value) {
+                                AuthScreenType.login => Text(
+                                    'Enter your phone number to get OTP',
+                                    key: ValueKey(con.screenType.value),
                                     style: AppTextStyle.subtitleStyle(context),
-                                    children: [
-                                      TextSpan(
-                                        text: con.numberCon.value.text.trim(),
-                                        recognizer: TapGestureRecognizer()
-                                          ..onTap = con.isLoading.isFalse && con.isResendOtp.isFalse
-                                              ? () {
-                                                  con.screenType.value = AuthScreenType.login;
-                                                }
-                                              : null,
-                                        style: AppTextStyle.subtitleStyle(context).copyWith(fontWeight: FontWeight.w500, color: Theme.of(context).primaryColor),
-                                      ),
-                                    ],
                                   ),
-                                ),
-                            },
-                          )),
+                                AuthScreenType.forgotPassword => RichText(
+                                    key: ValueKey(con.screenType.value),
+                                    textAlign: TextAlign.center,
+                                    text: TextSpan(
+                                      text: "We just sent an OTP to ",
+                                      style: AppTextStyle.subtitleStyle(context),
+                                      children: [
+                                        TextSpan(
+                                          text: "${con.countryObject.value.dialCode} ${con.numberCon.value.text.trim()}",
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = con.isLoading.isFalse && con.isResendOtp.isFalse
+                                                ? () {
+                                                    con.screenType.value = AuthScreenType.login;
+                                                  }
+                                                : null,
+                                          style: AppTextStyle.subtitleStyle(context).copyWith(fontWeight: FontWeight.w500, color: Theme.of(context).primaryColor),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                              },
+                            ),
+                          ),
                           (defaultPadding * 1.5).verticalSpace,
+
+                          /// PHONE NUMBER FIELD
                           AnimatedClipRect(
                             open: con.screenType.value == AuthScreenType.login,
                             child: AppTextField(
@@ -109,7 +112,17 @@ class AuthScreen extends StatelessWidget {
                               keyboardType: TextInputType.phone,
                               scrollPadding: UiUtils.textfieldScrollPadding(context, showError: con.numberValidation.value),
                               textInputAction: TextInputAction.done,
+                              prefixIcon: Container(
+                                alignment: Alignment.centerRight,
+                                padding: EdgeInsets.symmetric(horizontal: defaultPadding / 1.5),
+                                width: 55.w,
+                                child: Text(
+                                  con.countryObject.value.dialCode,
+                                  style: AppTextStyle.textFieldStyle(context).copyWith(color: Theme.of(context).textTheme.titleLarge?.color),
+                                ),
+                              ),
                               inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
                                 LengthLimitingTextInputFormatter(10),
                               ],
                               onChanged: (value) {
@@ -117,6 +130,8 @@ class AuthScreen extends StatelessWidget {
                               },
                             ),
                           ),
+
+                          /// OTP FIELD
                           AnimatedClipRect(
                             open: con.screenType.value == AuthScreenType.forgotPassword,
                             child: Column(
@@ -266,6 +281,8 @@ class AuthScreen extends StatelessWidget {
                             ),
                           ),
                           (defaultPadding * 1.5).verticalSpace,
+
+                          /// SEND & VERIFY OTP BUTTON
                           AppButton(
                             title: switch (con.screenType.value) {
                               AuthScreenType.login => 'Request OTP',
@@ -315,6 +332,8 @@ class AuthScreen extends StatelessWidget {
                     ),
                   ],
                 ),
+
+                /// POLICIES AGREEMENT DETAILS
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: AnimatedClipRect(
@@ -333,7 +352,7 @@ class AuthScreen extends StatelessWidget {
                           child: RichText(
                             textAlign: TextAlign.center,
                             text: TextSpan(
-                              text: "By using the Pingaksh app you agree to our\n",
+                              text: "By using the ${AppStrings.appName} app you agree to our\n",
                               style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 12.sp, color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(.55)),
                               children: [
                                 TextSpan(
@@ -347,7 +366,7 @@ class AuthScreen extends StatelessWidget {
                                 ),
                                 TextSpan(
                                   text: "Privacy Policy",
-                                  recognizer: TapGestureRecognizer()..onTap = con.isLoading.isFalse ? () => ApiUtils.termsAndConditionsNav() : null,
+                                  recognizer: TapGestureRecognizer()..onTap = con.isLoading.isFalse ? () => ApiUtils.privacyPolicyNav() : null,
                                   style: Theme.of(context).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w500, decoration: TextDecoration.underline, color: Theme.of(context).primaryColor),
                                 ),
                               ],

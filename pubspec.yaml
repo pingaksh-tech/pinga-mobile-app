@@ -66,6 +66,7 @@ dependencies:
   flutter_image_compress: ^2.3.0
   syncfusion_flutter_pdfviewer: ^25.2.7
   no_screenshot: ^0.0.1+6
+  firebase_messaging: ^15.0.1
 
 dev_dependencies:
   flutter_test:
