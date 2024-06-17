@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import '../../data/repositories/auth/auth_repository.dart';
 import '../../packages/app_animated_cliprect.dart';
 import 'package:pinput/pinput.dart';
 
@@ -60,7 +61,7 @@ class AuthScreen extends StatelessWidget {
                             child: Text(
                               switch (con.screenType.value) {
                                 AuthScreenType.login => 'Log In',
-                                AuthScreenType.forgotPassword => "Enter Verification Code",
+                                AuthScreenType.otpVerification => "Enter Verification Code",
                               },
                               key: ValueKey(con.screenType.value),
                               style: AppTextStyle.titleStyle(context),
@@ -75,7 +76,7 @@ class AuthScreen extends StatelessWidget {
                                     key: ValueKey(con.screenType.value),
                                     style: AppTextStyle.subtitleStyle(context),
                                   ),
-                                AuthScreenType.forgotPassword => RichText(
+                                AuthScreenType.otpVerification => RichText(
                                     key: ValueKey(con.screenType.value),
                                     textAlign: TextAlign.center,
                                     text: TextSpan(
@@ -133,7 +134,7 @@ class AuthScreen extends StatelessWidget {
 
                           /// OTP FIELD
                           AnimatedClipRect(
-                            open: con.screenType.value == AuthScreenType.forgotPassword,
+                            open: con.screenType.value == AuthScreenType.otpVerification,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -189,22 +190,12 @@ class AuthScreen extends StatelessWidget {
                                     }
                                   },
                                   onCompleted: (pin) async {
-                                    // if (con.basicDetailComplete.isFalse) {
-                                    //   //? OTP verification not complete.
-                                    //   if (con.disableButton.isFalse && con.buttonLoader.isFalse) {
-                                    //     //? OTP Verify API
-                                    //     await AuthRepository.otpVerifyAPI(
-                                    //       isLoader: con.buttonLoader,
-                                    //       params: {
-                                    //         "user_from": APIPlatform.app.name.capitalizeFirst,
-                                    //         "otp": con.otpController.value.text.trim(),
-                                    //         "mobile_no": con.getAndSetPhoneNumber,
-                                    //       },
-                                    //     );
-                                    //   }
-                                    // } else {
-                                    //   //* OTP verification complete.
-                                    // }
+                                    /// VERIFY MOBILE OTP API
+                                    await AuthRepository.verifyMobileOtpAPI(
+                                      loader: con.isResendOtp,
+                                      mobileNumber: con.userMobileNumberWithISDCode,
+                                      otp: con.otpController.value.text.trim(),
+                                    );
                                   },
                                   onChanged: (pin) async {
                                     con.checkOTPButtonDisableStatus();
@@ -229,20 +220,14 @@ class AuthScreen extends StatelessWidget {
                                                   ? () async {
                                                       con.isResendOtp.value = true;
 
-                                                      await Future.delayed(
-                                                        const Duration(milliseconds: 1000),
-                                                        () {
+                                                      /// RESEND MOBILE OTP API
+                                                      await AuthRepository.resendOtpToMobileNumAPI(
+                                                        loader: con.isResendOtp,
+                                                        mobileNumber: con.userMobileNumberWithISDCode,
+                                                        onSuccess: () {
                                                           con.timerStart();
-                                                          con.isResendOtp.value = false;
                                                         },
                                                       );
-
-                                                      // await AuthRepository.otpResendAPI(
-                                                      //   isLoader: con.isResendOtp,
-                                                      //   body: {
-                                                      //     "mobile_no": con.getAndSetPhoneNumber,
-                                                      //   },
-                                                      // );
                                                     }
                                                   : null,
                                               child: Text(
@@ -286,12 +271,12 @@ class AuthScreen extends StatelessWidget {
                           AppButton(
                             title: switch (con.screenType.value) {
                               AuthScreenType.login => 'Request OTP',
-                              AuthScreenType.forgotPassword => 'Verify',
+                              AuthScreenType.otpVerification => 'Verify',
                             },
                             loader: con.isLoading.value,
                             disableButton: switch (con.screenType.value) {
                               AuthScreenType.login => false,
-                              AuthScreenType.forgotPassword => con.disableButton.value,
+                              AuthScreenType.otpVerification => con.disableButton.value,
                             },
                             borderRadius: BorderRadius.circular(defaultRadius * 4),
                             margin: EdgeInsets.symmetric(horizontal: defaultPadding.w),
@@ -302,24 +287,28 @@ class AuthScreen extends StatelessWidget {
                               switch (con.screenType.value) {
                                 case AuthScreenType.login:
                                   if (con.mobileValidation()) {
-                                    // In login API
-                                    con.isLoading.value = true;
-
-                                    await Future.delayed(
-                                      const Duration(milliseconds: 300),
-                                      () {
+                                    /// SEND MOBILE OTP API
+                                    await AuthRepository.sendOtpToPhoneNumberAPI(
+                                      loader: con.isLoading,
+                                      mobileNumber: con.userMobileNumberWithISDCode,
+                                      onSuccess: () {
                                         con.timerStart();
                                         con.otpController.value.clear();
                                         con.isLoading.value = false;
-                                        con.screenType.value = AuthScreenType.forgotPassword;
+                                        con.screenType.value = AuthScreenType.otpVerification;
                                       },
                                     );
                                   }
                                   break;
 
-                                case AuthScreenType.forgotPassword:
+                                case AuthScreenType.otpVerification:
                                   if (con.isResendOtp.isFalse) {
-                                    Get.offAllNamed(AppRoutes.bottomBarScreen);
+                                    /// VERIFY MOBILE OTP API
+                                    await AuthRepository.verifyMobileOtpAPI(
+                                      loader: con.isResendOtp,
+                                      mobileNumber: con.userMobileNumberWithISDCode,
+                                      otp: con.otpController.value.text.trim(),
+                                    );
                                   }
 
                                   break;

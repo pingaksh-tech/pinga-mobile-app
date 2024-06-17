@@ -34,17 +34,21 @@ class UserDataModel {
 
 class Data {
   final UserModel? user;
+  final Tokens? tokens;
 
   Data({
     this.user,
+    this.tokens,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     user: json["user"] == null ? null : UserModel.fromJson(json["user"]),
+    tokens: json["tokens"] == null ? null : Tokens.fromJson(json["tokens"]),
   );
 
   Map<String, dynamic> toJson() => {
     "user": user?.toJson(),
+    "tokens": tokens?.toJson(),
   };
 }
 
@@ -58,7 +62,7 @@ class UserModel {
   final int? otp;
   final String? roleId;
   final bool? status;
-  final String? refreshToken;
+  // final String? refreshToken;
   final DateTime? deletedAt;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -74,7 +78,7 @@ class UserModel {
     this.otp,
     this.roleId,
     this.status,
-    this.refreshToken,
+    // this.refreshToken,
     this.deletedAt,
     this.createdAt,
     this.updatedAt,
@@ -91,7 +95,7 @@ class UserModel {
     otp: json["otp"],
     roleId: json["role_id"],
     status: json["status"],
-    refreshToken: json["refresh_token"],
+    // refreshToken: json["refresh_token"],
     deletedAt: json["deleted_at"] == null ? null : DateTime.parse(json["deleted_at"]),
     createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
@@ -108,10 +112,30 @@ class UserModel {
     "otp": otp,
     "role_id": roleId,
     "status": status,
-    "refresh_token": refreshToken,
+    // "refresh_token": refreshToken,
     "deleted_at": deletedAt?.toIso8601String(),
     "createdAt": createdAt?.toIso8601String(),
     "updatedAt": updatedAt?.toIso8601String(),
     "__v": v,
+  };
+}
+
+class Tokens {
+  final String? accessToken;
+  final String? refreshToken;
+
+  Tokens({
+    this.accessToken,
+    this.refreshToken,
+  });
+
+  factory Tokens.fromJson(Map<String, dynamic> json) => Tokens(
+    accessToken: json["access_token"],
+    refreshToken: json["refresh_token"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "access_token": accessToken,
+    "refresh_token": refreshToken,
   };
 }

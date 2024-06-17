@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
+import '../data/model/user/user_model.dart';
 import '../exports.dart';
 
 class LocalStorage {
@@ -17,9 +20,10 @@ class LocalStorage {
   //* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-> Default Storage <=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= *//
   static GetStorage prefs = GetStorage(defaultStorageKey);
 
-  // static const String _userModelData = "user_model";
+  static const String _userModel = "USER-MODEL";
   static const String _baseUrl = "base_url";
   static const String _accessToken = "access_token";
+  static const String _refreshToken = "refreshToken";
   static const String _primaryColor = "primary_color";
   static const String _secondaryColor = "secondary_color";
   static const String _localeLanguage = "locale_language";
@@ -30,6 +34,9 @@ class LocalStorage {
   /// User login token
   static set accessToken(String? value) => prefs.write(_accessToken, value);
   static String get accessToken => prefs.read(_accessToken) ?? "";
+
+  static set refreshToken(String? value) => prefs.write(_refreshToken, value);
+  static String get refreshToken => prefs.read(_refreshToken) ?? "";
 
   /// API base local URL
   static set baseUrl(String? value) => prefs.write(_baseUrl, value);
@@ -52,20 +59,22 @@ class LocalStorage {
   static String get localeLanguageCode => prefs.read(_localeLanguageCode) ?? "";
 
   /// UserModelData
-  // static set userModelData(UserModelData value) {
-  //   final String encodedValue = jsonEncode(value);
-  //   prefs.write(_userModelData, encodedValue);
-  // }
-
-  // static UserModelData get userModelData {
-  //   final dynamic result = prefs.read(_userModelData);
-  //   return UserModelData.fromJson(json.decode(result));
-  // }
-/* 
-  /// UserModel
-  static set userModel(UserModel value) {
+  /*static set userModelData(UserModelData value) {
     final String encodedValue = jsonEncode(value);
-    prefs.write(_userModel, encodedValue);
+    prefs.write(_userModelData, encodedValue);
+  }
+
+  static UserModelData get userModelData {
+    final dynamic result = prefs.read(_userModelData);
+    return UserModelData.fromJson(json.decode(result));
+  }*/
+
+  /// UserModel
+  static set userModel(UserModel? userModel) {
+    if(userModel!=null) {
+      final String encodedValue = jsonEncode(userModel);
+      prefs.write(_userModel, encodedValue);
+    }
   }
 
   static UserModel get userModel {
@@ -74,7 +83,7 @@ class LocalStorage {
   }
 
   /// PermissionModel
-  static set permissionModel(PermissionModel value) {
+  /*  static set permissionModel(PermissionModel value) {
     final String encodedValue = jsonEncode(value);
     prefs.write(_permissionsModel, encodedValue);
   }
@@ -82,7 +91,7 @@ class LocalStorage {
   static PermissionModel get permissionModel {
     final dynamic result = prefs.read(_permissionsModel);
     return PermissionModel.fromJson(json.decode(result));
-  } */
+  }*/
 
   /// ***********************************************************************************
   ///                                      CURRENCY
@@ -170,6 +179,7 @@ class LocalStorage {
     printDate("User Data");
 
     printData(key: "Access Token", value: accessToken);
+    printData(key: "Refresh Token", value: accessToken);
 
     printDate("Device Permanent Data");
 

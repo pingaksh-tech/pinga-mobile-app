@@ -25,4 +25,6 @@ class AppStrings {
   static String otpErrorText = 'Please enter 6 digit OTP';
   static String invalidOTP = 'Invalid OTP. Please try again.';
   static String otpVerificationSuccessfully = "OTP verification successfully";
+  static String loginSuccessfully = "Login Successfully";
+
 }

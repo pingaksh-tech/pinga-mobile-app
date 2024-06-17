@@ -15,9 +15,11 @@ class AuthController extends GetxController {
   // Login
   Rx<AuthScreenType> screenType = AuthScreenType.login.obs;
 
-  Rx<TextEditingController> numberCon = TextEditingController(text: kDebugMode ? "9876543210" : null).obs;
+  Rx<TextEditingController> numberCon = TextEditingController(text: kDebugMode ? "1111111111" : null).obs;
   RxBool numberValidation = true.obs;
   RxString numberError = ''.obs;
+
+  String get userMobileNumberWithISDCode=>"${countryObject.value.dialCode.trim()}${numberCon.value.text.trim()}";
 
   bool mobileValidation() {
     // Phone number validation

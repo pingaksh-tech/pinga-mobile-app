@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
@@ -10,7 +11,7 @@ import '../../exports.dart';
 import 'api_utils.dart';
 
 class HttpUtil {
-  static const Duration defaultTimeoutDuration = Duration(seconds: 7);
+  static const Duration defaultTimeoutDuration = Duration(seconds: 15);
 
   static bool showErrorToast = true;
 
@@ -28,8 +29,8 @@ class HttpUtil {
   HttpUtil._internal() {
     BaseOptions options = BaseOptions(
       baseUrl: apiUrl,
-      connectTimeout: const Duration(seconds: 7),
-      receiveTimeout: const Duration(seconds: 7),
+      connectTimeout: const Duration(seconds: 15),
+      receiveTimeout: const Duration(seconds: 15),
       contentType: 'application/json; charset=utf-8',
       responseType: ResponseType.json,
     );
@@ -38,17 +39,21 @@ class HttpUtil {
     CookieJar cookieJar = CookieJar();
     dio.interceptors.add(CookieManager(cookieJar));
 
-    dio.interceptors.add(
+
+    /// SHOW API LOGS
+    if(kDebugMode) {
+      dio.interceptors.add(
       PrettyDioLogger(
         request: true,
         requestHeader: false,
         requestBody: true,
         responseHeader: false,
-        responseBody: false,
+        responseBody: true,
         error: true,
         compact: true,
       ),
     );
+    }
 
     dio.interceptors.add(
       InterceptorsWrapper(

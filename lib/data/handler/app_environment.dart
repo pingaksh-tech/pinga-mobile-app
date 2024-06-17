@@ -25,16 +25,16 @@ class AppEnvironment {
 
       case EnvironmentType.development:
         if (kDebugMode) {
-          return "";
+          return "https://apidev.pingaksh.co/api/";
         } else {
-          return "";
+          return "https://apidev.pingaksh.co/api/";
         }
 
       case EnvironmentType.local:
         if (kDebugMode) {
-          return "http://192.168.29.197:3000/api/";
+          return "http://192.168.0.155:3000/api/";
         } else {
-          return "http://192.168.29.197:3000/api/";
+          return "http://192.168.0.155:3000/api/";
         }
 
       case EnvironmentType.custom:

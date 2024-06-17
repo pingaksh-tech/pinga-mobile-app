@@ -9,6 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../data/api/api_utils.dart';
 import '../../exports.dart';
 import '../../res/app_dialog.dart';
 import 'profile_controller.dart';
@@ -182,7 +183,7 @@ class ProfileScreen extends StatelessWidget {
                           Get.back();
                         },
                         onLogout: () async {
-                          Get.offAllNamed(AppRoutes.authScreen);
+                          ApiUtils.logoutAndCleanAllUserData();
                         },
                       );
                     },

@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import '../../../exports.dart';
 
-import '../../api/api_utils.dart';
 import '../../model/user/user_model.dart';
 
 class AuthRepository {
@@ -14,63 +13,67 @@ class AuthRepository {
   static Future<dynamic> sendOtpToPhoneNumberAPI({
     required String mobileNumber,
     RxBool? loader,
+    required Function() onSuccess,
   }) async {
-    try {
-      loader?.value = true;
+    if (await getConnectivityResult()) {
+      try {
+        loader?.value = true;
 
-      await APIFunction.postApiCall(
-        apiUrl: ApiUrls.sendMobileOtpPOST,
-        body: {
-          "phone": mobileNumber,
-        },
-      ).then(
-        (response) async {
-          if (!isValEmpty(response) && response["success"] == true) {
-            UserDataModel userDataModel=userDataModelFromJson(jsonEncode(response));
-            loader?.value = false;
-            UiUtils.toast(AppStrings.otpSendSuccessfully);
-
-
-          }else{
-            loader?.value = false;
-          }
-
-
-          return response;
-        },
-      );
-    } catch (e) {
-      loader?.value = false;
-      printErrors(type: "sendOtpToPhoneNumberAPI", errText: "$e");
+        await APIFunction.postApiCall(
+          apiUrl: ApiUrls.sendMobileOtpPOST,
+          body: {
+            "phone": mobileNumber,
+          },
+        ).then(
+          (response) async {
+            if (!isValEmpty(response) && response["success"] == true) {
+              loader?.value = false;
+              UiUtils.toast(AppStrings.otpSendSuccessfully);
+              onSuccess();
+            } else {
+              loader?.value = false;
+            }
+            return response;
+          },
+        );
+      } catch (e) {
+        loader?.value = false;
+        printErrors(type: "sendOtpToPhoneNumberAPI", errText: "$e");
+      }
     }
   }
-
-
 
   /// ***********************************************************************************
   ///                                   RESEND OTP API
   /// ***********************************************************************************
 
-  static Future<dynamic> resendOtpToMobileNumAPI({required String userMobileNumber, RxBool? isLoader}) async {
-    try {
-      isLoader?.value = true;
-      await APIFunction.postApiCall(
-        apiUrl: ApiUrls.resendMobileOtpPOST,
-        body: {
-          "mobile": userMobileNumber,
-        },
-      ).then(
-        (response) async {
-          if (!isValEmpty(response['message'])) UiUtils.toast(response['message']);
-          if (response != null && response['success'] == true) {}
-          isLoader?.value = false;
-          return response;
-        },
-      );
-    } catch (e) {
-      printErrors(type: "resendOtpToMobileNumAPI", errText: "$e");
-    } finally {
-      isLoader?.value = false;
+  static Future<dynamic> resendOtpToMobileNumAPI({
+    required String mobileNumber,
+    RxBool? loader,
+    required Function() onSuccess,
+  }) async {
+    if (await getConnectivityResult()) {
+      try {
+        loader?.value = true;
+        await APIFunction.postApiCall(
+          apiUrl: ApiUrls.resendMobileOtpPOST,
+          body: {
+            "phone": mobileNumber,
+          },
+        ).then(
+          (response) async {
+            loader?.value = false;
+            if (!isValEmpty(response['message'])) UiUtils.toast(response['message']);
+            if (!isValEmpty(response) && response["success"] == true) {
+              onSuccess();
+            }
+            return response;
+          },
+        );
+      } catch (e) {
+        loader?.value = false;
+        printErrors(type: "resendOtpToMobileNumAPI", errText: "$e");
+      }
     }
   }
 
@@ -78,61 +81,47 @@ class AuthRepository {
   ///                                   VERIFY OTP API
   /// ***********************************************************************************
 
-  static Future<dynamic> verifyMobileOtpAPI({required String userMobileNumber, required String otp, RxBool? isLoader}) async {
-    try {
-      isLoader?.value = true;
-      await ApiUtils.devicesInfo();
-      await APIFunction.postApiCall(
-        apiUrl: ApiUrls.verifyMobileOtpPOST,
-        body: {
-          "mobile": userMobileNumber,
-          "otp": otp,
-          "device_info": await ApiUtils.devicesInfo(),
-        },
-      ).then(
-        (response) async {
-          if (response != null && response['success'] == true) {
-            UiUtils.toast(AppStrings.otpVerificationSuccessfully);
+  static Future<dynamic> verifyMobileOtpAPI({required String mobileNumber, required String otp, RxBool? loader}) async {
+    if (await getConnectivityResult()) {
+      try {
+        loader?.value = true;
+        // await ApiUtils.devicesInfo();
+        await APIFunction.postApiCall(
+          apiUrl: ApiUrls.verifyMobileOtpPOST,
+          body: {
+            "phone": mobileNumber,
+            "otp": otp,
+            // "device_info": await ApiUtils.devicesInfo(),
+          },
+        ).then(
+          (response) async {
+            if (!isValEmpty(response) && response["success"] == true) {
+              UserDataModel userDataModel = userDataModelFromJson(jsonEncode(response));
 
-            /* if (response['data'] != null && response['data']['data'] != null) {
-              Map userData = response['data']['data'];
+              /// STORE USER DETAILS IN LOCAL STORAGE
+              LocalStorage.userModel = userDataModel.data?.user;
 
-              bool isAlreadyExists = (userData['is_username'] ?? false);
-              if (isAlreadyExists) {
-                /// LOGIN ACTIVITY
-                LocalStorage.storeUserDetails(
-                  userID: userData['_id'] ?? "",
-                  mobile: userData['mobile'] ?? "",
-                  userNAME: userData['user_name'] ?? "",
-                  referralCODE: userData['referral_code'] ?? "",
-                  userIMAGE: userData['image'] ?? "",
-                  accessTOKEN: response['data']['token'] ?? "",
-                  myBALANCE: userData['my_balance'] ?? "",
-                );
+              /// STORE ACCESS AND REFRESH TOKENS
+              LocalStorage.accessToken = userDataModel.data?.tokens?.accessToken;
+              LocalStorage.refreshToken = userDataModel.data?.tokens?.refreshToken;
 
-                Get.offAllNamed(AppRoutes.bottomNavBarScreen);
-              } else {
-                /// REGISTER REQUIRED
+               UiUtils.toast(AppStrings.loginSuccessfully);
 
-                /// Navigate to add user_name and referral code screen
-                Get.toNamed(AppRoutes.addUserNameScreen, arguments: {
-                  "mobileNumber": userMobileNumber,
-                  "accessToken": response['data']['token'] ?? "",
-                });
-              }
-            }*/
-          } else {
-            if (!isValEmpty(response['message'])) UiUtils.toast(response['message']);
-          }
+               /// NAVIGATE TO BOTTOM-BAR SCREEN
+               Get.offAllNamed(AppRoutes.bottomBarScreen);
 
-          isLoader?.value = false;
-          return response;
-        },
-      );
-    } catch (e) {
-      printErrors(type: "verifyMobileOtpAPI", errText: "$e");
-    } finally {
-      isLoader?.value = false;
+            } else {
+              if (!isValEmpty(response['message'])) UiUtils.toast(response['message']);
+            }
+
+            loader?.value = false;
+            return response;
+          },
+        );
+      } catch (e) {
+        loader?.value = false;
+        printErrors(type: "verifyMobileOtpAPI", errText: "$e");
+      }
     }
   }
 
@@ -143,25 +132,29 @@ class AuthRepository {
   static Future<bool> logOutAPI({
     RxBool? loader,
   }) async {
-    try {
-      loader?.value = true;
+    if (await getConnectivityResult()) {
+      try {
+        loader?.value = true;
 
-      return await APIFunction.postApiCall(
-        apiUrl: ApiUrls.logOutPOST,
-      ).then(
-        (response) async {
-          if (response != null && response['success'] == true) {
-            loader?.value = false;
-            return true;
-          }
-          return false;
-        },
-      );
-    } catch (e) {
-      printErrors(type: "logOutAPI", errText: "$e");
-      loader?.value = false;
+        return await APIFunction.postApiCall(
+          apiUrl: ApiUrls.logOutPOST,
+        ).then(
+          (response) async {
+            if (response != null && response['success'] == true) {
+              loader?.value = false;
+              return true;
+            }
+            return false;
+          },
+        );
+      } catch (e) {
+        printErrors(type: "logOutAPI", errText: "$e");
+        loader?.value = false;
+        return false;
+      } finally {}
+    } else {
       return false;
-    } finally {}
+    }
   }
 
   /// ***********************************************************************************
@@ -172,28 +165,32 @@ class AuthRepository {
     RxBool? loader,
     Function()? onSuccess,
   }) async {
-    try {
-      loader?.value = true;
+    if (await getConnectivityResult()) {
+      try {
+        loader?.value = true;
 
-      return await APIFunction.deleteApiCall(
-        apiUrl: ApiUrls.deleteAccountDELETE,
-      ).then(
-        (response) async {
-          if (response != null && response['success'] == true) {
+        return await APIFunction.deleteApiCall(
+          apiUrl: ApiUrls.deleteAccountDELETE,
+        ).then(
+          (response) async {
+            if (response != null && response['success'] == true) {
+              loader?.value = false;
+
+              /// onSuccess
+              if (onSuccess != null) onSuccess();
+              return true;
+            }
             loader?.value = false;
-
-            /// onSuccess
-            if (onSuccess != null) onSuccess();
-            return true;
-          }
-          loader?.value = false;
-          return false;
-        },
-      );
-    } catch (e) {
-      printErrors(type: "deleteAccountAPI", errText: "$e");
-      loader?.value = false;
+            return false;
+          },
+        );
+      } catch (e) {
+        printErrors(type: "deleteAccountAPI", errText: "$e");
+        loader?.value = false;
+        return false;
+      } finally {}
+    } else {
       return false;
-    } finally {}
+    }
   }
 }
