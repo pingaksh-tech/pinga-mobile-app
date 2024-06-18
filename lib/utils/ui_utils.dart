@@ -13,8 +13,8 @@ import '../exports.dart';
 
 class UiUtils {
   UiUtils._();
-  static double appButtonHight = 48.w;
-  static double bottomBarHight = 85;
+  static double appButtonHeight = 48.w;
+  static double bottomBarHeight = 85;
 
   /// Set the status bar style to dark
   static void darkStatusBar() {
@@ -105,8 +105,8 @@ class UiUtils {
     }
   }
 
-  static EdgeInsets textfieldScrollPadding(BuildContext context, {bool? showError = false, double? extendBottom}) {
-    return const EdgeInsets.all(20).copyWith(bottom: (UiUtils.appButtonHight + (defaultPadding * 3.3) + (showError != true ? defaultPadding * 1.3 : 0)) + (extendBottom ?? 0));
+  static EdgeInsets textFieldScrollPadding(BuildContext context, {bool? showError = false, double? extendBottom}) {
+    return const EdgeInsets.all(20).copyWith(bottom: (UiUtils.appButtonHeight + (defaultPadding * 3.3) + (showError != true ? defaultPadding * 1.3 : 0)) + (extendBottom ?? 0));
   }
 
   /// ***********************************************************************************
@@ -131,6 +131,7 @@ class UiUtils {
   /// ***********************************************************************************
   ///                                 SECURE PASSWORD EYE
   /// ***********************************************************************************
+
   // static Widget securePasswordEye(String svgIconPath, {double? width, double? imageHeight, bool isPassShow = true}) {
   //   return SizedBox(
   //     width: width ?? 40,
@@ -155,12 +156,12 @@ class UiUtils {
     if (!isValEmpty(value)) {
       NumberFormat format = NumberFormat.currency(
         decimalDigits: decimalDigits ?? 2,
-        symbol: symbol ?? LocalStorage.currencySymbol.value,
+        symbol: symbol ?? LocalStorage.currencySymbol,
         locale: "en_IN",
       );
       return format.format(double.parse(value.toString()));
     } else {
-      return "${LocalStorage.currencySymbol.value}0.0";
+      return "${LocalStorage.currencySymbol}0.0";
     }
   }
 
@@ -243,7 +244,7 @@ class UiUtils {
     );
   }
 
-  static convertDateToDotSeptate(DateTime date) {
+  static convertDateToDotSeparate(DateTime date) {
     String convertedDate = '';
     try {
       final DateTime now = DateTime.parse(date.toString());

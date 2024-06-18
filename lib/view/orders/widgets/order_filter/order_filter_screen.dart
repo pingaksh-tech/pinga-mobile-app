@@ -128,7 +128,7 @@ class OrderFilterScreen extends StatelessWidget {
                           suffixIconSize: 20.w,
                           onDateOrTimeChange: (value) {
                             if (value.runtimeType == DateTime) {
-                              con.startDateCon.value.text = UiUtils.convertDateToDotSeptate(value);
+                              con.startDateCon.value.text = UiUtils.convertDateToDotSeparate(value);
                               con.startDate.value = value;
                             }
                           },
@@ -148,7 +148,7 @@ class OrderFilterScreen extends StatelessWidget {
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 14.sp, fontWeight: FontWeight.w500),
                           onDateOrTimeChange: (value) {
                             if (value.runtimeType == DateTime) {
-                              con.endDateCon.value.text = UiUtils.convertDateToDotSeptate(value);
+                              con.endDateCon.value.text = UiUtils.convertDateToDotSeparate(value);
                               con.endDate.value = value;
                             }
                           },

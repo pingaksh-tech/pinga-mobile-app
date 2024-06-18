@@ -1,23 +1,33 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../data/model/user/user_model.dart';
 import '../exports.dart';
 
 class LocalStorage {
+
+  /// ***********************************************************************************
+  ///                                  LOCAL STORAGES
+  /// ***********************************************************************************
+
   static String defaultStorageKey = "GetStorage";
   static String deviceStorageKey = "DeviceStorageKey";
 
-  /// Init all GetStorages
+  /// ***********************************************************************************
+  ///                             INITIALISE LOCAL STORAGE
+  /// ***********************************************************************************
+
   static Future<void> init() async {
     await GetStorage.init(defaultStorageKey);
     await GetStorage.init(deviceStorageKey);
   }
 
-  //* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-> Default Storage <=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= *//
+  /// ***********************************************************************************
+  ///                                   LOCAL STORAGE KEYS
+  /// ***********************************************************************************
+
   static GetStorage prefs = GetStorage(defaultStorageKey);
 
   static const String _userModel = "USER-MODEL";
@@ -30,6 +40,10 @@ class LocalStorage {
   static const String _localeLanguageCode = "locale_language_code";
   static const String _currencyType = "CURRENCY-TYPE";
   static const String _currencySymbol = "CURRENCY-SYMBOL";
+
+  /// ***********************************************************************************
+  ///                                   GET AND SET DETAILS
+  /// ***********************************************************************************
 
   /// User login token
   static set accessToken(String? value) => prefs.write(_accessToken, value);
@@ -58,17 +72,6 @@ class LocalStorage {
   static set localeLanguageCode(String? value) => prefs.write(_localeLanguageCode, value);
   static String get localeLanguageCode => prefs.read(_localeLanguageCode) ?? "";
 
-  /// UserModelData
-  /*static set userModelData(UserModelData value) {
-    final String encodedValue = jsonEncode(value);
-    prefs.write(_userModelData, encodedValue);
-  }
-
-  static UserModelData get userModelData {
-    final dynamic result = prefs.read(_userModelData);
-    return UserModelData.fromJson(json.decode(result));
-  }*/
-
   /// UserModel
   static set userModel(UserModel? userModel) {
     if(userModel!=null) {
@@ -82,40 +85,23 @@ class LocalStorage {
     return UserModel.fromJson(json.decode(result));
   }
 
-  /// PermissionModel
-  /*  static set permissionModel(PermissionModel value) {
-    final String encodedValue = jsonEncode(value);
-    prefs.write(_permissionsModel, encodedValue);
-  }
-
-  static PermissionModel get permissionModel {
-    final dynamic result = prefs.read(_permissionsModel);
-    return PermissionModel.fromJson(json.decode(result));
-  }*/
-
   /// ***********************************************************************************
   ///                                      CURRENCY
   /// ***********************************************************************************
 
   static const String _defaultCurrencyType = "INR", _defaultCurrencySymbol = "₹";
-  static RxString currencyType = "".obs, currencySymbol = "".obs;
+
+  static String get currencyType => prefs.read(_currencyType) ?? _defaultCurrencyType;
+
+  static String get currencySymbol => prefs.read(_currencySymbol) ?? _defaultCurrencySymbol;
 
   static Future setCurrency({String? currencyTYPE, String? currencySYMBOL}) async {
-    if (!isValEmpty(currencyTYPE)) {
-      await prefs.write(_currencyType, currencyTYPE);
-      currencyType.value = prefs.read(_currencyType) ?? _defaultCurrencyType;
-    } else {
-      currencyType.value = prefs.read(_currencyType) ?? _defaultCurrencyType;
-    }
-    if (!isValEmpty(currencySYMBOL)) {
-      await prefs.write(_currencySymbol, currencySYMBOL);
-      currencySymbol.value = prefs.read(_currencySymbol) ?? _defaultCurrencySymbol;
-    } else {
-      currencySymbol.value = prefs.read(_currencySymbol) ?? _defaultCurrencySymbol;
-    }
+    await prefs.write(_currencyType, currencyTYPE ?? _defaultCurrencyType);
 
-    printData(key: "currencyType", value: currencyType.value);
-    printData(key: "currencySymbol", value: currencySymbol.value);
+    await prefs.write(_currencySymbol, currencySYMBOL ?? _defaultCurrencySymbol);
+
+    printData(key: "currencyType", value: currencyType);
+    printData(key: "currencySymbol", value: currencySymbol);
   }
 
   /// ***********************************************************************************
@@ -141,7 +127,7 @@ class LocalStorage {
   /// Device name
   static String get deviceName => devicePrefs.read(_deviceNAME) ?? "";
 
-  //* -=-=-=-=-=-=-=-> Store Device Information <-=-=-=-=-=-=-=- //
+  /// Store Device Information
   static Future storeDeviceInfo({
     required String deviceID,
     required String deviceTOKEN,
@@ -161,15 +147,17 @@ class LocalStorage {
     await devicePrefs.write(_deviceNAME, deviceNAME);
   }
 
-  //* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-> Common Functions <=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= *//
+  /// ***********************************************************************************
+  ///                                   Common Functions
+  /// ***********************************************************************************
 
-  //* -=-=-=-=-=-=-=-> Read Local Storage <-=-=-=-=-=-=-=- //
+  /// Read Local Storage
   static Future<void> readDataInfo() async {
     /// SET DEFAULT CURRENCY
     setCurrency();
   }
 
-  //! -=-=-=-=-=-=-=> Clear Local Storage  <-=-=-=-=-=-=-= //
+  /// Clear Local Storage
   static Future<void> clearLocalStorage() async {
     await prefs.erase(); //? Prefs Storage Erase
     await devicePrefs.erase(); //? Device Prefs Storage Erase

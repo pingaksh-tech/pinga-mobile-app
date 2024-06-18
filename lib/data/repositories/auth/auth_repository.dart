@@ -109,12 +109,14 @@ class AuthRepository {
 
                /// NAVIGATE TO BOTTOM-BAR SCREEN
                Get.offAllNamed(AppRoutes.bottomBarScreen);
+              loader?.value = false;
 
             } else {
               if (!isValEmpty(response['message'])) UiUtils.toast(response['message']);
+              loader?.value = false;
+
             }
 
-            loader?.value = false;
             return response;
           },
         );

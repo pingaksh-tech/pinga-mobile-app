@@ -111,7 +111,7 @@ class AuthScreen extends StatelessWidget {
                               validation: con.numberValidation.value,
                               errorMessage: con.numberError.value,
                               keyboardType: TextInputType.phone,
-                              scrollPadding: UiUtils.textfieldScrollPadding(context, showError: con.numberValidation.value),
+                              scrollPadding: UiUtils.textFieldScrollPadding(context, showError: con.numberValidation.value),
                               textInputAction: TextInputAction.done,
                               prefixIcon: Container(
                                 alignment: Alignment.centerRight,
@@ -143,7 +143,7 @@ class AuthScreen extends StatelessWidget {
                                   androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsUserConsentApi,
                                   autofocus: kReleaseMode,
                                   defaultPinTheme: defaultPinTheme,
-                                  scrollPadding: UiUtils.textfieldScrollPadding(context, extendBottom: defaultPadding),
+                                  scrollPadding: UiUtils.textFieldScrollPadding(context, extendBottom: defaultPadding),
                                   length: con.maxOTPLength,
                                   inputFormatters: [
                                     FilteringTextInputFormatter.digitsOnly,
@@ -192,7 +192,7 @@ class AuthScreen extends StatelessWidget {
                                   onCompleted: (pin) async {
                                     /// VERIFY MOBILE OTP API
                                     await AuthRepository.verifyMobileOtpAPI(
-                                      loader: con.isResendOtp,
+                                      loader: con.isLoading,
                                       mobileNumber: con.userMobileNumberWithISDCode,
                                       otp: con.otpController.value.text.trim(),
                                     );
@@ -305,7 +305,7 @@ class AuthScreen extends StatelessWidget {
                                   if (con.isResendOtp.isFalse) {
                                     /// VERIFY MOBILE OTP API
                                     await AuthRepository.verifyMobileOtpAPI(
-                                      loader: con.isResendOtp,
+                                      loader: con.isLoading,
                                       mobileNumber: con.userMobileNumberWithISDCode,
                                       otp: con.otpController.value.text.trim(),
                                     );
