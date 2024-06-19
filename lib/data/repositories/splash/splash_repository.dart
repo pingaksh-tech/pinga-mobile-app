@@ -43,8 +43,7 @@ class SplashRepository {
         {"_id": "v2", "version": "1.1.5", "force_update": false, "soft_update": true, "maintenance": false, "maintenance_msg": "Maintenance ongoing", "type": "beta", "createdAt": "2023-02-01T00:00:00Z", "updatedAt": "2023-02-02T00:00:00Z"}
       ],
       "ios": [
-        {"_id": "v1", "version": "1.0.0", "force_update": false, "soft_update": true, "maintenance": false, "maintenance_msg": "Maintenance ongoing", "type": "stable", "createdAt": "2023-01-01T00:00:00Z", "updatedAt": "2023-01-02T00:00:00Z"},
-        {"_id": "v2", "version": "1.1.0", "force_update": false, "soft_update": true, "maintenance": true, "maintenance_msg": "Maintenance ongoing", "type": "beta", "createdAt": "2023-02-01T00:00:00Z", "updatedAt": "2023-02-02T00:00:00Z"}
+        {"_id": "v1", "version": "1.0.0", "force_update": false, "soft_update": false, "maintenance": false, "maintenance_msg": "Maintenance ongoing", "type": "stable", "createdAt": "2023-01-01T00:00:00Z", "updatedAt": "2023-01-02T00:00:00Z"},
       ]
     }
   };

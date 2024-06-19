@@ -292,10 +292,14 @@ Future<File> createTempFile(Uint8List uint8List) async {
 UnsupportedError get platformUnsupportedError => UnsupportedError("Sorry, this app is Android and iOS so it does not support another platform.");
 
 Future<void> deleteCacheDir() async {
-  final Directory cacheDir = await getTemporaryDirectory();
+  try {
+    final Directory cacheDir = await getTemporaryDirectory();
 
-  if (cacheDir.existsSync()) {
-    cacheDir.deleteSync(recursive: true);
+    if (cacheDir.existsSync()) {
+      cacheDir.deleteSync(recursive: true);
+    }
+  } catch (e) {
+    printErrors(type: "deleteCacheDir", errText: e);
   }
 }
 
@@ -521,4 +525,17 @@ Future<void> sendEmail(String email) async {
     path: email,
   );
   await launchUrl(launchUri);
+}
+
+Map<String, String> convertStringMap(Map<String, dynamic> data) {
+  final Map<String, String> stringMap = {};
+  for (var key in data.keys) {
+    if (data[key] is String) {
+      stringMap[key] = data[key] as String;
+    } else {
+      // Handle non-string values (e.g., ignore, log a warning)
+      printYellow('Warning: Key "$key" in data has a non-string value. Ignoring.');
+    }
+  }
+  return stringMap;
 }
