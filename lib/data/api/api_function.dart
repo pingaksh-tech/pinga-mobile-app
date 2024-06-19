@@ -29,7 +29,7 @@ class APIFunction {
     bool? isDecode,
     dynamic params,
     Duration? receiveTimeout, // `null` or `Duration.zero` means no timeout limit.
-    bool withBaseUrl = true,
+    bool withBaseUrl = false,
     bool showErrorToast = true,
   }) async {
     if (await getConnectivityResult()) {

@@ -32,6 +32,7 @@ class AppRoutes {
   /// *                                COMMON PAGES                                     *
   /// ***********************************************************************************
   static const String bottomBarScreen = '/bottom-bar-screen';
+  static const String underMaintenanceScreen = '/under-maintenance-screen';
 
   /// ***********************************************************************************
   /// *                         AUTH AND ONBOARDING PAGES                               *

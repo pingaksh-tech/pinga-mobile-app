@@ -7,7 +7,6 @@ import '../data/model/user/user_model.dart';
 import '../exports.dart';
 
 class LocalStorage {
-
   /// ***********************************************************************************
   ///                                  LOCAL STORAGES
   /// ***********************************************************************************
@@ -40,6 +39,12 @@ class LocalStorage {
   static const String _localeLanguageCode = "locale_language_code";
   static const String _currencyType = "CURRENCY-TYPE";
   static const String _currencySymbol = "CURRENCY-SYMBOL";
+  static const String _privacyURL = "PRIVACY-URL";
+  static const String _termsURL = "TERMS-URL";
+  static const String _aboutUsURL = "ABOUT-US-URL";
+  static const String _contactUsURL = "CONTACT-US-URL";
+  static const String _contactMobileNumber = "CONTACT-MOBILE-NUMBER";
+  static const String _contactEmailID = "CONTACT-EMAIL-ID";
 
   /// ***********************************************************************************
   ///                                   GET AND SET DETAILS
@@ -47,34 +52,41 @@ class LocalStorage {
 
   /// User login token
   static set accessToken(String? value) => prefs.write(_accessToken, value);
+
   static String get accessToken => prefs.read(_accessToken) ?? "";
 
   static set refreshToken(String? value) => prefs.write(_refreshToken, value);
+
   static String get refreshToken => prefs.read(_refreshToken) ?? "";
 
   /// API base local URL
   static set baseUrl(String? value) => prefs.write(_baseUrl, value);
+
   static String get baseUrl => prefs.read(_baseUrl) ?? "";
 
   /// Primary color
   static set primaryColor(Color? value) => prefs.write(_primaryColor, value != null ? AppColors.fromColor(value) : AppColors.primary);
+
   static Color get primaryColor => prefs.read(_primaryColor) != null ? AppColors.fromHex(prefs.read(_primaryColor)) : AppColors.primary;
 
   /// Secondary color
   static set secondaryColor(Color? value) => prefs.write(_secondaryColor, value != null ? AppColors.fromColor(value) : AppColors.secondary);
+
   static Color get secondaryColor => prefs.read(_secondaryColor) != null ? AppColors.fromHex(prefs.read(_secondaryColor)) : AppColors.secondary;
 
   /// User locale language
   static set localeLanguage(String? value) => prefs.write(_localeLanguage, value);
+
   static String get localeLanguage => prefs.read(_localeLanguage) ?? "";
 
   /// User locale language code
   static set localeLanguageCode(String? value) => prefs.write(_localeLanguageCode, value);
+
   static String get localeLanguageCode => prefs.read(_localeLanguageCode) ?? "";
 
   /// UserModel
   static set userModel(UserModel? userModel) {
-    if(userModel!=null) {
+    if (userModel != null) {
       final String encodedValue = jsonEncode(userModel);
       prefs.write(_userModel, encodedValue);
     }
@@ -103,6 +115,36 @@ class LocalStorage {
     printData(key: "currencyType", value: currencyType);
     printData(key: "currencySymbol", value: currencySymbol);
   }
+
+  /// ***********************************************************************************
+  ///                                     APP CONFIGS
+  /// ***********************************************************************************
+
+  static String defaultPrivacyPolicyURL = AppStrings.privacyURL, defaultTermsURL = AppStrings.termsURL, defaultAboutUsURL = AppStrings.aboutUsURL, defaultContactUsURL = AppStrings.contactUsURL, defaultContactMobileNUmber = AppStrings.contactMobileNumber, defaultContactEmailID = AppStrings.contactEmailID;
+
+  /// PRIVACY POLICY
+  static set privacyURL(String? value) => prefs.write(_privacyURL, value ?? defaultPrivacyPolicyURL);
+  static String get privacyURL => prefs.read(_privacyURL) ?? defaultPrivacyPolicyURL;
+
+  /// TERMS
+  static set termsURL(String? value) => prefs.write(_termsURL, value ?? defaultTermsURL);
+  static String get termsURL => prefs.read(_termsURL) ?? defaultTermsURL;
+
+  /// ABOUT US
+  static set aboutUsURL(String? value) => prefs.write(_aboutUsURL, value??defaultAboutUsURL);
+  static String get aboutUsURL => prefs.read(_aboutUsURL) ?? defaultAboutUsURL;
+
+  /// CONTACT US
+  static set contactUsURL(String? value) => prefs.write(_contactUsURL, value??defaultContactUsURL);
+  static String get contactUsURL => prefs.read(_contactUsURL) ?? defaultContactUsURL;
+
+  /// CONTACT - MOBILE NUMBER
+  static set contactMobileNumber(String? value) => prefs.write(_contactMobileNumber, value?? defaultContactMobileNUmber);
+  static String get contactMobileNumber => prefs.read(_contactMobileNumber) ?? defaultContactMobileNUmber;
+
+  /// CONTACT - EMAIL ID
+  static set contactEmailID(String? value) => prefs.write(_contactEmailID, value??defaultContactEmailID);
+  static String get contactEmailID => prefs.read(_contactEmailID) ?? defaultContactEmailID;
 
   /// ***********************************************************************************
   ///                                   Device Storage

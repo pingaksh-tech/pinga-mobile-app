@@ -21,7 +21,7 @@ class ApiUtils {
 
   static void splashNavigation() async {
     await Future.delayed(
-      const Duration(seconds: 2),
+      const Duration(seconds: 1),
       () async {
         if (LocalStorage.accessToken.isNotEmpty) {
           Get.offAllNamed(AppRoutes.bottomBarScreen);

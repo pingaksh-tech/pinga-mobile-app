@@ -16,10 +16,12 @@ class AppAssets {
   static const String banner04 = '${imagesPath}banner04.jpg';
   static const String banner05 = '${imagesPath}banner05.jpg';
   static const String authBg = '${imagesPath}auth_bg.png';
+  static const String underMaintenancePNG = '${imagesPath}under_maintenance.png';
 
   /// ***********************************************************************************
   ///                                    SVG
   /// ***********************************************************************************
+
   static const String pingakshFillLogo = '${svgPath}pingaksh_fill_logo.svg';
   static const String pingakshLightLogo = '${svgPath}pingaksh_light_logo.svg';
 

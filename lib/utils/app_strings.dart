@@ -5,13 +5,19 @@ class AppStrings {
 
   /// HOW TO USE: Text(AppStrings.appName);
 
-  static RxString appName = "".obs; //? This Variable fill in BaseController
+  static RxString appName = "Pingaksh".obs; //? This Variable fill in BaseController
 
-  /// Applications links
-  static String playStoreLink = "https://play.google.com/store/apps/details?id=com.";
-  static String appStoreLink = "https://apps.apple.com/us/app/gotilo-maze-king/id0000000000";
+  /// APPLICATIONS URL
+  static String playStoreURL = "https://play.google.com/store/apps/details?id=com.";
+  static String appStoreURL = "https://apps.apple.com/us/app/gotilo-maze-king/id0000000000";
 
-  static String contactUs = "https://www.quetzalpos.com/contact";
+  /// APP INFO LINKS
+  static String privacyURL = "https://www.quetzalpos.com/contact";
+  static String termsURL = "https://www.quetzalpos.com/contact";
+  static String aboutUsURL = "https://www.quetzalpos.com/contact";
+  static String contactUsURL = "https://www.quetzalpos.com/contact";
+  static String contactMobileNumber = "+917666862553";
+  static String contactEmailID = "hello@pingaksh.co";
 
   static String noInternetAvailable = "No Internet available";
 
