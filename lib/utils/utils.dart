@@ -12,7 +12,6 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -292,15 +291,15 @@ Future<File> createTempFile(Uint8List uint8List) async {
 UnsupportedError get platformUnsupportedError => UnsupportedError("Sorry, this app is Android and iOS so it does not support another platform.");
 
 Future<void> deleteCacheDir() async {
-  try {
-    final Directory cacheDir = await getTemporaryDirectory();
-
-    if (cacheDir.existsSync()) {
-      cacheDir.deleteSync(recursive: true);
-    }
-  } catch (e) {
-    printErrors(type: "deleteCacheDir", errText: e);
-  }
+  // try {
+  //   final Directory cacheDir = await getTemporaryDirectory();
+  //
+  //   if (cacheDir.existsSync()) {
+  //     cacheDir.deleteSync(recursive: true);
+  //   }
+  // } catch (e) {
+  //   printErrors(type: "deleteCacheDir", errText: e);
+  // }
 }
 
 class Restart {

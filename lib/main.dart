@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
+import 'data/services/notification/notification_helper.dart';
 import 'data/services/notification/notification_service.dart';
 import 'exports.dart';
 import 'firebase_options.dart';
@@ -25,7 +26,8 @@ void main() async {
   await GetStorage.init().then((value) async => await LocalStorage.readDataInfo());
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  NotificationService.initialise();
+  await NotificationsHelper.init();
+  await NotificationService.initialise();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   runApp(const MyApp());
 }

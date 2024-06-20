@@ -620,7 +620,7 @@ class _ProductTileState extends State<ProductTile> {
                     ),
                     (defaultPadding / 2).horizontalSpace,
                     Expanded(
-                      child: Obx(() => Column(
+                      child:   Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
@@ -734,7 +734,7 @@ class _ProductTileState extends State<ProductTile> {
                                 ],
                               ),
                             ],
-                          )),
+                          ) ,
                     ),
                   ],
                 ),
