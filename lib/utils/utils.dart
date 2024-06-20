@@ -12,7 +12,6 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -292,11 +291,11 @@ Future<File> createTempFile(Uint8List uint8List) async {
 UnsupportedError get platformUnsupportedError => UnsupportedError("Sorry, this app is Android and iOS so it does not support another platform.");
 
 Future<void> deleteCacheDir() async {
-  final Directory cacheDir = await getTemporaryDirectory();
-
-  if (cacheDir.existsSync()) {
-    cacheDir.deleteSync(recursive: true);
-  }
+  // final Directory cacheDir = await getTemporaryDirectory();
+  //
+  // if (cacheDir.existsSync()) {
+  //   cacheDir.deleteSync(recursive: true);
+  // }
 }
 
 class Restart {
@@ -521,4 +520,17 @@ Future<void> sendEmail(String email) async {
     path: email,
   );
   await launchUrl(launchUri);
+}
+
+Map<String, String> convertStringMap(Map<String, dynamic> data) {
+  final Map<String, String> stringMap = {};
+  for (var key in data.keys) {
+    if (data[key] is String) {
+      stringMap[key] = data[key] as String;
+    } else {
+      // Handle non-string values (e.g., ignore, log a warning)
+      printYellow('Warning: Key "$key" in data has a non-string value. Ignoring.');
+    }
+  }
+  return stringMap;
 }
