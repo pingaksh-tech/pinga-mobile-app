@@ -222,7 +222,7 @@ Future<void> storeDeviceInformation(fcmToken) async {
       await LocalStorage.storeDeviceInfo(
         deviceID: androidDeviceInfo.id,
         deviceTOKEN: fcmToken,
-        deviceTYPE: "AppStrings.androidSlug",
+        deviceTYPE: AppStrings.androidSlug,
         deviceNAME: androidDeviceInfo.model,
       );
     } else if (Platform.isIOS) {
@@ -230,7 +230,7 @@ Future<void> storeDeviceInformation(fcmToken) async {
       await LocalStorage.storeDeviceInfo(
         deviceID: iosDeviceInfo.identifierForVendor ?? "",
         deviceTOKEN: fcmToken,
-        deviceTYPE: "AppStrings.iOSSlug",
+        deviceTYPE: AppStrings.iOSSlug,
         deviceNAME: iosDeviceInfo.utsname.machine,
       );
     }

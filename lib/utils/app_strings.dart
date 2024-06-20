@@ -11,6 +11,11 @@ class AppStrings {
   static String playStoreURL = "https://play.google.com/store/apps/details?id=com.";
   static String appStoreURL = "https://apps.apple.com/us/app/gotilo-maze-king/id0000000000";
 
+  /// SLUGS
+  static String iOSSlug = "iOS";
+  static String androidSlug = "Android";
+
+
   /// APP INFO LINKS
   static String privacyURL = "https://www.quetzalpos.com/contact";
   static String termsURL = "https://www.quetzalpos.com/contact";
