@@ -41,6 +41,7 @@ end
 #   use_frameworks!
 # #  pod 'Firebase/Auth' # Add this line if you are using FirebaseAuth phone authentication
 #   pod 'Firebase/Messaging'
+
 # end
 
 post_install do |installer|
