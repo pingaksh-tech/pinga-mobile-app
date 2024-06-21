@@ -77,7 +77,8 @@ class ApiUtils {
     }
 
     return {
-      "device_name": LocalStorage.deviceName,
+      "platform": AppStrings.appSlug,
+      // "device_name": LocalStorage.deviceName,
       "device_id": LocalStorage.deviceId,
       "device_type": LocalStorage.deviceType,
       "device_token": LocalStorage.deviceToken,

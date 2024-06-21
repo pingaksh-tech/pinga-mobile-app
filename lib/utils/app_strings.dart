@@ -7,6 +7,11 @@ class AppStrings {
 
   static RxString appName = "Pingaksh".obs; //? This Variable fill in BaseController
 
+  /// APP INFO LINKS
+  static String appSlug = "App";
+  static String androidSlug = "Android";
+  static String iOSSlug = "iOS";
+
   /// APPLICATIONS URL
   static String playStoreURL = "https://play.google.com/store/apps/details?id=com.";
   static String appStoreURL = "https://apps.apple.com/us/app/gotilo-maze-king/id0000000000";
@@ -23,7 +28,6 @@ class AppStrings {
 
   static String defaultUserProfileURL = "https://t4.ftcdn.net/jpg/03/64/21/11/360_F_364211147_1qgLVxv1Tcq0Ohz3FawUfrtONzz8nq3e.jpg";
 
-
   static String otpSendSuccessfully = "OTP Send Successfully";
   static String logoutString = "Are you sure you want to logout?";
   static String exitAppString = "Are you sure you want to quit the application?";
@@ -32,5 +36,4 @@ class AppStrings {
   static String invalidOTP = 'Invalid OTP. Please try again.';
   static String otpVerificationSuccessfully = "OTP verification successfully";
   static String loginSuccessfully = "Login Successfully";
-
 }
