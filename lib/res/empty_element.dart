@@ -28,32 +28,34 @@ class EmptyElement extends StatelessWidget {
       child: Container(
         // height: height ?? Get.height * .4,
         padding: padding ?? EdgeInsets.only(bottom: defaultPadding),
-        child: Column(
-          mainAxisAlignment: mainAxis ?? MainAxisAlignment.end,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (imagePath != null)
-              SvgPicture.asset(
-                imagePath!,
-                width: imageWidth ?? Get.width / 3,
-                height: imageHeight ?? Get.width / 2,
-              ),
-            SizedBox(height: spacing ?? defaultPadding),
-            SizedBox(height: defaultPadding / 2),
-            if (title != "")
-              Text(
-                title,
-                textAlign: TextAlign.center,
-                style: titleStyle ?? TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500, color: Theme.of(context).primaryColor),
-              ),
-            SizedBox(height: defaultPadding / 2),
-            if (!isValEmpty(subtitle))
-              Text(
-                subtitle!,
-                textAlign: TextAlign.center,
-                style: subtitleStyle ?? TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w400, color: Theme.of(context).primaryColor),
-              ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: mainAxis ?? MainAxisAlignment.end,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (imagePath != null)
+                SvgPicture.asset(
+                  imagePath!,
+                  width: imageWidth ?? Get.width / 3,
+                  height: imageHeight ?? Get.width / 2,
+                ),
+              SizedBox(height: spacing ?? defaultPadding),
+              SizedBox(height: defaultPadding / 2),
+              if (title != "")
+                Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: titleStyle ?? TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500, color: Theme.of(context).primaryColor),
+                ),
+              SizedBox(height: defaultPadding / 2),
+              if (!isValEmpty(subtitle))
+                Text(
+                  subtitle!,
+                  textAlign: TextAlign.center,
+                  style: subtitleStyle ?? TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w400, color: Theme.of(context).primaryColor),
+                ),
+            ],
+          ),
         ),
       ),
     );

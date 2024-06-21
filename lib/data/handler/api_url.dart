@@ -13,7 +13,11 @@ class ApiUrls {
   static const String resendMobileOtpPOST = "mobile/auth/resend-otp";
   static const String verifyMobileOtpPOST = "mobile/auth/verify-otp";
   static const String logOutPOST = "user/auth/logout";
+  static const String refreshTokenUrl = "auth/refresh-token";
 
+
+  /// CATEGORY
+  static const String getAllCategoriesGET = "category/?page=1&limit=10";
 
   /// USER
   static const String deleteAccountDELETE = "";

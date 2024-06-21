@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' as d;
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import '../../exports.dart';
@@ -11,8 +13,31 @@ import 'api_utils.dart';
 
 class HttpUtil {
   static const Duration defaultTimeoutDuration = Duration(seconds: 15);
-
   static bool showErrorToast = true;
+
+  // Method to refresh tokens
+  Future<void> _refreshTokens() async {
+    try {
+      await APIFunction.postApiCall(
+        apiUrl: ApiUrls.refreshTokenUrl,
+        useRefreshToken: true,
+      ).then(
+        (response) async {
+          if (response != null && response['success'] == true) {
+            printYellow("======>>>>");
+            printYellow("A: ${LocalStorage.accessToken}");
+            printYellow("R: ${LocalStorage.refreshToken}");
+            LocalStorage.accessToken = response['data']['access_token'] ?? "";
+            LocalStorage.refreshToken = response['data']['refresh_token'] ?? "";
+            printOkStatus("A: ${LocalStorage.accessToken}");
+            printOkStatus("R: ${LocalStorage.refreshToken}");
+          }
+        },
+      );
+    } catch (e) {
+      printErrors(type: "_refreshTokens", errText: "$e");
+    } finally {}
+  }
 
   factory HttpUtil({bool errorToast = true}) {
     showErrorToast = errorToast;
@@ -38,20 +63,19 @@ class HttpUtil {
     CookieJar cookieJar = CookieJar();
     dio.interceptors.add(CookieManager(cookieJar));
 
-
     /// SHOW API LOGS
-    if(kDebugMode) {
+    if (kDebugMode) {
       dio.interceptors.add(
-      PrettyDioLogger(
-        request: true,
-        requestHeader: false,
-        requestBody: true,
-        responseHeader: false,
-        responseBody: true,
-        error: true,
-        compact: true,
-      ),
-    );
+        PrettyDioLogger(
+          request: true,
+          requestHeader: false,
+          requestBody: true,
+          responseHeader: false,
+          responseBody: true,
+          error: true,
+          compact: true,
+        ),
+      );
     }
 
     dio.interceptors.add(
@@ -62,9 +86,32 @@ class HttpUtil {
         onResponse: (response, handler) {
           return handler.next(response); // continue
         },
-        onError: (DioException e, handler) {
+        onError: (DioException e, handler) async {
           try {
             if (!isValEmpty(e.response)) {
+              if (e.response?.statusCode == 426) {
+                showErrorToast = false;
+
+                // Refresh tokens
+                await _refreshTokens();
+
+                // Retry the original request with new access token
+                final options = e.requestOptions;
+                options.headers['Authorization'] = 'Bearer ${LocalStorage.accessToken}';
+
+                final response = await dio.request(
+                  options.path,
+                  options: Options(
+                    method: options.method,
+                    headers: options.headers,
+                  ),
+                  data: options.data,
+                  queryParameters: options.queryParameters,
+                );
+
+                return handler.resolve(response);
+              }
+
               if (showErrorToast == true) {
                 UiUtils.toast(e.response?.data['message'].toString());
               }
@@ -163,7 +210,6 @@ class HttpUtil {
     cancelToken.cancel("cancelled");
   }
 
-  /// restful get
   Future get(
     String path, {
     dynamic body,
@@ -175,130 +221,160 @@ class HttpUtil {
     bool list = false,
     String cacheKey = '',
     bool cacheDisk = false,
+    RxBool? loader,
   }) async {
-    Options requestOptions = options ?? Options();
-    requestOptions.extra ??= {};
-    requestOptions.extra!.addAll({
-      "refresh": refresh,
-      "noCache": noCache,
-      "list": list,
-      "cacheKey": cacheKey,
-      "cacheDisk": cacheDisk,
-    });
+    loader?.value = true;
+    try {
+      Options requestOptions = options ?? Options();
+      requestOptions.extra ??= {};
+      requestOptions.extra!.addAll({
+        "refresh": refresh,
+        "noCache": noCache,
+        "list": list,
+        "cacheKey": cacheKey,
+        "cacheDisk": cacheDisk,
+      });
 
-    var response = await dio.get(
-      path,
-      queryParameters: queryParameters,
-      options: options,
-      data: isDecode == false ? body : FormData.fromMap(body),
-      cancelToken: cancelToken,
-    );
-    return response.data;
+      var response = await dio.get(
+        path,
+        queryParameters: queryParameters,
+        options: options,
+        data: isDecode == false ? body : d.FormData.fromMap(body),
+        cancelToken: cancelToken,
+      );
+      return response.data;
+    } finally {
+      loader?.value = false;
+    }
   }
 
-  /// restful post
   Future post(
     String path, {
     dynamic body,
     bool? isDecode = false,
     Map<String, dynamic>? queryParameters,
     Options? options,
+    RxBool? loader,
   }) async {
-    Options requestOptions = options ?? Options();
+    loader?.value = true;
+    try {
+      Options requestOptions = options ?? Options();
 
-    printOkStatus(path);
+      printOkStatus(path);
 
-    var response = await dio.post(
-      path,
-      data: isDecode == false ? body : FormData.fromMap(body),
-      // data: FormData.fromMap(data),
-      queryParameters: queryParameters,
-      options: requestOptions,
-      cancelToken: cancelToken,
-    );
+      var response = await dio.post(
+        path,
+        data: isDecode == false ? body : d.FormData.fromMap(body),
+        queryParameters: queryParameters,
+        options: requestOptions,
+        cancelToken: cancelToken,
+      );
 
-    return response.data;
+      return response.data;
+    } finally {
+      loader?.value = false;
+    }
   }
 
-  /// restful put
   Future put(
     String path, {
     dynamic body,
     bool? isDecode = false,
     Map<String, dynamic>? queryParameters,
     Options? options,
+    RxBool? loader,
   }) async {
-    Options requestOptions = options ?? Options();
-    var response = await dio.put(
-      path,
-      data: isDecode == false ? body : FormData.fromMap(body),
-      queryParameters: queryParameters,
-      options: requestOptions,
-      cancelToken: cancelToken,
-    );
-    return response.data;
+    loader?.value = true;
+    try {
+      Options requestOptions = options ?? Options();
+      var response = await dio.put(
+        path,
+        data: isDecode == false ? body : d.FormData.fromMap(body),
+        queryParameters: queryParameters,
+        options: requestOptions,
+        cancelToken: cancelToken,
+      );
+      return response.data;
+    } finally {
+      loader?.value = false;
+    }
   }
 
-  /// restful delete
   Future delete(
     String path, {
     dynamic body,
     bool? isDecode = false,
     Map<String, dynamic>? queryParameters,
     Options? options,
+    RxBool? loader,
   }) async {
-    Options requestOptions = options ?? Options();
+    loader?.value = true;
+    try {
+      Options requestOptions = options ?? Options();
 
-    var response = await dio.delete(
-      path,
-      data: isDecode == false ? body : FormData.fromMap(body),
-      queryParameters: queryParameters,
-      options: requestOptions,
-      cancelToken: cancelToken,
-    );
-    return response.data;
+      var response = await dio.delete(
+        path,
+        data: isDecode == false ? body : d.FormData.fromMap(body),
+        queryParameters: queryParameters,
+        options: requestOptions,
+        cancelToken: cancelToken,
+      );
+      return response.data;
+    } finally {
+      loader?.value = false;
+    }
   }
 
-  /// restful patch
   Future patch(
     String path, {
-    FormData? data,
+    d.FormData? data,
     Map<String, dynamic>? queryParameters,
     Options? options,
+    RxBool? loader,
   }) async {
-    Options requestOptions = options ?? Options();
+    loader?.value = true;
+    try {
+      Options requestOptions = options ?? Options();
 
-    var response = await dio.patch(
-      path,
-      data: data,
-      queryParameters: queryParameters,
-      options: requestOptions,
-      cancelToken: cancelToken,
-    );
-    return response.data;
+      var response = await dio.patch(
+        path,
+        data: data,
+        queryParameters: queryParameters,
+        options: requestOptions,
+        cancelToken: cancelToken,
+      );
+      return response.data;
+    } finally {
+      loader?.value = false;
+    }
   }
 
-  /// restful post Stream
   Future postStream(
     String path, {
     dynamic data,
     int dataLength = 0,
     Map<String, dynamic>? queryParameters,
     Options? options,
+    RxBool? loader,
   }) async {
-    Options requestOptions = options ?? Options();
+    loader?.value = true;
+    try {
+      Options requestOptions = options ?? Options();
 
-    requestOptions.headers!.addAll({
-      Headers.contentLengthHeader: dataLength.toString(),
-    });
-    var response = await dio.post(
-      path,
-      data: Stream.fromIterable(data.map((e) => [e])),
-      queryParameters: queryParameters,
-      options: requestOptions,
-      cancelToken: cancelToken,
-    );
-    return response.data;
+      requestOptions.headers!.addAll({
+        Headers.contentLengthHeader: dataLength.toString(),
+      });
+      var response = await dio.post(
+        path,
+        data: Stream.fromIterable(data.map((e) => [e])),
+        queryParameters: queryParameters,
+        options: requestOptions,
+        cancelToken: cancelToken,
+      );
+      return response.data;
+    } finally {
+      loader?.value = false;
+    }
   }
 }
 

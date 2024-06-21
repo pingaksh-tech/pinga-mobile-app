@@ -5,7 +5,7 @@ import '../view/bottombar/bottombar_screen.dart';
 import '../view/cart/cart_screen.dart';
 import '../view/cart/widget/stock/cart_stock_screen.dart';
 import '../view/cart/widget/summary/summary_screen.dart';
-import '../view/category/category_screen.dart';
+import '../view/sub_category/sub_category_screen.dart';
 import '../view/collections/watch_list/watch_list_screen.dart';
 import '../view/collections/widgets/add_watchlist/add_watchlist_screen.dart';
 import '../view/common/under_maintenance/under_maintenance_screen.dart';
@@ -46,7 +46,7 @@ class AppPages {
     _getPage(name: AppRoutes.dashboardScreen, page: () => DashboardScreen()),
     _getPage(name: AppRoutes.bottomBarScreen, page: () => BottomBarScreen()),
     _getPage(name: AppRoutes.underMaintenanceScreen, page: () => const UnderMaintenanceScreen()),
-    _getPage(name: AppRoutes.categoryScreen, page: () => CategoryScreen()),
+    _getPage(name: AppRoutes.categoryScreen, page: () => SubCategoryScreen()),
     _getPage(name: AppRoutes.productScreen, page: () => ProductScreen()),
     _getPage(name: AppRoutes.profileScreen, page: () => ProfileScreen()),
     _getPage(name: AppRoutes.cartScreen, page: () => CartScreen()),

@@ -22,6 +22,7 @@ class AuthRepository {
 
         await APIFunction.postApiCall(
           apiUrl: ApiUrls.sendMobileOtpPOST,
+          loader: loader,
           body: {
             "phone": mobileNumber,
           },
@@ -58,6 +59,7 @@ class AuthRepository {
         loader?.value = true;
         await APIFunction.postApiCall(
           apiUrl: ApiUrls.resendMobileOtpPOST,
+          loader: loader,
           body: {
             "phone": mobileNumber,
           },
@@ -89,6 +91,7 @@ class AuthRepository {
         await ApiUtils.devicesInfo();
         await APIFunction.postApiCall(
           apiUrl: ApiUrls.verifyMobileOtpPOST,
+          loader: loader,
           body: {
             "phone": mobileNumber,
             "otp": otp,
@@ -106,16 +109,14 @@ class AuthRepository {
               LocalStorage.accessToken = userDataModel.data?.tokens?.accessToken;
               LocalStorage.refreshToken = userDataModel.data?.tokens?.refreshToken;
 
-               UiUtils.toast(AppStrings.loginSuccessfully);
+              UiUtils.toast(AppStrings.loginSuccessfully);
 
-               /// NAVIGATE TO BOTTOM-BAR SCREEN
-               Get.offAllNamed(AppRoutes.bottomBarScreen);
+              /// NAVIGATE TO BOTTOM-BAR SCREEN
+              Get.offAllNamed(AppRoutes.bottomBarScreen);
               loader?.value = false;
-
             } else {
               if (!isValEmpty(response['message'])) UiUtils.toast(response['message']);
               loader?.value = false;
-
             }
 
             return response;
@@ -141,6 +142,7 @@ class AuthRepository {
 
         return await APIFunction.postApiCall(
           apiUrl: ApiUrls.logOutPOST,
+          loader: loader,
         ).then(
           (response) async {
             if (response != null && response['success'] == true) {
@@ -174,6 +176,7 @@ class AuthRepository {
 
         return await APIFunction.deleteApiCall(
           apiUrl: ApiUrls.deleteAccountDELETE,
+          loader: loader,
         ).then(
           (response) async {
             if (response != null && response['success'] == true) {

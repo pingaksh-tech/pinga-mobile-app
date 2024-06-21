@@ -1,10 +1,11 @@
 import 'package:get/get.dart';
-import '../../../view/category/category_controller.dart';
+import '../../../view/sub_category/sub_category_controller.dart';
 
-import '../../model/category/category_model.dart';
+import '../../model/sub_category/sub_category_model.dart';
 
-class CategoryRepository {
-  static Map<String, dynamic> categoryList = {
+class SubCategoryRepository {
+
+  static Map<String, dynamic> subCategoryList = {
     "success": true,
     "message": "Cart fetched successfully",
     "data": {
@@ -55,9 +56,13 @@ class CategoryRepository {
     }
   };
 
-  static Future<void> categoryListApi() async {
-    final CategoryController categoryCon = Get.find<CategoryController>();
-    GetCategoryModel model = GetCategoryModel.fromJson(categoryList);
+  /// ***********************************************************************************
+  ///                                 GET SUB-CATEGORIES API
+  /// ***********************************************************************************
+
+  static Future<void> subCategoryListApi() async {
+    final SubCategoryController categoryCon = Get.find<SubCategoryController>();
+    GetSubCategoryModel model = GetSubCategoryModel.fromJson(subCategoryList);
     categoryCon.categoryList.value = model.data?.category ?? [];
   }
 }

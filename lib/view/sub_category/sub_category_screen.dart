@@ -8,13 +8,13 @@ import '../../res/app_bar.dart';
 import '../../res/app_network_image.dart';
 import '../../res/tab_bar.dart';
 import '../products/components/cart_icon_button.dart';
-import 'category_controller.dart';
+import 'sub_category_controller.dart';
 import 'components/category_tile.dart';
 
-class CategoryScreen extends StatelessWidget {
-  CategoryScreen({super.key});
+class SubCategoryScreen extends StatelessWidget {
+  SubCategoryScreen({super.key});
 
-  final CategoryController con = Get.put(CategoryController());
+  final SubCategoryController con = Get.put(SubCategoryController());
 
   @override
   Widget build(BuildContext context) {

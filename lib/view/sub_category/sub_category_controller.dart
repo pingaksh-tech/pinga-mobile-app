@@ -1,15 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import '../../data/repositories/category/category_repositery.dart';
+import '../../data/model/sub_category/sub_category_model.dart';
+import '../../data/repositories/category/category_repository.dart';
 
-import '../../data/model/category/category_model.dart';
-
-class CategoryController extends GetxController {
+class SubCategoryController extends GetxController {
   Rx<TextEditingController> searchCon = TextEditingController().obs;
   RxString brandTitle = "".obs;
   RxBool showCloseButton = false.obs;
-  RxList<CategoryModel> categoryList = <CategoryModel>[].obs;
+  RxList<SubCategoryModel> categoryList = <SubCategoryModel>[].obs;
 
   List latestProductList = [
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ06xpVjn4EZ1x-_Ezxvca-NrIwosqqsxFEXA&s",
@@ -30,6 +29,6 @@ class CategoryController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    CategoryRepository.categoryListApi();
+    CategoryRepository.getCategoriesAPI();
   }
 }

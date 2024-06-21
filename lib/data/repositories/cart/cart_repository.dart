@@ -359,7 +359,7 @@ class CartRepository {
   static Future<bool> addOrRemoveProductInCart({required String productID, required bool currentValue, RxBool? isLoading}) async {
     try {
       isLoading?.value = true;
-      await APIFunction.putApiCall(apiUrl: "${ApiUrls.addOrRemoveCart}$productID").then(
+      await APIFunction.putApiCall(apiUrl: "${ApiUrls.addOrRemoveCart}$productID",loader: isLoading).then(
         (response) async {
           currentValue = !currentValue;
           UiUtils.toast(response["message"]);
@@ -384,7 +384,7 @@ class CartRepository {
     try {
       cartCon.isLoading.value = true;
 
-      await APIFunction.postApiCall(apiUrl: ApiUrls.placeOrderPOST).then(
+      await APIFunction.postApiCall(apiUrl: ApiUrls.placeOrderPOST,loader: cartCon.isLoading,).then(
         (response) async {
           // if (Get.isRegistered<HomeController>()) {
           //   HomeController homeCon = Get.find<HomeController>();

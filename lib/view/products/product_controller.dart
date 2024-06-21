@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 import '../../controller/predefine_value_controller.dart';
-import '../../data/model/category/category_model.dart';
+import '../../data/model/sub_category/sub_category_model.dart';
 import '../../data/model/product/product_model.dart';
 import '../../data/repositories/product/product_repository.dart';
 import '../../exports.dart';
@@ -11,7 +11,7 @@ class ProductController extends GetxController {
   RxBool isSizeAvailable = true.obs;
 
   RxString categoryName = "".obs;
-  Rx<CategoryModel> category = CategoryModel().obs;
+  Rx<SubCategoryModel> category = SubCategoryModel().obs;
   RxBool isProductViewChange = true.obs;
 
   RxString selectPrice = "".obs;
@@ -26,7 +26,7 @@ class ProductController extends GetxController {
   void onInit() {
     super.onInit();
     if (Get.arguments != null) {
-      if (Get.arguments["category"].runtimeType == CategoryModel) {
+      if (Get.arguments["category"].runtimeType == SubCategoryModel) {
         category.value = Get.arguments["category"];
       }
       if (Get.arguments["watchlistName"].runtimeType == String) {
