@@ -15,6 +15,8 @@ class ApiUrls {
   static const String logOutPOST = "user/auth/logout";
   static const String refreshTokenUrl = "auth/refresh-token";
 
+  /// BANNER
+  static const String getAllBannersGET = "banner";
 
   /// CATEGORY
   static const String getAllCategoriesGET = "category/?page=1&limit=10";

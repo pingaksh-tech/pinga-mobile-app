@@ -27,6 +27,7 @@ class AppStrings {
   static String noInternetAvailable = "No Internet available";
 
   static String defaultUserProfileURL = "https://t4.ftcdn.net/jpg/03/64/21/11/360_F_364211147_1qgLVxv1Tcq0Ohz3FawUfrtONzz8nq3e.jpg";
+  static String defaultPingakshLogoURL = "https://yt3.googleusercontent.com/4Cm5FVfm_c4bZ5CzBpxLUxLSIOr9f3uttmvwdua_WOGC1FeWqLSzI2rmohyCsmL2Lm9mSJt4Gg=s900-c-k-c0x00ffffff-no-rj";
 
   static String otpSendSuccessfully = "OTP Send Successfully";
   static String logoutString = "Are you sure you want to logout?";

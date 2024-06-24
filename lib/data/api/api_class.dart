@@ -23,14 +23,9 @@ class HttpUtil {
         useRefreshToken: true,
       ).then(
         (response) async {
-          if (response != null && response['success'] == true) {
-            printYellow("======>>>>");
-            printYellow("A: ${LocalStorage.accessToken}");
-            printYellow("R: ${LocalStorage.refreshToken}");
+          if (response != null /*&& response['success'] == true*/) {
             LocalStorage.accessToken = response['data']['access_token'] ?? "";
             LocalStorage.refreshToken = response['data']['refresh_token'] ?? "";
-            printOkStatus("A: ${LocalStorage.accessToken}");
-            printOkStatus("R: ${LocalStorage.refreshToken}");
           }
         },
       );
@@ -94,6 +89,8 @@ class HttpUtil {
 
                 // Refresh tokens
                 await _refreshTokens();
+
+                // await Future.delayed(const Duration(seconds: 10));
 
                 // Retry the original request with new access token
                 final options = e.requestOptions;

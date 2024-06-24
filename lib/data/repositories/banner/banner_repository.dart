@@ -2,20 +2,20 @@ import 'package:get/get.dart';
 import '../../../exports.dart';
 
 import '../../../view/home/home_controller.dart';
-import '../../model/category/category_model.dart';
+import '../../model/banner/banner_model.dart';
 
-class CategoryRepository {
+class BannerRepository {
   /// ***********************************************************************************
-  ///                                 GET CATEGORIES API
+  ///                                 GET BANNERS API
   /// ***********************************************************************************
 
-  static Future<dynamic> getCategoriesAPI({RxBool? isLoader}) async {
+  static Future<dynamic> getBannersAPI({RxBool? isLoader}) async {
     ///
     if (await getConnectivityResult()) {
       try {
         isLoader?.value = true;
         await APIFunction.getApiCall(
-          apiUrl: ApiUrls.getAllCategoriesGET,
+          apiUrl: ApiUrls.getAllBannersGET,
           loader: isLoader,
         ).then(
           (response) async {
@@ -23,8 +23,8 @@ class CategoryRepository {
               if (isRegistered<HomeController>()) {
                 final HomeController homeCon = Get.find<HomeController>();
 
-                GetCategoryModel model = GetCategoryModel.fromJson(response);
-                homeCon.categoriesList.value = model.data?.categories ?? [];
+                GetBannersModel model = GetBannersModel.fromJson(response);
+                homeCon.bannersList.value = model.banners ?? [];
               }
               isLoader?.value = false;
             } else {

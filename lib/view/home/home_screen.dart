@@ -1,11 +1,9 @@
 import 'dart:ui';
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../../data/repositories/category/category_repository.dart';
 import '../../res/app_network_image.dart';
 import '../../res/empty_element.dart';
 import 'home_controller.dart';
@@ -23,9 +21,7 @@ class HomeScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
         body: Obx(() {
-          return Column(
-            // physics: const RangeMaintainingScrollPhysics(),
-
+          return ListView(
             children: [
               defaultPadding.verticalSpace,
 
@@ -42,15 +38,16 @@ class HomeScreen extends StatelessWidget {
                 ),
                 items: con.bannerLoader.isFalse
                     ? List.generate(
-                        con.bannerList.length,
+                        con.bannersList.length,
                         (index) => Container(
                           margin: EdgeInsets.all(defaultPadding).copyWith(bottom: defaultPadding / 2, top: 0),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(defaultRadius),
+                            boxShadow: defaultShadow(context),
                           ),
                           clipBehavior: Clip.antiAlias,
-                          child: Image.asset(
-                            con.bannerList[index],
+                          child: AppNetworkImage(
+                            imageUrl: con.bannersList[index].bannerImage ?? "",
                             height: double.infinity,
                             width: double.infinity,
                             fit: BoxFit.cover,
@@ -62,17 +59,11 @@ class HomeScreen extends StatelessWidget {
                     /// LOADER VIEW
                     List.generate(
                         1,
-                        (index) => GestureDetector(
-                          onTap: (){
-                            CategoryRepository.getCategoriesAPI(isLoader: con.categoryLoader);
-
-                          },
-                          child: Padding(
-                            padding:   EdgeInsets.symmetric(horizontal: defaultPadding,vertical: defaultPadding/2),
-                            child: ShimmerUtils.shimmer(
-                              child: ShimmerUtils.shimmerContainer(
-                                borderRadiusSize: defaultRadius,
-                              ),
+                        (index) => Padding(
+                          padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding / 2),
+                          child: ShimmerUtils.shimmer(
+                            child: ShimmerUtils.shimmerContainer(
+                              borderRadiusSize: defaultRadius,
                             ),
                           ),
                         ),
@@ -84,17 +75,17 @@ class HomeScreen extends StatelessWidget {
               /// ***********************************************************************************
 
               con.categoryLoader.isFalse
-                  ? con.brandList.isNotEmpty
+                  ? con.categoriesList.isNotEmpty
                       ?
 
                       /// CATEGORIES LIST VIEW
                       gridviewBuilder(
-                          length: con.brandList.length,
+                          length: con.categoriesList.length,
                           itemBuilder: (context, index) => GestureDetector(
                             onTap: () => Get.toNamed(
                               AppRoutes.categoryScreen,
                               arguments: {
-                                "brandName": con.brandList[index].name,
+                                "brandName": con.categoriesList[index].name,
                               },
                             ),
                             child: Stack(
@@ -103,7 +94,7 @@ class HomeScreen extends StatelessWidget {
                                 AppNetworkImage(
                                   height: double.infinity,
                                   width: double.infinity,
-                                  imageUrl: con.brandList[index].categoryImage ?? "",
+                                  imageUrl: con.categoriesList[index].categoryImage ?? "",
                                   borderRadius: BorderRadius.circular(defaultRadius),
                                   fit: BoxFit.cover,
                                 ),
@@ -118,10 +109,14 @@ class HomeScreen extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                Text(
-                                  con.brandList[index].name ?? "",
-                                  textAlign: TextAlign.center,
-                                  style: AppTextStyle.titleStyle(context).copyWith(color: Theme.of(context).scaffoldBackgroundColor),
+                                Padding(
+                                  padding: EdgeInsets.all(defaultPadding),
+                                  child: Text(
+                                    (con.categoriesList[index].name ?? AppStrings.defaultPingakshLogoURL),
+                                    textAlign: TextAlign.center,
+                                    style: AppTextStyle.titleStyle(context).copyWith(color: Theme.of(context).scaffoldBackgroundColor),
+                                    overflow: TextOverflow.fade,
+                                  ),
                                 ),
                               ],
                             ),
@@ -159,20 +154,18 @@ class HomeScreen extends StatelessWidget {
     required int length,
     required Widget? Function(BuildContext, int) itemBuilder,
   }) {
-    return Expanded(
-      child: GridView.builder(
-        physics: const RangeMaintainingScrollPhysics(),
-        shrinkWrap: true,
-        padding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(top: defaultPadding / 5, bottom: defaultBottomPadding),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: defaultPadding / 2,
-          crossAxisSpacing: defaultPadding / 1.8,
-          mainAxisExtent: 135.h,
-        ),
-        itemCount: length,
-        itemBuilder: itemBuilder,
+    return GridView.builder(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      padding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(top: defaultPadding / 5, bottom: defaultBottomPadding),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        mainAxisSpacing: defaultPadding / 2,
+        crossAxisSpacing: defaultPadding / 1.8,
+        mainAxisExtent: 135.h,
       ),
+      itemCount: length,
+      itemBuilder: itemBuilder,
     );
   }
 }

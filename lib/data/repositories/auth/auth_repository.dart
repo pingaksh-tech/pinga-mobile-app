@@ -28,7 +28,7 @@ class AuthRepository {
           },
         ).then(
           (response) async {
-            if (!isValEmpty(response) && response["success"] == true) {
+            if (!isValEmpty(response) /*&& response["success"] == true*/) {
               loader?.value = false;
               UiUtils.toast(AppStrings.otpSendSuccessfully);
               onSuccess();
@@ -67,7 +67,7 @@ class AuthRepository {
           (response) async {
             loader?.value = false;
             if (!isValEmpty(response['message'])) UiUtils.toast(response['message']);
-            if (!isValEmpty(response) && response["success"] == true) {
+            if (!isValEmpty(response) /*&& response["success"] == true*/) {
               onSuccess();
             }
             return response;
@@ -99,7 +99,7 @@ class AuthRepository {
           },
         ).then(
           (response) async {
-            if (!isValEmpty(response) && response["success"] == true) {
+            if (!isValEmpty(response) /*&& response["success"] == true*/) {
               UserDataModel userDataModel = userDataModelFromJson(jsonEncode(response));
 
               /// STORE USER DETAILS IN LOCAL STORAGE
@@ -145,7 +145,7 @@ class AuthRepository {
           loader: loader,
         ).then(
           (response) async {
-            if (response != null && response['success'] == true) {
+            if (response != null /*&& response['success'] == true*/) {
               loader?.value = false;
               return true;
             }
@@ -179,7 +179,7 @@ class AuthRepository {
           loader: loader,
         ).then(
           (response) async {
-            if (response != null && response['success'] == true) {
+            if (response != null /*&& response['success'] == true*/) {
               loader?.value = false;
 
               /// onSuccess
