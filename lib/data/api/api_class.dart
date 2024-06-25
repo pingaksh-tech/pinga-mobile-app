@@ -23,7 +23,7 @@ class HttpUtil {
         useRefreshToken: true,
       ).then(
         (response) async {
-          if (response != null /*&& response['success'] == true*/) {
+          if (response != null) {
             LocalStorage.accessToken = response['data']['access_token'] ?? "";
             LocalStorage.refreshToken = response['data']['refresh_token'] ?? "";
           }

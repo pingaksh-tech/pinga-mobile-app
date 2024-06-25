@@ -60,7 +60,7 @@ class SubCategoryRepository {
   ///                                 GET SUB-CATEGORIES API
   /// ***********************************************************************************
 
-  static Future<void> subCategoryListApi() async {
+  static Future<void> getSubCategoryListApi() async {
     final SubCategoryController categoryCon = Get.find<SubCategoryController>();
     GetSubCategoryModel model = GetSubCategoryModel.fromJson(subCategoryList);
     categoryCon.categoryList.value = model.data?.category ?? [];

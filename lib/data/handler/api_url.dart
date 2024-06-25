@@ -1,12 +1,11 @@
-import 'dart:io';
-
 import 'app_environment.dart';
 
 class ApiUrls {
   static String baseUrl = AppEnvironment.getApiURL();
 
   /// SPLASH
-  static String splashGET({required String versionCode}) => "version/${Platform.isAndroid ? 'android' : 'iOS'}/$versionCode";
+  // static String splashGET({required String versionCode}) => "version/${Platform.isAndroid ? 'android' : 'iOS'}/$versionCode";
+  static String splashGET({required String versionCode}) => "mobile/setting/splash-screen";
 
   /// AUTH
   static const String sendMobileOtpPOST = "mobile/auth/login";

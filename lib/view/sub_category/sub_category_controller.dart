@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import '../../data/model/sub_category/sub_category_model.dart';
-import '../../data/repositories/category/category_repository.dart';
+import '../../data/repositories/sub_category/sub_category_repository.dart';
 
 class SubCategoryController extends GetxController {
   Rx<TextEditingController> searchCon = TextEditingController().obs;
@@ -29,6 +29,6 @@ class SubCategoryController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    CategoryRepository.getCategoriesAPI();
+    SubCategoryRepository.getSubCategoryListApi();
   }
 }

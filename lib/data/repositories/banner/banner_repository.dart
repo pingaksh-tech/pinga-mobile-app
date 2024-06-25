@@ -19,7 +19,7 @@ class BannerRepository {
           loader: isLoader,
         ).then(
           (response) async {
-            if (response != null /*&& response['success'] == true*/) {
+            if (response != null) {
               if (isRegistered<HomeController>()) {
                 final HomeController homeCon = Get.find<HomeController>();
 

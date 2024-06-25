@@ -145,7 +145,7 @@ class AuthRepository {
           loader: loader,
         ).then(
           (response) async {
-            if (response != null /*&& response['success'] == true*/) {
+            if (response != null) {
               loader?.value = false;
               return true;
             }
@@ -179,7 +179,7 @@ class AuthRepository {
           loader: loader,
         ).then(
           (response) async {
-            if (response != null /*&& response['success'] == true*/) {
+            if (response != null) {
               loader?.value = false;
 
               /// onSuccess
