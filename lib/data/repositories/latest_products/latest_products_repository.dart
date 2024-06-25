@@ -2,14 +2,14 @@ import 'package:get/get.dart';
 import '../../../exports.dart';
 import '../../../view/sub_category/sub_category_controller.dart';
 
-import '../../model/sub_category/sub_category_model.dart';
+import '../../model/latest_products/latest_products_model.dart';
 
-class SubCategoryRepository {
+class LatestProductsRepository {
   /// ***********************************************************************************
-  ///                                 GET SUB-CATEGORIES API
+  ///                                 GET LATEST PRODUCTS API
   /// ***********************************************************************************
 
-  static Future<dynamic> getSubCategoriesAPI({bool isInitial = true, bool isPullToRefresh = false, RxBool? loader, required String searchText}) async {
+  static Future<dynamic> getLatestProductsAPI({bool isInitial = true, bool isPullToRefresh = false, RxBool? loader}) async {
     ///
     if (await getConnectivityResult() && isRegistered<SubCategoryController>()) {
       final SubCategoryController con = Get.find<SubCategoryController>();
@@ -19,18 +19,18 @@ class SubCategoryRepository {
 
         if (isInitial) {
           if (!isPullToRefresh) {
-            con.subCategoriesList.clear();
+            con.latestProductList.clear();
           }
-          con.pageNumberSubCategory.value = 1;
-          con.nextPageAvailableSubCategory.value = true;
+          con.pageNumberLatestProd.value = 1;
+          con.nextPageAvailableLatestProd.value = true;
         }
 
         /// API
         await APIFunction.getApiCall(
           apiUrl: ApiUrls.getAllSubCategoriesGET,
           params: {
-            "page": con.pageNumberSubCategory.value,
-            "limit": con.pageLimitSubCategory.value,
+            "page": con.pageNumberLatestProd.value,
+            "limit": con.pageLimitLatestProd.value,
             "categoryId": con.categoryId.value,
             "search": con.getSearchText,
           },
@@ -38,15 +38,15 @@ class SubCategoryRepository {
         ).then(
           (response) async {
             if (response != null) {
-              GetSubCategoryModel model = GetSubCategoryModel.fromJson(response);
+              GetLatestProductsModel model = GetLatestProductsModel.fromJson(response);
 
               if (isPullToRefresh) {
-                con.subCategoriesList.value = model.data?.subCategories ?? [];
+                con.latestProductList.value = model.data?.latestProducts ?? [];
               } else {
-                con.subCategoriesList.addAll(model.data?.subCategories ?? []);
+                con.latestProductList.addAll(model.data?.latestProducts ?? []);
               }
-              con.nextPageAvailableSubCategory.value = con.pageNumberSubCategory.value < (model.data!.totalPages ?? 0);
-              con.pageNumberSubCategory.value++;
+              con.nextPageAvailableLatestProd.value = con.pageNumberLatestProd.value < (model.data!.totalPages ?? 0);
+              if ((model.data?.latestProducts ?? []).isNotEmpty) con.pageNumberLatestProd.value++;
               loader?.value = false;
             } else {
               loader?.value = false;

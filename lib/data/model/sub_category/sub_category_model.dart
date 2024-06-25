@@ -9,69 +9,105 @@ GetSubCategoryModel getSubCategoryModelFromJson(String str) => GetSubCategoryMod
 String getSubCategoryModelToJson(GetSubCategoryModel data) => json.encode(data.toJson());
 
 class GetSubCategoryModel {
-  final bool? success;
   final String? message;
   final SubCategoryDataModel? data;
 
   GetSubCategoryModel({
-    this.success,
     this.message,
     this.data,
   });
 
   factory GetSubCategoryModel.fromJson(Map<String, dynamic> json) => GetSubCategoryModel(
-    success: json["success"],
     message: json["message"],
     data: json["data"] == null ? null : SubCategoryDataModel.fromJson(json["data"]),
   );
 
   Map<String, dynamic> toJson() => {
-    "success": success,
     "message": message,
     "data": data?.toJson(),
   };
 }
 
 class SubCategoryDataModel {
-  final List<SubCategoryModel>? category;
+  final int? filteredCount;
+  final int? totalCount;
+  final int? totalPages;
+  final List<SubCategoryModel>? subCategories;
 
   SubCategoryDataModel({
-    this.category,
+    this.filteredCount,
+    this.totalCount,
+    this.totalPages,
+    this.subCategories,
   });
 
   factory SubCategoryDataModel.fromJson(Map<String, dynamic> json) => SubCategoryDataModel(
-    category: json["category"] == null ? [] : List<SubCategoryModel>.from(json["category"]!.map((x) => SubCategoryModel.fromJson(x))),
+    filteredCount: json["filteredCount"],
+    totalCount: json["totalCount"],
+    totalPages: json["totalPages"],
+    subCategories: json["sub_categories"] == null ? [] : List<SubCategoryModel>.from(json["sub_categories"]!.map((x) => SubCategoryModel.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "category": category == null ? [] : List<dynamic>.from(category!.map((x) => x.toJson())),
+    "filteredCount": filteredCount,
+    "totalCount": totalCount,
+    "totalPages": totalPages,
+    "sub_categories": subCategories == null ? [] : List<dynamic>.from(subCategories!.map((x) => x.toJson())),
   };
 }
 
 class SubCategoryModel {
-  final String? catName;
-  final String? slug;
-  final String? productAvailable;
-  final String? image;
+  final String? id;
+  final String? name;
+  final List<Category>? categories;
+  final int? totalCount;
+  final String? subCategoryImage;
 
   SubCategoryModel({
-    this.catName,
-    this.slug,
-    this.productAvailable,
-    this.image,
+    this.id,
+    this.name,
+    this.categories,
+    this.totalCount,
+    this.subCategoryImage,
   });
 
   factory SubCategoryModel.fromJson(Map<String, dynamic> json) => SubCategoryModel(
-    catName: json["catName"],
-    slug: json["slug"],
-    productAvailable: json["productAvailable"],
-    image: json["image"],
+    id: json["_id"],
+    name: json["name"],
+    categories: json["categories"] == null ? [] : List<Category>.from(json["categories"]!.map((x) => Category.fromJson(x))),
+    totalCount: json["total_count"],
+    subCategoryImage: json["sub_category_image"],
   );
 
   Map<String, dynamic> toJson() => {
-    "catName": catName,
+    "_id": id,
+    "name": name,
+    "categories": categories == null ? [] : List<dynamic>.from(categories!.map((x) => x.toJson())),
+    "total_count": totalCount,
+    "sub_category_image": subCategoryImage,
+  };
+}
+
+class Category {
+  final String? id;
+  final String? name;
+  final String? slug;
+
+  Category({
+    this.id,
+    this.name,
+    this.slug,
+  });
+
+  factory Category.fromJson(Map<String, dynamic> json) => Category(
+    id: json["_id"],
+    name: json["name"],
+    slug: json["slug"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "_id": id,
+    "name": name,
     "slug": slug,
-    "productAvailable": productAvailable,
-    "image": image,
   };
 }

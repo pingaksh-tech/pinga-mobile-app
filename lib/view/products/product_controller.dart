@@ -72,7 +72,7 @@ class ProductController extends GetxController {
     if (isRegistered<PreValueController>()) {
       final PreValueController preValueCon = Get.find<PreValueController>();
 
-      await preValueCon.checkHasPreValue(category.value.slug ?? '', type: SelectableItemType.size.slug).then(
+      await preValueCon.checkHasPreValue(category.value.id ?? '', type: SelectableItemType.size.slug).then(
         (value) {
           isSizeAvailable.value = value.isNotEmpty;
         },

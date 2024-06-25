@@ -275,7 +275,17 @@ class _AppTextFieldState extends State<AppTextField> {
                 onTap: widget.prefixOnTap,
                 child: DefaultTextStyle(style: textFormFieldStyle, child: widget.prefixIcon!),
               )
-            : null,
+            : widget.textInputAction == TextInputAction.search
+                ? Padding(
+                    padding: EdgeInsets.all(defaultPadding),
+                    child: SvgPicture.asset(
+                      AppAssets.search,
+                      height: 18,
+                      width: 18,
+                      color: isFieldActive ? Theme.of(context).primaryColor : Colors.grey.shade400, // ignore: deprecated_member_use
+                    ),
+                  )
+                : null,
         suffixIcon: widget.showNormalSuffixIcon ? widget.suffixIcon : getSuffixIcon,
         enabledBorder: widget.enabledBorder ??
             OutlineInputBorder(

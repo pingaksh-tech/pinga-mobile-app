@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+
 import '../../../exports.dart';
 import '../../../res/app_network_image.dart';
 
-class CategoryTile extends StatelessWidget {
+class SubCategoryTile extends StatelessWidget {
   final String categoryName;
   final String subTitle;
   final String imageUrl;
   final VoidCallback onTap;
   final double? fontSize;
 
-  const CategoryTile({
+  const SubCategoryTile({
     super.key,
     required this.categoryName,
     required this.subTitle,

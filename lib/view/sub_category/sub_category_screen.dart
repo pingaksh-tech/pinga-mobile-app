@@ -1,15 +1,18 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
+import '../../data/repositories/sub_category/sub_category_repository.dart';
 import '../../exports.dart';
 import '../../res/app_bar.dart';
-import '../../res/app_network_image.dart';
 import '../../res/tab_bar.dart';
 import '../products/components/cart_icon_button.dart';
+import 'Widgets/latest_products_tab/latest_products_tab_view.dart';
+import 'Widgets/sub_categories_tab/sub_categories_tab_view.dart';
 import 'sub_category_controller.dart';
-import 'components/category_tile.dart';
 
 class SubCategoryScreen extends StatelessWidget {
   SubCategoryScreen({super.key});
@@ -26,7 +29,7 @@ class SubCategoryScreen extends StatelessWidget {
           appBar: MyAppBar(
             backgroundColor: Theme.of(context).colorScheme.surface,
             shadowColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.3),
-            title: con.brandTitle.value,
+            title: con.categoryName.value,
             actions: [
               AppIconButton(
                 onPressed: () => Get.toNamed(AppRoutes.settingsScreen),
@@ -60,15 +63,6 @@ class SubCategoryScreen extends StatelessWidget {
                         ),
                         borderSide: BorderSide.none,
                       ),
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.all(defaultPadding / 1.4),
-                        child: SvgPicture.asset(
-                          AppAssets.search,
-                          height: 22,
-                          width: 22,
-                          color: UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400, // ignore: deprecated_member_use
-                        ),
-                      ),
                       textInputAction: TextInputAction.search,
                       contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.3, horizontal: defaultPadding),
                       suffixIcon: con.showCloseButton.isTrue
@@ -80,10 +74,13 @@ class SubCategoryScreen extends StatelessWidget {
                             )
                           : null,
                       suffixOnTap: con.showCloseButton.isTrue
-                          ? () {
+                          ? () async {
                               FocusScope.of(context).unfocus();
                               con.showCloseButton.value = false;
                               con.searchCon.value.clear();
+
+                              /// CLEAR SEARCH API
+                              await SubCategoryRepository.getSubCategoriesAPI(loader: con.loaderSubCategory, searchText: con.getSearchText);
                             }
                           : null,
                       onChanged: (value) {
@@ -92,6 +89,16 @@ class SubCategoryScreen extends StatelessWidget {
                         } else {
                           con.showCloseButton.value = false;
                         }
+
+                        /// DEBOUNCE
+                        if (con.searchDebounce?.isActive ?? false) con.searchDebounce?.cancel();
+                        con.searchDebounce = Timer(
+                          defaultSearchDebounceDuration,
+                          () async {
+                            /// Search API
+                            await SubCategoryRepository.getSubCategoriesAPI(loader: con.loaderSubCategory, searchText: con.getSearchText);
+                          },
+                        );
                       },
                     ),
                   ),
@@ -127,37 +134,11 @@ class SubCategoryScreen extends StatelessWidget {
                 Expanded(
                   child: TabBarView(
                     children: [
-                      ListView.separated(
-                        padding: EdgeInsets.all(defaultPadding),
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) => CategoryTile(
-                          categoryName: con.categoryList[index].catName ?? "",
-                          subTitle: con.categoryList[index].productAvailable ?? "",
-                          imageUrl: con.categoryList[index].image ?? "",
-                          onTap: () => Get.toNamed(
-                            AppRoutes.productScreen,
-                            arguments: {
-                              "category": con.categoryList[index],
-                            },
-                          ),
-                        ),
-                        itemCount: con.categoryList.length,
-                        separatorBuilder: (context, index) => SizedBox(height: defaultPadding / 1.2),
-                      ),
-                      ListView.separated(
-                        shrinkWrap: true,
-                        padding: EdgeInsets.all(defaultPadding),
-                        itemBuilder: (context, index) => AppNetworkImage(
-                          height: Get.height / 8,
-                          width: double.infinity,
-                          imageUrl: con.latestProductList[index],
-                          fit: BoxFit.cover,
-                          boxShadow: defaultShadowAllSide,
-                          borderRadius: BorderRadius.circular(defaultRadius),
-                        ),
-                        itemCount: con.latestProductList.length,
-                        separatorBuilder: (context, index) => SizedBox(height: defaultPadding / 1.2),
-                      ),
+                      /// SUB CATEGORIES
+                      SubCategoriesTabView(),
+
+                      /// LATEST PRODUCTS
+                      LatestProductsTabView(),
                     ],
                   ),
                 ),

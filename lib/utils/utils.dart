@@ -111,6 +111,7 @@ extension StrExtension on String {
 const int defaultAmountLength = 12;
 const int defaultQuantityLength = 12;
 const Duration defaultDuration = Duration(milliseconds: 200);
+const Duration defaultSearchDebounceDuration = Duration(milliseconds: 400);
 
 bool isValEmpty(dynamic val) {
   String? value = val.toString();

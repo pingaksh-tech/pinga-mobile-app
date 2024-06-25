@@ -20,6 +20,9 @@ class ApiUrls {
   /// CATEGORY
   static const String getAllCategoriesGET = "category";
 
+  /// SUB-CATEGORY
+  static const String getAllSubCategoriesGET = "sub-category";
+
   /// USER
   static const String deleteAccountDELETE = "";
 

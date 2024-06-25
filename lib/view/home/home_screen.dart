@@ -98,7 +98,8 @@ class HomeScreen extends StatelessWidget {
                                   onTap: () => Get.toNamed(
                                     AppRoutes.categoryScreen,
                                     arguments: {
-                                      "brandName": con.categoriesList[index].name,
+                                      "categoryName": con.categoriesList[index].name,
+                                      "categoryId": con.categoriesList[index].id,
                                     },
                                   ),
                                   child: Stack(
@@ -137,17 +138,17 @@ class HomeScreen extends StatelessWidget {
                               ),
 
                               /// PAGINATION LOADER
-                              if(con.paginationLoader.isTrue)
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding / 2).copyWith(top: 0),
-                                child: ShimmerUtils.shimmer(
-                                  child: ShimmerUtils.shimmerContainer(
-                                    borderRadiusSize: defaultRadius,
-                                    height: Get.width / 3,
-                                    width: Get.width,
+                              if (con.paginationLoader.isTrue)
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding / 2).copyWith(top: 0),
+                                  child: ShimmerUtils.shimmer(
+                                    child: ShimmerUtils.shimmerContainer(
+                                      borderRadiusSize: defaultRadius,
+                                      height: Get.width / 3,
+                                      width: Get.width,
+                                    ),
                                   ),
-                                ),
-                              )
+                                )
                             ],
                           )
                         :

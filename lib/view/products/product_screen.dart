@@ -24,7 +24,7 @@ class ProductScreen extends StatelessWidget {
         appBar: MyAppBar(
           backgroundColor: Theme.of(context).colorScheme.surface,
           shadowColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.3),
-          title: con.categoryName.isNotEmpty ? con.categoryName.value : con.category.value.catName,
+          title: con.categoryName.isNotEmpty ? con.categoryName.value : con.category.value.name,
 
           actions: const [
             CartIconButton(),
@@ -101,10 +101,10 @@ class ProductScreen extends StatelessWidget {
               children: List.generate(
                 con.productsList.length,
                 (index) => ProductTile(
-                  categorySlug: con.category.value.slug ?? "ring" /*Product Category*/,
+                  categorySlug: con.category.value.id ?? "ring" /*Product Category*/,
                   productTileType: con.isProductViewChange.isTrue ? ProductTileType.grid : ProductTileType.list,
                   onTap: () => Get.toNamed(AppRoutes.productDetailsScreen, arguments: {
-                    "category": con.category.value.slug ?? '',
+                    "category": con.category.value.id ?? '',
                     'isSize': con.isSizeAvailable.value,
                   }),
                   isLike: (con.wishlistList.contains(con.productsList[index])).obs,

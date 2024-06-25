@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import '../exports.dart';
 
 class EmptyElement extends StatelessWidget {
+  final bool showDefaultImage;
   final String? imagePath;
   final String title;
   final double? height;
@@ -19,7 +20,7 @@ class EmptyElement extends StatelessWidget {
   final MainAxisAlignment? mainAxis;
   final AlignmentGeometry? alignment;
 
-  const EmptyElement({super.key, this.imagePath, required this.title, this.height, this.imageWidth, this.imageHeight, this.spacing, this.subtitle, this.titleStyle, this.subtitleStyle, this.padding, this.mainAxis, this.alignment});
+  const EmptyElement({super.key, this.showDefaultImage = true, this.imagePath, required this.title, this.height, this.imageWidth, this.imageHeight, this.spacing, this.subtitle, this.titleStyle, this.subtitleStyle, this.padding, this.mainAxis, this.alignment});
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +34,9 @@ class EmptyElement extends StatelessWidget {
             mainAxisAlignment: mainAxis ?? MainAxisAlignment.end,
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (imagePath != null)
+              if (showDefaultImage || imagePath != null)
                 SvgPicture.asset(
-                  imagePath!,
+                  showDefaultImage ? imagePath ?? AppAssets.emptyData : imagePath!,
                   width: imageWidth ?? Get.width / 3,
                   height: imageHeight ?? Get.width / 2,
                 ),

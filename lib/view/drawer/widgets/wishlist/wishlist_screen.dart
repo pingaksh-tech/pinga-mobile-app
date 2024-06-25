@@ -28,10 +28,10 @@ class WishlistScreen extends StatelessWidget {
               children: List.generate(
                 con.productsList.length,
                 (index) => ProductTile(
-                  categorySlug: con.category.value.slug ?? "ring" /*Product Category*/,
+                  categorySlug: con.category.value.id ?? "ring" /*Product Category*/,
                   productTileType: ProductTileType.grid,
                   onTap: () => Get.toNamed(AppRoutes.productDetailsScreen, arguments: {
-                    "category": con.category.value.slug ?? '',
+                    "category": con.category.value.id ?? '',
                     // 'isSize': con.isSizeAvailable.value, /*if product does not have size*/
                   }),
                   isLike: true.obs,
