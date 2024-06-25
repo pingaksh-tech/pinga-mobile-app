@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../data/model/banner/banner_model.dart';
@@ -11,6 +12,26 @@ class HomeController extends GetxController {
 
   RxBool categoryLoader = true.obs;
   RxList<CategoryModel> categoriesList = <CategoryModel>[].obs;
+  ScrollController scrollController = ScrollController();
+  RxInt page = 1.obs;
+  RxInt itemLimit = 50.obs;
+  RxBool nextPageAvailable = true.obs;
+  RxBool paginationLoader = false.obs;
+
+  /// Pagination
+  void manageScrollController() async {
+    scrollController.addListener(
+      () {
+        if (scrollController.position.maxScrollExtent == scrollController.position.pixels) {
+          if (nextPageAvailable.value && paginationLoader.isFalse) {
+            /// PAGINATION CALL
+            /// GET CATEGORIES API
+            CategoryRepository.getCategoriesAPI(isInitial: false, loader: paginationLoader);
+          }
+        }
+      },
+    );
+  }
 
   @override
   void onReady() {
@@ -20,6 +41,9 @@ class HomeController extends GetxController {
     BannerRepository.getBannersAPI(isLoader: bannerLoader);
 
     /// GET CATEGORIES API
-    CategoryRepository.getCategoriesAPI(isLoader: categoryLoader);
+    CategoryRepository.getCategoriesAPI(loader: categoryLoader);
+
+    /// SCROLL LISTENER INITIALISATION
+    manageScrollController();
   }
 }

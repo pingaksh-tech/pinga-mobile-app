@@ -18,7 +18,7 @@ class ApiUrls {
   static const String getAllBannersGET = "banner";
 
   /// CATEGORY
-  static const String getAllCategoriesGET = "category/?page=1&limit=10";
+  static const String getAllCategoriesGET = "category";
 
   /// USER
   static const String deleteAccountDELETE = "";

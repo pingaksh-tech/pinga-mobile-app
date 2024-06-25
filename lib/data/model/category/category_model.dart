@@ -18,38 +18,42 @@ class GetCategoryModel {
   });
 
   factory GetCategoryModel.fromJson(Map<String, dynamic> json) => GetCategoryModel(
-    message: json["message"],
-    data: json["data"] == null ? null : GetCategoryDataModel.fromJson(json["data"]),
-  );
+        message: json["message"],
+        data: json["data"] == null ? null : GetCategoryDataModel.fromJson(json["data"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "message": message,
-    "data": data?.toJson(),
-  };
+        "message": message,
+        "data": data?.toJson(),
+      };
 }
 
 class GetCategoryDataModel {
   final int? filteredCount;
   final int? totalCount;
+  final int? totalPages;
   final List<CategoryModel>? categories;
 
   GetCategoryDataModel({
     this.filteredCount,
     this.totalCount,
     this.categories,
+    this.totalPages,
   });
 
   factory GetCategoryDataModel.fromJson(Map<String, dynamic> json) => GetCategoryDataModel(
-    filteredCount: json["filteredCount"],
-    totalCount: json["totalCount"],
-    categories: json["categories"] == null ? [] : List<CategoryModel>.from(json["categories"]!.map((x) => CategoryModel.fromJson(x))),
-  );
+        filteredCount: json["filteredCount"],
+        totalCount: json["totalCount"],
+        totalPages: json["totalPages"],
+        categories: json["categories"] == null ? [] : List<CategoryModel>.from(json["categories"]!.map((x) => CategoryModel.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "filteredCount": filteredCount,
-    "totalCount": totalCount,
-    "categories": categories == null ? [] : List<dynamic>.from(categories!.map((x) => x.toJson())),
-  };
+        "filteredCount": filteredCount,
+        "totalCount": totalCount,
+        "totalPages": totalPages,
+        "categories": categories == null ? [] : List<dynamic>.from(categories!.map((x) => x.toJson())),
+      };
 }
 
 class CategoryModel {
@@ -80,30 +84,30 @@ class CategoryModel {
   });
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) => CategoryModel(
-    id: json["_id"],
-    name: json["name"],
-    v: json["__v"],
-    categoryImage: json["category_image"],
-    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-    createdBy: json["created_by"],
-    deletedAt: json["deleted_at"] == null ? null : DateTime.parse(json["deleted_at"]),
-    slug: json["slug"],
-    status: json["status"],
-    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-    updatedBy: json["updated_by"] == null ? null : DateTime.parse(json["updated_by"]),
-  );
+        id: json["_id"],
+        name: json["name"],
+        v: json["__v"],
+        categoryImage: json["category_image"],
+        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+        createdBy: json["created_by"],
+        deletedAt: json["deleted_at"] == null ? null : DateTime.parse(json["deleted_at"]),
+        slug: json["slug"],
+        status: json["status"],
+        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+        updatedBy: json["updated_by"] == null ? null : DateTime.parse(json["updated_by"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "_id": id,
-    "name": name,
-    "__v": v,
-    "category_image": categoryImage,
-    "createdAt": createdAt?.toIso8601String(),
-    "created_by": createdBy,
-    "deleted_at": deletedAt?.toIso8601String(),
-    "slug": slug,
-    "status": status,
-    "updatedAt": updatedAt?.toIso8601String(),
-    "updated_by": updatedBy?.toIso8601String(),
-  };
+        "_id": id,
+        "name": name,
+        "__v": v,
+        "category_image": categoryImage,
+        "createdAt": createdAt?.toIso8601String(),
+        "created_by": createdBy,
+        "deleted_at": deletedAt?.toIso8601String(),
+        "slug": slug,
+        "status": status,
+        "updatedAt": updatedAt?.toIso8601String(),
+        "updated_by": updatedBy?.toIso8601String(),
+      };
 }

@@ -9,33 +9,52 @@ class CategoryRepository {
   ///                                 GET CATEGORIES API
   /// ***********************************************************************************
 
-  static Future<dynamic> getCategoriesAPI({RxBool? isLoader}) async {
+  static Future<dynamic> getCategoriesAPI({bool isInitial = true, bool isPullToRefresh = false, RxBool? loader}) async {
     ///
-    if (await getConnectivityResult()) {
+    if (await getConnectivityResult() && isRegistered<HomeController>()) {
+      final HomeController con = Get.find<HomeController>();
+
       try {
-        isLoader?.value = true;
+        loader?.value = true;
+
+        if (isInitial) {
+          if (!isPullToRefresh) {
+            con.categoriesList.clear();
+          }
+          con.page.value = 1;
+          con.nextPageAvailable.value = true;
+        }
+
+        /// API
         await APIFunction.getApiCall(
           apiUrl: ApiUrls.getAllCategoriesGET,
-          loader: isLoader,
+          params: {
+            "page": con.page.value,
+            "limit": con.itemLimit.value,
+          },
+          loader: loader,
         ).then(
           (response) async {
             if (response != null) {
-              if (isRegistered<HomeController>()) {
-                final HomeController homeCon = Get.find<HomeController>();
+              GetCategoryModel model = GetCategoryModel.fromJson(response);
 
-                GetCategoryModel model = GetCategoryModel.fromJson(response);
-                homeCon.categoriesList.value = model.data?.categories ?? [];
+              if (isPullToRefresh) {
+                con.categoriesList.value = model.data?.categories ?? [];
+              } else {
+                con.categoriesList.addAll(model.data?.categories ?? []);
               }
-              isLoader?.value = false;
+              con.nextPageAvailable.value = con.page.value < (model.data!.totalPages ?? 0);
+              con.page.value++;
+              loader?.value = false;
             } else {
-              isLoader?.value = false;
+              loader?.value = false;
             }
 
             return response;
           },
         );
       } catch (e) {
-        isLoader?.value = false;
+        loader?.value = false;
         printErrors(type: "getCategoriesAPI", errText: e);
       }
     } else {}
