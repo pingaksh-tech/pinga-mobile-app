@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 
 import '../../../../exports.dart';
 import '../../../../widgets/checkbox_title_tile.dart';
-import '../../product_controller.dart';
+import '../../products_controller.dart';
 
 class SortingBottomSheet extends StatelessWidget {
   SortingBottomSheet({super.key});

@@ -37,7 +37,7 @@ class SubCategoriesTabView extends StatelessWidget {
                             children: [
                               SubCategoryTile(
                                 categoryName: con.subCategoriesList[index].name ?? "",
-                                subTitle: (con.subCategoriesList[index].totalCount ?? 0).toString(),
+                                subTitle: "Available ${(con.subCategoriesList[index].totalCount ?? 0)}",
                                 imageUrl: con.subCategoriesList[index].subCategoryImage ?? "",
                                 onTap: () => Get.toNamed(
                                   AppRoutes.productScreen,

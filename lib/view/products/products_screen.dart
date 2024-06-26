@@ -8,11 +8,11 @@ import '../../res/app_dialog.dart';
 import '../../widgets/product_tile.dart';
 import 'components/cart_icon_button.dart';
 import 'components/sort_filter_button.dart';
-import 'product_controller.dart';
+import 'products_controller.dart';
 import 'widgets/sort/sorting_bottomsheet.dart';
 
-class ProductScreen extends StatelessWidget {
-  ProductScreen({super.key});
+class ProductsScreen extends StatelessWidget {
+  ProductsScreen({super.key});
 
   final ProductController con = Get.put(ProductController());
 
@@ -101,7 +101,7 @@ class ProductScreen extends StatelessWidget {
               children: List.generate(
                 con.productsList.length,
                 (index) => ProductTile(
-                  categorySlug: con.category.value.id ?? "ring" /*Product Category*/,
+                  categorySlug: /*con.category.value.id ??*/ "ring" /*Product Category*/,
                   productTileType: con.isProductViewChange.isTrue ? ProductTileType.grid : ProductTileType.list,
                   onTap: () => Get.toNamed(AppRoutes.productDetailsScreen, arguments: {
                     "category": con.category.value.id ?? '',

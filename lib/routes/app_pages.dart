@@ -19,7 +19,7 @@ import '../view/drawer/widgets/wishlist/wishlist_screen.dart';
 import '../view/orders/widgets/order_filter/order_filter_screen.dart';
 import '../view/product_details/product_details_screen.dart';
 import '../view/product_details/widgets/image_view/image_view_screen.dart';
-import '../view/products/product_screen.dart';
+import '../view/products/products_screen.dart';
 import '../view/products/widgets/filter/filter_screen.dart';
 import '../view/products/widgets/variant/variant_screen.dart';
 import '../view/profile/profile_screen.dart';
@@ -47,7 +47,7 @@ class AppPages {
     _getPage(name: AppRoutes.bottomBarScreen, page: () => BottomBarScreen()),
     _getPage(name: AppRoutes.underMaintenanceScreen, page: () => const UnderMaintenanceScreen()),
     _getPage(name: AppRoutes.categoryScreen, page: () => SubCategoryScreen()),
-    _getPage(name: AppRoutes.productScreen, page: () => ProductScreen()),
+    _getPage(name: AppRoutes.productScreen, page: () => ProductsScreen()),
     _getPage(name: AppRoutes.profileScreen, page: () => ProfileScreen()),
     _getPage(name: AppRoutes.cartScreen, page: () => CartScreen()),
     _getPage(name: AppRoutes.productDetailsScreen, page: () => ProductDetailsScreen()),

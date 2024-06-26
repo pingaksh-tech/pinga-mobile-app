@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import '../../../controller/predefine_value_controller.dart';
 import '../../../view/drawer/widgets/wishlist/wishlist_controller.dart';
 import '../../../view/product_details/widgets/variants/variants_tab_controller.dart';
-import '../../../view/products/product_controller.dart';
+import '../../../view/products/products_controller.dart';
 import '../../../view/products/widgets/variant/variant_controller.dart';
 import '../../model/product/product_model.dart';
 import '../../model/product/variant_product_model.dart';
