@@ -1,11 +1,22 @@
 import 'package:get/get.dart';
 import '../data/model/cart/product_detail_model.dart';
+import '../data/model/common/splash_model.dart';
 import '../data/model/predefined_model/predefined_model.dart';
 import '../data/repositories/cart/cart_repository.dart';
 import '../data/repositories/product/product_repository.dart';
 import '../exports.dart';
 
-class PreValueController extends GetxController {
+class PreDefinedValueController extends GetxController {
+  /// CATEGORY WISE SIZES
+  RxList<CategoryWiseSize> categoryWiseSizesList=<CategoryWiseSize>[].obs;
+
+  /// METALS
+  RxList<MetalModel> metalsList=<MetalModel>[].obs;
+
+  /// DIAMONDS
+  RxList<DiamondModel> diamondsList=<DiamondModel>[].obs;
+
+
   RxList<ProductDetail> cartProductDetailList = <ProductDetail>[].obs;
   RxMap<String, dynamic> predefineResponse = <String, dynamic>{}.obs;
 

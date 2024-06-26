@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
+import 'controller/predefine_value_controller.dart';
 import 'data/services/notification/notification_helper.dart';
 import 'data/services/notification/firebase_notification_service.dart';
 import 'exports.dart';
@@ -54,5 +55,6 @@ class BaseBinding implements Bindings {
   @override
   void dependencies() {
     Get.put(BaseController(), permanent: true);
+    Get.put(PreDefinedValueController(), permanent: true);
   }
 }

@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
+import '../../../controller/predefine_value_controller.dart';
 import '../../../exports.dart';
 import '../../../view/splash/splash_controller.dart';
 import '../../model/common/splash_model.dart';
@@ -25,15 +26,29 @@ class SplashRepository {
             apiUrl: ApiUrls.splashGET(versionCode: packageInfo.version),
           ).then(
             (response) async {
-              if (/*response != null && response['success'] ==*/ true) {
+              if (response != null) {
                 isLoader?.value = false;
 
-                final GetSplashDataModel model = GetSplashDataModel.fromJson(/*response*/ dummyJson);
+                final GetSplashModel model = GetSplashModel.fromJson(response);
 
                 if (!isValEmpty(model.data)) {
-                  if (!isValEmpty(model.data!.appConfigs) && model.data!.appConfigs!.isNotEmpty && !isValEmpty(model.data!.appConfigs![0].appConfig)) {
+                  // ***********************************************************************************
+                  //                                    COMMON DETAILS
+                  // ***********************************************************************************
+
+                  if (isRegistered<PreDefinedValueController>()) {
+                    final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
+                    preValueCon.categoryWiseSizesList.value = model.data!.categoryWiseSizes ?? [];
+                    preValueCon.metalsList.value = model.data!.metals ?? [];
+                    preValueCon.diamondsList.value = model.data!.diamonds ?? [];
+                  }
+
+                  // ***********************************************************************************
+                  //                                    APP CONFIG DETAILS
+                  // ***********************************************************************************
+                  if (!isValEmpty(model.data!.appConfigData) && (model.data!.appConfigData!.appConfigs ?? []).isNotEmpty && !isValEmpty(model.data!.appConfigData!.appConfigs![0].appConfigDetails)) {
                     /// App Configurations
-                    AppConfigDetails appConfig = model.data!.appConfigs![0].appConfig!;
+                    AppConfigDetails appConfig = model.data!.appConfigData!.appConfigs![0].appConfigDetails!;
 
                     /// Store App Configs to Local Storage
                     LocalStorage.privacyURL = appConfig.privacy;
@@ -41,14 +56,14 @@ class SplashRepository {
                     LocalStorage.aboutUsURL = appConfig.aboutUs;
                     LocalStorage.contactUsURL = appConfig.contactUs;
                     LocalStorage.contactMobileNumber = appConfig.contactMobileNumber;
-                    LocalStorage.contactEmailID = appConfig.contactEmailID;
+                    LocalStorage.contactEmailID = appConfig.contactEmailId;
                   }
 
-                  if (!isValEmpty(model.data!.versions)) {
+                  if (!isValEmpty(model.data!.appConfigData!.versions)) {
                     /// Versions
 
                     /// CHECKING UPDATE
-                    splashCon.inAppUpdateChecker(appMaintenanceModel: model.data?.maintenance, currentVersion: packageInfo.version, versions: model.data!.versions!);
+                    splashCon.inAppUpdateChecker(appMaintenanceModel: model.data?.appConfigData!.appMaintenance, currentVersion: packageInfo.version, versions: model.data!.appConfigData!.versions!);
                   } else {
                     navigation();
                   }

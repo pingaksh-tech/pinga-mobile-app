@@ -34,8 +34,8 @@ Widget horizontalSelectorButton(
         switch (selectableItemType) {
           case SelectableItemType.size:
             //
-            if (isRegistered<PreValueController>()) {
-              final PreValueController preValueCon = Get.find<PreValueController>();
+            if (isRegistered<PreDefinedValueController>()) {
+              final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
               List<SizeModel> sizeList = await preValueCon.checkHasPreValue(categorySlug ?? '', type: selectableItemType.slug);
 
               /// Size Selector
@@ -56,8 +56,8 @@ Widget horizontalSelectorButton(
             break;
 
           case SelectableItemType.color:
-            if (isRegistered<PreValueController>()) {
-              final PreValueController preValueCon = Get.find<PreValueController>();
+            if (isRegistered<PreDefinedValueController>()) {
+              final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
               List<SizeModel> colorList = await preValueCon.checkHasPreValue(categorySlug ?? '', type: selectableItemType.slug);
               if (selectedColor != null && selectedColor.isEmpty) {
                 selectedColor.value = colorList[0].id ?? '';
@@ -81,8 +81,8 @@ Widget horizontalSelectorButton(
             break;
 
           case SelectableItemType.diamond:
-            if (isRegistered<PreValueController>()) {
-              final PreValueController preValueCon = Get.find<PreValueController>();
+            if (isRegistered<PreDefinedValueController>()) {
+              final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
               List<SizeModel> diamondList = await preValueCon.checkHasPreValue(categorySlug ?? '', type: selectableItemType.slug);
               if (selectedDiamond != null && selectedDiamond.isEmpty) {
                 selectedDiamond.value = diamondList[0].id ?? '';

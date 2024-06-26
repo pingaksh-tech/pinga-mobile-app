@@ -69,8 +69,8 @@ class ProductController extends GetxController {
   }
 
   Future<void> preValueAvailable() async {
-    if (isRegistered<PreValueController>()) {
-      final PreValueController preValueCon = Get.find<PreValueController>();
+    if (isRegistered<PreDefinedValueController>()) {
+      final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
 
       await preValueCon.checkHasPreValue(category.value.id ?? '', type: SelectableItemType.size.slug).then(
         (value) {

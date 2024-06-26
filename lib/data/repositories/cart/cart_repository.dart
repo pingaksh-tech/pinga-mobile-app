@@ -417,7 +417,7 @@ class CartRepository {
   ///                                     GET PRODUCT DETAIL
   /// **********************************************************************************
   static Future<void> getProductDetailAPI({RxBool? isLoader}) async {
-    final PreValueController dialogCon = Get.find<PreValueController>();
+    final PreDefinedValueController dialogCon = Get.find<PreDefinedValueController>();
     GetProductDetailModel model = GetProductDetailModel.fromJson(productDetail /*response*/);
     dialogCon.cartProductDetailList.value = model.data?.productDetail ?? [];
   }

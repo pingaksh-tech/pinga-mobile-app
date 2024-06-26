@@ -68,8 +68,8 @@ class _ProductTileState extends State<ProductTile> {
 
   /// Set Default Select Value Of Product
   Future<void> predefinedValue() async {
-    if (isRegistered<PreValueController>()) {
-      final PreValueController preValueCon = Get.find<PreValueController>();
+    if (isRegistered<PreDefinedValueController>()) {
+      final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
       List<SizeModel> colorList = await preValueCon.checkHasPreValue(widget.categorySlug ?? '', type: SelectableItemType.color.slug);
       List<SizeModel> sizeList = await preValueCon.checkHasPreValue(widget.categorySlug ?? '', type: SelectableItemType.size.slug);
       List<SizeModel> diamondList = await preValueCon.checkHasPreValue(widget.categorySlug ?? '', type: SelectableItemType.diamond.slug);

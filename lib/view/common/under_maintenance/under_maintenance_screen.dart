@@ -36,7 +36,7 @@ class UnderMaintenanceScreen extends StatelessWidget {
     );
   }
 
-  MaintenanceModel? get appMaintenanceModel => (!isValEmpty(Get.arguments) && (Get.arguments['appMaintenanceModel'].runtimeType == MaintenanceModel)) ? Get.arguments['appMaintenanceModel'] : null;
+  AppMaintenanceModel? get appMaintenanceModel => (!isValEmpty(Get.arguments) && (Get.arguments['appMaintenanceModel'].runtimeType == AppMaintenanceModel)) ? Get.arguments['appMaintenanceModel'] : null;
 
   bool get isWholeAppUnderMaintenance => appMaintenanceModel?.underMaintenance ?? false;
 

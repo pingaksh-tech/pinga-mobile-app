@@ -19,7 +19,7 @@ class BottomBarScreen extends StatelessWidget {
   BottomBarScreen({super.key});
 
   final BottomBarController con = Get.put(BottomBarController());
-  final PreValueController dialogCon = Get.put(PreValueController());
+  final PreDefinedValueController dialogCon = Get.find<PreDefinedValueController>();
 
   @override
   Widget build(BuildContext context) {

@@ -23,7 +23,7 @@ class SplashController extends GetxController {
   ///                             IN-APP UPDATE CHECKER
   /// ***********************************************************************************
 
-  Future<void> inAppUpdateChecker({MaintenanceModel? appMaintenanceModel, required List<VersionModel> versions, required String currentVersion}) async {
+  Future<void> inAppUpdateChecker({AppMaintenanceModel? appMaintenanceModel, required List<VersionModel> versions, required String currentVersion}) async {
     if (versions.isNotEmpty) {
       /// Maintenance Module
       if (
@@ -107,7 +107,7 @@ class SplashController extends GetxController {
         String? currentVersionMaintenanceMsg = (versions.firstWhereOrNull((element) => element.version == currentVersion)?.maintenanceMessage);
 
         Get.offAllNamed(AppRoutes.underMaintenanceScreen, arguments: {
-          "appMaintenanceModel": (appMaintenanceModel?.underMaintenance ?? false) ? appMaintenanceModel : MaintenanceModel(message: currentVersionMaintenanceMsg),
+          "appMaintenanceModel": (appMaintenanceModel?.underMaintenance ?? false) ? appMaintenanceModel : AppMaintenanceModel(message: currentVersionMaintenanceMsg),
         });
       }
     } else {

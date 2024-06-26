@@ -285,7 +285,7 @@ class ProductRepository {
   }
 
   static Future<dynamic> getPredefineValueAPI() async {
-    final PreValueController preValueCon = Get.find<PreValueController>();
+    final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
     preValueCon.predefineResponse.value = {
       "success": true,
       "message": "predefined fetched successfully",

@@ -1208,7 +1208,7 @@ class AppDialogs {
 
 // Cart Product Detail
   static Future<void> cartProductDetailDialog(BuildContext context, {required String productName}) {
-    final PreValueController dialogCon = Get.find<PreValueController>();
+    final PreDefinedValueController dialogCon = Get.find<PreDefinedValueController>();
     return Get.dialog(
       Dialog(
         insetPadding: REdgeInsets.all(defaultPadding * 1.5),
