@@ -8,6 +8,7 @@ import '../../data/repositories/banner/banner_repository.dart';
 import '../../data/repositories/category/category_repository.dart';
 import '../../res/app_network_image.dart';
 import '../../res/empty_element.dart';
+import '../../utils/app_aspect_ratios.dart';
 import '../../widgets/pull_to_refresh_indicator.dart';
 import 'home_controller.dart';
 
@@ -31,7 +32,7 @@ class HomeScreen extends StatelessWidget {
               await CategoryRepository.getCategoriesAPI(isPullToRefresh: true);
             },
             child: ListView(
-              physics: const RangeMaintainingScrollPhysics(),
+              physics: const AlwaysScrollableScrollPhysics(),
               controller: con.scrollController,
               children: [
                 defaultPadding.verticalSpace,
@@ -45,26 +46,28 @@ class HomeScreen extends StatelessWidget {
                     autoPlay: true,
                     enableInfiniteScroll: false,
                     viewportFraction: 1,
-                    height: Get.width / 2.6,
+                    aspectRatio: AppAspectRatios.r16_7,
                   ),
                   items: con.bannerLoader.isFalse
-                      ? List.generate(
-                          con.bannersList.length,
-                          (index) => Container(
-                            margin: EdgeInsets.all(defaultPadding).copyWith(bottom: defaultPadding / 2, top: 0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(defaultRadius),
-                              boxShadow: defaultShadow(context),
-                            ),
-                            clipBehavior: Clip.antiAlias,
-                            child: AppNetworkImage(
-                              imageUrl: con.bannersList[index].bannerImage ?? "",
-                              height: double.infinity,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        )
+                      ? con.bannersList.isNotEmpty
+                          ? List.generate(
+                              con.bannersList.length,
+                              (index) => Container(
+                                margin: EdgeInsets.all(defaultPadding).copyWith(bottom: defaultPadding / 2, top: 0),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(defaultRadius),
+                                  boxShadow: defaultShadow(context),
+                                ),
+                                clipBehavior: Clip.antiAlias,
+                                child: AppNetworkImage(
+                                  imageUrl: con.bannersList[index].bannerImage ?? "",
+                                  height: double.infinity,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            )
+                          : []
                       :
 
                       /// LOADER VIEW
@@ -138,8 +141,9 @@ class HomeScreen extends StatelessWidget {
                               ),
 
                               /// PAGINATION LOADER
-                              if (con.paginationLoader.isTrue)
-                                Padding(
+                              Visibility(
+                                visible: con.paginationLoader.isTrue,
+                                child: Padding(
                                   padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding / 2).copyWith(top: 0),
                                   child: ShimmerUtils.shimmer(
                                     child: ShimmerUtils.shimmerContainer(
@@ -148,13 +152,14 @@ class HomeScreen extends StatelessWidget {
                                       width: Get.width,
                                     ),
                                   ),
-                                )
+                                ),
+                              )
                             ],
                           )
                         :
 
                         /// EMPTY ELEMENT VIEW
-                        const Expanded(
+                        const Center(
                             child: EmptyElement(
                               title: "Categories Not Found!",
                               alignment: Alignment.center,

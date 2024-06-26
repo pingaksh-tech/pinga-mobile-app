@@ -32,12 +32,14 @@ class LatestProductsDataModel {
   final int? filteredCount;
   final int? totalCount;
   final int? totalPages;
+  final int? page;
   final List<LatestProductsModel>? latestProducts;
 
   LatestProductsDataModel({
     this.filteredCount,
     this.totalCount,
     this.totalPages,
+    this.page,
     this.latestProducts,
   });
 
@@ -45,6 +47,7 @@ class LatestProductsDataModel {
     filteredCount: json["filteredCount"],
     totalCount: json["totalCount"],
     totalPages: json["totalPages"],
+    page: json["page"],
     latestProducts: json["latestProducts"] == null ? [] : List<LatestProductsModel>.from(json["latestProducts"]!.map((x) => LatestProductsModel.fromJson(x))),
   );
 
@@ -52,6 +55,7 @@ class LatestProductsDataModel {
     "filteredCount": filteredCount,
     "totalCount": totalCount,
     "totalPages": totalPages,
+    "page": page,
     "latestProducts": latestProducts == null ? [] : List<dynamic>.from(latestProducts!.map((x) => x.toJson())),
   };
 }

@@ -23,6 +23,9 @@ class ApiUrls {
   /// SUB-CATEGORY
   static const String getAllSubCategoriesGET = "sub-category";
 
+  /// LATEST PRODUCTS
+  static const String getAllLatestProductsGET = "latest-product";
+
   /// USER
   static const String deleteAccountDELETE = "";
 

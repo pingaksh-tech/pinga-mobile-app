@@ -27,12 +27,11 @@ class LatestProductsRepository {
 
         /// API
         await APIFunction.getApiCall(
-          apiUrl: ApiUrls.getAllSubCategoriesGET,
+          apiUrl: ApiUrls.getAllLatestProductsGET,
           params: {
             "page": con.pageNumberLatestProd.value,
             "limit": con.pageLimitLatestProd.value,
             "categoryId": con.categoryId.value,
-            "search": con.getSearchText,
           },
           loader: loader,
         ).then(
@@ -40,13 +39,16 @@ class LatestProductsRepository {
             if (response != null) {
               GetLatestProductsModel model = GetLatestProductsModel.fromJson(response);
 
-              if (isPullToRefresh) {
-                con.latestProductList.value = model.data?.latestProducts ?? [];
-              } else {
-                con.latestProductList.addAll(model.data?.latestProducts ?? []);
+              if (model.data != null) {
+                if (isPullToRefresh) {
+                  con.latestProductList.value = model.data?.latestProducts ?? [];
+                } else {
+                  con.latestProductList.addAll(model.data?.latestProducts ?? []);
+                }
+                int currentPage = (model.data!.page ?? 1);
+                con.nextPageAvailableLatestProd.value = currentPage < (model.data!.totalPages ?? 0);
+                con.pageNumberLatestProd.value += currentPage;
               }
-              con.nextPageAvailableLatestProd.value = con.pageNumberLatestProd.value < (model.data!.totalPages ?? 0);
-              if ((model.data?.latestProducts ?? []).isNotEmpty) con.pageNumberLatestProd.value++;
               loader?.value = false;
             } else {
               loader?.value = false;
@@ -56,7 +58,7 @@ class LatestProductsRepository {
         );
       } catch (e) {
         loader?.value = false;
-        printErrors(type: "getSubCategoriesAPI", errText: e);
+        printErrors(type: "getLatestProductsAPI", errText: e);
       }
     } else {}
   }

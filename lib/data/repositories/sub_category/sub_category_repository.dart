@@ -39,14 +39,16 @@ class SubCategoryRepository {
           (response) async {
             if (response != null) {
               GetSubCategoryModel model = GetSubCategoryModel.fromJson(response);
-
-              if (isPullToRefresh) {
-                con.subCategoriesList.value = model.data?.subCategories ?? [];
-              } else {
-                con.subCategoriesList.addAll(model.data?.subCategories ?? []);
+              if (model.data != null) {
+                if (isPullToRefresh) {
+                  con.subCategoriesList.value = model.data?.subCategories ?? [];
+                } else {
+                  con.subCategoriesList.addAll(model.data?.subCategories ?? []);
+                }
+                int currentPage = (model.data!.page ?? 1);
+                con.nextPageAvailableSubCategory.value = currentPage < (model.data!.totalPages ?? 0);
+                con.pageNumberSubCategory.value += currentPage;
               }
-              con.nextPageAvailableSubCategory.value = con.pageNumberSubCategory.value < (model.data!.totalPages ?? 0);
-              con.pageNumberSubCategory.value++;
               loader?.value = false;
             } else {
               loader?.value = false;

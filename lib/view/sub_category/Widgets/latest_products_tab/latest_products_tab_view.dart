@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../data/repositories/latest_products/latest_products_repository.dart';
 import '../../../../exports.dart';
 import '../../../../res/app_network_image.dart';
 import '../../../../res/empty_element.dart';
+import '../../../../utils/app_aspect_ratios.dart';
+import '../../../../widgets/pull_to_refresh_indicator.dart';
 import '../../sub_category_controller.dart';
 
 class LatestProductsTabView extends StatelessWidget {
@@ -14,51 +17,59 @@ class LatestProductsTabView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      return ListView(
-        physics: const RangeMaintainingScrollPhysics(),
-        controller: con.scrollControllerLatestProd,
-        children: [
-          con.loaderLatestProd.isFalse
-              ? con.latestProductList.isNotEmpty
-                  ?
+      return PullToRefreshIndicator(
+        onRefresh: () => LatestProductsRepository.getLatestProductsAPI(isPullToRefresh: true),
+        child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          controller: con.scrollControllerLatestProd,
+          children: [
+            con.loaderLatestProd.isFalse
+                ? con.latestProductList.isNotEmpty
+                    ?
 
-                  /// LATEST PRODUCTS
-                  Obx(() {
-                      return ListView.separated(
-                        shrinkWrap: true,
-                        padding: EdgeInsets.all(defaultPadding),
-                        itemBuilder: (context, index) => Column(
-                          children: [
-                            AppNetworkImage(
-                              height: Get.height / 8,
-                              width: double.infinity,
-                              imageUrl: con.latestProductList[index].productImage ?? "",
-                              fit: BoxFit.cover,
-                              boxShadow: defaultShadowAllSide,
-                              borderRadius: BorderRadius.circular(defaultRadius),
-                            ),
+                    /// LATEST PRODUCTS
+                    Obx(() {
+                        return ListView.separated(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          padding: EdgeInsets.all(defaultPadding),
+                          itemBuilder: (context, index) => Column(
+                            children: [
+                              AspectRatio(
+                                aspectRatio: AppAspectRatios.r16_5,
+                                child: AppNetworkImage(
+                                  width: double.infinity,
+                                  imageUrl: con.latestProductList[index].productImage ?? "",
+                                  fit: BoxFit.cover,
+                                  boxShadow: defaultShadowAllSide,
+                                  borderRadius: BorderRadius.circular(defaultRadius),
+                                ),
+                              ),
 
-                            /// PAGINATION LOADER
-                            if (con.paginationLoaderLatestProd.value && index == con.latestProductList.length - 1) shimmerTile(),
-                          ],
-                        ),
-                        itemCount: con.latestProductList.length,
-                        separatorBuilder: (context, index) => SizedBox(height: defaultPadding / 1.2),
-                      );
-                    })
-                  :
+                              /// PAGINATION LOADER
+                              Obx(() {
+                                return Visibility(visible: (con.paginationLoaderLatestProd.value && index + 1 == con.latestProductList.length), child: shimmerTile());
+                              })
+                            ],
+                          ),
+                          itemCount: con.latestProductList.length,
+                          separatorBuilder: (context, index) => SizedBox(height: defaultPadding / 1.2),
+                        );
+                      })
+                    :
 
-                  /// EMPTY DATA VIEW
-                  EmptyElement(
-                      title: "Latest Products Not Found!",
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.symmetric(vertical: Get.width / 2.5),
-                    )
-              :
+                    /// EMPTY DATA VIEW
+                    EmptyElement(
+                        title: "Latest Products Not Found!",
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.symmetric(vertical: Get.width / 2.5),
+                      )
+                :
 
-              /// LOADING VIEW
-              shimmerListView()
-        ],
+                /// LOADING VIEW
+                shimmerListView()
+          ],
+        ),
       );
     });
   }

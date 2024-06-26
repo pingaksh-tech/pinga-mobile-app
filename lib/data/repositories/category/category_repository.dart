@@ -38,13 +38,17 @@ class CategoryRepository {
             if (response != null) {
               GetCategoryModel model = GetCategoryModel.fromJson(response);
 
-              if (isPullToRefresh) {
-                con.categoriesList.value = model.data?.categories ?? [];
-              } else {
-                con.categoriesList.addAll(model.data?.categories ?? []);
+              if (model.data != null) {
+                if (isPullToRefresh) {
+                  con.categoriesList.value = model.data?.categories ?? [];
+                } else {
+                  con.categoriesList.addAll(model.data?.categories ?? []);
+                }
+                int currentPage = (model.data!.page ?? 1);
+                con.nextPageAvailable.value = currentPage < (model.data!.totalPages ?? 0);
+                con.page.value += currentPage;
               }
-              con.nextPageAvailable.value = con.page.value < (model.data!.totalPages ?? 0);
-              con.page.value++;
+
               loader?.value = false;
             } else {
               loader?.value = false;

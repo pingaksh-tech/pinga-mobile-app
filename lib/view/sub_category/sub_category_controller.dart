@@ -1,20 +1,51 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../data/model/latest_products/latest_products_model.dart';
 import '../../data/model/sub_category/sub_category_model.dart';
 import '../../data/repositories/latest_products/latest_products_repository.dart';
 import '../../data/repositories/sub_category/sub_category_repository.dart';
+import '../../exports.dart';
 
-class SubCategoryController extends GetxController {
-  Rx<TextEditingController> searchCon = TextEditingController().obs;
-  Timer? searchDebounce;
-
-  String get getSearchText => searchCon.value.text.trim();
+class SubCategoryController extends GetxController with GetTickerProviderStateMixin {
+  /// CATEGORY DETAILS
   RxString categoryName = "".obs;
   RxString categoryId = "".obs;
+
+  /// TAB CONTROLLER AND LISTENERS
+  late TabController tabController;
+
+  void tabListerFunction() {
+    tabController.addListener(
+      () {
+        if (tabController.indexIsChanging) {
+          // printOkStatus("tab is animating. from active (getting the index) to inactive(getting the index) ");
+        } else {
+          /// TAB CHANGE
+          switch (tabController.index) {
+            case 0:
+              printOkStatus("===>${tabController.index}");
+
+            /// SUB CATEGORIES
+
+            case 1:
+              printWarning("===>${tabController.index}");
+              searchFocusNode.value.unfocus();
+
+            /// LATEST PRODUCTS
+          }
+        }
+      },
+    );
+  }
+
+  /// SEARCH FILED
+  Rx<TextEditingController> searchTEC = TextEditingController().obs;
+  Rx<FocusNode> searchFocusNode = FocusNode().obs;
+  Timer? searchDebounce;
+
+  String get getSearchText => searchTEC.value.text.trim();
   RxBool showCloseButton = false.obs;
 
   /// SUB CATEGORIES
@@ -22,7 +53,7 @@ class SubCategoryController extends GetxController {
   RxList<SubCategoryModel> subCategoriesList = <SubCategoryModel>[].obs;
   ScrollController scrollControllerSubCategory = ScrollController();
   RxInt pageNumberSubCategory = 1.obs;
-  RxInt pageLimitSubCategory = 10.obs;
+  RxInt pageLimitSubCategory = 50.obs;
   RxBool nextPageAvailableSubCategory = true.obs;
   RxBool paginationLoaderSubCategory = false.obs;
 
@@ -31,7 +62,7 @@ class SubCategoryController extends GetxController {
   RxList<LatestProductsModel> latestProductList = <LatestProductsModel>[].obs;
   ScrollController scrollControllerLatestProd = ScrollController();
   RxInt pageNumberLatestProd = 1.obs;
-  RxInt pageLimitLatestProd = 10.obs;
+  RxInt pageLimitLatestProd = 50.obs;
   RxBool nextPageAvailableLatestProd = true.obs;
   RxBool paginationLoaderLatestProd = false.obs;
 
@@ -39,7 +70,7 @@ class SubCategoryController extends GetxController {
   void manageScrollController() async {
     /// SUB CATEGORIES
     scrollControllerSubCategory.addListener(
-      () {
+      () async {
         if (scrollControllerSubCategory.position.maxScrollExtent == scrollControllerSubCategory.position.pixels) {
           if (nextPageAvailableSubCategory.value && paginationLoaderSubCategory.isFalse) {
             /// PAGINATION CALL
@@ -57,7 +88,7 @@ class SubCategoryController extends GetxController {
           if (nextPageAvailableLatestProd.value && paginationLoaderLatestProd.isFalse) {
             /// PAGINATION CALL
             /// GET LATEST PRODUCTS API
-            // SubCategoryRepository.getSubCategoriesAPI(isInitial: false, loader: paginationLoaderLatestProd, searchText: getSearchText);
+            LatestProductsRepository.getLatestProductsAPI(isInitial: false, loader: paginationLoaderLatestProd);
           }
         }
       },
@@ -67,6 +98,8 @@ class SubCategoryController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
+    /// GET ARGUMENTS
     if (Get.arguments != null) {
       if (Get.arguments["categoryName"].runtimeType == String) {
         categoryName.value = Get.arguments["categoryName"] ?? "";
@@ -75,6 +108,10 @@ class SubCategoryController extends GetxController {
         categoryId.value = Get.arguments["categoryId"] ?? "";
       }
     }
+
+    /// TAB CONTROLLER INITIALISATION & ADD ITS LISTENER
+    tabController = TabController(length: 2, vsync: this);
+    tabListerFunction();
   }
 
   @override
@@ -89,5 +126,10 @@ class SubCategoryController extends GetxController {
 
     /// SCROLL LISTENER INITIALISATION
     manageScrollController();
+  }
+
+  @override
+  void onClose() {
+    tabController.dispose();
   }
 }

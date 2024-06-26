@@ -33,18 +33,21 @@ class GetCategoryDataModel {
   final int? totalCount;
   final int? totalPages;
   final List<CategoryModel>? categories;
+  final int? page;
 
   GetCategoryDataModel({
     this.filteredCount,
     this.totalCount,
     this.categories,
     this.totalPages,
+    this.page,
   });
 
   factory GetCategoryDataModel.fromJson(Map<String, dynamic> json) => GetCategoryDataModel(
         filteredCount: json["filteredCount"],
         totalCount: json["totalCount"],
         totalPages: json["totalPages"],
+        page: json["page"],
         categories: json["categories"] == null ? [] : List<CategoryModel>.from(json["categories"]!.map((x) => CategoryModel.fromJson(x))),
       );
 
@@ -52,6 +55,7 @@ class GetCategoryDataModel {
         "filteredCount": filteredCount,
         "totalCount": totalCount,
         "totalPages": totalPages,
+        "page": page,
         "categories": categories == null ? [] : List<dynamic>.from(categories!.map((x) => x.toJson())),
       };
 }
