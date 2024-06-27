@@ -267,14 +267,14 @@ class SplashDataModel {
 
   factory SplashDataModel.fromJson(Map<String, dynamic> json) => SplashDataModel(
         categoryWiseSizes: json["categoryWiseSize"] == null ? [] : List<CategoryWiseSize>.from(json["categoryWiseSize"]!.map((x) => CategoryWiseSize.fromJson(x))),
-        appConfigData: json["appMaintenanceDetails"] == null ? null : AppConfigData.fromJson(json["appMaintenanceDetails"]),
+        appConfigData: json["appMaintenance"] == null ? null : AppConfigData.fromJson(json["appMaintenance"]),
         metals: json["metals"] == null ? [] : List<MetalModel>.from(json["metals"]!.map((x) => MetalModel.fromJson(x))),
         diamonds: json["diamonds"] == null ? [] : List<DiamondModel>.from(json["diamonds"]!.map((x) => DiamondModel.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "categoryWiseSize": categoryWiseSizes == null ? [] : List<dynamic>.from(categoryWiseSizes!.map((x) => x.toJson())),
-        "appMaintenanceDetails": appConfigData?.toJson(),
+        "appMaintenance": appConfigData?.toJson(),
         "metals": metals == null ? [] : List<dynamic>.from(metals!.map((x) => x.toJson())),
         "diamonds": diamonds == null ? [] : List<dynamic>.from(diamonds!.map((x) => x.toJson())),
       };
