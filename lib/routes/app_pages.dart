@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import '../view/auth_flow/auth_screen.dart';
 import '../view/bottombar/bottombar_screen.dart';
 import '../view/cart/cart_screen.dart';
+import '../view/cart/widget/checkout/checkout_screen.dart';
 import '../view/cart/widget/stock/cart_stock_screen.dart';
 import '../view/cart/widget/summary/summary_screen.dart';
-import '../view/sub_category/sub_category_screen.dart';
 import '../view/collections/watch_list/watch_list_screen.dart';
 import '../view/collections/widgets/add_watchlist/add_watchlist_screen.dart';
 import '../view/common/under_maintenance/under_maintenance_screen.dart';
@@ -24,6 +24,7 @@ import '../view/products/widgets/filter/filter_screen.dart';
 import '../view/products/widgets/variant/variant_screen.dart';
 import '../view/profile/profile_screen.dart';
 import '../view/splash/splash_screen.dart';
+import '../view/sub_category/sub_category_screen.dart';
 import '../widgets/add_remark/add_remark_screen.dart';
 import 'app_routes.dart';
 
@@ -66,5 +67,6 @@ class AppPages {
     _getPage(name: AppRoutes.feedbackHistoryScreen, page: () => FeedbackHistoryScreen()),
     _getPage(name: AppRoutes.catalogueScreen, page: () => CatalogueScreen()),
     _getPage(name: AppRoutes.pdfViewerScreen, page: () => PdfViewerScreen()),
+    _getPage(name: AppRoutes.checkoutScreen, page: () => CheckoutScreen()),
   ];
 }

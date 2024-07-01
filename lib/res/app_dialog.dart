@@ -10,10 +10,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../controller/predefine_value_controller.dart';
+import '../data/model/cart/retailer_model.dart';
 import '../data/model/predefined_model/predefined_model.dart';
 import '../exports.dart';
 import '../widgets/custom_radio_button.dart';
 import '../widgets/download_selection_tile.dart';
+import 'empty_element.dart';
 
 class AppDialogs {
   // Function to show the Android-style dialog
@@ -1800,6 +1802,122 @@ class AppDialogs {
           ),
         ),
       ),
+    );
+  }
+
+  // Select Retailers dialog
+  static Future<dynamic>? retailerSelect(
+    BuildContext context, {
+    Function(String?)? onChanged,
+    required RxList<RetailerModel> retailerList,
+    required RxString selectedRetailer,
+  }) {
+    TextEditingController controller = TextEditingController();
+
+    return showGeneralDialog(
+      context: context,
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          body: SafeArea(
+            child: Container(
+              width: Get.width,
+              padding: EdgeInsets.only(top: defaultPadding),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(defaultRadius / 2),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  /// Title
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Select Retailer",
+                          style: AppTextStyle.titleStyle(context).copyWith(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                        AppIconButton(
+                          size: 26.h,
+                          icon: SvgPicture.asset(AppAssets.crossIcon),
+                          onPressed: () {
+                            Get.back();
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                  defaultPadding.verticalSpace,
+                  if (retailerList.isNotEmpty)
+                    AppTextField(
+                      controller: controller,
+                      hintText: 'Search',
+                      textInputAction: TextInputAction.search,
+                      padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                      contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 4, horizontal: defaultPadding / 1.7),
+                      onChanged: onChanged,
+                      prefixIcon: Padding(
+                        padding: EdgeInsets.all(defaultPadding / 1.4),
+                        child: SvgPicture.asset(
+                          AppAssets.search,
+                          height: 22,
+                          width: 22,
+                          color: UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400, // ignore: deprecated_member_use
+                        ),
+                      ),
+                      suffixIcon: controller.text.trim().isNotEmpty
+                          ? Center(
+                              child: SvgPicture.asset(
+                                AppAssets.crossIcon,
+                                color: Theme.of(context).primaryColor, // ignore: deprecated_member_use
+                              ),
+                            )
+                          : null,
+                      suffixOnTap: () {
+                        FocusScope.of(context).unfocus();
+                        controller.clear();
+                      },
+                    ),
+                  (defaultPadding / 1.4).verticalSpace,
+
+                  /// Records
+                  Expanded(
+                    child: retailerList.isNotEmpty
+                        ? ListView.separated(
+                            physics: const RangeMaintainingScrollPhysics(),
+                            itemCount: retailerList.length,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) => ListTile(
+                              title: Text(
+                                retailerList[index].businessName ?? '',
+                                style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
+                              ),
+                              trailing: AppRadioButton(
+                                isSelected: (selectedRetailer.value == retailerList[index].id).obs,
+                              ),
+                              onTap: () {
+                                selectedRetailer.value == retailerList[index].id;
+                                Get.back(result: retailerList[index].businessName);
+                              },
+                            ),
+                            separatorBuilder: (context, index) => Divider(height: 1.h),
+                          )
+                        : const Center(
+                            child: EmptyElement(title: "Retailers not available"),
+                          ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

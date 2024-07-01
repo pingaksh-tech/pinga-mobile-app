@@ -7,10 +7,16 @@ import '../../data/model/cart/cart_model.dart';
 import '../../data/repositories/cart/cart_repository.dart';
 
 class CartController extends GetxController {
-  RxBool isLoading = false.obs;
+  /// Cart List pagination
+  RxList<CartModel> cartList = <CartModel>[].obs;
+  RxBool cartLoader = true.obs;
+  ScrollController scrollController = ScrollController();
+  RxInt page = 1.obs;
+  RxInt itemLimit = 20.obs;
+  RxBool nextPageAvailable = true.obs;
+  RxBool paginationLoader = false.obs;
 
-  RxList<CartItemModel> productsList = <CartItemModel>[].obs;
-  RxList<CartItemModel> selectedList = <CartItemModel>[].obs;
+  RxList<CartModel> selectedList = <CartModel>[].obs;
   RxDouble totalPrice = 0.0.obs;
   RxInt totalQuantity = 0.obs;
   RxInt selectedQuantity = 0.obs;
@@ -22,14 +28,30 @@ class CartController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    CartRepository.cartListApi();
+    CartRepository.getCartApi(loader: cartLoader);
+    manageScrollController();
     calculateTotalPrice();
     calculateQuantity();
   }
 
+  /// Pagination
+  void manageScrollController() async {
+    scrollController.addListener(
+      () {
+        if (scrollController.position.maxScrollExtent == scrollController.position.pixels) {
+          if (nextPageAvailable.value && paginationLoader.isFalse) {
+            /// PAGINATION CALL
+            /// GET CATEGORIES API
+            CartRepository.getCartApi(isInitial: false, loader: paginationLoader);
+          }
+        }
+      },
+    );
+  }
+
   num calculateTotalPrice() {
-    List<num> priceList = productsList.map((element) => (element.product?.price ?? 1)).toList();
-    List<int> quantityList = productsList.map((element) => (element.quantity?.value ?? 1)).toList();
+    List<num> priceList = cartList.map((element) => (element.inventoryTotalPrice ?? 1)).toList();
+    List<int> quantityList = cartList.map((element) => (element.quantity?.value ?? 1)).toList();
     num totalPrices = 0;
     for (int i = 0; i < priceList.length; i++) {
       totalPrices = totalPrices + quantityList[i] * priceList[i];
@@ -39,7 +61,7 @@ class CartController extends GetxController {
   }
 
   num calculateSelectedItemPrice() {
-    List<num> priceList = selectedList.map((element) => (element.product?.price ?? 1)).toList();
+    List<num> priceList = selectedList.map((element) => (element.inventoryTotalPrice ?? 1)).toList();
     List<int> quantityList = selectedList.map((element) => (element.quantity?.value ?? 1)).toList();
     num price = 0;
     for (int i = 0; i < priceList.length; i++) {
@@ -50,7 +72,7 @@ class CartController extends GetxController {
   }
 
   int calculateQuantity() {
-    List<int> quantityList = productsList.map((element) => (element.quantity?.value ?? 1)).toList();
+    List<int> quantityList = cartList.map((element) => (element.quantity?.value ?? 1)).toList();
     num quantity = 0;
     for (int i = 0; i < quantityList.length; i++) {
       quantity = quantity + quantityList[i];
@@ -69,7 +91,7 @@ class CartController extends GetxController {
     return selectedQuantity.value;
   }
 
-  void decrementQuantity(CartItemModel item) {
+  void decrementQuantity(CartModel item) {
     calculateTotalPrice();
     calculateQuantity();
     if (selectedList.contains(item)) {
@@ -78,41 +100,12 @@ class CartController extends GetxController {
     }
   }
 
-  void incrementQuantity(CartItemModel item) {
+  void incrementQuantity(CartModel item) {
     calculateTotalPrice();
     calculateQuantity();
     if (selectedList.contains(item)) {
       calculateSelectedItemPrice();
       calculateSelectedQue();
     }
-  }
-
-  Future<void> removeProductFromCart(BuildContext context, {required int index}) async {
-    Get.back();
-    productsList.removeAt(index);
-
-    /// TEMP
-    calculateTotalPrice();
-
-    ///
-    /* await CartDialogs.cartItemRemoveDialog(
-      context: context,
-      deleteNote: "Would you like to remove item form cart?",
-      onTap: () async {
-        await CartRepository.addOrRemoveProductInCart(productID: productsList[index].product?.id ?? "", currentValue: true).then(
-          (value) {
-            Get.back();
-            productsList.removeAt(index);
-            // if (Get.isRegistered<HomeController>()) {
-            //   final HomeController homeCon = Get.find<HomeController>();
-            //   int myIndex = homeCon.homeProductList.indexWhere((element) => element.id == con.productsList[index].product?.id);
-            //   if (myIndex != -1) {
-            //     homeCon.homeProductList[myIndex].cart?.value = value;
-            //   }
-            // }
-          },
-        );
-      },
-    );*/
   }
 }

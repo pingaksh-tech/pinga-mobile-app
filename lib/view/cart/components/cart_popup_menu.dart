@@ -100,7 +100,7 @@ class CartPopUpMenu extends StatelessWidget {
               buttonTitle: "NO",
               onPressed: () {
                 Get.back();
-                con.productsList.clear();
+                con.cartList.clear();
               },
             );
             break;

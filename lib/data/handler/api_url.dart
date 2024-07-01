@@ -34,10 +34,12 @@ class ApiUrls {
   static const String deleteAccountDELETE = "";
 
   /// CART
-  static String cartListGET = "cart/get";
+  static String getCartList = "mobile/cart/";
+  static String deleteCartApi({String? cartId}) => "mobile/cart/";
   static String cartUpdatePUT = "cart/update/";
   static String addOrRemoveCart = "cart/add-remove/";
   static String placeOrderPOST = "order/create";
+  static String getRetailerApi = "retailer/";
 
   /// ORDERS
   static String orderProductUrl = "order/list";

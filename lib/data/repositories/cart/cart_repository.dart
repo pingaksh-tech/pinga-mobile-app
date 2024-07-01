@@ -2,269 +2,18 @@ import 'package:get/get.dart';
 
 import '../../../controller/predefine_value_controller.dart';
 import '../../../exports.dart';
-import '../../../view/bottombar/bottombar_controller.dart';
 import '../../../view/cart/cart_controller.dart';
+import '../../../view/cart/widget/checkout/checkout_controller.dart';
 import '../../../view/cart/widget/stock/cart_stock_controller.dart';
 import '../../model/cart/cart_model.dart';
 import '../../model/cart/product_detail_model.dart';
+import '../../model/cart/retailer_model.dart';
 import '../../model/cart/stock_model.dart';
 
 class CartRepository {
   /// ***********************************************************************************
   ///                                       CART LIST
   /// ***********************************************************************************
-
-  static Map<String, dynamic> demoJson = {
-    "success": true,
-    "message": "Cart fetched successfully",
-    "data": {
-      "products": [
-        {
-          "_id": "item1",
-          "user": "user123",
-          "product": {
-            "_id": "prod1",
-            "title": "Apple iPhone 13",
-            "description": "Latest model of Apple iPhone",
-            "price": 999.99,
-            "color": "Black",
-            "category": "Electronics",
-            "rate": "4.8",
-            "weight": 0.5,
-            "deleted_at": null,
-            "createdAt": "2023-01-01T12:00:00Z",
-            "updatedAt": "2023-01-05T12:00:00Z",
-            "productimages": [
-              {"_id": "img1", "image": "https://kisna.com/cdn/shop/files/KFLR11133-Y-1_1800x1800.jpg?v=1715687553"},
-              {"_id": "img2", "image": "https://example.com/iphone13_2.jpg"}
-            ],
-            "brand_name": "Apple"
-          },
-          "quantity": 1,
-          "createdAt": "2023-01-01T12:00:00Z",
-          "updatedAt": "2023-01-05T12:00:00Z"
-        },
-        {
-          "_id": "item2",
-          "user": "user123",
-          "product": {
-            "_id": "prod2",
-            "title": "Samsung Galaxy S21",
-            "description": "New release of Samsung Galaxy series",
-            "price": 799.99,
-            "color": "Silver",
-            "category": "Electronics",
-            "rate": "4.6",
-            "weight": 0.4,
-            "deleted_at": null,
-            "createdAt": "2023-02-01T12:00:00Z",
-            "updatedAt": "2023-02-05T12:00:00Z",
-            "productimages": [
-              {"_id": "img3", "image": "https://kisna.com/cdn/shop/files/KFLR11133-Y-wm_1800x1800.jpg?v=1715687553"}
-            ],
-            "brand_name": "Samsung"
-          },
-          "quantity": 2,
-          "createdAt": "2023-02-01T12:00:00Z",
-          "updatedAt": "2023-02-05T12:00:00Z"
-        },
-        {
-          "_id": "item3",
-          "user": "user123",
-          "product": {
-            "_id": "prod3",
-            "title": "Sony WH-1000XM4",
-            "description": "Noise Cancelling Wireless Headphones",
-            "price": 349.99,
-            "color": "Black",
-            "category": "Accessories",
-            "rate": "4.7",
-            "weight": 0.3,
-            "deleted_at": null,
-            "createdAt": "2023-03-01T12:00:00Z",
-            "updatedAt": "2023-03-05T12:00:00Z",
-            "productimages": [
-              {"_id": "img4", "image": "https://kisna.com/cdn/shop/files/KFLR11133-Y-4_1800x1800.jpg?v=1715687553"}
-            ],
-            "brand_name": "Sony"
-          },
-          "quantity": 1,
-          "createdAt": "2023-03-01T12:00:00Z",
-          "updatedAt": "2023-03-05T12:00:00Z"
-        },
-        {
-          "_id": "item4",
-          "user": "user123",
-          "product": {
-            "_id": "prod4",
-            "title": "Dell XPS 13",
-            "description": "13-inch laptop with stunning display",
-            "price": 1299.99,
-            "color": "White",
-            "category": "Computers",
-            "rate": "4.5",
-            "weight": 1.2,
-            "deleted_at": null,
-            "createdAt": "2023-04-01T12:00:00Z",
-            "updatedAt": "2023-04-05T12:00:00Z",
-            "productimages": [
-              {"_id": "img5", "image": "https://kisna.com/cdn/shop/files/KFLR11133-Y-2_1800x1800.jpg?v=1715687553"}
-            ],
-            "brand_name": "Dell"
-          },
-          "quantity": 1,
-          "createdAt": "2023-04-01T12:00:00Z",
-          "updatedAt": "2023-04-05T12:00:00Z"
-        },
-        {
-          "_id": "item5",
-          "user": "user123",
-          "product": {
-            "_id": "prod5",
-            "title": "Nike Air Max 270",
-            "description": "Comfortable and stylish running shoes",
-            "price": 149.99,
-            "color": "Blue",
-            "category": "Footwear",
-            "rate": "4.3",
-            "weight": 0.8,
-            "deleted_at": null,
-            "createdAt": "2023-05-01T12:00:00Z",
-            "updatedAt": "2023-05-05T12:00:00Z",
-            "productimages": [
-              {"_id": "img6", "image": "https://kisna.com/cdn/shop/files/KFLR11133-Y-3_1800x1800.jpg?v=1715687553"}
-            ],
-            "brand_name": "Nike"
-          },
-          "quantity": 2,
-          "createdAt": "2023-05-01T12:00:00Z",
-          "updatedAt": "2023-05-05T12:00:00Z"
-        },
-        {
-          "_id": "item6",
-          "user": "user123",
-          "product": {
-            "_id": "prod6",
-            "title": "Adidas Ultraboost 21",
-            "description": "High-performance running shoes",
-            "price": 179.99,
-            "color": "White",
-            "category": "Footwear",
-            "rate": "4.4",
-            "weight": 0.7,
-            "deleted_at": null,
-            "createdAt": "2023-06-01T12:00:00Z",
-            "updatedAt": "2023-06-05T12:00:00Z",
-            "productimages": [
-              {"_id": "img7", "image": "https://kisna.com/cdn/shop/files/KFLR11133-R-1_1800x1800.jpg?v=1715687553"}
-            ],
-            "brand_name": "Adidas"
-          },
-          "quantity": 1,
-          "createdAt": "2023-06-01T12:00:00Z",
-          "updatedAt": "2023-06-05T12:00:00Z"
-        },
-        {
-          "_id": "item7",
-          "user": "user123",
-          "product": {
-            "_id": "prod7",
-            "title": "Logitech MX Master 3",
-            "description": "Advanced wireless mouse",
-            "price": 99.99,
-            "color": "Gray",
-            "category": "Accessories",
-            "rate": "4.9",
-            "weight": 0.2,
-            "deleted_at": null,
-            "createdAt": "2023-07-01T12:00:00Z",
-            "updatedAt": "2023-07-05T12:00:00Z",
-            "productimages": [
-              {"_id": "img8", "image": "https://kisna.com/cdn/shop/files/KFLR11133-W-1_1800x1800.jpg?v=1715687553"}
-            ],
-            "brand_name": "Logitech"
-          },
-          "quantity": 3,
-          "createdAt": "2023-07-01T12:00:00Z",
-          "updatedAt": "2023-07-05T12:00:00Z"
-        },
-        {
-          "_id": "item8",
-          "user": "user123",
-          "product": {
-            "_id": "prod8",
-            "title": "Canon EOS R5",
-            "description": "Full-frame mirrorless camera",
-            "price": 3899.99,
-            "color": "Black",
-            "category": "Cameras",
-            "rate": "4.8",
-            "weight": 1.6,
-            "deleted_at": null,
-            "createdAt": "2023-08-01T12:00:00Z",
-            "updatedAt": "2023-08-05T12:00:00Z",
-            "productimages": [
-              {"_id": "img9", "image": "https://kisna.com/cdn/shop/files/KFLR11133_1800x1800.jpg?v=1715687513"}
-            ],
-            "brand_name": "Canon"
-          },
-          "quantity": 1,
-          "createdAt": "2023-08-01T12:00:00Z",
-          "updatedAt": "2023-08-05T12:00:00Z"
-        },
-        {
-          "_id": "item9",
-          "user": "user123",
-          "product": {
-            "_id": "prod9",
-            "title": "Bose QuietComfort 35 II",
-            "description": "Noise Cancelling Wireless Headphones",
-            "price": 299.99,
-            "color": "Silver",
-            "category": "Accessories",
-            "rate": "4.7",
-            "weight": 0.3,
-            "deleted_at": null,
-            "createdAt": "2023-09-01T12:00:00Z",
-            "updatedAt": "2023-09-05T12:00:00Z",
-            "productimages": [
-              {"_id": "img10", "image": "https://kisna.com/cdn/shop/files/our-promise-7-Days_adf02756-37a0-41e4-bc54-0a7ca584cfe2_1800x1800.webp?v=1715687519"}
-            ],
-            "brand_name": "Bose"
-          },
-          "quantity": 1,
-          "createdAt": "2023-09-01T12:00:00Z",
-          "updatedAt": "2023-09-05T12:00:00Z"
-        },
-        {
-          "_id": "item10",
-          "user": "user123",
-          "product": {
-            "_id": "prod10",
-            "title": "Apple MacBook Pro 16",
-            "description": "16-inch MacBook Pro with M1 Pro chip",
-            "price": 2499.99,
-            "color": "Space Gray",
-            "category": "Computers",
-            "rate": "4.9",
-            "weight": 2.0,
-            "deleted_at": null,
-            "createdAt": "2023-10-01T12:00:00Z",
-            "updatedAt": "2023-10-05T12:00:00Z",
-            "productimages": [
-              {"_id": "img11", "image": "https://kisna.com/cdn/shop/files/KFLR11133-Y-2_1800x1800.jpg?v=1715687553"},
-              {"_id": "img12", "image": "https://example.com/macbookpro16_2.jpg"}
-            ],
-            "brand_name": "Apple"
-          },
-          "quantity": 1,
-          "createdAt": "2023-10-01T12:00:00Z",
-          "updatedAt": "2023-10-05T12:00:00Z"
-        }
-      ],
-      "total": 11278.89
-    }
-  };
 
   static Map<String, dynamic> stockList = {
     "success": true,
@@ -309,25 +58,148 @@ class CartRepository {
     }
   };
 
-  static Future<void> cartListApi() async {
-    final CartController cartCon = Get.find<CartController>();
-    CartDataModel model = CartDataModel.fromJson(demoJson /*response*/);
-    cartCon.productsList.value = model.data?.products ?? [];
-    cartCon.totalPrice.value = double.tryParse((model.data?.total).toString()) ?? 0;
-    // try {
-    //   cartCon.isLoading.value = true;
-    //   await APIFunction.getApiCall(apiUrl: ApiUrls.cartListGET).then(
-    //     (response) async {
-    //       CartDataModel model = CartDataModel.fromJson(response);
-    //       cartCon.productsList.value = model.data?.products ?? [];
-    //       cartCon.totalPrice.value = double.tryParse((model.data?.total).toString()) ?? 0;
-    //     },
-    //   );
-    // } catch (e) {
-    //   printErrors(type: "Error", errText: "$e");
-    // } finally {
-    //   cartCon.isLoading.value = false;
-    // }
+  /// ***********************************************************************************
+  ///                                 GET CART API
+  /// ***********************************************************************************
+
+  static Future<dynamic> getCartApi({bool isInitial = true, bool isPullToRefresh = false, RxBool? loader}) async {
+    ///
+    if (await getConnectivityResult() && isRegistered<CartController>()) {
+      final CartController con = Get.find<CartController>();
+
+      try {
+        loader?.value = true;
+
+        if (isInitial) {
+          if (!isPullToRefresh) {
+            con.cartList.clear();
+          }
+          con.page.value = 1;
+          con.nextPageAvailable.value = true;
+        }
+
+        /// API
+        await APIFunction.getApiCall(
+          apiUrl: ApiUrls.getCartList,
+          params: {
+            "page": con.page.value,
+            "limit": con.itemLimit.value,
+          },
+          loader: loader,
+        ).then(
+          (response) async {
+            if (response != null) {
+              GetCartModel model = GetCartModel.fromJson(response);
+
+              if (model.data != null) {
+                if (isPullToRefresh) {
+                  con.cartList.value = model.data?.cartList ?? [];
+                } else {
+                  con.cartList.addAll(model.data?.cartList ?? []);
+                }
+                int currentPage = (model.data!.page ?? 1);
+                con.nextPageAvailable.value = currentPage < (model.data!.totalPages ?? 0);
+                con.page.value += currentPage;
+              }
+
+              loader?.value = false;
+            } else {
+              loader?.value = false;
+            }
+
+            return response;
+          },
+        );
+      } catch (e) {
+        loader?.value = false;
+        printErrors(type: "getCartList", errText: e);
+      }
+    } else {}
+  }
+
+  /// ***********************************************************************************
+  ///                                 DELETE API
+  /// ***********************************************************************************
+
+  static Future<dynamic> deleteCartAPi({RxBool? isLoader, String? cartId}) async {
+    try {
+      if (await getConnectivityResult()) {
+        isLoader?.value = true;
+        await APIFunction.deleteApiCall(apiUrl: ApiUrls.deleteCartApi(cartId: !isValEmpty(cartId) ? cartId : "")).then(
+          (response) async {
+            if (response != null) {
+              if (isRegistered<CartController>()) {
+                final CartController con = Get.find<CartController>();
+                if (!isValEmpty(cartId)) {
+                  int index = con.cartList.indexWhere((e) => e.id == cartId);
+                  if (index != -1) {
+                    con.cartList.removeAt(index);
+                  }
+                } else {
+                  con.cartList.removeWhere((item) => con.selectedList.contains(item));
+                  con.selectedList.clear();
+                }
+              }
+            }
+            isLoader?.value = false;
+            return response;
+          },
+        );
+      }
+    } catch (e) {
+      isLoader?.value = false;
+      printErrors(type: "deleteCartApi", errText: "$e");
+    }
+  }
+
+  /// ***********************************************************************************
+  ///                                 GET RETAILER API
+  /// ***********************************************************************************
+  static Future<dynamic> getRetailerApi({bool isInitial = true, RxBool? loader}) async {
+    ///
+    if (await getConnectivityResult() && isRegistered<CheckoutController>()) {
+      final CheckoutController con = Get.find<CheckoutController>();
+
+      try {
+        loader?.value = true;
+        if (isInitial) {
+          con.retailerList.clear();
+          con.page.value = 1;
+          con.nextPageAvailable.value = true;
+        }
+
+        /// API
+        await APIFunction.getApiCall(
+          apiUrl: ApiUrls.getRetailerApi,
+          params: {
+            "page": con.page.value,
+            "limit": con.itemLimit.value,
+          },
+          loader: loader,
+        ).then(
+          (response) async {
+            if (response != null) {
+              GetRetailerModel model = GetRetailerModel.fromJson(response);
+
+              if (model.data != null) {
+                con.retailerList.addAll(model.data?.retailers ?? []);
+                int currentPage = (model.data!.page ?? 1);
+                con.nextPageAvailable.value = currentPage < (model.data!.totalPages ?? 0);
+                con.page.value += currentPage;
+              }
+              loader?.value = false;
+            } else {
+              loader?.value = false;
+            }
+
+            return response;
+          },
+        );
+      } catch (e) {
+        loader?.value = false;
+        printErrors(type: "getRetailerList", errText: e);
+      }
+    }
   }
 
   /// ***********************************************************************************
@@ -359,7 +231,7 @@ class CartRepository {
   static Future<bool> addOrRemoveProductInCart({required String productID, required bool currentValue, RxBool? isLoading}) async {
     try {
       isLoading?.value = true;
-      await APIFunction.putApiCall(apiUrl: "${ApiUrls.addOrRemoveCart}$productID",loader: isLoading).then(
+      await APIFunction.putApiCall(apiUrl: "${ApiUrls.addOrRemoveCart}$productID", loader: isLoading).then(
         (response) async {
           currentValue = !currentValue;
           UiUtils.toast(response["message"]);
@@ -378,13 +250,16 @@ class CartRepository {
   /// ***********************************************************************************
   ///                                       PLACE ORDER
   /// ***********************************************************************************
-
+/*
   static Future<void> placeOrderAPI() async {
     final CartController cartCon = Get.find<CartController>();
     try {
       cartCon.isLoading.value = true;
 
-      await APIFunction.postApiCall(apiUrl: ApiUrls.placeOrderPOST,loader: cartCon.isLoading,).then(
+      await APIFunction.postApiCall(
+        apiUrl: ApiUrls.placeOrderPOST,
+        loader: cartCon.isLoading,
+      ).then(
         (response) async {
           // if (Get.isRegistered<HomeController>()) {
           //   HomeController homeCon = Get.find<HomeController>();
@@ -403,7 +278,7 @@ class CartRepository {
       cartCon.isLoading.value = false;
     } finally {}
   }
-
+ */
   /// ***********************************************************************************
   ///                                     GET STOCK
   /// **********************************************************************************
