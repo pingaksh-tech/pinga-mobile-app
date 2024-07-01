@@ -101,8 +101,8 @@ class AppDrawer extends StatelessWidget {
             ),
             const Divider(height: 1),
 
-            /// My Catalog
-            ListTile(
+            /// Settings
+            /* ListTile(
                 leading: SvgPicture.asset(
                   AppAssets.settingIcon,
                   height: 16.h,
@@ -116,7 +116,7 @@ class AppDrawer extends StatelessWidget {
                   Get.back();
                   Get.toNamed(AppRoutes.settingsScreen);
                 }),
-            const Divider(height: 1),
+            const Divider(height: 1),*/
 
             /// Customer Care
             ListTile(
@@ -227,7 +227,7 @@ class AppDrawer extends StatelessWidget {
             const Divider(height: 1),
 
             /// Feedback
-            ListTile(
+            /* ListTile(
               leading: SvgPicture.asset(
                 AppAssets.feedbackIcon,
                 height: 16.h,
@@ -269,7 +269,7 @@ class AppDrawer extends StatelessWidget {
                 ],
               ),
             ),
-            const Divider(height: 1),
+            const Divider(height: 1),*/
 
             /// Log out
             ListTile(

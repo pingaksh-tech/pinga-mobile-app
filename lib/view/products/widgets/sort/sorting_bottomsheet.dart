@@ -10,7 +10,7 @@ import '../../products_controller.dart';
 class SortingBottomSheet extends StatelessWidget {
   SortingBottomSheet({super.key});
 
-  final ProductController con = Get.find<ProductController>();
+  final ProductsController con = Get.find<ProductsController>();
 
   @override
   Widget build(BuildContext context) {

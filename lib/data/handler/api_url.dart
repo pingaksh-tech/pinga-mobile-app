@@ -27,6 +27,9 @@ class ApiUrls {
   /// LATEST PRODUCTS
   static const String getAllLatestProductsGET = "latest-product";
 
+  /// PRODUCTS
+  static const String getAllProductsPOST = "inventory/filter";
+
   /// USER
   static const String deleteAccountDELETE = "";
 

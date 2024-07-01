@@ -66,6 +66,8 @@ class _ProductTileState extends State<ProductTile> {
   RxString selectedRemark = "".obs;
   RxBool isSelected = false.obs;
 
+  List<String> menuList = [/*AppStrings.variants,*/ AppStrings.addToWatchlist];
+
   /// Set Default Select Value Of Product
   Future<void> predefinedValue() async {
     if (isRegistered<PreDefinedValueController>()) {
@@ -128,7 +130,7 @@ class _ProductTileState extends State<ProductTile> {
                     ],
                   ),
                 ),
-                Container(
+                /*Container(
                   margin: EdgeInsets.all(defaultPadding / 2),
                   padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: defaultPadding / 2),
                   decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(5)),
@@ -136,21 +138,21 @@ class _ProductTileState extends State<ProductTile> {
                     "Flora",
                     style: TextStyle(color: Theme.of(context).primaryColor),
                   ),
-                ),
+                ),*/
                 Positioned(
                   top: defaultPadding / 2,
                   right: defaultPadding / 2.4,
                   child: AppPopUpMenuButton(
-                    menuList: const ["Variants", "Add to Watchlist"],
+                    menuList: menuList,
                     onSelect: (value) {
                       switch (value) {
-                        case "variants":
+                        case AppStrings.variants:
                           Get.toNamed(AppRoutes.variantsScreen, arguments: {
                             'isSize': widget.isSizeAvailable,
                             'category': widget.categorySlug,
                           });
                           break;
-                        case "add to watchlist":
+                        case AppStrings.addToWatchlist:
                           Get.toNamed(AppRoutes.addWatchListScreen);
                           break;
                       }

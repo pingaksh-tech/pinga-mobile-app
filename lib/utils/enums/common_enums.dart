@@ -106,6 +106,9 @@ enum OrderStatus { all, pending, accepted, rejected, completed }
 ///* SIZE-COLOR SELECTOR BUTTON SIZE TYPE
 enum SizeColorSelectorButtonType { small, medium, large }
 
+///* PRODUCT LIST TYPE
+enum ProductsListType { normal, watchlist }
+
 ///* PRODUCT TILE TYPE
 enum ProductTileType { grid, list, variant, cartTile }
 

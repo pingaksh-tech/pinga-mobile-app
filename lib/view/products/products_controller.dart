@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../controller/predefine_value_controller.dart';
@@ -6,7 +7,7 @@ import '../../data/model/product/product_model.dart';
 import '../../data/repositories/product/product_repository.dart';
 import '../../exports.dart';
 
-class ProductController extends GetxController {
+class ProductsController extends GetxController {
   RxBool isLike = false.obs;
   RxBool isSizeAvailable = true.obs;
 
@@ -21,6 +22,13 @@ class ProductController extends GetxController {
   RxList<String> sortList = <String>[].obs;
   RxList<ProductListModel> productsList = <ProductListModel>[].obs;
   RxList<ProductListModel> wishlistList = <ProductListModel>[].obs;
+
+  ScrollController scrollController = ScrollController();
+  RxInt page = 1.obs;
+  RxInt itemLimit = 10.obs;
+  RxBool nextPageAvailable = true.obs;
+  RxBool paginationLoader = false.obs;
+  RxBool loader = true.obs;
 
   @override
   void onInit() {
@@ -38,7 +46,7 @@ class ProductController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    ProductRepository.productListApi();
+    ProductRepository.getPredefineValueAPI();
     preValueAvailable();
   }
 

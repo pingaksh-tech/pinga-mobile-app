@@ -1,11 +1,11 @@
 import 'package:get/get.dart';
 
 import '../../../controller/predefine_value_controller.dart';
-import '../../../view/drawer/widgets/wishlist/wishlist_controller.dart';
+import '../../../exports.dart';
 import '../../../view/product_details/widgets/variants/variants_tab_controller.dart';
 import '../../../view/products/products_controller.dart';
 import '../../../view/products/widgets/variant/variant_controller.dart';
-import '../../model/product/product_model.dart';
+import '../../model/category/category_model.dart';
 import '../../model/product/variant_product_model.dart';
 
 class ProductRepository {
@@ -255,18 +255,97 @@ class ProductRepository {
   };
 
   /// ***********************************************************************************
-  ///                                     GET PRODUCT LIST
+  ///                                     GET PRODUCTS LIST
   /// ***********************************************************************************
-  static Future<void> productListApi({isWishlist = false}) async {
-    if (isWishlist) {
-      final WishlistController wishlistCon = Get.find<WishlistController>();
-      GetProductModel model = GetProductModel.fromJson(productList /*response*/);
-      wishlistCon.productsList.value = model.data?.products ?? [];
-    } else {
-      final ProductController productCon = Get.find<ProductController>();
-      GetProductModel model = GetProductModel.fromJson(productList /*response*/);
-      productCon.productsList.value = model.data?.products ?? [];
-    }
+
+  static Future<void> getProductsListAPI({required ProductsListType productsListType, bool isInitial = true, bool isPullToRefresh = false, RxBool? loader}) async {
+    final ProductsController con = Get.find<ProductsController>();
+
+    if (await getConnectivityResult()) {
+      try {
+        loader?.value = true;
+
+        if (isInitial) {
+          if (!isPullToRefresh) {
+            con.productsList.clear();
+          }
+          con.page.value = 1;
+          con.nextPageAvailable.value = true;
+        }
+
+        /// API
+        await APIFunction.getApiCall(
+          apiUrl: ApiUrls.getAllProductsPOST,
+          params: {
+            // "range": {
+            //     "metal_wt": {
+            //         "min": 1,
+            //         "max": 50
+            //     }
+            //     // "diamond_wt": {
+            //     //     "min": 0.02,
+            //     //     "max": 0.04
+            //     // }
+            // },
+            // "mrp": {
+            //     "min": 100000
+            //     // "max": 150000
+            // },
+            // "available": {
+            //   "in_stock": true
+            //   // "wear_it_item": false // not include
+            // },
+            // "gender": [
+            //     "female"
+            // ],
+            // "diamond": [
+            //     "VVS-EF"
+            // ],
+            // "kt": [ // metal
+            //     "20K"
+            // ],
+            // "delivery": [
+            //     "erwer"
+            // ],
+            // "production_name": [
+            //     "werwer"
+            // ],
+            // "collection" : ["66701741146450710c399adc","6672d1db3e88e4e18125b81a"],
+
+            "page": con.page.value,
+            "limit": con.itemLimit.value,
+            "sortBy": ["total_price:-1", "createdAt:-1"]
+          },
+          loader: loader,
+        ).then(
+          (response) async {
+            if (response != null) {
+              GetCategoryModel model = GetCategoryModel.fromJson(response);
+
+              if (model.data != null) {
+                if (isPullToRefresh) {
+                  // con.productsList.value = model.data?.categories ?? [];
+                } else {
+                  // con.productsList.addAll(model.data?.categories ?? []);
+                }
+                int currentPage = (model.data!.page ?? 1);
+                con.nextPageAvailable.value = currentPage < (model.data!.totalPages ?? 0);
+                con.page.value += currentPage;
+              }
+
+              loader?.value = false;
+            } else {
+              loader?.value = false;
+            }
+
+            return response;
+          },
+        );
+      } catch (e) {
+        loader?.value = false;
+        printErrors(type: "getCategoriesAPI", errText: e);
+      }
+    } else {}
   }
 
   /// ***********************************************************************************

@@ -17,12 +17,15 @@ class AppStrings {
   static String appStoreURL = "https://apps.apple.com/us/app/gotilo-maze-king/id0000000000";
 
   /// APP INFO LINKS
-  static String privacyURL = "https://www.quetzalpos.com/contact";
-  static String termsURL = "https://www.quetzalpos.com/contact";
-  static String aboutUsURL = "https://www.quetzalpos.com/contact";
-  static String contactUsURL = "https://www.quetzalpos.com/contact";
-  static String contactMobileNumber = "+917666862553";
-  static String contactEmailID = "hello@pingaksh.co";
+  static String privacyURL = "";
+  static String termsURL = "";
+  static String aboutUsURL = "";
+  static String contactUsURL = "";
+  static String contactMobileNumber = "";
+  static String contactEmailID = "";
+
+  static const String variants = "Variants";
+  static const String addToWatchlist = "Add to Watchlist";
 
   static String noInternetAvailable = "No Internet available";
 

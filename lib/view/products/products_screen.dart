@@ -14,7 +14,7 @@ import 'widgets/sort/sorting_bottomsheet.dart';
 class ProductsScreen extends StatelessWidget {
   ProductsScreen({super.key});
 
-  final ProductController con = Get.put(ProductController());
+  final ProductsController con = Get.put(ProductsController());
 
   @override
   Widget build(BuildContext context) {

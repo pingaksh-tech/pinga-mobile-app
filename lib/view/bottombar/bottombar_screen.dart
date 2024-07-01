@@ -65,7 +65,7 @@ class BottomBarScreen extends StatelessWidget {
                 con.currentBottomIndex.value == 2
                     ? CartPopUpMenu()
                     : con.currentBottomIndex.value == 0
-                        ? AppIconButton(
+                        ? /*AppIconButton(
                             onPressed: () => Get.toNamed(AppRoutes.settingsScreen),
                             icon: SvgPicture.asset(
                               AppAssets.settingIcon,
@@ -74,7 +74,8 @@ class BottomBarScreen extends StatelessWidget {
                                 BlendMode.srcIn,
                               ),
                             ),
-                          )
+                          )*/
+                        const SizedBox()
                         : con.currentBottomIndex.value == 3
                             ? AppIconButton(
                                 onPressed: () => Get.toNamed(AppRoutes.orderFilterScreen),
