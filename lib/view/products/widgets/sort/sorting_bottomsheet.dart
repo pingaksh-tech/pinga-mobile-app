@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
+import '../../../../data/repositories/product/product_repository.dart';
 import '../../../../exports.dart';
 import '../../../../widgets/checkbox_title_tile.dart';
 import '../../products_controller.dart';
@@ -54,11 +55,12 @@ class SortingBottomSheet extends StatelessWidget {
               itemBuilder: (context, index) => Obx(
                 () => CheckBoxWithTitleTile(
                   isCheck: (con.selectPrice.value == con.sortWithPriceList[index]).obs,
-                  title: con.sortWithPriceList[index],
+                  title: con.sortWithPriceList[index].toString().split("/").first,
                   isMultiSelection: false,
                   onTap: () {
                     con.selectPrice.value = con.sortWithPriceList[index];
                     con.updateSortingList();
+                    con.isDisableButton.value = false;
                   },
                   onChanged: (value) {
                     con.selectPrice.value = con.sortWithPriceList[index];
@@ -75,11 +77,12 @@ class SortingBottomSheet extends StatelessWidget {
               itemBuilder: (context, index) => Obx(
                 () => CheckBoxWithTitleTile(
                   isCheck: (con.selectNewestOrOldest.value == con.sortWithTimeList[index]).obs,
-                  title: con.sortWithTimeList[index],
+                  title: con.sortWithTimeList[index].split("/").first,
                   isMultiSelection: false,
                   onTap: () {
                     con.selectNewestOrOldest.value = con.sortWithTimeList[index];
                     con.updateSortingList();
+                    con.isDisableButton.value = false;
                   },
                   onChanged: (value) {
                     con.selectNewestOrOldest.value = con.sortWithTimeList[index];
@@ -118,7 +121,7 @@ class SortingBottomSheet extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        con.sortList[index],
+                        con.sortList[index].toString().split("/").first,
                         style: AppTextStyle.subtitleStyle(context).copyWith(
                           color: Theme.of(context).colorScheme.surface,
                           fontSize: 12.sp,
@@ -135,6 +138,10 @@ class SortingBottomSheet extends StatelessWidget {
                             con.selectPrice.value = '';
                           } else if (removedSorting == 'Most Ordered') {
                             con.isMostOrder.value = false;
+                          }
+
+                          if (con.sortList.isEmpty) {
+                            con.isDisableButton.value = true;
                           }
                         },
                         icon: SvgPicture.asset(
@@ -170,10 +177,24 @@ class SortingBottomSheet extends StatelessWidget {
                   defaultPadding.horizontalSpace,
                   Expanded(
                     child: AppButton(
-                      height: 30.h,
-                      title: "Apply",
-                      onPressed: () => Get.back(),
-                    ),
+                        disableButton: con.isDisableButton.value,
+                        loader: con.isLoader.value,
+                        height: 30.h,
+                        title: "Apply",
+                        onPressed: () async {
+                          if (con.sortList.isNotEmpty) {
+                            await ProductRepository.getFilterProductsListAPI(
+                              productsListType: ProductsListType.normal,
+                              subCategoryId: con.category.value.id ?? "",
+                              loader: con.isLoader,
+                              sortBy: [
+                                if (con.selectPrice.value.isNotEmpty) "manufacturing_price:${con.selectPrice.value.split("/").last}",
+                                if (con.selectNewestOrOldest.value.isNotEmpty) "createdAt:${con.selectNewestOrOldest.value.split("/").last}",
+                              ],
+                            );
+                            Get.back();
+                          }
+                        }),
                   ),
                 ],
               ),

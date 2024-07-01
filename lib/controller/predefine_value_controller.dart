@@ -8,14 +8,22 @@ import '../exports.dart';
 
 class PreDefinedValueController extends GetxController {
   /// CATEGORY WISE SIZES
-  RxList<CategoryWiseSize> categoryWiseSizesList=<CategoryWiseSize>[].obs;
+  RxList<CategoryWiseSize> categoryWiseSizesList = <CategoryWiseSize>[].obs;
 
   /// METALS
-  RxList<MetalModel> metalsList=<MetalModel>[].obs;
+  RxList<MetalModel> metalsList = <MetalModel>[].obs;
 
   /// DIAMONDS
-  RxList<DiamondModel> diamondsList=<DiamondModel>[].obs;
+  RxList<DiamondModel> diamondsList = <DiamondModel>[].obs;
 
+  /// PRODUCT NAME
+  RxList<String> productNamesList = <String>[].obs;
+
+  /// DELIVERIES
+  RxList<String> deliveriesList = <String>[].obs;
+
+  /// GENDER
+  Rx<GenderModel> genderList = GenderModel().obs;
 
   RxList<ProductDetail> cartProductDetailList = <ProductDetail>[].obs;
   RxMap<String, dynamic> predefineResponse = <String, dynamic>{}.obs;

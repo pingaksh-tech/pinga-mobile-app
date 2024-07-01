@@ -6,15 +6,15 @@ import 'package:get/get.dart';
 import '../../../../../exports.dart';
 import '../../../../../res/app_dialog.dart';
 import '../../controller/predefine_value_controller.dart';
-import '../../data/model/predefined_model/predefined_model.dart';
+import '../../data/model/common/splash_model.dart';
 import '../../packages/marquee_widget/marquee_widget.dart';
 
 Widget horizontalSelectorButton(
   BuildContext context, {
-  RxString? selectedSize,
   String? categorySlug,
-  RxString? selectedColor,
-  RxString? selectedDiamond,
+  Rx<DiamondModel>? selectedSize,
+  Rx<MetalModel>? selectedMetal,
+  Rx<DiamondModel>? selectedDiamond,
   RxString? remarkSelected,
   RxString? productName,
   required SelectableItemType selectableItemType,
@@ -22,9 +22,9 @@ Widget horizontalSelectorButton(
   Color? backgroundColor,
   bool isFlexible = false,
   Axis axisDirection = Axis.horizontal,
-  Function(SizeModel model)? sizeOnChanged,
-  Function(SizeModel model)? colorOnChanged,
-  Function(SizeModel model)? rubyOnChanged,
+  Function(DiamondModel model)? sizeOnChanged,
+  Function(MetalModel model)? colorOnChanged,
+  Function(DiamondModel model)? rubyOnChanged,
   Function(String model)? remarkOnChanged,
 }) {
   return Expanded(
@@ -36,15 +36,22 @@ Widget horizontalSelectorButton(
             //
             if (isRegistered<PreDefinedValueController>()) {
               final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
-              List<SizeModel> sizeList = await preValueCon.checkHasPreValue(categorySlug ?? '', type: selectableItemType.slug);
+              RxList<CategoryWiseSize> allSizeList = preValueCon.categoryWiseSizesList;
+              RxList<DiamondModel> sizeList = <DiamondModel>[].obs;
+
+              for (var element in allSizeList) {
+                if (element.name?.toLowerCase() == categorySlug?.toLowerCase() && element.data != null) {
+                  sizeList = element.data!.obs;
+                }
+              }
 
               /// Size Selector
-              AppDialogs.sizeSelector(context, sizeList: sizeList.obs, selectedSize: selectedSize ?? ''.obs)?.then(
+              AppDialogs.sizeSelector(context, sizeList: sizeList, selectedSize: selectedSize?.value.id ?? "".obs)?.then(
                 (value) {
-                  if (value != null && (value.runtimeType == SizeModel)) {
-                    final SizeModel sizeModel = (value as SizeModel);
+                  if (value != null && (value.runtimeType == DiamondModel)) {
+                    final DiamondModel sizeModel = (value as DiamondModel);
 
-                    selectedSize?.value = sizeModel.label ?? "0";
+                    selectedSize?.value = sizeModel;
 
                     if (sizeOnChanged != null) {
                       sizeOnChanged(sizeModel);
@@ -58,18 +65,15 @@ Widget horizontalSelectorButton(
           case SelectableItemType.color:
             if (isRegistered<PreDefinedValueController>()) {
               final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
-              List<SizeModel> colorList = await preValueCon.checkHasPreValue(categorySlug ?? '', type: selectableItemType.slug);
-              if (selectedColor != null && selectedColor.isEmpty) {
-                selectedColor.value = colorList[0].id ?? '';
-              }
+              RxList<MetalModel> colorList = preValueCon.metalsList;
 
-              /// Color Selector
-              AppDialogs.colorSelector(context, colorList: colorList.obs, selectedColor: selectedColor ?? ''.obs)?.then(
+              /// Metal Selector
+              AppDialogs.colorSelector(context, colorList: colorList, selectedColor: selectedMetal?.value.id ?? "".obs)?.then(
                 (value) {
-                  if (value != null && (value.runtimeType == SizeModel)) {
-                    final SizeModel colorModel = (value as SizeModel);
+                  if (value != null && (value.runtimeType == MetalModel)) {
+                    final MetalModel colorModel = (value as MetalModel);
 
-                    selectedColor?.value = colorModel.value?.value ?? "-";
+                    selectedMetal?.value = colorModel;
 
                     if (colorOnChanged != null) {
                       colorOnChanged(colorModel);
@@ -83,18 +87,15 @@ Widget horizontalSelectorButton(
           case SelectableItemType.diamond:
             if (isRegistered<PreDefinedValueController>()) {
               final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
-              List<SizeModel> diamondList = await preValueCon.checkHasPreValue(categorySlug ?? '', type: selectableItemType.slug);
-              if (selectedDiamond != null && selectedDiamond.isEmpty) {
-                selectedDiamond.value = diamondList[0].id ?? '';
-              }
+              RxList<DiamondModel> diamondList = preValueCon.diamondsList;
 
               /// Diamond Selector
-              AppDialogs.diamondSelector(context, diamondList: diamondList.obs, selectedDiamond: selectedDiamond ?? ''.obs)?.then(
+              AppDialogs.diamondSelector(context, diamondList: diamondList, selectedDiamond: selectedDiamond?.value.id ?? ''.obs)?.then(
                 (value) {
-                  if (value != null && (value.runtimeType == SizeModel)) {
-                    final SizeModel diamondModel = (value as SizeModel);
+                  if (value != null && (value.runtimeType == DiamondModel)) {
+                    final DiamondModel diamondModel = (value as DiamondModel);
 
-                    selectedDiamond?.value = diamondModel.value?.value ?? "";
+                    selectedDiamond?.value = diamondModel;
 
                     if (rubyOnChanged != null) {
                       rubyOnChanged(diamondModel);
@@ -148,9 +149,9 @@ Widget horizontalSelectorButton(
                     (defaultPadding / 5).horizontalSpace,
                     Text(
                       switch (selectableItemType) {
-                        SelectableItemType.size => ("Size ${isValEmpty(selectedSize?.value) ? "(0)" : "(${selectedSize?.value.split(" ").first})"}"),
-                        SelectableItemType.color => ("Color ${isValEmpty(selectedColor?.value) ? "(Y)" : "(${selectedColor?.value})"}"),
-                        SelectableItemType.diamond => isValEmpty(selectedDiamond?.value) ? "VVS-EF" : selectedDiamond?.value ?? '',
+                        SelectableItemType.size => ("Size ${isValEmpty(selectedSize?.value.shortName) ? "(0)" : "(${selectedSize?.value.shortName})"}"),
+                        SelectableItemType.color => ("Metal ${isValEmpty(selectedMetal?.value.shortName) ? "(-)" : "(${selectedMetal?.value.shortName})"}"),
+                        SelectableItemType.diamond => isValEmpty(selectedDiamond?.value.shortName) ? "-" : selectedDiamond?.value.shortName ?? '',
                         SelectableItemType.remarks => "Remark",
                         SelectableItemType.stock => "Stock",
                       },
@@ -183,9 +184,9 @@ Widget horizontalSelectorButton(
                   MarqueeWidget(
                     child: Text(
                       switch (selectableItemType) {
-                        SelectableItemType.size => ("Size ${isValEmpty(selectedSize?.value) ? "(0)" : "(${selectedSize?.value.split(" ").first})"}"),
-                        SelectableItemType.color => ("Color ${isValEmpty(selectedColor?.value) ? "(-)" : "(${selectedColor?.value.split(" ").first})"}"),
-                        SelectableItemType.diamond => isValEmpty(selectedDiamond?.value) ? "VVS-EF" : selectedDiamond?.value ?? '',
+                        SelectableItemType.size => ("Size ${isValEmpty(selectedSize?.value) ? "(0)" : "(${selectedSize?.value})"}"),
+                        SelectableItemType.color => ("Metal ${isValEmpty(selectedMetal?.value) ? "(-)" : "(${selectedMetal?.value.shortName?.split(" ").first})"}"),
+                        SelectableItemType.diamond => isValEmpty(selectedDiamond?.value.shortName) ? "-" : selectedDiamond?.value.shortName ?? '',
                         SelectableItemType.remarks => "Remark",
                         SelectableItemType.stock => "Stock",
                       },

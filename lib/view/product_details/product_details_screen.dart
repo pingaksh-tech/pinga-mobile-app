@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import '../../data/model/common/splash_model.dart';
 import '../../data/model/predefined_model/predefined_model.dart';
 import '../../res/app_dialog.dart';
 import '../../widgets/plus_minus_title/plus_minus_tile.dart';
@@ -292,14 +293,14 @@ class ProductDetailsScreen extends StatelessWidget {
                 horizontalSelectorButton(
                   context,
                   categorySlug: con.productCategory.value,
-                  selectedSize: con.selectedSize.value.value,
+                  // selectedSize: con.selectedSize.value.value,
                   selectableItemType: SelectableItemType.size,
                   sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
                   axisDirection: Axis.vertical,
                   sizeOnChanged: (value) {
                     /// Selected Size
                     if ((value.runtimeType == SizeModel)) {
-                      con.selectedSize.value = value;
+                      // con.selectedSize.value = value;
                     }
                   },
                 ),
@@ -309,13 +310,13 @@ class ProductDetailsScreen extends StatelessWidget {
               horizontalSelectorButton(
                 context,
                 categorySlug: con.productCategory.value,
-                selectedColor: con.selectedColor.value.value,
+                selectedMetal: con.selectedColor,
                 selectableItemType: SelectableItemType.color,
                 sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
                 axisDirection: Axis.vertical,
                 colorOnChanged: (value) {
                   /// Selected Color
-                  if ((value.runtimeType == SizeModel)) {
+                  if ((value.runtimeType == MetalModel)) {
                     con.selectedColor.value = value;
                   }
                 },
@@ -326,13 +327,13 @@ class ProductDetailsScreen extends StatelessWidget {
               horizontalSelectorButton(
                 context,
                 categorySlug: con.productCategory.value,
-                selectedDiamond: con.selectedDiamond.value.value,
+                selectedDiamond: con.selectedDiamond,
                 selectableItemType: SelectableItemType.diamond,
                 sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
                 axisDirection: Axis.vertical,
                 rubyOnChanged: (value) {
                   /// Selected Diamond
-                  if ((value.runtimeType == SizeModel)) {
+                  if ((value.runtimeType == DiamondModel)) {
                     con.selectedDiamond.value = value;
                   }
                 },

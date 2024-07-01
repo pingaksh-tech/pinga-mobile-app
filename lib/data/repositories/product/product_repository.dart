@@ -5,7 +5,7 @@ import '../../../exports.dart';
 import '../../../view/product_details/widgets/variants/variants_tab_controller.dart';
 import '../../../view/products/products_controller.dart';
 import '../../../view/products/widgets/variant/variant_controller.dart';
-import '../../model/category/category_model.dart';
+import '../../model/product/products_model.dart';
 import '../../model/product/variant_product_model.dart';
 
 class ProductRepository {
@@ -258,7 +258,15 @@ class ProductRepository {
   ///                                     GET PRODUCTS LIST
   /// ***********************************************************************************
 
-  static Future<void> getProductsListAPI({required ProductsListType productsListType, bool isInitial = true, bool isPullToRefresh = false, RxBool? loader}) async {
+  static Future<void> getFilterProductsListAPI({
+    required ProductsListType productsListType,
+    required String subCategoryId,
+    List<String>? sortBy,
+    String? sizeId,
+    bool isInitial = true,
+    bool isPullToRefresh = false,
+    RxBool? loader,
+  }) async {
     final ProductsController con = Get.find<ProductsController>();
 
     if (await getConnectivityResult()) {
@@ -267,16 +275,22 @@ class ProductRepository {
 
         if (isInitial) {
           if (!isPullToRefresh) {
-            con.productsList.clear();
+            con.inventoryProductList.clear();
           }
           con.page.value = 1;
           con.nextPageAvailable.value = true;
         }
 
         /// API
-        await APIFunction.getApiCall(
+        await APIFunction.postApiCall(
           apiUrl: ApiUrls.getAllProductsPOST,
-          params: {
+          body: {
+            "category_id": "667cbcb5dd04772674c9598e",
+            "sub_category_id": subCategoryId,
+            "page": con.page.value.toString(),
+            "limit": con.itemLimit.value.toString(),
+            if (!isValEmpty(sortBy)) "size_id": sizeId,
+            if (!isValEmpty(sortBy)) "sortBy": sortBy,
             // "range": {
             //     "metal_wt": {
             //         "min": 1,
@@ -311,23 +325,20 @@ class ProductRepository {
             //     "werwer"
             // ],
             // "collection" : ["66701741146450710c399adc","6672d1db3e88e4e18125b81a"],
-
-            "page": con.page.value,
-            "limit": con.itemLimit.value,
-            "sortBy": ["total_price:-1", "createdAt:-1"]
           },
           loader: loader,
         ).then(
           (response) async {
             if (response != null) {
-              GetCategoryModel model = GetCategoryModel.fromJson(response);
+              GetProductsModel model = GetProductsModel.fromJson(response);
 
               if (model.data != null) {
                 if (isPullToRefresh) {
-                  // con.productsList.value = model.data?.categories ?? [];
+                  con.inventoryProductList.addAll(model.data?.inventories ?? []);
                 } else {
-                  // con.productsList.addAll(model.data?.categories ?? []);
+                  con.inventoryProductList.addAll(model.data?.inventories ?? []);
                 }
+
                 int currentPage = (model.data!.page ?? 1);
                 con.nextPageAvailable.value = currentPage < (model.data!.totalPages ?? 0);
                 con.page.value += currentPage;
@@ -343,7 +354,7 @@ class ProductRepository {
         );
       } catch (e) {
         loader?.value = false;
-        printErrors(type: "getCategoriesAPI", errText: e);
+        printErrors(type: "getProductsListAPI", errText: e);
       }
     } else {}
   }

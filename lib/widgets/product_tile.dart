@@ -7,7 +7,8 @@ import 'package:get/get.dart';
 
 import '../controller/predefine_value_controller.dart';
 import '../data/model/cart/cart_model.dart';
-import '../data/model/predefined_model/predefined_model.dart';
+import '../data/model/common/splash_model.dart';
+import '../data/model/sub_category/sub_category_model.dart';
 import '../exports.dart';
 import '../res/app_dialog.dart';
 import '../res/app_network_image.dart';
@@ -21,6 +22,8 @@ class ProductTile extends StatefulWidget {
   final VoidCallback onTap;
   final String imageUrl;
   final String productName;
+  final Rx<SubCategoryModel>? category;
+
   final String? categorySlug;
   final String productPrice;
   final bool isSizeAvailable;
@@ -53,6 +56,7 @@ class ProductTile extends StatefulWidget {
     this.onChanged,
     this.isSizeAvailable = true,
     this.item,
+    this.category,
   });
 
   @override
@@ -60,9 +64,9 @@ class ProductTile extends StatefulWidget {
 }
 
 class _ProductTileState extends State<ProductTile> {
-  Rx<SizeModel> sizeModel = SizeModel().obs;
-  SizeModel colorModel = SizeModel();
-  SizeModel diamondModel = SizeModel();
+  Rx<DiamondModel> sizeModel = DiamondModel().obs;
+  MetalModel metalModel = MetalModel();
+  DiamondModel diamondModel = DiamondModel();
   RxString selectedRemark = "".obs;
   RxBool isSelected = false.obs;
 
@@ -72,15 +76,28 @@ class _ProductTileState extends State<ProductTile> {
   Future<void> predefinedValue() async {
     if (isRegistered<PreDefinedValueController>()) {
       final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
-      List<SizeModel> colorList = await preValueCon.checkHasPreValue(widget.categorySlug ?? '', type: SelectableItemType.color.slug);
-      List<SizeModel> sizeList = await preValueCon.checkHasPreValue(widget.categorySlug ?? '', type: SelectableItemType.size.slug);
-      List<SizeModel> diamondList = await preValueCon.checkHasPreValue(widget.categorySlug ?? '', type: SelectableItemType.diamond.slug);
-      colorModel = colorList[0];
-      if (sizeList.isNotEmpty) {
-        sizeModel.value = sizeList[0];
+      List<MetalModel> colorList = preValueCon.metalsList;
+      List<CategoryWiseSize> allSizeList = preValueCon.categoryWiseSizesList;
+      RxList<DiamondModel> diamondList = preValueCon.diamondsList;
+      metalModel = colorList[0];
+      if (allSizeList.isNotEmpty) {
+        RxList<DiamondModel> sizeList = <DiamondModel>[].obs;
+
+        for (var element in allSizeList) {
+          if (element.name?.toLowerCase() == widget.categorySlug?.toLowerCase() && element.data != null) {
+            sizeList = element.data!.obs;
+            sizeModel.value = sizeList[0];
+          }
+        }
       }
       diamondModel = diamondList[0];
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    predefinedValue();
   }
 
   @override
@@ -193,7 +210,7 @@ class _ProductTileState extends State<ProductTile> {
               child: Row(
                 children: [
                   /// Size
-                  if (widget.isSizeAvailable) sizeSelector(categorySlug: widget.categorySlug ?? ''),
+                  if (widget.isSizeAvailable) sizeSelector(categorySlug: widget.categorySlug ?? '', category: widget.category?.value),
                   (defaultPadding / 4).horizontalSpace,
 
                   /// Diamond
@@ -207,7 +224,7 @@ class _ProductTileState extends State<ProductTile> {
               child: Row(
                 children: [
                   /// Color
-                  colorSelector(categorySlug: widget.categorySlug ?? ''),
+                  metalSelector(categorySlug: widget.categorySlug ?? ''),
                   (defaultPadding / 4).horizontalSpace,
 
                   /// Remark
@@ -356,7 +373,7 @@ class _ProductTileState extends State<ProductTile> {
                     6.horizontalSpace,
 
                     /// Color Selector
-                    colorSelector(direction: Axis.vertical, categorySlug: widget.categorySlug ?? ''),
+                    metalSelector(direction: Axis.vertical, categorySlug: widget.categorySlug ?? ''),
                     6.horizontalSpace,
 
                     /// Diamond Selector
@@ -450,7 +467,7 @@ class _ProductTileState extends State<ProductTile> {
                         6.horizontalSpace,
 
                         /// Color Selector
-                        colorSelector(isFlexible: true, direction: Axis.vertical, categorySlug: widget.categorySlug ?? ''),
+                        metalSelector(isFlexible: true, direction: Axis.vertical, categorySlug: widget.categorySlug ?? ''),
                         6.horizontalSpace,
 
                         /// Diamond Selector
@@ -472,41 +489,44 @@ class _ProductTileState extends State<ProductTile> {
     });
   }
 
-  Widget sizeSelector({bool isFlexible = false, Axis direction = Axis.horizontal, required String categorySlug}) {
+  Widget sizeSelector({bool isFlexible = false, Axis direction = Axis.horizontal, required String categorySlug, SubCategoryModel? category}) {
     return horizontalSelectorButton(
       context,
       categorySlug: categorySlug,
       isFlexible: isFlexible,
-      selectedSize: sizeModel.value.value,
+      selectedSize: sizeModel,
       sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
       selectableItemType: SelectableItemType.size,
       axisDirection: direction,
       sizeOnChanged: (value) async {
         /// Return Selected Size
-        if ((value.runtimeType == SizeModel)) {
+        if ((value.runtimeType == DiamondModel)) {
           sizeModel.value = value;
+          printYellow(sizeModel.value.id);
 
-          printYellow(sizeModel);
+          // await ProductRepository.getFilterProductsListAPI(
+          //   productsListType: ProductsListType.normal,
+          //   subCategoryId: category?.id ?? "",
+          //   sizeId: sizeModel.value.id?.value,
+          // );
         }
       },
     );
   }
 
-  Widget colorSelector({bool isFlexible = false, Axis direction = Axis.horizontal, required String categorySlug}) {
-    predefinedValue();
-
+  Widget metalSelector({bool isFlexible = false, Axis direction = Axis.horizontal, required String categorySlug}) {
     return horizontalSelectorButton(
       context,
       isFlexible: isFlexible,
       categorySlug: categorySlug,
-      selectedColor: colorModel.value,
+      selectedMetal: metalModel.obs,
       sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
       selectableItemType: SelectableItemType.color,
       axisDirection: direction,
       colorOnChanged: (value) {
-        /// Return Selected Color
-        if ((value.runtimeType == SizeModel)) {
-          colorModel = value;
+        /// Return Selected Metal
+        if ((value.runtimeType == MetalModel)) {
+          metalModel = value;
         }
       },
     );
@@ -516,16 +536,16 @@ class _ProductTileState extends State<ProductTile> {
         context,
         isFlexible: isFlexible,
         categorySlug: categorySlug,
-        selectedDiamond: diamondModel.value,
+        selectedDiamond: diamondModel.obs,
         sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
         selectableItemType: SelectableItemType.diamond,
         axisDirection: direction,
         rubyOnChanged: (value) {
           /// Return Selected Diamond
-          if ((value.runtimeType == SizeModel)) {
+          if ((value.runtimeType == DiamondModel)) {
             diamondModel = value;
 
-            printYellow(diamondModel);
+            printYellow(diamondModel.id);
           }
         },
       );
@@ -745,7 +765,7 @@ class _ProductTileState extends State<ProductTile> {
                   children: [
                     if (widget.isSizeAvailable) sizeSelector(direction: Axis.vertical, isFlexible: true, categorySlug: widget.categorySlug ?? ''),
                     (defaultPadding / 4).horizontalSpace,
-                    colorSelector(
+                    metalSelector(
                       direction: Axis.vertical,
                       isFlexible: true,
                       categorySlug: widget.categorySlug ?? '',

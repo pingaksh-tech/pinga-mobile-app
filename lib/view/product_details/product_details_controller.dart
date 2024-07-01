@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../controller/predefine_value_controller.dart';
+import '../../data/model/common/splash_model.dart';
 import '../../data/model/predefined_model/predefined_model.dart';
 import '../../exports.dart';
 
@@ -26,8 +27,8 @@ class ProductDetailsController extends GetxController {
   RxBool isSize = true.obs;
 
   Rx<SizeModel> selectedSize = SizeModel().obs;
-  Rx<SizeModel> selectedColor = SizeModel().obs;
-  Rx<SizeModel> selectedDiamond = SizeModel().obs;
+  Rx<MetalModel> selectedColor = MetalModel().obs;
+  Rx<DiamondModel> selectedDiamond = DiamondModel().obs;
   RxString selectedRemark = "".obs;
   RxString productCategory = "".obs;
 
@@ -35,9 +36,9 @@ class ProductDetailsController extends GetxController {
   Future<void> predefinedValue() async {
     if (isRegistered<PreDefinedValueController>()) {
       final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
-      List<SizeModel> colorList = await preValueCon.checkHasPreValue(productCategory.value, type: SelectableItemType.color.slug);
+      List<MetalModel> colorList = preValueCon.metalsList;
       List<SizeModel> sizeList = await preValueCon.checkHasPreValue(productCategory.value, type: SelectableItemType.size.slug);
-      List<SizeModel> diamondList = await preValueCon.checkHasPreValue(productCategory.value, type: SelectableItemType.diamond.slug);
+      List<DiamondModel> diamondList = preValueCon.diamondsList;
       selectedColor.value = colorList[0];
       if (sizeList.isNotEmpty) {
         selectedSize.value = sizeList[0];

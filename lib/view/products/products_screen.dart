@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../exports.dart';
 import '../../res/app_bar.dart';
 import '../../res/app_dialog.dart';
+import '../../res/empty_element.dart';
 import '../../widgets/product_tile.dart';
 import 'components/cart_icon_button.dart';
 import 'components/sort_filter_button.dart';
@@ -91,40 +92,50 @@ class ProductsScreen extends StatelessWidget {
               endIndent: defaultPadding / 2,
             ),
             Text(
-              "Total Products 4150",
+              "Total Products ${con.category.value.totalCount}",
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.subText),
               textAlign: TextAlign.center,
             ).paddingOnly(top: defaultPadding / 3),
 
             /// PRODUCTS
-            Wrap(
-              children: List.generate(
-                con.productsList.length,
-                (index) => ProductTile(
-                  categorySlug: /*con.category.value.id ??*/ "ring" /*Product Category*/,
-                  productTileType: con.isProductViewChange.isTrue ? ProductTileType.grid : ProductTileType.list,
-                  onTap: () => Get.toNamed(AppRoutes.productDetailsScreen, arguments: {
-                    "category": con.category.value.id ?? '',
-                    'isSize': con.isSizeAvailable.value,
-                  }),
-                  isLike: (con.wishlistList.contains(con.productsList[index])).obs,
-                  imageUrl: con.productsList[index].product?.productImage ?? "",
-                  productName: con.productsList[index].product?.title ?? "",
-                  productPrice: con.productsList[index].product?.price.toString() ?? "",
-                  productQuantity: con.productsList[index].quantity,
-                  isSizeAvailable: con.isSizeAvailable.value,
-                  likeOnChanged: (value) {
-                    /// Add product to wishlist
-                    if (!con.wishlistList.contains(con.productsList[index])) {
-                      con.wishlistList.add(con.productsList[index]);
-                    } else {
-                      con.wishlistList.remove(con.productsList[index]);
-                    }
-                    printOkStatus(con.wishlistList);
-                  },
-                ),
-              ),
-            ),
+            con.inventoryProductList.isNotEmpty
+                ? Wrap(
+                    children: List.generate(
+                      con.inventoryProductList.length,
+                      (index) => ProductTile(
+                        category: con.category,
+                        categorySlug: con.category.value.name ?? "ring" /*Product Category*/,
+                        productTileType: con.isProductViewChange.isTrue ? ProductTileType.grid : ProductTileType.list,
+                        onTap: () => Get.toNamed(AppRoutes.productDetailsScreen, arguments: {
+                          "category": con.category.value.id ?? '',
+                          'isSize': con.isSizeAvailable.value,
+                        }),
+                        isLike: (con.wishlistList.contains(con.inventoryProductList[index])).obs,
+                        imageUrl: (con.inventoryProductList[index].inventoryImages != null && con.inventoryProductList[index].inventoryImages!.isNotEmpty) ? con.inventoryProductList[index].inventoryImages![0] : "",
+                        productName: con.inventoryProductList[index].name ?? "",
+                        productPrice: con.inventoryProductList[index].manufacturingPrice.toString(),
+                        productQuantity: con.inventoryProductList[index].quantity,
+                        isSizeAvailable: con.isSizeAvailable.value,
+                        likeOnChanged: (value) {
+                          /// Add product to wishlist
+                          if (!con.wishlistList.contains(con.inventoryProductList[index])) {
+                            con.wishlistList.add(con.inventoryProductList[index]);
+                          } else {
+                            con.wishlistList.remove(con.inventoryProductList[index]);
+                          }
+                          printOkStatus(con.wishlistList);
+                        },
+                      ),
+                    ),
+                  )
+                :
+
+                /// EMPTY DATA VIEW
+                EmptyElement(
+                    title: "${con.category.value.name} Not Found!",
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(vertical: Get.width / 2.5),
+                  ),
           ],
         ),
         floatingActionButton: FloatingActionButton(
