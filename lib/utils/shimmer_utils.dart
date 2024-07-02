@@ -31,16 +31,15 @@ class ShimmerUtils {
     );
   }
 
-
   static Widget shimmerContainer({double? height, double? width, BorderRadiusGeometry? borderRadius, double? borderRadiusSize, Widget? child, Decoration? decoration}) => Container(
-    height: height,
-    width: width,
-    decoration: decoration ??
-        BoxDecoration(
-          borderRadius: borderRadius ?? BorderRadius.circular(borderRadiusSize ?? 50),
-          color: AppColors.primary.withOpacity(0.1),
-        ),
-  );
+        height: height,
+        width: width,
+        decoration: decoration ??
+            BoxDecoration(
+              borderRadius: borderRadius ?? BorderRadius.circular(borderRadiusSize ?? 50),
+              color: AppColors.primary.withOpacity(0.1),
+            ),
+      );
 
   static Widget loadingShimmerWidget() {
     return Padding(
@@ -79,4 +78,12 @@ class ShimmerUtils {
       ),
     );
   }
+
+// static Widget ProductsListShimmer(BuildContext context) {
+//   return ShimmerUtils.shimmer(child: ShimmerUtils.shimmerContainer(
+//     child: Column(
+//       children: [],
+//     )
+//   ));
+// }
 }

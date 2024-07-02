@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 
 import '../controller/predefine_value_controller.dart';
 import '../data/model/cart/retailer_model.dart';
-import '../data/model/predefined_model/predefined_model.dart';
+import '../data/model/common/splash_model.dart';
 import '../exports.dart';
 import '../widgets/custom_radio_button.dart';
 import '../widgets/download_selection_tile.dart';
@@ -598,7 +598,7 @@ class AppDialogs {
   static Future<dynamic>? sizeSelector(
     BuildContext context, {
     Function(String?)? onChanged,
-    required RxList<SizeModel> sizeList,
+    required RxList<DiamondModel> sizeList,
     required RxString selectedSize,
   }) {
     Rx<TextEditingController> controller = TextEditingController().obs;
@@ -685,11 +685,11 @@ class AppDialogs {
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) => ListTile(
                                   title: Text(
-                                    sizeList[index].label ?? '',
+                                    sizeList[index].name ?? '',
                                     style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
                                   ),
                                   trailing: AppRadioButton(
-                                    isSelected: (sizeList[index].id == selectedSize.value).obs,
+                                    isSelected: (sizeList[index].id?.value == selectedSize.value).obs,
                                   ),
                                   onTap: () {
                                     Get.back(
@@ -723,7 +723,7 @@ class AppDialogs {
   static Future<dynamic>? colorSelector(
     BuildContext context, {
     Function(String?)? onChanged,
-    required RxList<SizeModel> colorList,
+    required RxList<MetalModel> colorList,
     required RxString selectedColor,
   }) {
     TextEditingController controller = TextEditingController();
@@ -809,11 +809,11 @@ class AppDialogs {
                               shrinkWrap: true,
                               itemBuilder: (context, index) => ListTile(
                                 title: Text(
-                                  colorList[index].label ?? '',
+                                  colorList[index].name ?? '',
                                   style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
                                 ),
                                 trailing: AppRadioButton(
-                                  isSelected: (colorList[index].id == selectedColor.value).obs,
+                                  isSelected: (colorList[index].id?.value == selectedColor.value).obs,
                                 ),
                                 onTap: () {
                                   Get.back(result: colorList[index]);
@@ -844,7 +844,7 @@ class AppDialogs {
   static Future<dynamic>? diamondSelector(
     BuildContext context, {
     Function(String?)? onChanged,
-    required RxList<SizeModel> diamondList,
+    required RxList<DiamondModel> diamondList,
     required RxString selectedDiamond,
   }) {
     TextEditingController controller = TextEditingController();
@@ -929,11 +929,11 @@ class AppDialogs {
                               shrinkWrap: true,
                               itemBuilder: (context, index) => ListTile(
                                 title: Text(
-                                  diamondList[index].label ?? '',
+                                  diamondList[index].name ?? '',
                                   style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
                                 ),
                                 trailing: AppRadioButton(
-                                  isSelected: (diamondList[index].id == selectedDiamond.value).obs,
+                                  isSelected: (diamondList[index].id?.value == selectedDiamond.value).obs,
                                 ),
                                 onTap: () {
                                   Get.back(result: diamondList[index]);

@@ -224,6 +224,8 @@ class AppConfigDetails {
 
 import 'dart:convert';
 
+import 'package:get/get.dart';
+
 GetSplashModel getSplashModelFromJson(String str) => GetSplashModel.fromJson(json.decode(str));
 
 String getSplashModelToJson(GetSplashModel data) => json.encode(data.toJson());
@@ -253,12 +255,18 @@ class GetSplashModel {
 }
 
 class SplashDataModel {
+  final GenderModel? gender;
+  final List<String>? productionNames;
+  final List<String>? deliveries;
   final List<CategoryWiseSize>? categoryWiseSizes;
   final AppConfigData? appConfigData;
   final List<MetalModel>? metals;
   final List<DiamondModel>? diamonds;
 
   SplashDataModel({
+    this.gender,
+    this.productionNames,
+    this.deliveries,
     this.categoryWiseSizes,
     this.appConfigData,
     this.metals,
@@ -266,6 +274,9 @@ class SplashDataModel {
   });
 
   factory SplashDataModel.fromJson(Map<String, dynamic> json) => SplashDataModel(
+        gender: json["gender"] == null ? null : GenderModel.fromJson(json["gender"]),
+        productionNames: json["production_names"] == null ? [] : List<String>.from(json["production_names"]!.map((x) => x)),
+        deliveries: json["deliveries"] == null ? [] : List<String>.from(json["deliveries"]!.map((x) => x)),
         categoryWiseSizes: json["categoryWiseSize"] == null ? [] : List<CategoryWiseSize>.from(json["categoryWiseSize"]!.map((x) => CategoryWiseSize.fromJson(x))),
         appConfigData: json["appMaintenance"] == null ? null : AppConfigData.fromJson(json["appMaintenance"]),
         metals: json["metals"] == null ? [] : List<MetalModel>.from(json["metals"]!.map((x) => MetalModel.fromJson(x))),
@@ -273,6 +284,9 @@ class SplashDataModel {
       );
 
   Map<String, dynamic> toJson() => {
+        "gender": gender?.toJson(),
+        "production_names": productionNames == null ? [] : List<dynamic>.from(productionNames!.map((x) => x)),
+        "deliveries": deliveries == null ? [] : List<dynamic>.from(deliveries!.map((x) => x)),
         "categoryWiseSize": categoryWiseSizes == null ? [] : List<dynamic>.from(categoryWiseSizes!.map((x) => x.toJson())),
         "appMaintenance": appConfigData?.toJson(),
         "metals": metals == null ? [] : List<dynamic>.from(metals!.map((x) => x.toJson())),
@@ -465,7 +479,7 @@ class AppMaintenanceModel {
 }
 
 class CategoryWiseSize {
-  final String? id;
+  final RxString? id;
   final String? name;
   final List<DiamondModel>? data;
 
@@ -476,20 +490,20 @@ class CategoryWiseSize {
   });
 
   factory CategoryWiseSize.fromJson(Map<String, dynamic> json) => CategoryWiseSize(
-        id: json["_id"],
+        id: RxString(json["_id"].toString()),
         name: json["name"],
         data: json["data"] == null ? [] : List<DiamondModel>.from(json["data"]!.map((x) => DiamondModel.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        "_id": id,
+        "_id": id.obs,
         "name": name,
         "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
       };
 }
 
 class DiamondModel {
-  final String? id;
+  RxString? id;
   final String? name;
   final String? shortName;
 
@@ -500,20 +514,20 @@ class DiamondModel {
   });
 
   factory DiamondModel.fromJson(Map<String, dynamic> json) => DiamondModel(
-        id: json["_id"],
+        id: RxString(json["_id"].toString()),
         name: json["name"],
         shortName: json["short_name"],
       );
 
   Map<String, dynamic> toJson() => {
-        "_id": id,
+        "_id": id.obs,
         "name": name,
         "short_name": shortName,
       };
 }
 
 class MetalModel {
-  final String? id;
+  final RxString? id;
   final String? name;
   final String? metalCarat;
   final String? metalColor;
@@ -528,7 +542,7 @@ class MetalModel {
   });
 
   factory MetalModel.fromJson(Map<String, dynamic> json) => MetalModel(
-        id: json["_id"],
+        id: RxString(json["_id"].toString()),
         name: json["name"],
         metalCarat: json["metal_carat"],
         metalColor: json["metal_color"],
@@ -536,10 +550,34 @@ class MetalModel {
       );
 
   Map<String, dynamic> toJson() => {
-        "_id": id,
+        "_id": id.obs,
         "name": name,
         "metal_carat": metalCarat,
         "metal_color": metalColor,
         "short_name": shortName,
+      };
+}
+
+class GenderModel {
+  final String? male;
+  final String? female;
+  final String? unisex;
+
+  GenderModel({
+    this.male,
+    this.female,
+    this.unisex,
+  });
+
+  factory GenderModel.fromJson(Map<String, dynamic> json) => GenderModel(
+        male: json["MALE"],
+        female: json["FEMALE"],
+        unisex: json["UNISEX"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "MALE": male,
+        "FEMALE": female,
+        "UNISEX": unisex,
       };
 }

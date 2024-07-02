@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../controller/predefine_value_controller.dart';
+import '../../data/model/product/products_model.dart';
 import '../../data/model/sub_category/sub_category_model.dart';
-import '../../data/model/product/product_model.dart';
 import '../../data/repositories/product/product_repository.dart';
 import '../../exports.dart';
 
 class ProductsController extends GetxController {
-  RxBool isLike = false.obs;
-  RxBool isSizeAvailable = true.obs;
+  RxBool isLoader = false.obs;
+
+  RxBool isSizeAvailable = false.obs;
 
   RxString categoryName = "".obs;
   Rx<SubCategoryModel> category = SubCategoryModel().obs;
@@ -18,10 +19,11 @@ class ProductsController extends GetxController {
   RxString selectPrice = "".obs;
   RxString selectNewestOrOldest = "".obs;
   RxBool isMostOrder = false.obs;
+  RxBool isDisableButton = true.obs;
 
   RxList<String> sortList = <String>[].obs;
-  RxList<ProductListModel> productsList = <ProductListModel>[].obs;
-  RxList<ProductListModel> wishlistList = <ProductListModel>[].obs;
+  RxList<InventoryModel> inventoryProductList = <InventoryModel>[].obs;
+  RxList<InventoryModel> wishlistList = <InventoryModel>[].obs;
 
   ScrollController scrollController = ScrollController();
   RxInt page = 1.obs;
@@ -48,16 +50,18 @@ class ProductsController extends GetxController {
     super.onReady();
     ProductRepository.getPredefineValueAPI();
     preValueAvailable();
+    printOkStatus(category.value.id);
+    ProductRepository.getFilterProductsListAPI(productsListType: ProductsListType.normal, subCategoryId: category.value.id ?? "");
   }
 
   final RxList sortWithPriceList = [
-    "Price - Low to high",
-    "Price - High to Low",
+    "Price - Low to high/1",
+    "Price - High to Low/-1",
   ].obs;
 
   final RxList sortWithTimeList = [
-    "Newest First",
-    "Oldest First",
+    "Newest First/1",
+    "Oldest First/-1",
   ].obs;
 
   void updateSortingList() {
@@ -80,11 +84,12 @@ class ProductsController extends GetxController {
     if (isRegistered<PreDefinedValueController>()) {
       final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
 
-      await preValueCon.checkHasPreValue(category.value.id ?? '', type: SelectableItemType.size.slug).then(
-        (value) {
-          isSizeAvailable.value = value.isNotEmpty;
-        },
-      );
+      for (var element in preValueCon.categoryWiseSizesList) {
+        if (element.id?.value == category.value.id) {
+          isSizeAvailable.value = true;
+          break;
+        }
+      }
     }
   }
 }

@@ -41,6 +41,9 @@ class SplashRepository {
                     preValueCon.categoryWiseSizesList.value = model.data!.categoryWiseSizes ?? [];
                     preValueCon.metalsList.value = model.data!.metals ?? [];
                     preValueCon.diamondsList.value = model.data!.diamonds ?? [];
+                    preValueCon.genderList.value = model.data!.gender ?? GenderModel();
+                    preValueCon.productNamesList.value = model.data!.productionNames ?? [];
+                    preValueCon.deliveriesList.value = model.data!.deliveries ?? [];
                   }
 
                   // ***********************************************************************************
