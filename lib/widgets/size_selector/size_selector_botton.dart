@@ -50,7 +50,6 @@ Widget horizontalSelectorButton(
                 (value) {
                   if (value != null && (value.runtimeType == DiamondModel)) {
                     final DiamondModel sizeModel = (value as DiamondModel);
-
                     selectedSize?.value = sizeModel;
 
                     if (sizeOnChanged != null) {

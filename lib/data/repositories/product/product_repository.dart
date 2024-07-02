@@ -260,9 +260,22 @@ class ProductRepository {
 
   static Future<void> getFilterProductsListAPI({
     required ProductsListType productsListType,
+    required String categoryId,
     required String subCategoryId,
     List<String>? sortBy,
-    String? sizeId,
+    double? minMetal,
+    double? maxMetal,
+    double? minDiamond,
+    double? maxDiamond,
+    bool? inStock,
+    int? minMrp,
+    int? maxMrp,
+    List<dynamic>? genderList,
+    List<dynamic>? diamondList,
+    List<dynamic>? ktList,
+    List<dynamic>? deliveryList,
+    List<dynamic>? productionNameList,
+    List<dynamic>? colectionList,
     bool isInitial = true,
     bool isPullToRefresh = false,
     RxBool? loader,
@@ -289,42 +302,22 @@ class ProductRepository {
             "sub_category_id": subCategoryId,
             "page": con.page.value.toString(),
             "limit": con.itemLimit.value.toString(),
-            if (!isValEmpty(sortBy)) "size_id": sizeId,
             if (!isValEmpty(sortBy)) "sortBy": sortBy,
-            // "range": {
-            //     "metal_wt": {
-            //         "min": 1,
-            //         "max": 50
-            //     }
-            //     // "diamond_wt": {
-            //     //     "min": 0.02,
-            //     //     "max": 0.04
-            //     // }
-            // },
-            // "mrp": {
-            //     "min": 100000
-            //     // "max": 150000
-            // },
-            // "available": {
-            //   "in_stock": true
-            //   // "wear_it_item": false // not include
-            // },
-            // "gender": [
-            //     "female"
-            // ],
-            // "diamond": [
-            //     "VVS-EF"
-            // ],
-            // "kt": [ // metal
-            //     "20K"
-            // ],
-            // "delivery": [
-            //     "erwer"
-            // ],
-            // "production_name": [
-            //     "werwer"
-            // ],
-            // "collection" : ["66701741146450710c399adc","6672d1db3e88e4e18125b81a"],
+            "range": {
+              if ((!isValEmpty(minMetal) && !isValEmpty(maxMetal))) "metal_wt": {"min": minMetal, "max": maxMetal},
+              if ((!isValEmpty(minDiamond) && !isValEmpty(maxDiamond))) "diamond_wt": {"min": minDiamond, "max": maxDiamond}
+            },
+            if ((!isValEmpty(minMrp) && !isValEmpty(maxMrp))) "mrp": {"min": minMrp, "max": maxMrp},
+            if (inStock != null)
+              "available": {
+                "in_stock": inStock,
+              },
+            if (genderList != null && genderList.isNotEmpty) "gender": genderList,
+            if (diamondList != null && diamondList.isNotEmpty) "diamond": diamondList,
+            if (ktList != null && ktList.isNotEmpty) "metal_ids": ktList,
+            if (deliveryList != null && deliveryList.isNotEmpty) "delivery": deliveryList,
+            if (productionNameList != null && productionNameList.isNotEmpty) "production_name": productionNameList,
+            if (colectionList != null && colectionList.isNotEmpty) "collection": colectionList,
           },
           loader: loader,
         ).then(
@@ -335,8 +328,10 @@ class ProductRepository {
               if (model.data != null) {
                 if (isPullToRefresh) {
                   con.inventoryProductList.addAll(model.data?.inventories ?? []);
+                  con.totalCount.value = model.data?.totalCount ?? 0;
                 } else {
                   con.inventoryProductList.addAll(model.data?.inventories ?? []);
+                  con.totalCount.value = model.data?.totalCount ?? 0;
                 }
 
                 int currentPage = (model.data!.page ?? 1);

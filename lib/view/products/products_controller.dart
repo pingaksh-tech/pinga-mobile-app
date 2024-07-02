@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 
 import '../../controller/predefine_value_controller.dart';
 import '../../data/model/product/products_model.dart';
@@ -9,11 +10,12 @@ import '../../exports.dart';
 
 class ProductsController extends GetxController {
   RxBool isLoader = false.obs;
-
   RxBool isSizeAvailable = false.obs;
+  RxString categoryId = "".obs;
+  RxInt totalCount = 0.obs;
 
   RxString categoryName = "".obs;
-  Rx<SubCategoryModel> category = SubCategoryModel().obs;
+  Rx<SubCategoryModel> subCategory = SubCategoryModel().obs;
   RxBool isProductViewChange = true.obs;
 
   RxString selectPrice = "".obs;
@@ -37,7 +39,10 @@ class ProductsController extends GetxController {
     super.onInit();
     if (Get.arguments != null) {
       if (Get.arguments["category"].runtimeType == SubCategoryModel) {
-        category.value = Get.arguments["category"];
+        subCategory.value = Get.arguments["category"];
+      }
+      if (Get.arguments["categoryId"].runtimeType == String) {
+        categoryId.value = Get.arguments["categoryId"];
       }
       if (Get.arguments["watchlistName"].runtimeType == String) {
         categoryName.value = Get.arguments["watchlistName"];
@@ -50,8 +55,8 @@ class ProductsController extends GetxController {
     super.onReady();
     ProductRepository.getPredefineValueAPI();
     preValueAvailable();
-    printOkStatus(category.value.id);
-    ProductRepository.getFilterProductsListAPI(productsListType: ProductsListType.normal, subCategoryId: category.value.id ?? "");
+    printOkStatus(subCategory.value.id);
+    ProductRepository.getFilterProductsListAPI(categoryId: categoryId.value, productsListType: ProductsListType.normal, subCategoryId: subCategory.value.id ?? "");
   }
 
   final RxList sortWithPriceList = [
@@ -85,7 +90,7 @@ class ProductsController extends GetxController {
       final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
 
       for (var element in preValueCon.categoryWiseSizesList) {
-        if (element.id?.value == category.value.id) {
+        if (element.id?.value == subCategory.value.id) {
           isSizeAvailable.value = true;
           break;
         }

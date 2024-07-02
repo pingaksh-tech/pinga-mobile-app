@@ -255,9 +255,9 @@ class GetSplashModel {
 }
 
 class SplashDataModel {
-  final GenderModel? gender;
   final List<String>? productionNames;
   final List<String>? deliveries;
+  final List<String>? gender;
   final List<CategoryWiseSize>? categoryWiseSizes;
   final AppConfigData? appConfigData;
   final List<MetalModel>? metals;
@@ -274,7 +274,7 @@ class SplashDataModel {
   });
 
   factory SplashDataModel.fromJson(Map<String, dynamic> json) => SplashDataModel(
-        gender: json["gender"] == null ? null : GenderModel.fromJson(json["gender"]),
+        gender: json["gender"] == null ? [] : List<String>.from(json["gender"]!.map((x) => x)),
         productionNames: json["production_names"] == null ? [] : List<String>.from(json["production_names"]!.map((x) => x)),
         deliveries: json["deliveries"] == null ? [] : List<String>.from(json["deliveries"]!.map((x) => x)),
         categoryWiseSizes: json["categoryWiseSize"] == null ? [] : List<CategoryWiseSize>.from(json["categoryWiseSize"]!.map((x) => CategoryWiseSize.fromJson(x))),
@@ -284,7 +284,7 @@ class SplashDataModel {
       );
 
   Map<String, dynamic> toJson() => {
-        "gender": gender?.toJson(),
+        "gender": gender == null ? [] : List<dynamic>.from(gender!.map((x) => x)),
         "production_names": productionNames == null ? [] : List<dynamic>.from(productionNames!.map((x) => x)),
         "deliveries": deliveries == null ? [] : List<dynamic>.from(deliveries!.map((x) => x)),
         "categoryWiseSize": categoryWiseSizes == null ? [] : List<dynamic>.from(categoryWiseSizes!.map((x) => x.toJson())),
