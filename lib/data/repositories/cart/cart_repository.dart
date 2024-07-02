@@ -5,7 +5,9 @@ import '../../../exports.dart';
 import '../../../view/cart/cart_controller.dart';
 import '../../../view/cart/widget/checkout/checkout_controller.dart';
 import '../../../view/cart/widget/stock/cart_stock_controller.dart';
+import '../../../view/cart/widget/summary/summary_controller.dart';
 import '../../model/cart/cart_model.dart';
+import '../../model/cart/cart_summary_model.dart';
 import '../../model/cart/product_detail_model.dart';
 import '../../model/cart/retailer_model.dart';
 import '../../model/cart/stock_model.dart';
@@ -62,7 +64,11 @@ class CartRepository {
   ///                                 GET CART API
   /// ***********************************************************************************
 
-  static Future<dynamic> getCartApi({bool isInitial = true, bool isPullToRefresh = false, RxBool? loader}) async {
+  static Future<dynamic> getCartApi({
+    bool isInitial = true,
+    RxBool? loader,
+    bool background = false,
+  }) async {
     ///
     if (await getConnectivityResult() && isRegistered<CartController>()) {
       final CartController con = Get.find<CartController>();
@@ -71,7 +77,7 @@ class CartRepository {
         loader?.value = true;
 
         if (isInitial) {
-          if (!isPullToRefresh) {
+          if (!background) {
             con.cartList.clear();
           }
           con.page.value = 1;
@@ -80,7 +86,7 @@ class CartRepository {
 
         /// API
         await APIFunction.getApiCall(
-          apiUrl: ApiUrls.getCartList,
+          apiUrl: ApiUrls.getAllCartGET,
           params: {
             "page": con.page.value,
             "limit": con.itemLimit.value,
@@ -90,9 +96,12 @@ class CartRepository {
           (response) async {
             if (response != null) {
               GetCartModel model = GetCartModel.fromJson(response);
+              if (background) {
+                con.cartList.clear();
+              }
 
               if (model.data != null) {
-                if (isPullToRefresh) {
+                if (isInitial) {
                   con.cartList.value = model.data?.cartList ?? [];
                 } else {
                   con.cartList.addAll(model.data?.cartList ?? []);
@@ -100,6 +109,7 @@ class CartRepository {
                 int currentPage = (model.data!.page ?? 1);
                 con.nextPageAvailable.value = currentPage < (model.data!.totalPages ?? 0);
                 con.page.value += currentPage;
+                con.cartDetail.value = model.data?.cartsDetails ?? CartsDetails();
               }
 
               loader?.value = false;
@@ -121,11 +131,18 @@ class CartRepository {
   ///                                 DELETE API
   /// ***********************************************************************************
 
-  static Future<dynamic> deleteCartAPi({RxBool? isLoader, String? cartId}) async {
+  static Future<dynamic> deleteCartAPi({RxBool? isLoader, String? cartId, List<String>? selectedCartIds}) async {
     try {
       if (await getConnectivityResult()) {
         isLoader?.value = true;
-        await APIFunction.deleteApiCall(apiUrl: ApiUrls.deleteCartApi(cartId: !isValEmpty(cartId) ? cartId : "")).then(
+        await APIFunction.deleteApiCall(
+          apiUrl: ApiUrls.deleteCartApi(
+            cartId: !isValEmpty(cartId) ? cartId : "",
+          ),
+          body: {
+            !isValEmpty(selectedCartIds) ? "cartIds" : selectedCartIds,
+          },
+        ).then(
           (response) async {
             if (response != null) {
               if (isRegistered<CartController>()) {
@@ -139,6 +156,40 @@ class CartRepository {
                   con.cartList.removeWhere((item) => con.selectedList.contains(item));
                   con.selectedList.clear();
                 }
+              }
+            }
+            isLoader?.value = false;
+            return response;
+          },
+        );
+      }
+    } catch (e) {
+      isLoader?.value = false;
+      printErrors(type: "deleteCartApi", errText: "$e");
+    }
+  }
+
+  /// ***********************************************************************************
+  ///                                MULTIPLE DELETE API
+  /// ***********************************************************************************
+
+  static Future<dynamic> multipleCartDelete({RxBool? isLoader, List<String>? selectedCartIds}) async {
+    try {
+      if (await getConnectivityResult()) {
+        isLoader?.value = true;
+        await APIFunction.deleteApiCall(
+          apiUrl: ApiUrls.multiPleDelete,
+          body: {
+            "cartIds": selectedCartIds,
+          },
+        ).then(
+          (response) async {
+            if (response != null) {
+              if (isRegistered<CartController>()) {
+                final CartController con = Get.find<CartController>();
+
+                con.cartList.removeWhere((item) => con.selectedList.contains(item));
+                con.selectedList.clear();
               }
             }
             isLoader?.value = false;
@@ -203,82 +254,85 @@ class CartRepository {
   }
 
   /// ***********************************************************************************
-  ///                                       UPDATE QUANTITY
+  ///                                 GET RETAILER API
   /// ***********************************************************************************
-
-  static Future<void> updateQuantityAPI({required String productId, required bool doIncrease}) async {
-    final CartController cartCon = Get.find<CartController>();
-
-    /// TEMP
-    cartCon.calculateTotalPrice();
-
+  static Future<dynamic> getCartSummaryAPI({RxBool? isLoader}) async {
     ///
-    try {
-      await APIFunction.putApiCall(apiUrl: "${ApiUrls.cartUpdatePUT}$productId", body: {"action": doIncrease ? "+" : "-"}).then(
-        (response) async {
-          printOkStatus("Cart Updated Successfully");
-          cartCon.calculateTotalPrice();
-        },
-      );
-    } catch (e) {
-      printErrors(type: "Error", errText: "$e");
+    if (await getConnectivityResult()) {
+      try {
+        isLoader?.value = true;
+        await APIFunction.getApiCall(
+          apiUrl: ApiUrls.getCartSummary,
+          loader: isLoader,
+        ).then(
+          (response) async {
+            if (response != null) {
+              if (isRegistered<SummaryController>()) {
+                final SummaryController summaryCon = Get.find<SummaryController>();
+
+                GetCartSummaryModel model = GetCartSummaryModel.fromJson(response);
+                summaryCon.diamondSummaryList.value = model.data?.summary ?? [];
+                summaryCon.totalDiamond.value = model.data?.totalDeliverySummary ?? TotalDeliverySummary();
+
+                summaryCon.weightSummaryList.value = model.data?.weightSummary ?? [];
+                summaryCon.totalWeight.value = model.data?.totalWeightSummary ?? TotalWeightSummary();
+              }
+              isLoader?.value = false;
+            } else {
+              isLoader?.value = false;
+            }
+
+            return response;
+          },
+        );
+      } catch (e) {
+        isLoader?.value = false;
+        printErrors(type: "getCartSummary", errText: e);
+      }
     }
   }
 
   /// ***********************************************************************************
-  ///                               ADD or REMOVE PRODUCT IN CART
+  ///                                UPDATE CART API
   /// ***********************************************************************************
-  static Future<bool> addOrRemoveProductInCart({required String productID, required bool currentValue, RxBool? isLoading}) async {
-    try {
-      isLoading?.value = true;
-      await APIFunction.putApiCall(apiUrl: "${ApiUrls.addOrRemoveCart}$productID", loader: isLoading).then(
-        (response) async {
-          currentValue = !currentValue;
-          UiUtils.toast(response["message"]);
-        },
-      );
-
-      return currentValue;
-    } catch (e) {
-      printErrors(type: "addOrRemoveProductInCart", errText: "$e");
-      return currentValue;
-    } finally {
-      isLoading?.value = false;
+  static Future<dynamic> updateCartApi({
+    RxBool? isLoader,
+    required String cartId,
+    required String inventoryId,
+    required int quantity,
+    required String metalId,
+    required String sizeId,
+    required String diamondClarity,
+  }) async {
+    if (await getConnectivityResult()) {
+      try {
+        isLoader?.value = true;
+        return await APIFunction.putApiCall(
+          apiUrl: ApiUrls.cartUpdatePUT,
+          body: {
+            "cart_id": cartId,
+            "inventory_id": inventoryId,
+            "quantity": quantity,
+            "metal_id": metalId,
+            "size_id": sizeId,
+            "diamond_clarity": diamondClarity,
+          },
+        ).then(
+          (response) async {
+            if (response != null) {
+              getCartApi(background: true);
+            }
+            isLoader?.value = false;
+            return response;
+          },
+        );
+      } catch (e) {
+        isLoader?.value = false;
+        printErrors(type: "UpdateCart", errText: e);
+      }
     }
   }
 
-  /// ***********************************************************************************
-  ///                                       PLACE ORDER
-  /// ***********************************************************************************
-/*
-  static Future<void> placeOrderAPI() async {
-    final CartController cartCon = Get.find<CartController>();
-    try {
-      cartCon.isLoading.value = true;
-
-      await APIFunction.postApiCall(
-        apiUrl: ApiUrls.placeOrderPOST,
-        loader: cartCon.isLoading,
-      ).then(
-        (response) async {
-          // if (Get.isRegistered<HomeController>()) {
-          //   HomeController homeCon = Get.find<HomeController>();
-          //   for (int i = 0; i < homeCon.homeProductList.length; i++) {
-          //     homeCon.homeProductList[i].cart = false.obs;
-          //   }
-          // }
-          cartCon.isLoading.value = false;
-          UiUtils.toast("Order Placed Successfully");
-          Get.find<BottomBarController>().onBottomBarTap(3);
-        },
-      );
-    } catch (e) {
-      printErrors(type: "Error", errText: "$e");
-      UiUtils.toast("PLease try again");
-      cartCon.isLoading.value = false;
-    } finally {}
-  }
- */
   /// ***********************************************************************************
   ///                                     GET STOCK
   /// **********************************************************************************

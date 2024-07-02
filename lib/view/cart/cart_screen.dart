@@ -54,7 +54,11 @@ class CartScreen extends StatelessWidget {
                           borderWidth: 1.6,
                           onChanged: (_) {
                             if (con.selectedList.length != con.cartList.length) {
-                              con.selectedList.addAll(con.cartList.where((item) => !con.selectedList.contains(item)));
+                              con.selectedList.addAll(
+                                con.cartList.where(
+                                  (item) => !con.selectedList.contains(item),
+                                ),
+                              );
                             } else {
                               con.selectedList.clear();
                             }
@@ -73,15 +77,43 @@ class CartScreen extends StatelessWidget {
                             separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
                             itemBuilder: (context, index) {
                               return ProductTile(
+                                isCart: true,
+                                sizeId: (value) {
+                                  CartRepository.updateCartApi(
+                                    cartId: con.cartList[index].id ?? "",
+                                    inventoryId: con.cartList[index].inventoryId ?? "",
+                                    quantity: con.cartList[index].quantity ?? 0,
+                                    metalId: con.cartList[index].metalId ?? "",
+                                    sizeId: value,
+                                    diamondClarity: con.cartList[index].diamondClarity ?? "",
+                                  );
+                                },
+                                incrementOnTap: (value) {
+                                  CartRepository.updateCartApi(
+                                    cartId: con.cartList[index].id ?? "",
+                                    inventoryId: con.cartList[index].inventoryId ?? "",
+                                    quantity: value,
+                                    metalId: con.cartList[index].metalId ?? "",
+                                    sizeId: con.cartList[index].sizeId ?? "",
+                                    diamondClarity: con.cartList[index].diamondClarity ?? "",
+                                  );
+                                },
                                 item: con.cartList[index],
+                                category: con.category,
+                                isSizeAvailable: true,
                                 productTileType: ProductTileType.cartTile,
-                                categorySlug: "ring",
-                                isCartSelected: RxBool(con.selectedList.contains(con.cartList[index])),
-                                imageUrl: con.cartList[index].inventoryImage ?? "",
+                                categorySlug: con.category.value.name ?? "ring",
+                                isCartSelected: RxBool(
+                                  con.selectedList.contains(
+                                    con.cartList[index],
+                                  ),
+                                ),
+                                imageUrl: con.cartList[index].inventoryImage?.first ?? "",
                                 productName: (con.cartList[index].inventoryName ?? ""),
                                 productPrice: con.cartList[index].inventoryTotalPrice.toString(),
-                                brandName: con.cartList[index].categoryName ?? "Unknown",
-                                productQuantity: con.cartList[index].quantity,
+                                brandName: con.cartList[index].inventoryName ?? "Unknown",
+                                productQuantity: RxInt(con.cartList[index].quantity ?? 0),
+                                selectSize: (con.cartList[index].sizeId ?? "").obs,
                                 deleteOnTap: () {
                                   if (con.selectedList.contains(con.cartList[index])) {
                                     con.selectedList.remove(con.cartList[index]);
@@ -167,17 +199,17 @@ class CartScreen extends StatelessWidget {
                                   cartSummaryItem(
                                     context,
                                     title: "Cart items",
-                                    price: "${con.selectedList.length}/${con.cartList.length}",
+                                    price: "${con.selectedList.length}/${con.cartDetail.value.totalItems}",
                                   ),
                                   cartSummaryItem(
                                     context,
                                     title: "Cart quantity",
-                                    price: "${con.selectedQuantity.value}/${con.totalQuantity.value}",
+                                    price: "${con.selectedQuantity.value}/${con.cartDetail.value.totalQuantity}",
                                   ),
                                   cartSummaryItem(
                                     context,
                                     title: "Cart amount",
-                                    price: "${UiUtils.amountFormat(con.selectedPrice.value, decimalDigits: 0)} / ${UiUtils.amountFormat(con.totalPrice.value, decimalDigits: 0)}",
+                                    price: "${UiUtils.amountFormat(con.selectedPrice.value, decimalDigits: 0)} / ${UiUtils.amountFormat(con.cartDetail.value.totalPrice, decimalDigits: 0)}",
                                   ),
                                   (defaultPadding / 2).verticalSpace,
                                   Row(
@@ -213,18 +245,6 @@ class CartScreen extends StatelessWidget {
                                           ),
                                           onPressed: () {
                                             Get.toNamed(AppRoutes.checkoutScreen);
-                                            /*  AppDialogs.cartDialog(
-                                              context,
-                                              contentText: "Your service is temporary disable,Please contact to back office!",
-                                              dialogTitle: "Alert",
-                                              buttonTitle2: "OK",
-                                              titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                                    fontSize: 17.sp,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Theme.of(context).primaryColor,
-                                                  ),
-                                              onPressed: () => Get.back(),
-                                            ); */
                                           },
                                         ),
                                       ),
@@ -245,13 +265,13 @@ class CartScreen extends StatelessWidget {
                                               buttonTitle: "NO",
                                               onPressed: () async {
                                                 Get.back();
+
                                                 //? Delete cart list api
                                                 if (con.cartList.length == con.selectedList.length) {
                                                   await CartRepository.deleteCartAPi(isLoader: con.cartLoader);
                                                 } else {
-                                                  for (var item in con.selectedList) {
-                                                    await CartRepository.deleteCartAPi(cartId: item.id, isLoader: con.cartLoader);
-                                                  }
+                                                  List<String> selectedCartIds = con.selectedList.map((item) => item.id ?? "").toList();
+                                                  await CartRepository.multipleCartDelete(selectedCartIds: selectedCartIds, isLoader: con.cartLoader);
                                                 }
                                               },
                                             );

@@ -41,9 +41,10 @@ class SplashRepository {
                     preValueCon.categoryWiseSizesList.value = model.data!.categoryWiseSizes ?? [];
                     preValueCon.metalsList.value = model.data!.metals ?? [];
                     preValueCon.diamondsList.value = model.data!.diamonds ?? [];
-                    preValueCon.genderList.value = model.data!.gender ?? GenderModel();
+                    // preValueCon.genderList.value = model.data!.gender ?? GenderModel();
                     preValueCon.productNamesList.value = model.data!.productionNames ?? [];
                     preValueCon.deliveriesList.value = model.data!.deliveries ?? [];
+                    preValueCon.orderTypeList.value = model.data!.orderType ?? [];
                   }
 
                   // ***********************************************************************************
@@ -62,7 +63,7 @@ class SplashRepository {
                     LocalStorage.contactEmailID = appConfig.contactEmailId;
                   }
 
-                  if (!isValEmpty(model.data!.appConfigData!.versions)) {
+                  if (isValEmpty(model.data!.appConfigData!.versions)) {
                     /// Versions
 
                     /// CHECKING UPDATE

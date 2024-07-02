@@ -4,9 +4,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../../data/model/cart/cart_model.dart';
+import '../../data/model/sub_category/sub_category_model.dart';
 import '../../data/repositories/cart/cart_repository.dart';
 
 class CartController extends GetxController {
+  Rx<SubCategoryModel> category = SubCategoryModel().obs;
+
+  /// Cart Total item count
+  Rx<CartsDetails> cartDetail = CartsDetails().obs;
+
   /// Cart List pagination
   RxList<CartModel> cartList = <CartModel>[].obs;
   RxBool cartLoader = true.obs;
@@ -51,7 +57,7 @@ class CartController extends GetxController {
 
   num calculateTotalPrice() {
     List<num> priceList = cartList.map((element) => (element.inventoryTotalPrice ?? 1)).toList();
-    List<int> quantityList = cartList.map((element) => (element.quantity?.value ?? 1)).toList();
+    List<int> quantityList = cartList.map((element) => (element.quantity ?? 1)).toList();
     num totalPrices = 0;
     for (int i = 0; i < priceList.length; i++) {
       totalPrices = totalPrices + quantityList[i] * priceList[i];
@@ -62,7 +68,7 @@ class CartController extends GetxController {
 
   num calculateSelectedItemPrice() {
     List<num> priceList = selectedList.map((element) => (element.inventoryTotalPrice ?? 1)).toList();
-    List<int> quantityList = selectedList.map((element) => (element.quantity?.value ?? 1)).toList();
+    List<int> quantityList = selectedList.map((element) => (element.quantity ?? 1)).toList();
     num price = 0;
     for (int i = 0; i < priceList.length; i++) {
       price = price + quantityList[i] * priceList[i];
@@ -72,7 +78,7 @@ class CartController extends GetxController {
   }
 
   int calculateQuantity() {
-    List<int> quantityList = cartList.map((element) => (element.quantity?.value ?? 1)).toList();
+    List<int> quantityList = cartList.map((element) => (element.quantity ?? 1)).toList();
     num quantity = 0;
     for (int i = 0; i < quantityList.length; i++) {
       quantity = quantity + quantityList[i];
@@ -82,7 +88,7 @@ class CartController extends GetxController {
   }
 
   int calculateSelectedQue() {
-    List<int> quantityList = selectedList.map((element) => (element.quantity?.value ?? 1)).toList();
+    List<int> quantityList = selectedList.map((element) => (element.quantity ?? 1)).toList();
     num selectQuantity = 0;
     for (int i = 0; i < quantityList.length; i++) {
       selectQuantity = selectQuantity + quantityList[i];

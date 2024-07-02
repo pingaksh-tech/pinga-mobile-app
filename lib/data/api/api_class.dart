@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:cookie_jar/cookie_jar.dart';
-import 'package:dio/dio.dart';
 import 'package:dio/dio.dart' as d;
+import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
@@ -66,7 +66,7 @@ class HttpUtil {
           requestHeader: false,
           requestBody: true,
           responseHeader: false,
-          responseBody: true,
+          responseBody: false,
           error: true,
           compact: true,
         ),

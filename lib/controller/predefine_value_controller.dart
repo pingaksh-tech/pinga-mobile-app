@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+
 import '../data/model/cart/product_detail_model.dart';
 import '../data/model/common/splash_model.dart';
 import '../data/model/predefined_model/predefined_model.dart';
@@ -22,8 +23,11 @@ class PreDefinedValueController extends GetxController {
   /// DELIVERIES
   RxList<String> deliveriesList = <String>[].obs;
 
+  /// ORDER TYPE
+  RxList<String> orderTypeList = <String>[].obs;
+
   /// GENDER
-  Rx<GenderModel> genderList = GenderModel().obs;
+  // Rx<GenderModel> genderList = GenderModel().obs;
 
   RxList<ProductDetail> cartProductDetailList = <ProductDetail>[].obs;
   RxMap<String, dynamic> predefineResponse = <String, dynamic>{}.obs;

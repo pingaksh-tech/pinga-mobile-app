@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
+import '../../../../controller/predefine_value_controller.dart';
 import '../../../../exports.dart';
 import '../../../../res/app_bar.dart';
 import '../../../../res/app_dialog.dart';
@@ -12,6 +13,7 @@ class CheckoutScreen extends StatelessWidget {
   CheckoutScreen({super.key});
 
   final CheckoutController con = Get.put(CheckoutController());
+  final PreDefinedValueController preCon = Get.find<PreDefinedValueController>();
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +60,21 @@ class CheckoutScreen extends StatelessWidget {
             title: "Select Order Type",
             contentPadding: EdgeInsets.all(defaultPadding),
             readOnly: true,
+            controller: con.orderTypeCon.value,
             hintText: "Select Order Type",
             padding: EdgeInsets.only(bottom: defaultPadding, top: defaultPadding / 2),
             suffixIcon: SvgPicture.asset(AppAssets.downArrow, height: 10),
+            onTap: () {
+              AppDialogs.orderSelect(
+                context,
+                orderTypeList: preCon.orderTypeList,
+                selectedOrder: RxString(preCon.orderTypeList.first),
+              )?.then(
+                (value) {
+                  con.orderTypeCon.value.text = value;
+                },
+              );
+            },
           ),
         ],
       ),

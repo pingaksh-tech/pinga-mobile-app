@@ -1920,4 +1920,120 @@ class AppDialogs {
       },
     );
   }
+
+  // Select Order Type dialog
+  static Future<dynamic>? orderSelect(
+    BuildContext context, {
+    Function(String?)? onChanged,
+    required RxList<String> orderTypeList,
+    required RxString selectedOrder,
+  }) {
+    TextEditingController controller = TextEditingController();
+
+    return showGeneralDialog(
+      context: context,
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          body: SafeArea(
+            child: Container(
+              width: Get.width,
+              padding: EdgeInsets.only(top: defaultPadding),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(defaultRadius / 2),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  /// Title
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Select Retailer",
+                          style: AppTextStyle.titleStyle(context).copyWith(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                        AppIconButton(
+                          size: 26.h,
+                          icon: SvgPicture.asset(AppAssets.crossIcon),
+                          onPressed: () {
+                            Get.back();
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                  defaultPadding.verticalSpace,
+                  if (orderTypeList.isNotEmpty)
+                    AppTextField(
+                      controller: controller,
+                      hintText: 'Search',
+                      textInputAction: TextInputAction.search,
+                      padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                      contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 4, horizontal: defaultPadding / 1.7),
+                      onChanged: onChanged,
+                      prefixIcon: Padding(
+                        padding: EdgeInsets.all(defaultPadding / 1.4),
+                        child: SvgPicture.asset(
+                          AppAssets.search,
+                          height: 22,
+                          width: 22,
+                          color: UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400, // ignore: deprecated_member_use
+                        ),
+                      ),
+                      suffixIcon: controller.text.trim().isNotEmpty
+                          ? Center(
+                              child: SvgPicture.asset(
+                                AppAssets.crossIcon,
+                                color: Theme.of(context).primaryColor, // ignore: deprecated_member_use
+                              ),
+                            )
+                          : null,
+                      suffixOnTap: () {
+                        FocusScope.of(context).unfocus();
+                        controller.clear();
+                      },
+                    ),
+                  (defaultPadding / 1.4).verticalSpace,
+
+                  /// Records
+                  Expanded(
+                    child: orderTypeList.isNotEmpty
+                        ? ListView.separated(
+                            physics: const RangeMaintainingScrollPhysics(),
+                            itemCount: orderTypeList.length,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) => ListTile(
+                              title: Text(
+                                orderTypeList[index],
+                                style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
+                              ),
+                              trailing: AppRadioButton(
+                                isSelected: (selectedOrder.value == orderTypeList[index]).obs,
+                              ),
+                              onTap: () {
+                                selectedOrder.value == orderTypeList[index];
+                                Get.back(result: orderTypeList[index]);
+                              },
+                            ),
+                            separatorBuilder: (context, index) => Divider(height: 1.h),
+                          )
+                        : const Center(
+                            child: EmptyElement(title: "Retailers not available"),
+                          ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
 }

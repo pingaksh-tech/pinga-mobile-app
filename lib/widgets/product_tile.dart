@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -23,7 +25,7 @@ class ProductTile extends StatefulWidget {
   final String imageUrl;
   final String productName;
   final Rx<SubCategoryModel>? category;
-
+  RxString? selectSize;
   final String? categorySlug;
   final String productPrice;
   final bool isSizeAvailable;
@@ -37,8 +39,11 @@ class ProductTile extends StatefulWidget {
   final RxBool? isCartSelected;
   final void Function(bool?)? onChanged;
   final CartModel? item;
+  final void Function(int value)? incrementOnTap;
+  final void Function(String value)? sizeId;
+  final bool? isCart;
 
-  const ProductTile({
+  ProductTile({
     super.key,
     required this.onTap,
     required this.imageUrl,
@@ -57,6 +62,10 @@ class ProductTile extends StatefulWidget {
     this.isSizeAvailable = true,
     this.item,
     this.category,
+    this.selectSize,
+    this.incrementOnTap,
+    this.sizeId,
+    this.isCart = false,
   });
 
   @override
@@ -69,6 +78,7 @@ class _ProductTileState extends State<ProductTile> {
   DiamondModel diamondModel = DiamondModel();
   RxString selectedRemark = "".obs;
   RxBool isSelected = false.obs;
+  RxList<CartModel> cartList = <CartModel>[].obs;
 
   List<String> menuList = [/*AppStrings.variants,*/ AppStrings.addToWatchlist];
 
@@ -76,10 +86,11 @@ class _ProductTileState extends State<ProductTile> {
   Future<void> predefinedValue() async {
     if (isRegistered<PreDefinedValueController>()) {
       final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
-      List<MetalModel> colorList = preValueCon.metalsList;
+      List<MetalModel> metalList = preValueCon.metalsList;
       List<CategoryWiseSize> allSizeList = preValueCon.categoryWiseSizesList;
       RxList<DiamondModel> diamondList = preValueCon.diamondsList;
-      metalModel = colorList[0];
+
+      metalModel = metalList[0];
       if (allSizeList.isNotEmpty) {
         RxList<DiamondModel> sizeList = <DiamondModel>[].obs;
 
@@ -489,27 +500,29 @@ class _ProductTileState extends State<ProductTile> {
     });
   }
 
-  Widget sizeSelector({bool isFlexible = false, Axis direction = Axis.horizontal, required String categorySlug, SubCategoryModel? category}) {
+  Widget sizeSelector({
+    bool isFlexible = false,
+    Axis direction = Axis.horizontal,
+    required String categorySlug,
+    SubCategoryModel? category,
+    RxString? selectedSizeCart,
+  }) {
     return horizontalSelectorButton(
       context,
       categorySlug: categorySlug,
       isFlexible: isFlexible,
       selectedSize: sizeModel,
+      selectedSizeCart: selectedSizeCart,
       sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
       selectableItemType: SelectableItemType.size,
       axisDirection: direction,
       sizeOnChanged: (value) async {
         /// Return Selected Size
         if ((value.runtimeType == DiamondModel)) {
+          widget.selectSize = value.id;
           sizeModel.value = value;
-          printYellow(sizeModel.value.id);
-
-          // await ProductRepository.getFilterProductsListAPI(
-          //   productsListType: ProductsListType.normal,
-          //   subCategoryId: category?.id ?? "",
-          //   sizeId: sizeModel.value.id?.value,
-          // );
         }
+        widget.sizeId!(value.id?.value ?? "");
       },
     );
   }
@@ -523,7 +536,7 @@ class _ProductTileState extends State<ProductTile> {
       sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
       selectableItemType: SelectableItemType.color,
       axisDirection: direction,
-      colorOnChanged: (value) {
+      metalOnChanged: (value) {
         /// Return Selected Metal
         if ((value.runtimeType == MetalModel)) {
           metalModel = value;
@@ -544,8 +557,6 @@ class _ProductTileState extends State<ProductTile> {
           /// Return Selected Diamond
           if ((value.runtimeType == DiamondModel)) {
             diamondModel = value;
-
-            printYellow(diamondModel.id);
           }
         },
       );
@@ -680,7 +691,8 @@ class _ProductTileState extends State<ProductTile> {
                                 children: [
                                   Row(
                                     children: [
-                                      AppIconButton(
+                                      //? Item Summary Icon
+                                      /* AppIconButton(
                                         onPressed: () {
                                           AppDialogs.cartProductDetailDialog(context, productName: widget.productName);
                                         },
@@ -693,7 +705,8 @@ class _ProductTileState extends State<ProductTile> {
                                           ),
                                         ),
                                       ),
-                                      (defaultPadding / 3).horizontalSpace,
+                                      (defaultPadding / 3).horizontalSpace, */
+                                      //? Delete Icon
                                       AppIconButton(
                                         onPressed: () {
                                           AppDialogs.cartDialog(
@@ -729,6 +742,7 @@ class _ProductTileState extends State<ProductTile> {
                                     },
                                     onIncrement: (value) {
                                       cartCon.incrementQuantity(widget.item ?? CartModel());
+                                      widget.incrementOnTap!(value);
                                     },
                                     onDecrement: (value) {
                                       cartCon.decrementQuantity(widget.item ?? CartModel());
@@ -769,6 +783,7 @@ class _ProductTileState extends State<ProductTile> {
                       sizeSelector(
                         direction: Axis.vertical,
                         isFlexible: true,
+                        selectedSizeCart: widget.selectSize,
                         categorySlug: widget.categorySlug ?? '',
                       ),
                     (defaultPadding / 4).horizontalSpace,

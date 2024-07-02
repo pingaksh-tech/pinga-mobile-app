@@ -5,10 +5,12 @@ import '../../../../data/model/cart/retailer_model.dart';
 import '../../../../data/repositories/cart/cart_repository.dart';
 
 class CheckoutController extends GetxController {
-  Rx<TextEditingController> retailerCon = TextEditingController().obs;
+  Rx<TextEditingController> orderTypeCon = TextEditingController().obs;
 
   /// Retailer Listing
   RxList<RetailerModel> retailerList = <RetailerModel>[].obs;
+  Rx<TextEditingController> retailerCon = TextEditingController().obs;
+
   RxBool isLoading = true.obs;
   ScrollController scrollController = ScrollController();
   RxInt page = 1.obs;

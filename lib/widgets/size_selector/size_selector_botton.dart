@@ -12,6 +12,7 @@ import '../../packages/marquee_widget/marquee_widget.dart';
 Widget horizontalSelectorButton(
   BuildContext context, {
   String? categorySlug,
+  RxString? selectedSizeCart,
   Rx<DiamondModel>? selectedSize,
   Rx<MetalModel>? selectedMetal,
   Rx<DiamondModel>? selectedDiamond,
@@ -23,7 +24,7 @@ Widget horizontalSelectorButton(
   bool isFlexible = false,
   Axis axisDirection = Axis.horizontal,
   Function(DiamondModel model)? sizeOnChanged,
-  Function(MetalModel model)? colorOnChanged,
+  Function(MetalModel model)? metalOnChanged,
   Function(DiamondModel model)? rubyOnChanged,
   Function(String model)? remarkOnChanged,
 }) {
@@ -46,12 +47,16 @@ Widget horizontalSelectorButton(
               }
 
               /// Size Selector
-              AppDialogs.sizeSelector(context, sizeList: sizeList, selectedSize: selectedSize?.value.id ?? "".obs)?.then(
+              AppDialogs.sizeSelector(context, sizeList: sizeList, selectedSize: selectedSizeCart ?? selectedSize?.value.id ?? "".obs)?.then(
                 (value) {
                   if (value != null && (value.runtimeType == DiamondModel)) {
                     final DiamondModel sizeModel = (value as DiamondModel);
-
                     selectedSize?.value = sizeModel;
+
+                    int index = sizeList.indexWhere((element) => element.id == sizeModel.id);
+                    if (index != -1) {
+                      selectedSize?.value = sizeList[index];
+                    }
 
                     if (sizeOnChanged != null) {
                       sizeOnChanged(sizeModel);
@@ -71,12 +76,12 @@ Widget horizontalSelectorButton(
               AppDialogs.colorSelector(context, colorList: colorList, selectedColor: selectedMetal?.value.id ?? "".obs)?.then(
                 (value) {
                   if (value != null && (value.runtimeType == MetalModel)) {
-                    final MetalModel colorModel = (value as MetalModel);
+                    final MetalModel metalModel = (value as MetalModel);
 
-                    selectedMetal?.value = colorModel;
+                    selectedMetal?.value = metalModel;
 
-                    if (colorOnChanged != null) {
-                      colorOnChanged(colorModel);
+                    if (metalOnChanged != null) {
+                      metalOnChanged(metalModel);
                     }
                   }
                 },
@@ -184,8 +189,8 @@ Widget horizontalSelectorButton(
                   MarqueeWidget(
                     child: Text(
                       switch (selectableItemType) {
-                        SelectableItemType.size => ("Size ${isValEmpty(selectedSize?.value) ? "(0)" : "(${selectedSize?.value})"}"),
-                        SelectableItemType.color => ("Metal ${isValEmpty(selectedMetal?.value) ? "(-)" : "(${selectedMetal?.value.shortName?.split(" ").first})"}"),
+                        SelectableItemType.size => ("Size ${isValEmpty(selectedSize?.value.shortName) ? "(0)" : "(${selectedSize?.value.shortName})"}"),
+                        SelectableItemType.color => ("Metal ${isValEmpty(selectedMetal?.value.shortName) ? "(-)" : "(${selectedMetal?.value.shortName?.split(" ").first})"}"),
                         SelectableItemType.diamond => isValEmpty(selectedDiamond?.value.shortName) ? "-" : selectedDiamond?.value.shortName ?? '',
                         SelectableItemType.remarks => "Remark",
                         SelectableItemType.stock => "Stock",
