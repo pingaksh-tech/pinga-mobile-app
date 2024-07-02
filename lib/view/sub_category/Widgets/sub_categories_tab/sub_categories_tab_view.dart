@@ -43,6 +43,7 @@ class SubCategoriesTabView extends StatelessWidget {
                                   AppRoutes.productScreen,
                                   arguments: {
                                     "category": con.subCategoriesList[index],
+                                    "categoryId": con.categoryId.value,
                                   },
                                 ),
                               ),

@@ -7,6 +7,7 @@ import '../../../../../exports.dart';
 import '../../../../../res/app_dialog.dart';
 import '../../controller/predefine_value_controller.dart';
 import '../../data/model/common/splash_model.dart';
+import '../../data/model/product/products_model.dart';
 import '../../packages/marquee_widget/marquee_widget.dart';
 
 Widget horizontalSelectorButton(
@@ -16,6 +17,8 @@ Widget horizontalSelectorButton(
   Rx<DiamondModel>? selectedSize,
   Rx<MetalModel>? selectedMetal,
   Rx<DiamondModel>? selectedDiamond,
+  bool isFancy = false,
+  RxList<DiamondListModel>? diamondsList,
   RxString? remarkSelected,
   RxString? productName,
   required SelectableItemType selectableItemType,
@@ -26,6 +29,7 @@ Widget horizontalSelectorButton(
   Function(DiamondModel model)? sizeOnChanged,
   Function(MetalModel model)? metalOnChanged,
   Function(DiamondModel model)? rubyOnChanged,
+  Function(List<DiamondListModel> listModel)? multiRubyOnChanged,
   Function(String model)? remarkOnChanged,
 }) {
   return Expanded(
@@ -91,23 +95,41 @@ Widget horizontalSelectorButton(
 
           case SelectableItemType.diamond:
             if (isRegistered<PreDefinedValueController>()) {
-              final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
-              RxList<DiamondModel> diamondList = preValueCon.diamondsList;
-
               /// Diamond Selector
-              AppDialogs.diamondSelector(context, diamondList: diamondList, selectedDiamond: selectedDiamond?.value.id ?? ''.obs)?.then(
-                (value) {
-                  if (value != null && (value.runtimeType == DiamondModel)) {
-                    final DiamondModel diamondModel = (value as DiamondModel);
+              if (isFancy) {
+                /// MULTI DIAMOND
+                AppDialogs.multiDiamondSelector(context, diamondList: diamondsList)?.then(
+                  (value) {
+                    if (value != null && (value.runtimeType == DiamondModel)) {
+                      final DiamondModel diamondModel = (value as DiamondModel);
 
-                    selectedDiamond?.value = diamondModel;
+                      selectedDiamond?.value = diamondModel;
 
-                    if (rubyOnChanged != null) {
-                      rubyOnChanged(diamondModel);
+                      if (multiRubyOnChanged != null) {
+                        multiRubyOnChanged(diamondsList ?? []);
+                      }
                     }
-                  }
-                },
-              );
+                  },
+                );
+              } else {
+                final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
+                RxList<DiamondModel> diamondList = preValueCon.diamondsList;
+
+                /// SINGLE DIAMOND
+                AppDialogs.diamondSelector(context, diamondList: diamondList, selectedDiamond: selectedDiamond?.value.id ?? ''.obs)?.then(
+                  (value) {
+                    if (value != null && (value.runtimeType == DiamondModel)) {
+                      final DiamondModel diamondModel = (value as DiamondModel);
+
+                      selectedDiamond?.value = diamondModel;
+
+                      if (rubyOnChanged != null) {
+                        rubyOnChanged(diamondModel);
+                      }
+                    }
+                  },
+                );
+              }
             }
             break;
 

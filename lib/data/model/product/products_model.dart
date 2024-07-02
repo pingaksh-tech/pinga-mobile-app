@@ -74,7 +74,7 @@ class InventoryModel {
   final String? metalId;
   final int? metalWeight;
   final bool? status;
-  final List<DiamondModel>? diamonds;
+  final List<DiamondListModel>? diamonds;
   final double? diamondTotalPrice;
   final int? manufacturingPrice;
   final RxInt? quantity;
@@ -91,10 +91,10 @@ class InventoryModel {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
-  final MetalModel? metal;
+  final MetalListModel? metal;
   final List<DiamondPricingModel>? diamondPricings;
   final List<DiamondWeight>? diamondWeight;
-  final double? inventoryTotalPrice;
+  RxNum? inventoryTotalPrice;
   final String? singleInvImage;
   final List<CollectionModel>? collection;
   final List<dynamic>? watchlist;
@@ -150,7 +150,7 @@ class InventoryModel {
         metalId: json["metal_id"],
         metalWeight: json["metal_weight"],
         status: json["status"],
-        diamonds: json["diamonds"] == null ? [] : List<DiamondModel>.from(json["diamonds"]!.map((x) => DiamondModel.fromJson(x))),
+        diamonds: json["diamonds"] == null ? [] : List<DiamondListModel>.from(json["diamonds"]!.map((x) => DiamondListModel.fromJson(x))),
         diamondTotalPrice: json["diamond_total_price"]?.toDouble(),
         manufacturingPrice: json["manufacturing_price"],
         gender: json["gender"],
@@ -166,10 +166,10 @@ class InventoryModel {
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
         v: json["__v"],
-        metal: json["metal"] == null ? null : MetalModel.fromJson(json["metal"]),
+        metal: json["metal"] == null ? null : MetalListModel.fromJson(json["metal"]),
         diamondPricings: json["diamond_pricings"] == null ? [] : List<DiamondPricingModel>.from(json["diamond_pricings"]!.map((x) => DiamondPricingModel.fromJson(x))),
         diamondWeight: json["diamond_weight"] == null ? [] : List<DiamondWeight>.from(json["diamond_weight"]!.map((x) => DiamondWeight.fromJson(x))),
-        inventoryTotalPrice: json["inventory_total_price"]?.toDouble(),
+        inventoryTotalPrice: json["inventory_total_price"] == null ? null : RxNum(num.tryParse(json["inventory_total_price"].toString()) ?? 0),
         singleInvImage: json["single_inv_image"],
         collection: json["collection"] == null ? [] : List<CollectionModel>.from(json["collection"]!.map((x) => CollectionModel.fromJson(x))),
         watchlist: json["watchlist"] == null ? [] : List<dynamic>.from(json["watchlist"]!.map((x) => x)),
@@ -207,7 +207,7 @@ class InventoryModel {
         "metal": metal?.toJson(),
         "diamond_pricings": diamondPricings == null ? [] : List<dynamic>.from(diamondPricings!.map((x) => x.toJson())),
         "diamond_weight": diamondWeight == null ? [] : List<dynamic>.from(diamondWeight!.map((x) => x.toJson())),
-        "inventory_total_price": inventoryTotalPrice,
+        "inventory_total_price": inventoryTotalPrice?.value,
         "single_inv_image": singleInvImage,
         "collection": collection == null ? [] : List<dynamic>.from(collection!.map((x) => x.toJson())),
         "watchlist": watchlist == null ? [] : List<dynamic>.from(watchlist!.map((x) => x)),
@@ -270,15 +270,15 @@ class DiamondWeight {
       };
 }
 
-class DiamondModel {
-  final String? diamondClarity;
+class DiamondListModel {
+  RxString? diamondClarity;
   final String? diamondShape;
   final String? diamondSize;
   final int? diamondCount;
   final double? totalPrice;
   final String? id;
 
-  DiamondModel({
+  DiamondListModel({
     this.diamondClarity,
     this.diamondShape,
     this.diamondSize,
@@ -287,8 +287,8 @@ class DiamondModel {
     this.id,
   });
 
-  factory DiamondModel.fromJson(Map<String, dynamic> json) => DiamondModel(
-        diamondClarity: json["diamond_clarity"],
+  factory DiamondListModel.fromJson(Map<String, dynamic> json) => DiamondListModel(
+        diamondClarity: RxString(json["diamond_clarity"].toString()),
         diamondShape: json["diamond_shape"],
         diamondSize: json["diamond_size"],
         diamondCount: json["diamond_count"],
@@ -297,7 +297,7 @@ class DiamondModel {
       );
 
   Map<String, dynamic> toJson() => {
-        "diamond_clarity": diamondClarity,
+        "diamond_clarity": diamondClarity?.value,
         "diamond_shape": diamondShape,
         "diamond_size": diamondSize,
         "diamond_count": diamondCount,
@@ -306,7 +306,7 @@ class DiamondModel {
       };
 }
 
-class MetalModel {
+class MetalListModel {
   final String? id;
   final String? name;
   final String? sortName;
@@ -320,7 +320,7 @@ class MetalModel {
   final DateTime? updatedAt;
   final int? v;
 
-  MetalModel({
+  MetalListModel({
     this.id,
     this.name,
     this.sortName,
@@ -335,7 +335,7 @@ class MetalModel {
     this.v,
   });
 
-  factory MetalModel.fromJson(Map<String, dynamic> json) => MetalModel(
+  factory MetalListModel.fromJson(Map<String, dynamic> json) => MetalListModel(
         id: json["_id"],
         name: json["name"],
         sortName: json["sort_name"],

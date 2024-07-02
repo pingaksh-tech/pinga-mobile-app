@@ -7,10 +7,12 @@ import '../../../../data/repositories/filter/filter_repository.dart';
 import '../../../../exports.dart';
 
 class FilterController extends GetxController {
-  RxDouble minMetalWt = 0.0.obs;
-  RxDouble maxMetalWt = 12.0.obs;
-  RxDouble minDiamondWt = 0.0.obs;
-  RxDouble maxDiamondWt = 50.0.obs;
+  RxBool isLoader = false.obs;
+
+  RxDouble minMetalWt = 0.01.obs;
+  RxDouble maxMetalWt = 200.0.obs;
+  RxDouble minDiamondWt = 0.01.obs;
+  RxDouble maxDiamondWt = 20.0.obs;
   RxString selectSeller = "".obs;
   RxString selectLatestDesign = "".obs;
 
@@ -18,13 +20,29 @@ class FilterController extends GetxController {
   RxString selectFilter = "Range".obs;
   Rx<FilterItemType> filterType = FilterItemType.range.obs;
 
+  RxBool? isAvailable;
   RxList<StockAvailableList> availableList = <StockAvailableList>[].obs;
   RxList<Product> genderList = <Product>[].obs;
 
-  RxString selectedMrp = ''.obs;
-  RxList mrpList = ["upto 25,000", "25,001 - 50,000", "50,001 - 75,000", "75,001 - 1,00,000", "1,00,001 to above"].obs;
+  /// ================  MRP ==================>
   Rx<TextEditingController> mrpFromCon = TextEditingController().obs;
   Rx<TextEditingController> mrpToCon = TextEditingController().obs;
+
+  RxMap selectMrp = {"label": "".obs, "min": 0, "max": 0}.obs;
+  RxList mrpList = [
+    {"label": "upto 25,000".obs, "min": 0, "max": 25000},
+    {"label": "25,001 - 50,000".obs, "min": 25001, "max": 50000},
+    {"label": "50,001 - 75,000".obs, "min": 50001, "max": 75000},
+    {"label": "75,001 - 1,00,000".obs, "min": 75001, "max": 100000},
+    {"label": "1,00,001 to above".obs, "min": 100001, "max": 0},
+  ].obs;
+
+  final RxList<dynamic> selectedDiamonds = [].obs;
+  final RxList<dynamic> selectedGender = [].obs;
+  final RxList<dynamic> selectedKt = [].obs;
+  final RxList<dynamic> selectedDelivery = [].obs;
+  final RxList<dynamic> selectedProductNames = [].obs;
+  final RxList<dynamic> selectedCollections = [].obs;
 
   final List<Map<String, dynamic>> diamondList = [
     {"title": "VVS-EF", "isChecked": false.obs},
@@ -65,24 +83,15 @@ class FilterController extends GetxController {
 
 //? Clear All Filter
   void clearAllFilters() {
-    minMetalWt.value = 0.0;
-    maxMetalWt.value = 12.0;
+    minMetalWt.value = 0.01;
+    maxMetalWt.value = 200.0;
 
-    for (var brand in diamondList) {
-      brand["isChecked"].textValue = false;
-    }
-    for (var kt in ktList) {
-      kt["isChecked"].textValue = false;
-    }
-    for (var delivery in deliveryList) {
-      delivery["isChecked"].textValue = false;
-    }
-    for (var tag in productionNameList) {
-      tag["isChecked"].textValue = false;
-    }
-    for (var collection in collectionList) {
-      collection["isChecked"].textValue = false;
-    }
+    selectedProductNames.clear();
+    selectedDelivery.clear();
+    selectedKt.clear();
+    selectedDiamonds.clear();
+    selectedCollections.clear();
+    selectedGender.clear();
 
     selectSeller.value = "";
     selectLatestDesign.value = "";
@@ -128,5 +137,19 @@ class FilterController extends GetxController {
     super.onReady();
     FilterRepository.stockAvailableList();
     FilterRepository.genderListAPI();
+  }
+
+  String subCategoryId = "";
+  String categoryId = "";
+
+  @override
+  void onInit() {
+    super.onInit();
+    if (Get.arguments != null) {
+      if (Get.arguments['subCategoryId'].runtimeType == String) {
+        subCategoryId = Get.arguments['subCategoryId'];
+        categoryId = Get.arguments['categoryId'];
+      }
+    }
   }
 }

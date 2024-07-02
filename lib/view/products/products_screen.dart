@@ -25,7 +25,7 @@ class ProductsScreen extends StatelessWidget {
         appBar: MyAppBar(
           backgroundColor: Theme.of(context).colorScheme.surface,
           shadowColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.3),
-          title: con.categoryName.isNotEmpty ? con.categoryName.value : con.category.value.name,
+          title: con.categoryName.isNotEmpty ? con.categoryName.value : con.subCategory.value.name,
 
           actions: const [
             CartIconButton(),
@@ -59,7 +59,7 @@ class ProductsScreen extends StatelessWidget {
                   SortAndFilterButton(
                     title: "Filter",
                     image: AppAssets.filter,
-                    onTap: () => Get.toNamed(AppRoutes.filterScreen),
+                    onTap: () => Get.toNamed(AppRoutes.filterScreen, arguments: {"subCategoryId": con.subCategory.value.id, "categoryId": con.categoryId.value}),
                   ),
                   SizedBox(
                     height: 20.h,
@@ -92,7 +92,7 @@ class ProductsScreen extends StatelessWidget {
               endIndent: defaultPadding / 2,
             ),
             Text(
-              "Total Products ${con.category.value.totalCount}",
+              "Total Products ${con.totalCount}",
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.subText),
               textAlign: TextAlign.center,
             ).paddingOnly(top: defaultPadding / 3),
@@ -103,17 +103,20 @@ class ProductsScreen extends StatelessWidget {
                     children: List.generate(
                       con.inventoryProductList.length,
                       (index) => ProductTile(
-                        category: con.category,
-                        categorySlug: con.category.value.name ?? "ring" /*Product Category*/,
+                        category: con.subCategory,
+                        isFancy: con.isFancyDiamond.value,
+                        inventoryId: con.inventoryProductList[index].id,
+                        diamondList: RxList(con.inventoryProductList[index].diamonds ?? []),
+                        categorySlug: con.subCategory.value.name ?? "ring" /*Product Category*/,
                         productTileType: con.isProductViewChange.isTrue ? ProductTileType.grid : ProductTileType.list,
                         onTap: () => Get.toNamed(AppRoutes.productDetailsScreen, arguments: {
-                          "category": con.category.value.id ?? '',
+                          "category": con.subCategory.value.id ?? '',
                           'isSize': con.isSizeAvailable.value,
                         }),
                         isLike: (con.wishlistList.contains(con.inventoryProductList[index])).obs,
                         imageUrl: (con.inventoryProductList[index].inventoryImages != null && con.inventoryProductList[index].inventoryImages!.isNotEmpty) ? con.inventoryProductList[index].inventoryImages![0] : "",
                         productName: con.inventoryProductList[index].name ?? "",
-                        productPrice: con.inventoryProductList[index].manufacturingPrice.toString(),
+                        productPrice: con.inventoryProductList[index].inventoryTotalPrice.toString(),
                         productQuantity: con.inventoryProductList[index].quantity,
                         isSizeAvailable: con.isSizeAvailable.value,
                         likeOnChanged: (value) {
@@ -132,7 +135,7 @@ class ProductsScreen extends StatelessWidget {
 
                 /// EMPTY DATA VIEW
                 EmptyElement(
-                    title: "${con.category.value.name} Not Found!",
+                    title: "${con.subCategory.value.name} Not Found!",
                     alignment: Alignment.center,
                     padding: EdgeInsets.symmetric(vertical: Get.width / 2.5),
                   ),

@@ -11,9 +11,6 @@ class FilterRepository {
     "data": {
       "products": [
         {"title": "In Stock Available Only", "isChecked": false},
-        {"title": "Family Products Only", "isChecked": false},
-        {"title": "Wear It Items Only", "isChecked": false},
-        {"title": "Try On Items Only", "isChecked": false}
       ],
     }
   };

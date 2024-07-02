@@ -3,9 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
+import '../../../../controller/predefine_value_controller.dart';
+import '../../../../data/repositories/product/product_repository.dart';
 import '../../../../exports.dart';
 import '../../../../res/app_bar.dart';
-import '../../../../widgets/checkbox_title_tile.dart';
 import '../../../../widgets/custom_check_box_tile.dart';
 import '../../../../widgets/filter_listview_widget.dart';
 import 'filter_controller.dart';
@@ -14,6 +15,7 @@ class FilterScreen extends StatelessWidget {
   FilterScreen({super.key});
 
   final FilterController con = Get.put(FilterController());
+  final PreDefinedValueController preValCon = Get.find<PreDefinedValueController>();
 
   Color get dividerColor => Theme.of(Get.context!).dividerColor.withOpacity(0.08);
 
@@ -79,7 +81,7 @@ class FilterScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Metal WT",
+                          "Metal WT(grm)",
                           style: Theme.of(context).textTheme.bodyLarge,
                         ).paddingOnly(bottom: defaultPadding / 5),
                         Text(
@@ -93,8 +95,8 @@ class FilterScreen extends StatelessWidget {
                           child: RangeSlider(
                             values: RangeValues(con.minMetalWt.value, con.maxMetalWt.value),
                             activeColor: Theme.of(context).primaryColor,
-                            max: 12,
-                            min: 0,
+                            max: 200.0,
+                            min: 0.01,
                             onChanged: (value) {
                               con.minMetalWt.value = value.start;
                               con.maxMetalWt.value = value.end;
@@ -119,8 +121,8 @@ class FilterScreen extends StatelessWidget {
                           child: RangeSlider(
                             values: RangeValues(con.minDiamondWt.value, con.maxDiamondWt.value),
                             activeColor: Theme.of(context).primaryColor,
-                            max: 50,
-                            min: 0,
+                            max: 20,
+                            min: 0.01,
                             onChanged: (value) {
                               con.minDiamondWt.value = value.start;
                               con.maxDiamondWt.value = value.end;
@@ -132,41 +134,47 @@ class FilterScreen extends StatelessWidget {
                   ),
                 FilterItemType.mrp => Column(
                     children: [
-                      ListView.separated(
-                        shrinkWrap: true,
-                        physics: const RangeMaintainingScrollPhysics(),
-                        padding: EdgeInsets.symmetric(vertical: defaultPadding / 2),
-                        itemBuilder: (context, index) => Obx(() {
-                          return CustomCheckboxTile(
-                            isSelected: (con.selectedMrp.value == con.mrpList[index]).obs,
-                            title: con.mrpList[index],
-                            titleStyle: TextStyle(fontSize: 13.sp, fontWeight: con.selectedMrp.value == con.mrpList[index] ? FontWeight.w500 : FontWeight.w400),
-                            onChanged: (value) {
-                              if (value == false) {
-                                con.selectedMrp.value = "";
-                              } else {
-                                con.selectedMrp.value = con.mrpList[index];
-                              }
-                            },
-                          );
-                        }),
-                        separatorBuilder: (context, index) => separateDivider,
-                        itemCount: con.mrpList.length,
-                      ),
+                      Obx(() {
+                        return ListView.separated(
+                          shrinkWrap: true,
+                          physics: const RangeMaintainingScrollPhysics(),
+                          padding: EdgeInsets.symmetric(vertical: defaultPadding / 2),
+                          itemBuilder: (context, index) => Obx(() {
+                            return CustomCheckboxTile(
+                              scale: 1,
+                              isSelected: (con.selectMrp['label'] == con.mrpList[index]['label']).obs,
+                              title: con.mrpList[index]['label'].value,
+                              titleStyle: TextStyle(fontSize: 13.sp, fontWeight: con.selectMrp['label'] == con.mrpList[index]['label'] ? FontWeight.w500 : FontWeight.w400),
+                              onChanged: (value) {
+                                if (value == false) {
+                                  con.selectMrp.value = {"label": "".obs, "min": 0, "max": 0} as Map<dynamic, dynamic>;
+                                } else {
+                                  con.selectMrp.value = con.mrpList[index];
+                                }
+
+                                con.selectMrp.refresh();
+                              },
+                            );
+                          }),
+                          separatorBuilder: (context, index) => separateDivider,
+                          itemCount: con.mrpList.length,
+                        );
+                      }),
                       CustomCheckboxTile(
-                        isSelected: (con.selectedMrp.value.toLowerCase() == 'customs').obs,
+                        scale: 1,
+                        isSelected: (con.selectMrp['label'] == 'customs').obs,
                         title: "Customs",
-                        titleStyle: TextStyle(fontSize: 13.sp, fontWeight: con.selectedMrp.value.toLowerCase() == 'customs' ? FontWeight.w500 : FontWeight.w400),
+                        titleStyle: TextStyle(fontSize: 13.sp, fontWeight: con.selectMrp['label'].toString().toLowerCase() == 'customs' ? FontWeight.w500 : FontWeight.w400),
                         onChanged: (value) {
                           if (value == false) {
-                            con.selectedMrp.value = "";
+                            con.selectMrp.value = {"label": "".obs, "min": 0, "max": 0} as Map<dynamic, dynamic>;
                           } else {
-                            con.selectedMrp.value = "customs";
+                            con.selectMrp.value = {"label": "customs".obs, "min": 0, "max": 0} as Map<dynamic, dynamic>;
                           }
                         },
                       ),
                       10.verticalSpace,
-                      if (con.selectedMrp.value == "customs")
+                      if (con.selectMrp['label'] == "customs".obs)
                         Row(
                           children: [
                             Expanded(
@@ -215,9 +223,15 @@ class FilterScreen extends StatelessWidget {
                 FilterItemType.available => ListView.separated(
                     physics: const RangeMaintainingScrollPhysics(),
                     padding: EdgeInsets.symmetric(vertical: defaultPadding / 2),
-                    itemBuilder: (context, index) => CheckBoxWithTitleTile(
+                    itemBuilder: (context, index) => CustomCheckboxTile(
+                      scale: 1,
                       title: con.availableList[index].title ?? "",
-                      isCheck: (con.availableList[index].isChecked?.value ?? true).obs,
+                      isSelected: con.isAvailable ?? false.obs,
+                      onChanged: (val) {
+                        if (val != null) {
+                          con.isAvailable?.value = val;
+                        }
+                      },
                     ),
                     separatorBuilder: (context, index) => separateDivider,
                     itemCount: con.availableList.length,
@@ -227,28 +241,66 @@ class FilterScreen extends StatelessWidget {
                 FilterItemType.gender => ListView.separated(
                     physics: const RangeMaintainingScrollPhysics(),
                     padding: EdgeInsets.symmetric(vertical: defaultPadding / 2),
-                    itemBuilder: (context, index) => CheckBoxWithTitleTile(
-                      title: con.genderList[index].title ?? "",
-                      isCheck: RxBool(con.genderList[index].isChecked ?? false),
-                    ),
+                    itemCount: preValCon.genderList.length,
                     separatorBuilder: (context, index) => separateDivider,
-                    itemCount: con.genderList.length,
+                    itemBuilder: (context, index) => CustomCheckboxTile(
+                      scale: 1,
+                      title: preValCon.genderList[index].capitalizeFirst,
+                      isSelected: RxBool(con.selectedGender.contains(preValCon.genderList[index])),
+                      onChanged: (val) {
+                        if (con.selectedGender.contains(preValCon.genderList[index])) {
+                          con.selectedGender.remove(preValCon.genderList[index]);
+                        } else {
+                          con.selectedGender.add(preValCon.genderList[index]);
+                        }
+                      },
+                    ),
                   ),
 
                 //? diamond Type Tab UI
-                FilterItemType.diamond => FilterListViewWidget(filterTabList: con.diamondList),
+                FilterItemType.diamond => FilterListViewWidget(
+                    diamondList: preValCon.diamondsList,
+                    type: FilterItemType.diamond,
+                    onSelect: (value) {
+                      con.selectedDiamonds.value = value;
+                    },
+                  ),
 
                 //? KT Tab UI
-                FilterItemType.kt => FilterListViewWidget(filterTabList: con.ktList),
+                FilterItemType.kt => FilterListViewWidget(
+                    metalList: preValCon.metalsList,
+                    type: FilterItemType.kt,
+                    onSelect: (value) {
+                      con.selectedKt.value = value;
+                    },
+                  ),
 
                 //? Delivery Tab UI
-                FilterItemType.delivery => FilterListViewWidget(filterTabList: con.deliveryList),
+                FilterItemType.delivery => FilterListViewWidget(
+                    deliveryList: preValCon.deliveriesList,
+                    type: FilterItemType.delivery,
+                    onSelect: (value) {
+                      con.selectedDelivery.value = value;
+                    },
+                  ),
 
                 //? Tag Tab UI
-                FilterItemType.production => FilterListViewWidget(filterTabList: con.productionNameList),
+                FilterItemType.production => FilterListViewWidget(
+                    deliveryList: preValCon.productNamesList,
+                    type: FilterItemType.production,
+                    onSelect: (value) {
+                      con.selectedProductNames.value = value;
+                    },
+                  ),
 
                 //? Collection Tab UI
-                FilterItemType.collection => FilterListViewWidget(filterTabList: con.collectionList)
+                FilterItemType.collection => FilterListViewWidget(
+                    collectionList: preValCon.collectionList,
+                    type: FilterItemType.collection,
+                    onSelect: (value) {
+                      con.selectedCollections.value = value;
+                    },
+                  )
               },
             ),
           ],
@@ -262,15 +314,38 @@ class FilterScreen extends StatelessWidget {
                   height: 30.h,
                   title: "Clear All",
                   buttonType: ButtonType.outline,
-                  onPressed: () {},
+                  onPressed: () {
+                    con.clearAllFilters();
+                  },
                 ),
               ),
               defaultPadding.horizontalSpace,
               Expanded(
                 child: AppButton(
+                  loader: con.isLoader.value,
                   height: 30.h,
                   title: "Apply",
-                  onPressed: () => Get.back(),
+                  onPressed: () async {
+                    await ProductRepository.getFilterProductsListAPI(
+                      productsListType: ProductsListType.normal,
+                      loader: con.isLoader,
+                      categoryId: con.categoryId,
+                      subCategoryId: con.subCategoryId,
+                      minMetal: con.minMetalWt.value,
+                      maxMetal: con.maxMetalWt.value,
+                      minDiamond: con.minDiamondWt.value,
+                      maxDiamond: con.maxDiamondWt.value,
+                      minMrp: con.selectMrp['min'],
+                      maxMrp: con.selectMrp['max'],
+                      inStock: con.isAvailable?.value,
+                      genderList: con.selectedGender,
+                      diamondList: con.selectedDiamonds,
+                      ktList: con.selectedKt,
+                      deliveryList: con.selectedDelivery,
+                      productionNameList: con.selectedProductNames,
+                      colectionList: con.selectedCollections,
+                    ).then((value) => Get.back());
+                  },
                 ),
               ),
             ],

@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../data/model/category/category_model.dart';
 
 import '../../controller/predefine_value_controller.dart';
 import '../../data/model/product/products_model.dart';
 import '../../data/model/sub_category/sub_category_model.dart';
 import '../../data/repositories/product/product_repository.dart';
 import '../../exports.dart';
+import '../home/home_controller.dart';
 
 class ProductsController extends GetxController {
   RxBool isLoader = false.obs;
-
   RxBool isSizeAvailable = false.obs;
+  RxString categoryId = "".obs;
+  RxInt totalCount = 0.obs;
+
+  Rx<CategoryModel> currentCategory = CategoryModel().obs;
+  RxBool isFancyDiamond = false.obs;
 
   RxString categoryName = "".obs;
-  Rx<SubCategoryModel> category = SubCategoryModel().obs;
+  Rx<SubCategoryModel> subCategory = SubCategoryModel().obs;
   RxBool isProductViewChange = true.obs;
 
   RxString selectPrice = "".obs;
@@ -32,15 +38,28 @@ class ProductsController extends GetxController {
   RxBool paginationLoader = false.obs;
   RxBool loader = true.obs;
 
+  final HomeController homeCon = Get.find<HomeController>();
+
   @override
   void onInit() {
     super.onInit();
     if (Get.arguments != null) {
       if (Get.arguments["category"].runtimeType == SubCategoryModel) {
-        category.value = Get.arguments["category"];
+        subCategory.value = Get.arguments["category"];
+      }
+      if (Get.arguments["categoryId"].runtimeType == String) {
+        categoryId.value = Get.arguments["categoryId"];
       }
       if (Get.arguments["watchlistName"].runtimeType == String) {
         categoryName.value = Get.arguments["watchlistName"];
+      }
+    }
+
+    int index = homeCon.categoriesList.indexWhere((element) => element.id == categoryId.value);
+    if (index != -1) {
+      currentCategory.value = homeCon.categoriesList[index];
+      if (currentCategory.value.id == "667cbcc3dd04772674c966c4") {
+        isFancyDiamond.value = true;
       }
     }
   }
@@ -50,8 +69,8 @@ class ProductsController extends GetxController {
     super.onReady();
     ProductRepository.getPredefineValueAPI();
     preValueAvailable();
-    printOkStatus(category.value.id);
-    ProductRepository.getFilterProductsListAPI(productsListType: ProductsListType.normal, subCategoryId: category.value.id ?? "");
+    printOkStatus(subCategory.value.id);
+    ProductRepository.getFilterProductsListAPI(categoryId: categoryId.value, productsListType: ProductsListType.normal, subCategoryId: subCategory.value.id ?? "");
   }
 
   final RxList sortWithPriceList = [
@@ -85,7 +104,7 @@ class ProductsController extends GetxController {
       final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
 
       for (var element in preValueCon.categoryWiseSizesList) {
-        if (element.id?.value == category.value.id) {
+        if (element.id?.value == subCategory.value.id) {
           isSizeAvailable.value = true;
           break;
         }
