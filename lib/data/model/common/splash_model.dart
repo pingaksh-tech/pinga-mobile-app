@@ -255,6 +255,7 @@ class GetSplashModel {
 }
 
 class SplashDataModel {
+  final List<CollectionModel>? collections;
   final List<String>? productionNames;
   final List<String>? deliveries;
   final List<String>? gender;
@@ -264,6 +265,7 @@ class SplashDataModel {
   final List<DiamondModel>? diamonds;
 
   SplashDataModel({
+    this.collections,
     this.gender,
     this.productionNames,
     this.deliveries,
@@ -274,6 +276,7 @@ class SplashDataModel {
   });
 
   factory SplashDataModel.fromJson(Map<String, dynamic> json) => SplashDataModel(
+        collections: json["collections"] == null ? [] : List<CollectionModel>.from(json["collections"]!.map((x) => CollectionModel.fromJson(x))),
         gender: json["gender"] == null ? [] : List<String>.from(json["gender"]!.map((x) => x)),
         productionNames: json["production_names"] == null ? [] : List<String>.from(json["production_names"]!.map((x) => x)),
         deliveries: json["deliveries"] == null ? [] : List<String>.from(json["deliveries"]!.map((x) => x)),
@@ -284,6 +287,7 @@ class SplashDataModel {
       );
 
   Map<String, dynamic> toJson() => {
+        "collections": collections == null ? [] : List<dynamic>.from(collections!.map((x) => x.toJson())),
         "gender": gender == null ? [] : List<dynamic>.from(gender!.map((x) => x)),
         "production_names": productionNames == null ? [] : List<dynamic>.from(productionNames!.map((x) => x)),
         "deliveries": deliveries == null ? [] : List<dynamic>.from(deliveries!.map((x) => x)),
@@ -496,7 +500,7 @@ class CategoryWiseSize {
       );
 
   Map<String, dynamic> toJson() => {
-        "_id": id.obs,
+        "_id": id?.value,
         "name": name,
         "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
       };
@@ -579,5 +583,29 @@ class GenderModel {
         "MALE": male,
         "FEMALE": female,
         "UNISEX": unisex,
+      };
+}
+
+class CollectionModel {
+  final String? id;
+  final String? name;
+  final int? count;
+
+  CollectionModel({
+    this.id,
+    this.name,
+    this.count,
+  });
+
+  factory CollectionModel.fromJson(Map<String, dynamic> json) => CollectionModel(
+        id: json["_id"],
+        name: json["name"],
+        count: json["count"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "_id": id,
+        "name": name,
+        "count": count,
       };
 }

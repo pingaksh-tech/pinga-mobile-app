@@ -8,7 +8,9 @@ import 'package:get/get.dart';
 import '../controller/predefine_value_controller.dart';
 import '../data/model/cart/cart_model.dart';
 import '../data/model/common/splash_model.dart';
+import '../data/model/product/products_model.dart';
 import '../data/model/sub_category/sub_category_model.dart';
+import '../data/repositories/product/product_repository.dart';
 import '../exports.dart';
 import '../res/app_dialog.dart';
 import '../res/app_network_image.dart';
@@ -23,7 +25,9 @@ class ProductTile extends StatefulWidget {
   final String imageUrl;
   final String productName;
   final Rx<SubCategoryModel>? category;
-
+  final String? inventoryId;
+  final bool isFancy;
+  final RxList<DiamondListModel>? diamondList;
   final String? categorySlug;
   final String productPrice;
   final bool isSizeAvailable;
@@ -50,6 +54,7 @@ class ProductTile extends StatefulWidget {
     this.productTileType = ProductTileType.grid,
     this.brandName,
     this.deleteOnTap,
+    this.isFancy = false,
     this.cartDetailOnTap,
     this.categorySlug,
     this.isCartSelected,
@@ -57,6 +62,8 @@ class ProductTile extends StatefulWidget {
     this.isSizeAvailable = true,
     this.item,
     this.category,
+    this.inventoryId,
+    this.diamondList,
   });
 
   @override
@@ -503,12 +510,6 @@ class _ProductTileState extends State<ProductTile> {
         if ((value.runtimeType == DiamondModel)) {
           sizeModel.value = value;
           printYellow(sizeModel.value.id);
-
-          // await ProductRepository.getFilterProductsListAPI(
-          //   productsListType: ProductsListType.normal,
-          //   subCategoryId: category?.id ?? "",
-          //   sizeId: sizeModel.value.id?.value,
-          // );
         }
       },
     );
@@ -523,10 +524,17 @@ class _ProductTileState extends State<ProductTile> {
       sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
       selectableItemType: SelectableItemType.color,
       axisDirection: direction,
-      colorOnChanged: (value) {
+      colorOnChanged: (value) async {
         /// Return Selected Metal
         if ((value.runtimeType == MetalModel)) {
           metalModel = value;
+
+          /// GET NEW PRODUCT PRICE
+          await ProductRepository.getProductPriceAPI(
+            inventoryId: widget.inventoryId ?? '',
+            metalId: metalModel.id?.value ?? "",
+            diamondClarity: diamondModel.name ?? "",
+          );
         }
       },
     );
@@ -537,15 +545,37 @@ class _ProductTileState extends State<ProductTile> {
         isFlexible: isFlexible,
         categorySlug: categorySlug,
         selectedDiamond: diamondModel.obs,
+        diamondsList: widget.diamondList,
+        isFancy: widget.isFancy,
         sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
         selectableItemType: SelectableItemType.diamond,
         axisDirection: direction,
-        rubyOnChanged: (value) {
-          /// Return Selected Diamond
+        multiRubyOnChanged: (diamondList) async {
+          /// Return List of Selected Diamond
+          if ((diamondList.runtimeType == List<DiamondListModel>)) {
+            diamondList = diamondList;
+
+            // /// GET NEW PRODUCT PRICE
+            // await ProductRepository.getProductPriceAPI(
+            //   inventoryId: widget.inventoryId ?? '',
+            //   metalId: metalModel.id?.value ?? "",
+            //   diamondClarity: diamondModel.name ?? "",
+            // );
+          }
+        },
+        rubyOnChanged: (value) async {
+          /// Return Single Selected Diamond
           if ((value.runtimeType == DiamondModel)) {
             diamondModel = value;
 
             printYellow(diamondModel.id);
+
+            /// GET NEW PRODUCT PRICE
+            await ProductRepository.getProductPriceAPI(
+              inventoryId: widget.inventoryId ?? '',
+              metalId: metalModel.id?.value ?? "",
+              diamondClarity: diamondModel.name ?? "",
+            );
           }
         },
       );

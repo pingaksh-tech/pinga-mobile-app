@@ -29,7 +29,7 @@ class ApiUrls {
 
   /// PRODUCTS
   static const String getAllProductsPOST = "inventory/filter";
-  static const String getAllProductsGET = "inventory";
+  static const String getProductPricePOST = "inventory/changing-price";
 
   /// USER
   static const String deleteAccountDELETE = "";

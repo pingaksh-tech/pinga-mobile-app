@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 
 import '../controller/predefine_value_controller.dart';
 import '../data/model/common/splash_model.dart';
+import '../data/model/product/products_model.dart';
 import '../exports.dart';
 import '../widgets/custom_radio_button.dart';
 import '../widgets/download_selection_tile.dart';
@@ -717,7 +718,7 @@ class AppDialogs {
         });
   }
 
-  // Select color dialog
+  // Select metal dialog
   static Future<dynamic>? colorSelector(
     BuildContext context, {
     Function(String?)? onChanged,
@@ -748,7 +749,7 @@ class AppDialogs {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Select Color",
+                            "Select Metal",
                             style: AppTextStyle.titleStyle(context).copyWith(
                               fontSize: 18.sp,
                               fontWeight: FontWeight.w500,
@@ -949,6 +950,184 @@ class AppDialogs {
                                 ),
                               ),
                             ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
+  // Multi Diamond Select Dialog
+  static Future<dynamic>? multiDiamondSelector(
+    BuildContext context, {
+    Function(String?)? onChanged,
+    required RxList<DiamondListModel>? diamondList,
+  }) {
+    TextEditingController controller = TextEditingController();
+    RxList<String> diamonds = List.generate(
+      diamondList != null ? diamondList.length : 0,
+      (index) => diamondList?[index].diamondClarity?.value ?? "",
+    ).obs;
+    return showGeneralDialog(
+        context: context,
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return Scaffold(
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            body: SafeArea(
+              child: Container(
+                width: Get.width,
+                padding: EdgeInsets.only(top: defaultPadding),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(defaultRadius / 2),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    /// Title
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Select Diamond",
+                            style: AppTextStyle.titleStyle(context).copyWith(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                          AppIconButton(
+                            size: 26.h,
+                            icon: SvgPicture.asset(AppAssets.crossIcon),
+                            onPressed: () {
+                              Get.back();
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                    defaultPadding.verticalSpace,
+                    if (diamondList != null && diamondList.isNotEmpty)
+                      AppTextField(
+                        controller: controller,
+                        hintText: 'Search',
+                        textInputAction: TextInputAction.search,
+                        padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                        contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 4, horizontal: defaultPadding / 1.7),
+                        onChanged: onChanged,
+                        prefixIcon: Padding(
+                          padding: EdgeInsets.all(defaultPadding / 1.4),
+                          child: SvgPicture.asset(
+                            AppAssets.search,
+                            height: 22,
+                            width: 22,
+                            color: UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400, // ignore: deprecated_member_use
+                          ),
+                        ),
+                        suffixIcon: controller.text.trim().isNotEmpty
+                            ? Center(
+                                child: SvgPicture.asset(
+                                  AppAssets.crossIcon,
+                                  color: Theme.of(context).primaryColor, // ignore: deprecated_member_use
+                                ),
+                              )
+                            : null,
+                        suffixOnTap: () {
+                          FocusScope.of(context).unfocus();
+                          controller.clear();
+                        },
+                      ),
+                    (defaultPadding / 1.4).verticalSpace,
+
+                    /// Records
+                    Expanded(
+                      child: (diamondList != null && diamondList.isNotEmpty)
+                          ? ListView.separated(
+                              physics: const RangeMaintainingScrollPhysics(),
+                              itemCount: diamondList.length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) => Card(
+                                  margin: EdgeInsets.symmetric(horizontal: defaultPadding),
+                                  elevation: 3,
+                                  borderOnForeground: true,
+                                  child: Obx(() {
+                                    return Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: defaultPadding / 1.5, vertical: defaultPadding / 2),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
+                                              RxList<DiamondModel> singleDiamondList = preValueCon.diamondsList;
+
+                                              AppDialogs.diamondSelector(context, diamondList: singleDiamondList, selectedDiamond: (diamondList[index].id ?? "").obs)?.then(
+                                                (value) {
+                                                  if (value != null && (value.runtimeType == DiamondModel)) {
+                                                    final DiamondModel diamondModel = (value as DiamondModel);
+                                                    // diamondList[index].diamondClarity?.value = diamondModel.name ?? "";
+                                                    diamonds[index] = diamondModel.name ?? "";
+                                                  }
+                                                },
+                                              );
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(defaultRadius),
+                                                color: Theme.of(context).primaryColor.withOpacity(.06),
+                                              ),
+                                              padding: EdgeInsets.symmetric(horizontal: defaultPadding / 1.5, vertical: defaultPadding / 2.4),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Text(
+                                                    diamonds[index],
+                                                    style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Theme.of(context).primaryColor),
+                                                  ),
+                                                  (defaultPadding / 2).horizontalSpace,
+                                                  SvgPicture.asset(AppAssets.downArrow)
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Text(
+                                            "Quantity : ${diamondList[index].diamondCount ?? 0}",
+                                            style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font.withOpacity(.8), fontSize: 12.sp),
+                                          ).paddingOnly(left: defaultPadding / 4),
+                                          Text(
+                                            "Shape : ${diamondList[index].diamondShape ?? ''}",
+                                            style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font.withOpacity(.8), fontSize: 12.sp),
+                                          ).paddingOnly(left: defaultPadding / 4)
+                                        ],
+                                      ),
+                                    );
+                                  })),
+                              separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
+                            )
+                          : Center(
+                              child: Text(
+                                "Diamonds not available",
+                                style: AppTextStyle.titleStyle(context).copyWith(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                              ),
+                            ),
+                    ),
+
+                    AppButton(
+                      padding: EdgeInsets.all(defaultPadding),
+                      title: "Apply Changes",
+                      onPressed: () {
+                        for (int i = 0; i < diamonds.length; i++) {
+                          diamondList?[i].diamondClarity?.value = diamonds[i];
+                        }
+                        Get.back();
+                      },
                     )
                   ],
                 ),

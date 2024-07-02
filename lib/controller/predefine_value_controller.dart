@@ -25,6 +25,9 @@ class PreDefinedValueController extends GetxController {
   /// GENDER
   RxList<String> genderList = <String>[].obs;
 
+  /// COLLECTION
+  RxList<CollectionModel> collectionList = <CollectionModel>[].obs;
+
   RxList<ProductDetail> cartProductDetailList = <ProductDetail>[].obs;
   RxMap<String, dynamic> predefineResponse = <String, dynamic>{}.obs;
 

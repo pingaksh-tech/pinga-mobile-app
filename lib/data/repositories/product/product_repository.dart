@@ -355,6 +355,57 @@ class ProductRepository {
   }
 
   /// ***********************************************************************************
+  ///                                     GET PRODUCTS PRICE
+  /// ***********************************************************************************
+
+  static Future<void> getProductPriceAPI({
+    required String inventoryId,
+    required String metalId,
+    required String diamondClarity,
+    RxBool? loader,
+  }) async {
+    final ProductsController con = Get.find<ProductsController>();
+
+    if (await getConnectivityResult()) {
+      try {
+        loader?.value = true;
+
+        /// API
+        await APIFunction.postApiCall(
+          apiUrl: ApiUrls.getProductPricePOST,
+          body: {
+            "inventory_id": inventoryId,
+            "metal_id": metalId,
+            "diamond_clarity": diamondClarity,
+          },
+          loader: loader,
+        ).then(
+          (response) async {
+            if (response != null) {
+              if (response['data'] != null) {
+                int index = con.inventoryProductList.indexWhere((element) => element.id == inventoryId);
+
+                if (index != -1) {
+                  con.inventoryProductList[index].inventoryTotalPrice?.value = response['data'];
+                }
+              }
+
+              loader?.value = false;
+            } else {
+              loader?.value = false;
+            }
+
+            return response;
+          },
+        );
+      } catch (e) {
+        loader?.value = false;
+        printErrors(type: "getProductPriceAPI", errText: e);
+      }
+    } else {}
+  }
+
+  /// ***********************************************************************************
   ///                                       GET PRODUCT VARIANT
   /// ***********************************************************************************
   static Future<void> getProductVariantAPI({RxBool? isLoader, isProductFlow = false}) async {

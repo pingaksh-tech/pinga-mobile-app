@@ -11,9 +11,10 @@ class FilterListViewWidget extends StatefulWidget {
   final List<String>? deliveryList;
   final List<DiamondModel>? diamondList;
   final List<MetalModel>? metalList;
+  final List<CollectionModel>? collectionList;
   final Function(List<dynamic>) onSelect;
 
-  const FilterListViewWidget({super.key, required this.type, this.filterTabList, this.diamondList, this.deliveryList, this.metalList, required this.onSelect});
+  const FilterListViewWidget({super.key, required this.type, this.filterTabList, this.diamondList, this.deliveryList, this.metalList, required this.onSelect, this.collectionList});
 
   @override
   State<FilterListViewWidget> createState() => _FilterListViewWidgetState();
@@ -28,15 +29,15 @@ class _FilterListViewWidgetState extends State<FilterListViewWidget> {
       physics: const RangeMaintainingScrollPhysics(),
       padding: EdgeInsets.symmetric(vertical: defaultPadding / 2),
       itemCount: switch (widget.type) {
-        FilterItemType.diamond => widget.diamondList!.length,
-        FilterItemType.delivery => widget.deliveryList!.length,
-        FilterItemType.production => widget.deliveryList!.length,
-        FilterItemType.kt => widget.metalList!.length,
+        FilterItemType.diamond => widget.diamondList != null ? widget.diamondList!.length : 0,
+        FilterItemType.delivery => widget.deliveryList != null ? widget.deliveryList!.length : 0,
+        FilterItemType.production => widget.deliveryList != null ? widget.deliveryList!.length : 0,
+        FilterItemType.kt => widget.metalList != null ? widget.metalList!.length : 0,
+        FilterItemType.collection => widget.collectionList != null ? widget.collectionList!.length : 0,
         FilterItemType.range => 0,
         FilterItemType.mrp => 0,
         FilterItemType.available => 0,
         FilterItemType.gender => 0,
-        FilterItemType.collection => 0,
       },
       itemBuilder: (context, index) => CustomCheckboxTile(
         scale: 1,
@@ -45,22 +46,22 @@ class _FilterListViewWidgetState extends State<FilterListViewWidget> {
           FilterItemType.delivery => widget.deliveryList?[index] ?? "",
           FilterItemType.production => widget.deliveryList?[index] ?? "",
           FilterItemType.kt => widget.metalList?[index].metalCarat ?? "",
+          FilterItemType.collection => widget.collectionList?[index].name ?? "",
           FilterItemType.range => "",
           FilterItemType.mrp => "",
           FilterItemType.available => "",
           FilterItemType.gender => "",
-          FilterItemType.collection => "",
         },
         isSelected: switch (widget.type) {
           FilterItemType.diamond => RxBool(selectedFilter.contains(widget.diamondList?[index].name)),
           FilterItemType.delivery => RxBool(selectedFilter.contains(widget.deliveryList?[index])),
           FilterItemType.production => RxBool(selectedFilter.contains(widget.deliveryList?[index])),
           FilterItemType.kt => RxBool(selectedFilter.contains(widget.metalList?[index].id)),
+          FilterItemType.collection => RxBool(selectedFilter.contains(widget.collectionList?[index].id)),
           FilterItemType.range => false.obs,
           FilterItemType.mrp => false.obs,
           FilterItemType.available => false.obs,
           FilterItemType.gender => false.obs,
-          FilterItemType.collection => false.obs,
         },
         onChanged: (val) {
           switch (widget.type) {
@@ -97,6 +98,14 @@ class _FilterListViewWidgetState extends State<FilterListViewWidget> {
               }
               break;
 
+            case FilterItemType.collection:
+              if (selectedFilter.contains(widget.collectionList?[index].id)) {
+                selectedFilter.remove(widget.collectionList?[index].id);
+              } else {
+                selectedFilter.add(widget.collectionList?[index].id);
+              }
+              break;
+
             case FilterItemType.range:
               break;
 
@@ -107,8 +116,6 @@ class _FilterListViewWidgetState extends State<FilterListViewWidget> {
               break;
 
             case FilterItemType.gender:
-              break;
-            case FilterItemType.collection:
               break;
           }
 

@@ -104,6 +104,9 @@ class ProductsScreen extends StatelessWidget {
                       con.inventoryProductList.length,
                       (index) => ProductTile(
                         category: con.subCategory,
+                        isFancy: con.isFancyDiamond.value,
+                        inventoryId: con.inventoryProductList[index].id,
+                        diamondList: RxList(con.inventoryProductList[index].diamonds ?? []),
                         categorySlug: con.subCategory.value.name ?? "ring" /*Product Category*/,
                         productTileType: con.isProductViewChange.isTrue ? ProductTileType.grid : ProductTileType.list,
                         onTap: () => Get.toNamed(AppRoutes.productDetailsScreen, arguments: {
@@ -113,7 +116,7 @@ class ProductsScreen extends StatelessWidget {
                         isLike: (con.wishlistList.contains(con.inventoryProductList[index])).obs,
                         imageUrl: (con.inventoryProductList[index].inventoryImages != null && con.inventoryProductList[index].inventoryImages!.isNotEmpty) ? con.inventoryProductList[index].inventoryImages![0] : "",
                         productName: con.inventoryProductList[index].name ?? "",
-                        productPrice: con.inventoryProductList[index].manufacturingPrice.toString(),
+                        productPrice: con.inventoryProductList[index].inventoryTotalPrice.toString(),
                         productQuantity: con.inventoryProductList[index].quantity,
                         isSizeAvailable: con.isSizeAvailable.value,
                         likeOnChanged: (value) {

@@ -44,6 +44,7 @@ class SplashRepository {
                     preValueCon.genderList.value = model.data!.gender ?? [];
                     preValueCon.productNamesList.value = model.data!.productionNames ?? [];
                     preValueCon.deliveriesList.value = model.data!.deliveries ?? [];
+                    preValueCon.collectionList.value = model.data!.collections ?? [];
                   }
 
                   // ***********************************************************************************

@@ -295,7 +295,7 @@ class FilterScreen extends StatelessWidget {
 
                 //? Collection Tab UI
                 FilterItemType.collection => FilterListViewWidget(
-                    filterTabList: con.collectionList,
+                    collectionList: preValCon.collectionList,
                     type: FilterItemType.collection,
                     onSelect: (value) {
                       con.selectedCollections.value = value;
