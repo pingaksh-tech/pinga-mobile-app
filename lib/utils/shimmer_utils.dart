@@ -78,4 +78,26 @@ class ShimmerUtils {
       ),
     );
   }
+
+  static Widget productsListShimmer(BuildContext context) {
+    return ShimmerUtils.shimmer(
+      child: ShimmerUtils.shimmerContainer(
+        height: Get.height / 2.7,
+        width: Get.width / 2 - defaultPadding * 1.5,
+        borderRadius: BorderRadius.circular(defaultRadius),
+        child: Padding(
+          padding: EdgeInsets.all(defaultPadding / 2),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                height: 300,
+                color: Colors.red,
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }

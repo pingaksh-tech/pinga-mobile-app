@@ -284,7 +284,11 @@ class _ProductTileState extends State<ProductTile> {
 
                         /// CREATE WISHLIST API
                         if (widget.isLike != null) {
-                          await WishlistRepository.createWishlistAPI(inventoryId: widget.inventoryId ?? '', isWishlist: widget.isLike!.value);
+                          await WishlistRepository.createWishlistAPI(
+                            inventoryId: widget.inventoryId ?? '',
+                            isWishlist: widget.isLike!.value,
+                            productListType: widget.productsListTypeType,
+                          );
                         }
                       },
                     ),
@@ -378,7 +382,11 @@ class _ProductTileState extends State<ProductTile> {
 
                                 /// CREATE WISHLIST API
                                 if (widget.isLike != null) {
-                                  await WishlistRepository.createWishlistAPI(inventoryId: widget.inventoryId ?? '', isWishlist: widget.isLike!.value);
+                                  await WishlistRepository.createWishlistAPI(
+                                    inventoryId: widget.inventoryId ?? '',
+                                    isWishlist: widget.isLike!.value,
+                                    productListType: widget.productsListTypeType,
+                                  );
                                 }
                               },
                               icon: SvgPicture.asset(

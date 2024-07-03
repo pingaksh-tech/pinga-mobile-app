@@ -71,6 +71,7 @@ class ProductsController extends GetxController {
     preValueAvailable();
 
     ProductRepository.getFilterProductsListAPI(
+      loader: loader,
       categoryId: categoryId.value,
       productsListType: ProductsListType.normal,
       subCategoryId: subCategory.value.id ?? "",

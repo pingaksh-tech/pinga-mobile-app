@@ -132,7 +132,7 @@ class ProductDetailsScreen extends StatelessWidget {
                                           con.isLike.refresh();
 
                                           /// CREATE WISHLIST API
-                                          await WishlistRepository.createWishlistAPI(inventoryId: con.inventoryId.value, isWishlist: con.isLike.value);
+                                          await WishlistRepository.createWishlistAPI(productListType: ProductsListType.normal, inventoryId: con.inventoryId.value, isWishlist: con.isLike.value);
                                         },
                                         shadowColor: Theme.of(context).colorScheme.surface.withOpacity(.1),
                                       );

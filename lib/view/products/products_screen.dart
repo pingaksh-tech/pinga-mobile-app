@@ -102,50 +102,63 @@ class ProductsScreen extends StatelessWidget {
               ).paddingOnly(top: defaultPadding / 3),
 
               /// PRODUCTS
-              con.inventoryProductList.isNotEmpty
-                  ? Wrap(
-                      children: List.generate(
-                        con.inventoryProductList.length,
-                        (index) => ProductTile(
-                          category: con.subCategory,
-                          isFancy: con.isFancyDiamond.value,
-                          inventoryId: con.inventoryProductList[index].id,
-                          diamondList: RxList(con.inventoryProductList[index].diamonds ?? []),
-                          categorySlug: con.subCategory.value.name ?? "ring" /*Product Category*/,
-                          productTileType: con.isProductViewChange.isTrue ? ProductTileType.grid : ProductTileType.list,
-                          onTap: () => Get.toNamed(AppRoutes.productDetailsScreen, arguments: {
-                            "category": con.subCategory.value.name ?? '',
-                            'isSize': con.isSizeAvailable.value,
-                            'isFancy': con.isFancyDiamond.value,
-                            'inventoryId': con.inventoryProductList[index].id,
-                            'name': con.inventoryProductList[index].name,
-                          }),
-                          isLike: (con.wishlistList.contains(con.inventoryProductList[index])).obs,
-                          imageUrl: (con.inventoryProductList[index].inventoryImages != null && con.inventoryProductList[index].inventoryImages!.isNotEmpty) ? con.inventoryProductList[index].inventoryImages![0] : "",
-                          productName: con.inventoryProductList[index].name ?? "",
-                          productPrice: con.inventoryProductList[index].inventoryTotalPrice.toString(),
-                          productQuantity: con.inventoryProductList[index].quantity,
-                          isSizeAvailable: con.isSizeAvailable.value,
-                          likeOnChanged: (value) {
-                            /// Add product to wishlist
-                            if (!con.wishlistList.contains(con.inventoryProductList[index])) {
-                              con.wishlistList.add(con.inventoryProductList[index]);
-                            } else {
-                              con.wishlistList.remove(con.inventoryProductList[index]);
-                            }
-                            printOkStatus(con.wishlistList);
-                          },
-                          diamonds: con.inventoryProductList[index].diamonds,
+              con.loader.isFalse
+                  ? con.inventoryProductList.isNotEmpty
+                      ? Wrap(
+                          children: List.generate(
+                            con.inventoryProductList.length,
+                            (index) => ProductTile(
+                              category: con.subCategory,
+                              isFancy: con.isFancyDiamond.value,
+                              inventoryId: con.inventoryProductList[index].id,
+                              diamondList: RxList(con.inventoryProductList[index].diamonds ?? []),
+                              categorySlug: con.subCategory.value.name ?? "ring" /*Product Category*/,
+                              productTileType: con.isProductViewChange.isTrue ? ProductTileType.grid : ProductTileType.list,
+                              onTap: () => Get.toNamed(AppRoutes.productDetailsScreen, arguments: {
+                                "category": con.subCategory.value.name ?? '',
+                                'isSize': con.isSizeAvailable.value,
+                                'isFancy': con.isFancyDiamond.value,
+                                'inventoryId': con.inventoryProductList[index].id,
+                                'name': con.inventoryProductList[index].name,
+                              }),
+                              isLike: (con.wishlistList.contains(con.inventoryProductList[index])).obs,
+                              imageUrl: (con.inventoryProductList[index].inventoryImages != null && con.inventoryProductList[index].inventoryImages!.isNotEmpty) ? con.inventoryProductList[index].inventoryImages![0] : "",
+                              productName: con.inventoryProductList[index].name ?? "",
+                              productPrice: con.inventoryProductList[index].inventoryTotalPrice.toString(),
+                              productQuantity: con.inventoryProductList[index].quantity,
+                              isSizeAvailable: con.isSizeAvailable.value,
+                              likeOnChanged: (value) {
+                                /// Add product to wishlist
+                                if (!con.wishlistList.contains(con.inventoryProductList[index])) {
+                                  con.wishlistList.add(con.inventoryProductList[index]);
+                                } else {
+                                  con.wishlistList.remove(con.inventoryProductList[index]);
+                                }
+                                printOkStatus(con.wishlistList);
+                              },
+                              diamonds: con.inventoryProductList[index].diamonds,
+                            ),
+                          ),
+                        )
+                      :
+
+                      /// EMPTY DATA VIEW
+                      EmptyElement(
+                          title: "${con.subCategory.value.name} Not Found!",
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.symmetric(vertical: Get.width / 2.5),
+                        )
+                  : Padding(
+                      padding: EdgeInsets.all(defaultPadding / 2),
+                      child: Wrap(
+                        spacing: defaultPadding,
+                        runSpacing: defaultPadding,
+                        direction: Axis.horizontal,
+                        children: List.generate(
+                          6,
+                          (index) => ShimmerUtils.productsListShimmer(context),
                         ),
                       ),
-                    )
-                  :
-
-                  /// EMPTY DATA VIEW
-                  EmptyElement(
-                      title: "${con.subCategory.value.name} Not Found!",
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.symmetric(vertical: Get.width / 2.5),
                     ),
             ],
           ),

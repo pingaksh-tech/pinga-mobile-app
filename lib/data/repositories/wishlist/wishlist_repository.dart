@@ -10,6 +10,7 @@ class WishlistRepository {
   /// ***********************************************************************************
 
   static Future<void> createWishlistAPI({
+    required ProductsListType productListType,
     required String inventoryId,
     required bool isWishlist,
     RxBool? loader,
@@ -29,7 +30,20 @@ class WishlistRepository {
         ).then(
           (response) async {
             if (response != null) {
-              if (response['data'] != null) {}
+              if (response['data'] != null) {
+                if (response['data']["is_wishlist"] == false) {
+                  if (productListType == ProductsListType.wishlist) {
+                    if (isRegistered<WishlistController>()) {
+                      final WishlistController wishlistCon = Get.find<WishlistController>();
+
+                      int index = wishlistCon.productsList.indexWhere((element) => element.inventoryId == inventoryId);
+                      if (index != -1) {
+                        wishlistCon.productsList.removeAt(index);
+                      }
+                    }
+                  }
+                }
+              }
 
               loader?.value = false;
             } else {
@@ -62,7 +76,7 @@ class WishlistRepository {
         loader?.value = true;
 
         if (isInitial) {
-          if (!isPullToRefresh) {
+          if (isPullToRefresh) {
             con.productsList.clear();
           }
           con.page.value = 1;
