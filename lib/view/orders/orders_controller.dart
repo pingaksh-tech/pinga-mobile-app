@@ -1,18 +1,15 @@
-import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../data/model/order/order_list_model.dart';
 import '../../data/repositories/orders/orders_repository.dart';
-import '../../exports.dart';
 
 class OrdersController extends GetxController {
-  RxBool isTypeLoading = false.obs;
-
   ScrollController scrollController = ScrollController();
-  RxList<OrderListResult> orderProductList = <OrderListResult>[].obs;
+  RxList<OrderModel> orderList = <OrderModel>[].obs;
   RxInt page = 1.obs;
-  RxBool nextPageStop = true.obs;
+  RxInt itemLimit = 6.obs;
+  RxBool nextPageAvailable = true.obs;
   RxBool isLoading = false.obs;
   RxBool paginationLoading = false.obs;
 
@@ -25,16 +22,17 @@ class OrdersController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    OrdersRepository.getAllOrdersAPI();
+    OrdersRepository.getAllOrdersAPI(loader: isLoading);
   }
 
   void manageScrollController() async {
     scrollController.addListener(
       () async {
         if (scrollController.position.maxScrollExtent == scrollController.position.pixels) {
-          if (nextPageStop.isTrue && paginationLoading.isFalse) {
-            paginationLoading.value = true;
-            await OrdersRepository.getAllOrdersAPI(isInitial: false);
+          if (nextPageAvailable.isTrue && paginationLoading.isFalse) {
+            /// PAGINATION CALL
+            /// GET CATEGORIES API
+            await OrdersRepository.getAllOrdersAPI(isInitial: false, loader: paginationLoading);
           }
         }
       },
@@ -43,7 +41,7 @@ class OrdersController extends GetxController {
 }
 
 ///product detail controller
-class OrderProductDetailController extends GetxController {
+/* lass OrderProductDetailController extends GetxController {
   RxInt current = 0.obs;
   final CarouselController controller = CarouselController();
 
@@ -66,3 +64,4 @@ class OrderProductDetailController extends GetxController {
     }
   }
 }
+ */

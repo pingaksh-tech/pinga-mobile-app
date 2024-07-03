@@ -42,7 +42,7 @@ class ApiUrls {
   /// CART
   static String getAllCartGET = "mobile/cart/";
 
-  static String deleteCartApi({String? cartId}) => "mobile/cart/";
+  static String deleteCartApi({String? cartId}) => "mobile/cart/$cartId";
   static String multiPleDelete = "mobile/cart/multi/items";
   static String cartUpdatePUT = "/mobile/cart/";
   static String addOrRemoveCart = "cart/add-remove/";
@@ -52,6 +52,7 @@ class ApiUrls {
 
   /// ORDERS
   static String orderProductUrl = "order/list";
+  static String createOrGetOrder = "/mobile/order/";
 
   /// WISHLIST
   static String watchlistGet = "wishlist/get";

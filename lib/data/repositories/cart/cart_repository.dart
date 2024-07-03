@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import '../../../controller/predefine_value_controller.dart';
 import '../../../exports.dart';
 import '../../../view/cart/cart_controller.dart';
-import '../../../view/cart/widget/checkout/checkout_controller.dart';
 import '../../../view/cart/widget/stock/cart_stock_controller.dart';
 import '../../../view/cart/widget/summary/summary_controller.dart';
 import '../../model/cart/cart_model.dart';
@@ -139,9 +138,6 @@ class CartRepository {
           apiUrl: ApiUrls.deleteCartApi(
             cartId: !isValEmpty(cartId) ? cartId : "",
           ),
-          body: {
-            !isValEmpty(selectedCartIds) ? "cartIds" : selectedCartIds,
-          },
         ).then(
           (response) async {
             if (response != null) {
@@ -153,7 +149,7 @@ class CartRepository {
                     con.cartList.removeAt(index);
                   }
                 } else {
-                  con.cartList.removeWhere((item) => con.selectedList.contains(item));
+                  con.cartList.clear();
                   con.selectedList.clear();
                 }
               }
@@ -206,25 +202,31 @@ class CartRepository {
   /// ***********************************************************************************
   ///                                 GET RETAILER API
   /// ***********************************************************************************
-  static Future<dynamic> getRetailerApi({bool isInitial = true, RxBool? loader}) async {
+  static Future<dynamic> getRetailerApi({
+    bool isInitial = true,
+    RxBool? loader,
+    required RxInt page,
+    required RxInt itemLimit,
+    required RxBool nextPageAvailable,
+    required RxBool paginationLoader,
+    required RxList<RetailerModel> retailerList,
+  }) async {
     ///
-    if (await getConnectivityResult() && isRegistered<CheckoutController>()) {
-      final CheckoutController con = Get.find<CheckoutController>();
-
+    if (await getConnectivityResult()) {
       try {
         loader?.value = true;
         if (isInitial) {
-          con.retailerList.clear();
-          con.page.value = 1;
-          con.nextPageAvailable.value = true;
+          retailerList.clear();
+          page.value = 1;
+          nextPageAvailable.value = true;
         }
 
         /// API
         await APIFunction.getApiCall(
           apiUrl: ApiUrls.getRetailerApi,
           params: {
-            "page": con.page.value,
-            "limit": con.itemLimit.value,
+            "page": page.value,
+            "limit": itemLimit.value,
           },
           loader: loader,
         ).then(
@@ -233,10 +235,10 @@ class CartRepository {
               GetRetailerModel model = GetRetailerModel.fromJson(response);
 
               if (model.data != null) {
-                con.retailerList.addAll(model.data?.retailers ?? []);
+                retailerList.addAll(model.data?.retailers ?? []);
                 int currentPage = (model.data!.page ?? 1);
-                con.nextPageAvailable.value = currentPage < (model.data!.totalPages ?? 0);
-                con.page.value += currentPage;
+                nextPageAvailable.value = currentPage < (model.data!.totalPages ?? 0);
+                page.value += currentPage;
               }
               loader?.value = false;
             } else {
@@ -254,7 +256,7 @@ class CartRepository {
   }
 
   /// ***********************************************************************************
-  ///                                 GET RETAILER API
+  ///                                 GET CART SUMMARY API
   /// ***********************************************************************************
   static Future<dynamic> getCartSummaryAPI({RxBool? isLoader}) async {
     ///

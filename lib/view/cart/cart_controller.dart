@@ -114,4 +114,15 @@ class CartController extends GetxController {
       calculateSelectedQue();
     }
   }
+
+  void updateCart({required int index, String? metalId, String? sizeId, String? diamondClarity, int? quantity}) {
+    CartRepository.updateCartApi(
+      cartId: cartList[index].id ?? "",
+      inventoryId: cartList[index].inventoryId ?? "",
+      quantity: quantity ?? cartList[index].quantity ?? 0,
+      metalId: metalId ?? cartList[index].metalId ?? "",
+      sizeId: sizeId ?? cartList[index].sizeId ?? "",
+      diamondClarity: diamondClarity ?? cartList[index].diamondClarity ?? "",
+    );
+  }
 }

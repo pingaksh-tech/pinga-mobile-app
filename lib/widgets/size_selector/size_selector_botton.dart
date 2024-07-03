@@ -13,7 +13,6 @@ import '../../packages/marquee_widget/marquee_widget.dart';
 Widget horizontalSelectorButton(
   BuildContext context, {
   String? categorySlug,
-  RxString? selectedSizeCart,
   Rx<DiamondModel>? selectedSize,
   Rx<MetalModel>? selectedMetal,
   Rx<DiamondModel>? selectedDiamond,
@@ -31,6 +30,9 @@ Widget horizontalSelectorButton(
   Function(DiamondModel model)? rubyOnChanged,
   Function(List<DiamondListModel> listModel)? multiRubyOnChanged,
   Function(String model)? remarkOnChanged,
+  RxString? selectedSizeCart,
+  RxString? selectMetalCart,
+  RxString? selectDiamondCart,
 }) {
   return Expanded(
     flex: isFlexible ? 0 : 1,
@@ -61,7 +63,7 @@ Widget horizontalSelectorButton(
                     if (index != -1) {
                       selectedSize?.value = sizeList[index];
                     }
-
+                    printYellow(selectedSize?.value.name);
                     if (sizeOnChanged != null) {
                       sizeOnChanged(sizeModel);
                     }
@@ -74,16 +76,19 @@ Widget horizontalSelectorButton(
           case SelectableItemType.color:
             if (isRegistered<PreDefinedValueController>()) {
               final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
-              RxList<MetalModel> colorList = preValueCon.metalsList;
+              RxList<MetalModel> metalList = preValueCon.metalsList;
 
               /// Metal Selector
-              AppDialogs.colorSelector(context, colorList: colorList, selectedColor: selectedMetal?.value.id ?? "".obs)?.then(
+              AppDialogs.metalSelector(context, metalList: metalList, selectedMetal: selectMetalCart ?? selectedMetal?.value.id ?? "".obs)?.then(
                 (value) {
                   if (value != null && (value.runtimeType == MetalModel)) {
                     final MetalModel metalModel = (value as MetalModel);
 
                     selectedMetal?.value = metalModel;
-
+                    int index = metalList.indexWhere((element) => element.id == metalModel.id);
+                    if (index != -1) {
+                      selectedMetal?.value = metalList[index];
+                    }
                     if (metalOnChanged != null) {
                       metalOnChanged(metalModel);
                     }
@@ -110,13 +115,20 @@ Widget horizontalSelectorButton(
                 RxList<DiamondModel> diamondList = preValueCon.diamondsList;
 
                 /// SINGLE DIAMOND
-                AppDialogs.diamondSelector(context, diamondList: diamondList, selectedDiamond: selectedDiamond?.value.id ?? ''.obs)?.then(
+                AppDialogs.diamondSelector(
+                  context,
+                  diamondList: diamondList,
+                  selectedDiamond: isValEmpty(selectDiamondCart) ? RxString(selectedDiamond?.value.shortName ?? "") : RxString(selectDiamondCart?.value ?? ""),
+                )?.then(
                   (value) {
                     if (value != null && (value.runtimeType == DiamondModel)) {
                       final DiamondModel diamondModel = (value as DiamondModel);
 
                       selectedDiamond?.value = diamondModel;
-
+                      int index = diamondList.indexWhere((element) => element.shortName == diamondModel.shortName);
+                      if (index != -1) {
+                        selectedDiamond?.value = diamondList[index];
+                      }
                       if (rubyOnChanged != null) {
                         rubyOnChanged(diamondModel);
                       }

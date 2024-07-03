@@ -1,206 +1,209 @@
+// To parse this JSON data, do
+//
+//     final getOrderModel = getOrderModelFromJson(jsonString);
+
 import 'dart:convert';
 
-GetOrderListModel getOrderListModelFromJson(String str) => GetOrderListModel.fromJson(json.decode(str));
+GetOrderModel getOrderModelFromJson(String str) => GetOrderModel.fromJson(json.decode(str));
 
-String getOrderListModelToJson(GetOrderListModel data) => json.encode(data.toJson());
+String getOrderModelToJson(GetOrderModel data) => json.encode(data.toJson());
 
-class GetOrderListModel {
-  final bool? success;
+class GetOrderModel {
   final String? message;
-  final OrderListData? data;
+  final GetOrderDataModel? data;
 
-  GetOrderListModel({
-    this.success,
+  GetOrderModel({
     this.message,
     this.data,
   });
 
-  factory GetOrderListModel.fromJson(Map<String, dynamic> json) => GetOrderListModel(
-        success: json["success"],
+  factory GetOrderModel.fromJson(Map<String, dynamic> json) => GetOrderModel(
         message: json["message"],
-        data: json["data"] == null ? null : OrderListData.fromJson(json["data"]),
+        data: json["data"] == null ? null : GetOrderDataModel.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "success": success,
         "message": message,
         "data": data?.toJson(),
       };
 }
 
-class OrderListData {
-  final List<OrderListResult>? results;
-
-  final int? totalResults;
+class GetOrderDataModel {
+  final int? totalCount;
   final int? page;
-  final int? limit;
   final int? totalPages;
+  final List<OrderModel>? orders;
 
-  OrderListData({
-    this.results,
-    this.totalResults,
+  GetOrderDataModel({
+    this.totalCount,
     this.page,
-    this.limit,
     this.totalPages,
+    this.orders,
   });
 
-  factory OrderListData.fromJson(Map<String, dynamic> json) => OrderListData(
-        results: json["results"] == null ? [] : List<OrderListResult>.from(json["results"]!.map((x) => OrderListResult.fromJson(x))),
-        totalResults: json["totalResults"],
+  factory GetOrderDataModel.fromJson(Map<String, dynamic> json) => GetOrderDataModel(
+        totalCount: json["totalCount"],
         page: json["page"],
-        limit: json["limit"],
         totalPages: json["totalPages"],
+        orders: json["orders"] == null ? [] : List<OrderModel>.from(json["orders"]!.map((x) => OrderModel.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        "results": results == null ? [] : List<dynamic>.from(results!.map((x) => x.toJson())),
-        "totalResults": totalResults,
+        "totalCount": totalCount,
         "page": page,
-        "limit": limit,
         "totalPages": totalPages,
+        "orders": orders == null ? [] : List<dynamic>.from(orders!.map((x) => x.toJson())),
       };
 }
 
-class OrderListResult {
+class OrderModel {
   final String? id;
-  final List<ProductElement>? products;
-  final int? totalAmount;
-  final String? user;
-  final String? status;
-  final DateTime? createdAt;
-
-  OrderListResult({
-    this.id,
-    this.products,
-    this.totalAmount,
-    this.user,
-    this.status,
-    this.createdAt,
-  });
-
-  factory OrderListResult.fromJson(Map<String, dynamic> json) => OrderListResult(
-        id: json["_id"],
-        products: json["products"] == null ? [] : List<ProductElement>.from(json["products"]!.map((x) => ProductElement.fromJson(x))),
-        totalAmount: json["total_amount"],
-        user: json["user"],
-        status: json["status"],
-        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "_id": id,
-        "products": products == null ? [] : List<dynamic>.from(products!.map((x) => x.toJson())),
-        "total_amount": totalAmount,
-        "user": user,
-        "status": status,
-        "createdAt": createdAt?.toIso8601String(),
-      };
-}
-
-class ProductElement {
-  final ProductProduct? product;
-  final int? quantity;
-  final int? price;
-  final String? id;
-
-  ProductElement({
-    this.product,
-    this.quantity,
-    this.price,
-    this.id,
-  });
-
-  factory ProductElement.fromJson(Map<String, dynamic> json) => ProductElement(
-        product: json["product"] == null ? null : ProductProduct.fromJson(json["product"]),
-        quantity: json["quantity"],
-        price: json["price"],
-        id: json["_id"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "product": product?.toJson(),
-        "quantity": quantity,
-        "price": price,
-        "_id": id,
-      };
-}
-
-class ProductProduct {
-  final String? id;
-  final String? title;
-  final String? description;
-  final int? price;
-  final String? color;
-  final String? category;
-  final String? rate;
-  final int? weight;
-  final DateTime? deletedAt;
+  final String? orderNo;
+  final String? orderType;
+  final String? retailerId;
+  final int? qty;
+  final double? subTotal;
+  final int? discount;
+  final double? grandTotal;
+  final String? createdBy;
+  final dynamic updatedBy;
+  final dynamic deletedAt;
   final DateTime? createdAt;
   final DateTime? updatedAt;
-  final List<Productimage>? productImages;
+  final int? v;
+  final Retailer? retailer;
 
-  ProductProduct({
+  OrderModel({
     this.id,
-    this.title,
-    this.description,
-    this.price,
-    this.color,
-    this.category,
-    this.rate,
-    this.weight,
+    this.orderNo,
+    this.orderType,
+    this.retailerId,
+    this.qty,
+    this.subTotal,
+    this.discount,
+    this.grandTotal,
+    this.createdBy,
+    this.updatedBy,
     this.deletedAt,
     this.createdAt,
     this.updatedAt,
-    this.productImages,
+    this.v,
+    this.retailer,
   });
 
-  factory ProductProduct.fromJson(Map<String, dynamic> json) => ProductProduct(
+  factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
         id: json["_id"],
-        title: json["title"],
-        description: json["description"],
-        price: json["price"],
-        color: json["color"],
-        category: json["category"],
-        rate: json["rate"],
-        weight: json["weight"],
-        deletedAt: json["deleted_at"] == null ? null : DateTime.parse(json["deleted_at"]),
+        orderNo: json["order_no"],
+        orderType: json["order_type"],
+        retailerId: json["retailer_id"],
+        qty: json["qty"],
+        subTotal: json["sub_total"]?.toDouble(),
+        discount: json["discount"],
+        grandTotal: json["grand_total"]?.toDouble(),
+        createdBy: json["created_by"],
+        updatedBy: json["updated_by"],
+        deletedAt: json["deleted_at"],
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-        productImages: json["productimages"] == null ? [] : List<Productimage>.from(json["productimages"]!.map((x) => Productimage.fromJson(x))),
+        v: json["__v"],
+        retailer: json["retailer"] == null ? null : Retailer.fromJson(json["retailer"]),
       );
 
   Map<String, dynamic> toJson() => {
         "_id": id,
-        "title": title,
-        "description": description,
-        "price": price,
-        "color": color,
-        "category": category,
-        "rate": rate,
-        "weight": weight,
-        "deleted_at": deletedAt?.toIso8601String(),
+        "order_no": orderNo,
+        "order_type": orderType,
+        "retailer_id": retailerId,
+        "qty": qty,
+        "sub_total": subTotal,
+        "discount": discount,
+        "grand_total": grandTotal,
+        "created_by": createdBy,
+        "updated_by": updatedBy,
+        "deleted_at": deletedAt,
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
-        "productimages": productImages == null ? [] : List<dynamic>.from(productImages!.map((x) => x.toJson())),
+        "__v": v,
+        "retailer": retailer?.toJson(),
       };
 }
 
-class Productimage {
+class Retailer {
   final String? id;
-  final String? image;
+  final String? firstName;
+  final String? lastName;
+  final String? businessName;
+  final String? email;
+  final String? phone;
+  final String? landline;
+  final String? address;
+  final String? city;
+  final String? state;
+  final bool? status;
+  final String? createdBy;
+  final String? updatedBy;
+  final DateTime? deletedAt;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final int? v;
 
-  Productimage({
+  Retailer({
     this.id,
-    this.image,
+    this.firstName,
+    this.lastName,
+    this.businessName,
+    this.email,
+    this.phone,
+    this.landline,
+    this.address,
+    this.city,
+    this.state,
+    this.status,
+    this.createdBy,
+    this.updatedBy,
+    this.deletedAt,
+    this.createdAt,
+    this.updatedAt,
+    this.v,
   });
 
-  factory Productimage.fromJson(Map<String, dynamic> json) => Productimage(
+  factory Retailer.fromJson(Map<String, dynamic> json) => Retailer(
         id: json["_id"],
-        image: json["image"],
+        firstName: json["first_name"],
+        lastName: json["last_name"],
+        businessName: json["business_name"],
+        email: json["email"],
+        phone: json["phone"],
+        landline: json["landline"],
+        address: json["address"],
+        city: json["city"],
+        state: json["state"],
+        status: json["status"],
+        createdBy: json["created_by"],
+        updatedBy: json["updated_by"],
+        deletedAt: json["deleted_at"] == null ? null : DateTime.parse(json["deleted_at"]),
+        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+        v: json["__v"],
       );
 
   Map<String, dynamic> toJson() => {
         "_id": id,
-        "image": image,
+        "first_name": firstName,
+        "last_name": lastName,
+        "business_name": businessName,
+        "email": email,
+        "phone": phone,
+        "landline": landline,
+        "address": address,
+        "city": city,
+        "state": state,
+        "status": status,
+        "created_by": createdBy,
+        "updated_by": updatedBy,
+        "deleted_at": deletedAt?.toIso8601String(),
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
+        "__v": v,
       };
 }

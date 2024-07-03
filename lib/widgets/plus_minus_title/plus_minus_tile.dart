@@ -13,7 +13,9 @@ Widget plusMinusTile(
   required Function(int) onIncrement,
   required Function(int) onDecrement,
   bool isCart = false,
-  VoidCallback? onTap,
+  Function(int)? onTap,
+
+  // VoidCallback? onTap,
 }) {
   return Obx(() {
     return Container(
@@ -62,7 +64,7 @@ Widget plusMinusTile(
                 onChanged: (value) {
                   textValue.value = value;
                   if (onTap != null) {
-                    onTap();
+                    onTap(value);
                   }
                 },
               );

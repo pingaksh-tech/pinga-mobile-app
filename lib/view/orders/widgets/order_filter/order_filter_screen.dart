@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../../../exports.dart';
 import '../../../../res/app_bar.dart';
+import '../../../../res/app_dialog.dart';
 import 'order_filter_controller.dart';
 
 class OrderFilterScreen extends StatelessWidget {
@@ -66,11 +68,28 @@ class OrderFilterScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        AppTextField(
+                          title: "Retailers",
+                          contentPadding: EdgeInsets.all(defaultPadding),
+                          readOnly: true,
+                          controller: con.retailerCon.value,
+                          hintText: "Select Retailers",
+                          padding: EdgeInsets.only(bottom: defaultPadding, top: defaultPadding / 2),
+                          suffixIcon: SvgPicture.asset(AppAssets.downArrow, height: 10),
+                          onTap: () {
+                            AppDialogs.retailerSelect(
+                              context,
+                              selectedRetailer: RxString("666c07c093b042a3647b12d5"),
+                            )?.then(
+                              (value) {},
+                            );
+                          },
+                        ),
+                        /*   Text(
                           "User",
                           style: titleTextStyle,
-                        ).paddingOnly(bottom: defaultPadding / 3),
-                        InputDecorator(
+                        ).paddingOnly(bottom: defaultPadding / 3), */
+                        /*  InputDecorator(
                           decoration: InputDecoration(
                             fillColor: const Color(0x1EB4B4B4),
                             filled: true,
@@ -103,7 +122,7 @@ class OrderFilterScreen extends StatelessWidget {
                               ).toList(),
                             ),
                           ),
-                        ),
+                        ), */
                       ],
                     ),
                   ),
