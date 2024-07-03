@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../data/repositories/cart/cart_repository.dart';
 import '../../../exports.dart';
 import '../../../res/app_dialog.dart';
 import '../../../res/pop_up_menu_button.dart';
@@ -100,7 +101,7 @@ class CartPopUpMenu extends StatelessWidget {
               buttonTitle: "NO",
               onPressed: () {
                 Get.back();
-                con.cartList.clear();
+                CartRepository.deleteCartAPi(isLoader: con.cartLoader);
               },
             );
             break;

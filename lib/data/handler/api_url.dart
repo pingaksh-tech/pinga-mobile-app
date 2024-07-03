@@ -36,13 +36,14 @@ class ApiUrls {
 
   /// CART
   static String getAllCartGET = "mobile/cart/";
-  static String deleteCartApi({String? cartId}) => "mobile/cart/";
+  static String deleteCartApi({String? cartId}) => "mobile/cart/$cartId";
   static String multiPleDelete = "mobile/cart/multi/items";
   static String cartUpdatePUT = "/mobile/cart/";
   static String addOrRemoveCart = "cart/add-remove/";
   static String placeOrderPOST = "order/create";
   static String getRetailerApi = "retailer/";
   static String getCartSummary = "/mobile/cart/summary";
+  static String createOrder = "/mobile/order/";
 
   /// ORDERS
   static String orderProductUrl = "order/list";

@@ -77,26 +77,25 @@ class CartScreen extends StatelessWidget {
                             separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
                             itemBuilder: (context, index) {
                               return ProductTile(
-                                isCart: true,
+                                selectMetalCart: (con.cartList[index].metalId ?? "").obs,
+                                selectDiamondCart: (con.cartList[index].diamondClarity ?? "").obs,
                                 sizeId: (value) {
-                                  CartRepository.updateCartApi(
-                                    cartId: con.cartList[index].id ?? "",
-                                    inventoryId: con.cartList[index].inventoryId ?? "",
-                                    quantity: con.cartList[index].quantity ?? 0,
-                                    metalId: con.cartList[index].metalId ?? "",
-                                    sizeId: value,
-                                    diamondClarity: con.cartList[index].diamondClarity ?? "",
-                                  );
+                                  con.updateCart(index: index, sizeId: value);
+                                },
+                                metalId: (value) {
+                                  con.updateCart(index: index, metalId: value);
                                 },
                                 incrementOnTap: (value) {
-                                  CartRepository.updateCartApi(
-                                    cartId: con.cartList[index].id ?? "",
-                                    inventoryId: con.cartList[index].inventoryId ?? "",
-                                    quantity: value,
-                                    metalId: con.cartList[index].metalId ?? "",
-                                    sizeId: con.cartList[index].sizeId ?? "",
-                                    diamondClarity: con.cartList[index].diamondClarity ?? "",
-                                  );
+                                  con.updateCart(index: index, quantity: value);
+                                },
+                                decrementOnTap: (value) {
+                                  con.updateCart(index: index, quantity: value);
+                                },
+                                addOnTap: (value) {
+                                  con.updateCart(index: index, quantity: value);
+                                },
+                                diamondOnTap: (value) {
+                                  con.updateCart(index: index, diamondClarity: value);
                                 },
                                 item: con.cartList[index],
                                 category: con.category,
@@ -108,17 +107,17 @@ class CartScreen extends StatelessWidget {
                                     con.cartList[index],
                                   ),
                                 ),
-                                imageUrl: con.cartList[index].inventoryImage?.first ?? "",
+                                imageUrl: (con.cartList[index].inventoryImage != null && con.cartList[index].inventoryImage!.isNotEmpty) ? con.cartList[index].inventoryImage![0] : "",
                                 productName: (con.cartList[index].inventoryName ?? ""),
                                 productPrice: con.cartList[index].inventoryTotalPrice.toString(),
                                 brandName: con.cartList[index].inventoryName ?? "Unknown",
                                 productQuantity: RxInt(con.cartList[index].quantity ?? 0),
                                 selectSize: (con.cartList[index].sizeId ?? "").obs,
                                 deleteOnTap: () {
-                                  if (con.selectedList.contains(con.cartList[index])) {
-                                    con.selectedList.remove(con.cartList[index]);
-                                    con.calculateSelectedQue();
-                                  }
+                                  // if (con.selectedList.contains(con.cartList[index])) {
+                                  //   con.selectedList.remove(con.cartList[index]);
+                                  //   con.calculateSelectedQue();
+                                  // }
                                   //? CART DELETE API
                                   CartRepository.deleteCartAPi(cartId: con.cartList[index].id ?? "", isLoader: con.cartLoader);
                                   con.calculateSelectedItemPrice();
@@ -244,7 +243,11 @@ class CartScreen extends StatelessWidget {
                                             color: con.selectedList.isEmpty ? null : Theme.of(context).colorScheme.surface,
                                           ),
                                           onPressed: () {
-                                            Get.toNamed(AppRoutes.checkoutScreen);
+                                            Get.toNamed(AppRoutes.checkoutScreen, arguments: {
+                                              "subQuantity": con.selectedQuantity.value,
+                                              "subTotal": con.selectedPrice.value,
+                                              "cartList": con.selectedList,
+                                            });
                                           },
                                         ),
                                       ),

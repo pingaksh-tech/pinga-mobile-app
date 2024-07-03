@@ -139,9 +139,6 @@ class CartRepository {
           apiUrl: ApiUrls.deleteCartApi(
             cartId: !isValEmpty(cartId) ? cartId : "",
           ),
-          body: {
-            !isValEmpty(selectedCartIds) ? "cartIds" : selectedCartIds,
-          },
         ).then(
           (response) async {
             if (response != null) {
@@ -153,7 +150,7 @@ class CartRepository {
                     con.cartList.removeAt(index);
                   }
                 } else {
-                  con.cartList.removeWhere((item) => con.selectedList.contains(item));
+                  con.cartList.clear();
                   con.selectedList.clear();
                 }
               }
@@ -288,6 +285,51 @@ class CartRepository {
       } catch (e) {
         isLoader?.value = false;
         printErrors(type: "getCartSummary", errText: e);
+      }
+    }
+  }
+
+  /// ***********************************************************************************
+  ///                                CREATE ORDER API
+  /// ***********************************************************************************
+  static Future<void> createOrder({
+    required String retailerId,
+    required String orderType,
+    required int quantity,
+    required String subTotal,
+    required List<Map<String, dynamic>> cartItems,
+    RxBool? loader,
+  }) async {
+    if (await getConnectivityResult()) {
+      try {
+        loader?.value = true;
+
+        /// API
+        await APIFunction.postApiCall(
+          apiUrl: ApiUrls.createOrder,
+          body: {
+            "retailer_id": retailerId,
+            "order_type": orderType,
+            "qty": quantity,
+            "sub_total": subTotal,
+            "orderItems": cartItems,
+          },
+          loader: loader,
+        ).then(
+          (response) async {
+            if (response != null) {
+              printYellow("sdfjsfhudsf");
+              loader?.value = false;
+            } else {
+              loader?.value = false;
+            }
+
+            return response;
+          },
+        );
+      } catch (e) {
+        loader?.value = false;
+        printErrors(type: "createOrderApi", errText: e);
       }
     }
   }

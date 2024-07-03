@@ -27,7 +27,6 @@ class ProductTile extends StatefulWidget {
   final String imageUrl;
   final String productName;
   final Rx<SubCategoryModel>? category;
-  RxString? selectSize;
   final String? inventoryId;
   final bool isFancy;
   final RxList<DiamondListModel>? diamondList;
@@ -45,8 +44,14 @@ class ProductTile extends StatefulWidget {
   final void Function(bool?)? onChanged;
   final CartModel? item;
   final void Function(int value)? incrementOnTap;
+  final void Function(int value)? decrementOnTap;
+  final void Function(int value)? addOnTap;
   final void Function(String value)? sizeId;
-  final bool? isCart;
+  final void Function(String value)? metalId;
+  final void Function(String value)? diamondOnTap;
+  RxString? selectSize;
+  RxString? selectMetalCart;
+  RxString? selectDiamondCart;
 
   ProductTile({
     super.key,
@@ -71,9 +76,14 @@ class ProductTile extends StatefulWidget {
     this.selectSize,
     this.incrementOnTap,
     this.sizeId,
-    this.isCart = false,
     this.inventoryId,
     this.diamondList,
+    this.selectMetalCart,
+    this.selectDiamondCart,
+    this.metalId,
+    this.decrementOnTap,
+    this.addOnTap,
+    this.diamondOnTap,
   });
 
   @override
@@ -87,29 +97,46 @@ class _ProductTileState extends State<ProductTile> {
   RxString selectedRemark = "".obs;
   RxBool isSelected = false.obs;
   RxList<CartModel> cartList = <CartModel>[].obs;
-
+  CartModel cart = CartModel();
   List<String> menuList = [/*AppStrings.variants,*/ AppStrings.addToWatchlist];
 
   /// Set Default Select Value Of Product
   Future<void> predefinedValue() async {
     if (isRegistered<PreDefinedValueController>()) {
       final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
-      List<MetalModel> metalList = preValueCon.metalsList;
+      RxList<MetalModel> metalList = preValueCon.metalsList;
       List<CategoryWiseSize> allSizeList = preValueCon.categoryWiseSizesList;
       RxList<DiamondModel> diamondList = preValueCon.diamondsList;
+      //? Metal Value Select in default
+      int index = metalList.indexWhere((element) => element.id == widget.selectMetalCart);
+      if (index != -1) {
+        metalModel = metalList[index];
+      } else {
+        metalModel = metalList[0];
+      }
 
-      metalModel = metalList[0];
+      //? Size Value Select in default
       if (allSizeList.isNotEmpty) {
         RxList<DiamondModel> sizeList = <DiamondModel>[].obs;
-
         for (var element in allSizeList) {
           if (element.name?.toLowerCase() == widget.categorySlug?.toLowerCase() && element.data != null) {
             sizeList = element.data!.obs;
-            sizeModel.value = sizeList[0];
+            int index = sizeList.indexWhere((element) => element.id == widget.selectSize);
+            if (index != -1) {
+              sizeModel.value = sizeList[index];
+            } else {
+              sizeModel.value = sizeList[0];
+            }
           }
         }
       }
-      diamondModel = diamondList[0];
+      //? Diamond value selection
+      int diamondIndex = diamondList.indexWhere((element) => element.shortName == widget.selectDiamondCart?.value);
+      if (index != -1) {
+        diamondModel = diamondList[diamondIndex];
+      } else {
+        diamondModel = diamondList[0];
+      }
     }
   }
 
@@ -259,25 +286,24 @@ class _ProductTileState extends State<ProductTile> {
                 children: [
                   Flexible(
                     child: AppButton(
-                      flexibleWidth: true,
-                      flexibleHeight: true,
-                      backgroundColor: Theme.of(context).primaryColor.withOpacity(0.06),
-                      child: SvgPicture.asset(
-                        widget.isLike?.value ?? false ? AppAssets.likeFill : AppAssets.like,
-                        height: 19.sp,
-                        width: 19.sp,
-                        colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
-                      ),
-                      onPressed: () {
-                        if (widget.isLike != null) {
-                          widget.isLike?.value = !widget.isLike!.value;
+                        flexibleWidth: true,
+                        flexibleHeight: true,
+                        backgroundColor: Theme.of(context).primaryColor.withOpacity(0.06),
+                        child: SvgPicture.asset(
+                          widget.isLike?.value ?? false ? AppAssets.likeFill : AppAssets.like,
+                          height: 19.sp,
+                          width: 19.sp,
+                          colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                        ),
+                        onPressed: () {
+                          if (widget.isLike != null) {
+                            widget.isLike?.value = !widget.isLike!.value;
 
-                          if (widget.likeOnChanged != null) {
-                            widget.likeOnChanged!(widget.isLike!.value);
+                            if (widget.likeOnChanged != null) {
+                              widget.likeOnChanged!(widget.isLike!.value);
+                            }
                           }
-                        }
-                      },
-                    ),
+                        }),
                   ),
                   (defaultPadding / 4).horizontalSpace,
 
@@ -535,10 +561,16 @@ class _ProductTileState extends State<ProductTile> {
     );
   }
 
-  Widget metalSelector({bool isFlexible = false, Axis direction = Axis.horizontal, required String categorySlug}) {
+  Widget metalSelector({
+    bool isFlexible = false,
+    Axis direction = Axis.horizontal,
+    required String categorySlug,
+    RxString? selectMetalCart,
+  }) {
     return horizontalSelectorButton(
       context,
       isFlexible: isFlexible,
+      selectMetalCart: selectMetalCart,
       categorySlug: categorySlug,
       selectedMetal: metalModel.obs,
       sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
@@ -547,25 +579,34 @@ class _ProductTileState extends State<ProductTile> {
       metalOnChanged: (value) async {
         /// Return Selected Metal
         if ((value.runtimeType == MetalModel)) {
+          widget.selectMetalCart = value.id;
           metalModel = value;
+          widget.metalId!(value.id?.value ?? "");
 
           /// GET NEW PRODUCT PRICE
-          await ProductRepository.getProductPriceAPI(
-            inventoryId: widget.inventoryId ?? '',
-            metalId: metalModel.id?.value ?? "",
-            diamondClarity: diamondModel.name ?? "",
-          );
+          // await ProductRepository.getProductPriceAPI(
+          //   inventoryId: widget.inventoryId ?? '',
+          //   metalId: metalModel.id?.value ?? "",
+          //   diamondClarity: diamondModel.name ?? "",
+          // );
         }
       },
     );
   }
 
-  Widget diamondSelector({bool isFlexible = false, Axis direction = Axis.horizontal, required String categorySlug}) => horizontalSelectorButton(
+  Widget diamondSelector({
+    bool isFlexible = false,
+    Axis direction = Axis.horizontal,
+    required String categorySlug,
+    String? selectDiamondCart,
+  }) =>
+      horizontalSelectorButton(
         context,
         isFlexible: isFlexible,
         categorySlug: categorySlug,
         selectedDiamond: diamondModel.obs,
         diamondsList: widget.diamondList,
+        selectDiamondCart: RxString(selectDiamondCart ?? ""),
         isFancy: widget.isFancy,
         sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
         selectableItemType: SelectableItemType.diamond,
@@ -574,7 +615,6 @@ class _ProductTileState extends State<ProductTile> {
           /// Return List of Selected Diamond
           if ((diamondList.runtimeType == List<DiamondListModel>)) {
             diamondList = diamondList;
-
             // /// GET NEW PRODUCT PRICE
             // await ProductRepository.getProductPriceAPI(
             //   inventoryId: widget.inventoryId ?? '',
@@ -587,7 +627,8 @@ class _ProductTileState extends State<ProductTile> {
           /// Return Single Selected Diamond
           if ((value.runtimeType == DiamondModel)) {
             diamondModel = value;
-            printYellow(diamondModel.id);
+            widget.selectDiamondCart?.value = value.shortName ?? "";
+            widget.diamondOnTap!(value.shortName ?? "");
 
             /// GET NEW PRODUCT PRICE
             await ProductRepository.getProductPriceAPI(
@@ -771,7 +812,8 @@ class _ProductTileState extends State<ProductTile> {
                                     context,
                                     isCart: true,
                                     textValue: widget.productQuantity ?? RxInt(0),
-                                    onTap: () {
+                                    onTap: (value) {
+                                      widget.addOnTap!(value);
                                       if (widget.productQuantity?.value == 0) {
                                         widget.deleteOnTap;
                                       }
@@ -784,6 +826,8 @@ class _ProductTileState extends State<ProductTile> {
                                     },
                                     onDecrement: (value) {
                                       cartCon.decrementQuantity(widget.item ?? CartModel());
+                                      widget.decrementOnTap!(value);
+
                                       widget.productQuantity?.value == 0
                                           ? AppDialogs.cartDialog(
                                               context,
@@ -829,9 +873,15 @@ class _ProductTileState extends State<ProductTile> {
                       direction: Axis.vertical,
                       isFlexible: true,
                       categorySlug: widget.categorySlug ?? '',
+                      selectMetalCart: RxString(widget.selectMetalCart?.value ?? ""),
                     ),
                     (defaultPadding / 4).horizontalSpace,
-                    diamondSelector(direction: Axis.vertical, isFlexible: true, categorySlug: widget.categorySlug ?? ''),
+                    diamondSelector(
+                      direction: Axis.vertical,
+                      isFlexible: true,
+                      categorySlug: widget.categorySlug ?? '',
+                      selectDiamondCart: widget.selectDiamondCart?.value,
+                    ),
                     (defaultPadding / 4).horizontalSpace,
                     remarkSelector(
                       direction: Axis.vertical,

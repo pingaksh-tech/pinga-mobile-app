@@ -4,6 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../../../controller/predefine_value_controller.dart';
+import '../../../../data/model/cart/retailer_model.dart';
+import '../../../../data/repositories/cart/cart_repository.dart';
 import '../../../../exports.dart';
 import '../../../../res/app_bar.dart';
 import '../../../../res/app_dialog.dart';
@@ -39,13 +41,22 @@ class CheckoutScreen extends StatelessWidget {
             padding: EdgeInsets.only(bottom: defaultPadding, top: defaultPadding / 2),
             suffixIcon: SvgPicture.asset(AppAssets.downArrow, height: 10),
             onTap: () {
+              int index = con.retailerList.indexWhere((element) => element.id == con.retailerId.obs);
+              if (index != -1) {
+                con.retailerModel.value = con.retailerList[index];
+              }
               AppDialogs.retailerSelect(
                 context,
                 retailerList: con.retailerList,
-                selectedRetailer: RxString(con.retailerList[0].id ?? ""),
+                selectedRetailer: !isValEmpty(con.retailerId.obs) ? con.retailerId.obs : RxString(con.retailerList[0].id?.value ?? ""),
               )?.then(
                 (value) {
-                  con.retailerCon.value.text = value;
+                  if (value != null && (value.runtimeType == RetailerModel)) {
+                    final RetailerModel retailerModel = (value as RetailerModel);
+                    con.retailerModel.value = retailerModel;
+                    con.retailerCon.value.text = con.retailerModel.value.businessName ?? "";
+                    con.retailerId = con.retailerModel.value.id?.value ?? "";
+                  }
                 },
               );
             },
@@ -68,10 +79,11 @@ class CheckoutScreen extends StatelessWidget {
               AppDialogs.orderSelect(
                 context,
                 orderTypeList: preCon.orderTypeList,
-                selectedOrder: RxString(preCon.orderTypeList.first),
+                selectedOrder: RxString(con.orderTypeCon.value.text),
               )?.then(
                 (value) {
                   con.orderTypeCon.value.text = value;
+                  printYellow(value);
                 },
               );
             },
@@ -105,12 +117,12 @@ class CheckoutScreen extends StatelessWidget {
                         cartSummaryItem(
                           context,
                           title: "Total Quantity",
-                          price: "1",
+                          price: con.quantity.value.toString(),
                         ),
                         cartSummaryItem(
                           context,
                           title: "Total Payment",
-                          price: UiUtils.amountFormat(12600, decimalDigits: 0),
+                          price: UiUtils.amountFormat(con.totalPrice.value, decimalDigits: 2),
                         ),
                         (defaultPadding / 2).verticalSpace,
                         AppButton(
@@ -131,7 +143,24 @@ class CheckoutScreen extends StatelessWidget {
                                     fontWeight: FontWeight.w600,
                                     color: Theme.of(context).primaryColor,
                                   ),
-                              onPressed: () => Get.back(),
+                              onPressed: () {
+                                final List<Map<String, dynamic>> cartItems = con.cartList.map(
+                                  (item) {
+                                    return {
+                                      "cartId": item.id,
+                                      "item_total": item.inventoryTotalPrice,
+                                    };
+                                  },
+                                ).toList();
+                                CartRepository.createOrder(
+                                  retailerId: con.retailerId,
+                                  orderType: con.orderTypeCon.value.text,
+                                  quantity: con.quantity.value,
+                                  loader: con.isLoading,
+                                  subTotal: con.totalPrice.value.toString(),
+                                  cartItems: cartItems,
+                                );
+                              },
                             );
                           },
                         )

@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:get/get.dart';
+
 GetRetailerModel getRetailerModelFromJson(String str) => GetRetailerModel.fromJson(json.decode(str));
 
 String getRetailerModelToJson(GetRetailerModel data) => json.encode(data.toJson());
@@ -61,7 +63,7 @@ class GetRetailerDataModel {
 }
 
 class RetailerModel {
-  final String? id;
+  final RxString? id;
   final String? firstName;
   final String? lastName;
   final String? businessName;
@@ -100,7 +102,7 @@ class RetailerModel {
   });
 
   factory RetailerModel.fromJson(Map<String, dynamic> json) => RetailerModel(
-        id: json["_id"],
+        id: RxString(json["_id"].toString()),
         firstName: json["first_name"],
         lastName: json["last_name"],
         businessName: json["business_name"],
@@ -120,7 +122,7 @@ class RetailerModel {
       );
 
   Map<String, dynamic> toJson() => {
-        "_id": id,
+        "_id": id.obs,
         "first_name": firstName,
         "last_name": lastName,
         "business_name": businessName,
