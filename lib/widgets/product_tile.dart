@@ -13,6 +13,7 @@ import '../data/model/common/splash_model.dart';
 import '../data/model/product/products_model.dart';
 import '../data/model/sub_category/sub_category_model.dart';
 import '../data/repositories/product/product_repository.dart';
+import '../data/repositories/wishlist/wishlist_repository.dart';
 import '../exports.dart';
 import '../res/app_dialog.dart';
 import '../res/app_network_image.dart';
@@ -38,6 +39,7 @@ class ProductTile extends StatefulWidget {
   final String? brandName;
   final RxBool? isLike;
   final ProductTileType productTileType;
+  final ProductsListType productsListTypeType;
   final Function(bool)? likeOnChanged;
   final VoidCallback? deleteOnTap;
   final VoidCallback? cartDetailOnTap;
@@ -47,6 +49,7 @@ class ProductTile extends StatefulWidget {
   final void Function(int value)? incrementOnTap;
   final void Function(String value)? sizeId;
   final bool? isCart;
+  final List<DiamondListModel>? diamonds;
 
   ProductTile({
     super.key,
@@ -74,6 +77,8 @@ class ProductTile extends StatefulWidget {
     this.isCart = false,
     this.inventoryId,
     this.diamondList,
+    this.diamonds,
+    this.productsListTypeType = ProductsListType.normal,
   });
 
   @override
@@ -268,13 +273,18 @@ class _ProductTileState extends State<ProductTile> {
                         width: 19.sp,
                         colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         if (widget.isLike != null) {
                           widget.isLike?.value = !widget.isLike!.value;
 
                           if (widget.likeOnChanged != null) {
                             widget.likeOnChanged!(widget.isLike!.value);
                           }
+                        }
+
+                        /// CREATE WISHLIST API
+                        if (widget.isLike != null) {
+                          await WishlistRepository.createWishlistAPI(inventoryId: widget.inventoryId ?? '', isWishlist: widget.isLike!.value);
                         }
                       },
                     ),
@@ -357,13 +367,18 @@ class _ProductTileState extends State<ProductTile> {
                               ),
                             ),
                             AppIconButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 if (widget.isLike != null) {
                                   widget.isLike?.value = !widget.isLike!.value;
 
                                   if (widget.likeOnChanged != null) {
                                     widget.likeOnChanged!(widget.isLike!.value);
                                   }
+                                }
+
+                                /// CREATE WISHLIST API
+                                if (widget.isLike != null) {
+                                  await WishlistRepository.createWishlistAPI(inventoryId: widget.inventoryId ?? '', isWishlist: widget.isLike!.value);
                                 }
                               },
                               icon: SvgPicture.asset(
@@ -530,7 +545,9 @@ class _ProductTileState extends State<ProductTile> {
           widget.selectSize = value.id;
           sizeModel.value = value;
         }
-        widget.sizeId!(value.id?.value ?? "");
+        if (widget.sizeId != null) {
+          widget.sizeId!(value.id?.value ?? "");
+        }
       },
     );
   }
@@ -551,6 +568,7 @@ class _ProductTileState extends State<ProductTile> {
 
           /// GET NEW PRODUCT PRICE
           await ProductRepository.getProductPriceAPI(
+            productListType: widget.productsListTypeType,
             inventoryId: widget.inventoryId ?? '',
             metalId: metalModel.id?.value ?? "",
             diamondClarity: diamondModel.name ?? "",
@@ -572,15 +590,27 @@ class _ProductTileState extends State<ProductTile> {
         axisDirection: direction,
         multiRubyOnChanged: (diamondList) async {
           /// Return List of Selected Diamond
-          if ((diamondList.runtimeType == List<DiamondListModel>)) {
+          if ((diamondList.runtimeType == RxList<DiamondListModel>)) {
             diamondList = diamondList;
 
-            // /// GET NEW PRODUCT PRICE
-            // await ProductRepository.getProductPriceAPI(
-            //   inventoryId: widget.inventoryId ?? '',
-            //   metalId: metalModel.id?.value ?? "",
-            //   diamondClarity: diamondModel.name ?? "",
-            // );
+            /// GET NEW PRODUCT PRICE
+            await ProductRepository.getProductPriceAPI(
+              productListType: widget.productsListTypeType,
+              inventoryId: widget.inventoryId ?? '',
+              metalId: metalModel.id?.value ?? "",
+              diamonds: widget.diamonds != null
+                  ? List.generate(
+                      widget.diamonds!.length,
+                      (index) => {
+                        "diamond_clarity": widget.diamonds?[index].diamondClarity?.value ?? "",
+                        "diamond_shape": widget.diamonds?[index].diamondShape ?? "",
+                        "diamond_size": widget.diamonds?[index].diamondSize ?? "",
+                        "diamond_count": widget.diamonds?[index].diamondCount ?? 0,
+                        "_id": widget.diamonds?[index].id ?? "",
+                      },
+                    )
+                  : [],
+            );
           }
         },
         rubyOnChanged: (value) async {
@@ -591,6 +621,7 @@ class _ProductTileState extends State<ProductTile> {
 
             /// GET NEW PRODUCT PRICE
             await ProductRepository.getProductPriceAPI(
+              productListType: widget.productsListTypeType,
               inventoryId: widget.inventoryId ?? '',
               metalId: metalModel.id?.value ?? "",
               diamondClarity: diamondModel.name ?? "",

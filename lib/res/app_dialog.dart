@@ -1291,8 +1291,10 @@ class AppDialogs {
     );
   }
 
-  static Future<dynamic> addMetalDialog(BuildContext context) {
+  static Future<dynamic> addMetalDialog(BuildContext context, {num metalPrice = 1}) {
     Rx<TextEditingController> controller = TextEditingController().obs;
+    printOkStatus(metalPrice);
+    num totalPrice = 1;
     return Get.dialog(
       AlertDialog(
         backgroundColor: AppColors.background,
@@ -1342,11 +1344,11 @@ class AppDialogs {
                   ),
               keyboardType: TextInputType.number,
               textInputAction: TextInputAction.done,
-              onChanged: (_) {
+              onChanged: (val) {
                 /// Debounce
                 commonDebounce(callback: () async {
                   controller.refresh();
-                  /*API CALL*/
+                  totalPrice = (num.tryParse(val) ?? 1) * metalPrice;
                   await null;
                 });
               },
@@ -1364,7 +1366,7 @@ class AppDialogs {
             1.verticalSpace,
             Obx(() {
               return Text(
-                isValEmpty(controller.value.text.trim()) ? "Metal price" : UiUtils.amountFormat(22311, decimalDigits: 0),
+                isValEmpty(controller.value.text.trim()) ? "Metal price" : UiUtils.amountFormat(totalPrice, decimalDigits: 0),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontSize: 14.sp,
@@ -1378,7 +1380,7 @@ class AppDialogs {
               title: "Add metal",
               flexibleHeight: true,
               onPressed: () {
-                Get.back();
+                Get.back(result: {"price": totalPrice, "wt": (num.tryParse(controller.value.text.trim()) ?? 0)});
               },
             )
           ],

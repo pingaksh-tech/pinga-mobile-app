@@ -3,7 +3,8 @@ import 'package:get/get.dart';
 
 import '../../controller/predefine_value_controller.dart';
 import '../../data/model/common/splash_model.dart';
-import '../../data/model/predefined_model/predefined_model.dart';
+import '../../data/model/product/single_product_model.dart';
+import '../../data/repositories/product/product_repository.dart';
 import '../../exports.dart';
 
 class ProductDetailsController extends GetxController {
@@ -11,41 +12,22 @@ class ProductDetailsController extends GetxController {
 
   RxInt currentPage = 0.obs;
   Rx<PageController> imagesPageController = PageController().obs;
-  RxList<String> productImages = [
-    "https://kisna.com/cdn/shop/files/KFLR11133-Y-1_1800x1800.jpg?v=1715687553",
-    "https://kisna.com/cdn/shop/files/KFLR11133-Y-wm_1800x1800.jpg?v=1715687553",
-    "https://kisna.com/cdn/shop/files/KFLR11133-Y-4_1800x1800.jpg?v=1715687553",
-    "https://kisna.com/cdn/shop/files/KFLR11133-Y-2_1800x1800.jpg?v=1715687553",
-    "https://kisna.com/cdn/shop/files/KFLR11133-Y-3_1800x1800.jpg?v=1715687553",
-    "https://kisna.com/cdn/shop/files/KFLR11133-R-1_1800x1800.jpg?v=1715687553",
-    "https://kisna.com/cdn/shop/files/KFLR11133-W-1_1800x1800.jpg?v=1715687553",
-    "https://kisna.com/cdn/shop/files/KFLR11133_1800x1800.jpg?v=1715687513",
-    "https://kisna.com/cdn/shop/files/our-promise-7-Days_adf02756-37a0-41e4-bc54-0a7ca584cfe2_1800x1800.webp?v=1715687519",
-  ].obs;
 
   RxBool isLike = false.obs;
   RxBool isSize = true.obs;
+  RxBool isFancy = false.obs;
 
-  Rx<SizeModel> selectedSize = SizeModel().obs;
-  Rx<MetalModel> selectedColor = MetalModel().obs;
+  Rx<DiamondModel> selectedSize = DiamondModel().obs;
+  Rx<MetalModel> selectedMetal = MetalModel().obs;
   Rx<DiamondModel> selectedDiamond = DiamondModel().obs;
   RxString selectedRemark = "".obs;
   RxString productCategory = "".obs;
 
-  /// Set Default Select Value Of Product
-  Future<void> predefinedValue() async {
-    if (isRegistered<PreDefinedValueController>()) {
-      final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
-      List<MetalModel> colorList = preValueCon.metalsList;
-      List<SizeModel> sizeList = await preValueCon.checkHasPreValue(productCategory.value, type: SelectableItemType.size.slug);
-      List<DiamondModel> diamondList = preValueCon.diamondsList;
-      selectedColor.value = colorList[0];
-      if (sizeList.isNotEmpty) {
-        selectedSize.value = sizeList[0];
-      }
-      selectedDiamond.value = diamondList[0];
-    }
-  }
+  Rx<SingleProductModel> productDetailModel = SingleProductModel().obs;
+  RxString inventoryId = "".obs;
+  RxString productName = "".obs;
+  num extraMetalPrice = 0;
+  num extraMetalWt = 0.0;
 
   @override
   void onInit() {
@@ -57,7 +39,72 @@ class ProductDetailsController extends GetxController {
       if (Get.arguments['isSize'].runtimeType == bool) {
         isSize.value = Get.arguments['isSize'];
       }
-      predefinedValue();
+
+      if (Get.arguments['isFancy'].runtimeType == bool) {
+        isFancy.value = Get.arguments['isFancy'];
+      }
+
+      if (Get.arguments['inventoryId'].runtimeType == String) {
+        inventoryId.value = Get.arguments['inventoryId'];
+      }
+      if (Get.arguments['name'].runtimeType == String) {
+        productName.value = Get.arguments['name'];
+      }
+    }
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    ProductRepository.getSingleProductAPI(inventoryId: inventoryId.value).then(
+      (value) {
+        predefinedValue();
+      },
+    );
+  }
+
+  /// Set Default Select Value Of Product
+  Future<void> predefinedValue() async {
+    int index = 0;
+    if (isRegistered<PreDefinedValueController>()) {
+      final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
+      List<MetalModel> metalList = preValueCon.metalsList;
+      List<CategoryWiseSize> allSizes = preValueCon.categoryWiseSizesList;
+      List<DiamondModel> diamondList = preValueCon.diamondsList;
+
+      /// Selected Diamond
+      index = diamondList.indexWhere((element) => element.name == productDetailModel.value.diamonds?.first.diamondClarity?.value);
+      if (index != -1) {
+        selectedDiamond.value = diamondList[index];
+      } else {
+        selectedDiamond.value = diamondList[0];
+      }
+
+      /// Selected Metal
+      index = metalList.indexWhere((element) => element.id?.value == productDetailModel.value.metalId);
+      if (index != -1) {
+        selectedMetal.value = metalList[index];
+      } else {
+        selectedMetal.value = metalList[0];
+      }
+
+      /// Selected Size
+      if (allSizes.isNotEmpty) {
+        RxList<DiamondModel> sizeList = <DiamondModel>[].obs;
+
+        for (var element in allSizes) {
+          if (element.name?.toLowerCase() == productCategory.toLowerCase() && element.data != null) {
+            sizeList = element.data!.obs;
+
+            index = sizeList.indexWhere((element) => element.id?.value == productDetailModel.value.sizeId);
+            if (index != -1) {
+              selectedSize.value = sizeList[index];
+            } else {
+              selectedSize.value = sizeList[0];
+            }
+          }
+        }
+      }
     }
   }
 }

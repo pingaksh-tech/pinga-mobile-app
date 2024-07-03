@@ -31,11 +31,17 @@ class ApiUrls {
   static const String getAllProductsPOST = "inventory/filter";
   static const String getProductPricePOST = "inventory/changing-price";
 
+  static String getSingleProductDetailGET({required String inventoryId}) => "inventory/$inventoryId";
+
+  /// WISHLIST
+  static const String createAndGetWishlistAPI = "mobile/wishlist";
+
   /// USER
   static const String deleteAccountDELETE = "";
 
   /// CART
   static String getAllCartGET = "mobile/cart/";
+
   static String deleteCartApi({String? cartId}) => "mobile/cart/";
   static String multiPleDelete = "mobile/cart/multi/items";
   static String cartUpdatePUT = "/mobile/cart/";

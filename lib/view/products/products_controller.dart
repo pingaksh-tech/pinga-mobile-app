@@ -69,8 +69,12 @@ class ProductsController extends GetxController {
     super.onReady();
     ProductRepository.getPredefineValueAPI();
     preValueAvailable();
-    printOkStatus(subCategory.value.id);
-    ProductRepository.getFilterProductsListAPI(categoryId: categoryId.value, productsListType: ProductsListType.normal, subCategoryId: subCategory.value.id ?? "");
+
+    ProductRepository.getFilterProductsListAPI(
+      categoryId: categoryId.value,
+      productsListType: ProductsListType.normal,
+      subCategoryId: subCategory.value.id ?? "",
+    );
   }
 
   final RxList sortWithPriceList = [

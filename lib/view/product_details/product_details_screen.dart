@@ -5,7 +5,9 @@ import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../data/model/common/splash_model.dart';
-import '../../data/model/predefined_model/predefined_model.dart';
+import '../../data/model/product/products_model.dart';
+import '../../data/model/product/single_product_model.dart';
+import '../../data/repositories/wishlist/wishlist_repository.dart';
 import '../../exports.dart';
 import '../../res/app_bar.dart';
 import '../../res/app_dialog.dart';
@@ -18,9 +20,9 @@ import '../products/components/cart_icon_button.dart';
 import 'components/custom_product_watch_button.dart';
 import 'components/price_breakup_dialog.dart';
 import 'product_details_controller.dart';
+import 'widgets/Diamonds_tab/diamonds_tab.dart';
 import 'widgets/family_product/family_product_tab.dart';
 import 'widgets/product_info/product_info.dart';
-import 'widgets/variants/variants.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   ProductDetailsScreen({super.key});
@@ -35,7 +37,7 @@ class ProductDetailsScreen extends StatelessWidget {
       return Scaffold(
         backgroundColor: AppColors.background,
         appBar: MyAppBar(
-          title: "PLKMR7423746",
+          title: con.productName.value,
           backgroundColor: Colors.white,
           actions: const [CartIconButton()],
         ),
@@ -55,26 +57,29 @@ class ProductDetailsScreen extends StatelessWidget {
                         ///                                    IMAGE VIEW
                         /// ***********************************************************************************
 
-                        if (con.productImages.isNotEmpty)
+                        if (con.productDetailModel.value.inventoryImages != null && con.productDetailModel.value.inventoryImages!.isNotEmpty)
                           AspectRatio(
                             aspectRatio: 1,
                             child: GestureDetector(
                               behavior: HitTestBehavior.translucent,
                               onTap: () {
-                                Get.toNamed(AppRoutes.imageViewScreen, arguments: {'imageList': con.productImages});
+                                Get.toNamed(
+                                  AppRoutes.imageViewScreen,
+                                  arguments: {'imageList': con.productDetailModel.value.inventoryImages, "name": con.productName.value},
+                                );
                               },
                               child: Stack(
                                 children: [
                                   /// IMAGES
                                   PageView.builder(
                                     controller: con.imagesPageController.value,
-                                    itemCount: con.productImages.length,
+                                    itemCount: con.productDetailModel.value.inventoryImages?.length,
                                     onPageChanged: (index) {
                                       con.currentPage.value = index;
                                     },
                                     itemBuilder: (context, index) {
                                       return AppNetworkImage(
-                                        imageUrl: con.productImages[index],
+                                        imageUrl: con.productDetailModel.value.inventoryImages?[index] ?? "",
                                         fit: BoxFit.cover,
                                         borderRadius: BorderRadius.zero,
                                       );
@@ -98,7 +103,7 @@ class ProductDetailsScreen extends StatelessWidget {
                                         ),
                                         child: AnimatedSmoothIndicator(
                                           activeIndex: con.currentPage.value,
-                                          count: con.productImages.length,
+                                          count: con.productDetailModel.value.inventoryImages != null ? con.productDetailModel.value.inventoryImages!.length : 0,
                                           effect: ScrollingDotsEffect(
                                             dotHeight: 8.0,
                                             dotWidth: 8.0,
@@ -122,9 +127,12 @@ class ProductDetailsScreen extends StatelessWidget {
                                           con.isLike.value ? AppAssets.likeFill : AppAssets.like,
                                           colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
                                         ),
-                                        onPressed: () {
+                                        onPressed: () async {
                                           con.isLike.value = !con.isLike.value;
                                           con.isLike.refresh();
+
+                                          /// CREATE WISHLIST API
+                                          await WishlistRepository.createWishlistAPI(inventoryId: con.inventoryId.value, isWishlist: con.isLike.value);
                                         },
                                         shadowColor: Theme.of(context).colorScheme.surface.withOpacity(.1),
                                       );
@@ -140,14 +148,14 @@ class ProductDetailsScreen extends StatelessWidget {
                         /// ***********************************************************************************
 
                         defaultPadding.verticalSpace,
-                        Padding(
-                          padding: bodyPadding,
-                          child: Text(
-                            "SARDUNYA RING",
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(),
-                          ),
-                        ),
-                        (defaultPadding / 6).verticalSpace,
+                        // Padding(
+                        //   padding: bodyPadding,
+                        //   child: Text(
+                        //     "SARDUNYA RING",
+                        //     style: Theme.of(context).textTheme.titleMedium?.copyWith(),
+                        //   ),
+                        // ),
+                        // (defaultPadding / 6).verticalSpace,
 
                         /// PRODUCT PRICE
                         Padding(
@@ -155,7 +163,7 @@ class ProductDetailsScreen extends StatelessWidget {
                           child: Row(
                             children: [
                               Text(
-                                UiUtils.amountFormat(32500),
+                                UiUtils.amountFormat(con.productDetailModel.value.priceBreaking?.total ?? 0),
                                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                       fontWeight: FontWeight.w800,
                                       color: Theme.of(context).primaryColor,
@@ -177,7 +185,7 @@ class ProductDetailsScreen extends StatelessWidget {
                                       letterSpacing: .3,
                                     ),
                                 onPressed: () {
-                                  PriceBreakupDialog.priceBreakupDialog(context);
+                                  PriceBreakupDialog.priceBreakupDialog(context, priceBreakModel: con.productDetailModel.value.priceBreaking ?? PriceBreaking());
                                 },
                               )
                             ],
@@ -188,15 +196,15 @@ class ProductDetailsScreen extends StatelessWidget {
                         Padding(
                           padding: bodyPadding,
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               /// Wear
-                              CustomProductWatchButton(
-                                size: 58.h,
-                                icon: AppAssets.jewelleryWearIcon,
-                                title: "Wear",
-                                onPressed: () {},
-                              ),
+                              // CustomProductWatchButton(
+                              //   size: 58.h,
+                              //   icon: AppAssets.jewelleryWearIcon,
+                              //   title: "Wear",
+                              //   onPressed: () {},
+                              // ),
 
                               /// Watch
                               CustomProductWatchButton(
@@ -213,7 +221,12 @@ class ProductDetailsScreen extends StatelessWidget {
                                 size: 58.h,
                                 title: "Add\nmetal",
                                 onPressed: () {
-                                  AppDialogs.addMetalDialog(context);
+                                  AppDialogs.addMetalDialog(context, metalPrice: con.productDetailModel.value.priceBreaking?.metal?.pricePerGram ?? 0).then(
+                                    (value) {
+                                      con.extraMetalPrice = value['price'];
+                                      con.extraMetalWt = value['wt'];
+                                    },
+                                  );
                                 },
                               ),
                             ],
@@ -237,6 +250,7 @@ class ProductDetailsScreen extends StatelessWidget {
                         color: AppColors.background,
                         padding: EdgeInsets.symmetric(horizontal: defaultPadding),
                         child: MySlideTabBar(
+                            tabAlignment: TabAlignment.start,
                             backgroundColor: AppColors.background,
                             borderRadius: BorderRadius.vertical(top: Radius.circular(4.r)),
                             border: Border.all(
@@ -246,8 +260,11 @@ class ProductDetailsScreen extends StatelessWidget {
                               Tab(
                                 text: "Product Info",
                               ),
+                              // Tab(
+                              //   text: "Variants",
+                              // ),
                               Tab(
-                                text: "Variants",
+                                text: "Diamonds",
                               ),
                               Tab(
                                 text: "Family Product",
@@ -262,22 +279,27 @@ class ProductDetailsScreen extends StatelessWidget {
             body: TabBarView(
               children: [
                 /// PRODUCT INFO TAB
-                ProductInfo(),
+                ProductInfoTab(infoList: con.productDetailModel.value.productInfo?.toJson().entries.toList() ?? []),
 
-                /// VARIANTS TAB
-                VariantsTab(
-                  productCategory: con.productCategory.value,
-                  isSize: con.isSize.value,
-                ),
+                // /// VARIANTS TAB
+                // VariantsTab(
+                //   productCategory: con.productCategory.value,
+                //   isSize: con.isSize.value,
+                // ),
+                /// DIAMOND TAB
+                DiamondsTab(diamondList: con.productDetailModel.value.diamonds ?? []),
 
                 /// FAMILY PRODUCT TAB
-                FamilyProductTab()
+                FamilyProductTab(
+                  productList: con.productDetailModel.value.familyProducts ?? [],
+                  category: con.productCategory.value,
+                )
               ],
             ),
           ),
         ),
         // bottom sheet
-        bottomSheet: Container(
+        bottomNavigationBar: Container(
           height: 60.h,
           decoration: BoxDecoration(color: AppColors.background, boxShadow: [
             BoxShadow(
@@ -294,31 +316,31 @@ class ProductDetailsScreen extends StatelessWidget {
                 horizontalSelectorButton(
                   context,
                   categorySlug: con.productCategory.value,
-                  // selectedSize: con.selectedSize.value.value,
+                  selectedSize: con.selectedSize,
                   selectableItemType: SelectableItemType.size,
                   sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
                   axisDirection: Axis.vertical,
                   sizeOnChanged: (value) {
                     /// Selected Size
-                    if ((value.runtimeType == SizeModel)) {
-                      // con.selectedSize.value = value;
+                    if ((value.runtimeType == DiamondModel)) {
+                      con.selectedSize.value = value;
                     }
                   },
                 ),
               (defaultPadding / 5).horizontalSpace,
 
-              /// Color Selector
+              /// Metal Selector
               horizontalSelectorButton(
                 context,
                 categorySlug: con.productCategory.value,
-                selectedMetal: con.selectedColor,
+                selectedMetal: con.selectedMetal,
                 selectableItemType: SelectableItemType.color,
                 sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
                 axisDirection: Axis.vertical,
                 metalOnChanged: (value) {
-                  /// Selected Color
+                  /// Selected Metal
                   if ((value.runtimeType == MetalModel)) {
-                    con.selectedColor.value = value;
+                    con.selectedMetal.value = value;
                   }
                 },
               ),
@@ -329,9 +351,35 @@ class ProductDetailsScreen extends StatelessWidget {
                 context,
                 categorySlug: con.productCategory.value,
                 selectedDiamond: con.selectedDiamond,
+                isFancy: con.isFancy.value,
+                diamondsList: RxList(con.productDetailModel.value.diamonds ?? []),
                 selectableItemType: SelectableItemType.diamond,
                 sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
                 axisDirection: Axis.vertical,
+                multiRubyOnChanged: (diamondList) async {
+                  /// Return List of Selected Diamond
+                  if ((diamondList.runtimeType == RxList<DiamondListModel>)) {
+                    diamondList = diamondList;
+
+                    /// GET NEW PRODUCT PRICE
+                    // await ProductRepository.getProductPriceAPI(
+                    //   inventoryId: widget.inventoryId ?? '',
+                    //   metalId: metalModel.id?.value ?? "",
+                    //   diamonds: widget.diamonds != null
+                    //       ? List.generate(
+                    //           widget.diamonds!.length,
+                    //           (index) => {
+                    //             "diamond_clarity": widget.diamonds?[index].diamondClarity?.value ?? "",
+                    //             "diamond_shape": widget.diamonds?[index].diamondShape ?? "",
+                    //             "diamond_size": widget.diamonds?[index].diamondSize ?? "",
+                    //             "diamond_count": widget.diamonds?[index].diamondCount ?? 0,
+                    //             "_id": widget.diamonds?[index].id ?? "",
+                    //           },
+                    //         )
+                    //       : [],
+                    // );
+                  }
+                },
                 rubyOnChanged: (value) {
                   /// Selected Diamond
                   if ((value.runtimeType == DiamondModel)) {

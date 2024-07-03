@@ -3,12 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
+import '../../../data/model/product/single_product_model.dart';
 import '../../../exports.dart';
 
 EdgeInsets get bodyPadding => EdgeInsets.symmetric(horizontal: defaultPadding);
 
 class PriceBreakupDialog {
-  static Future<dynamic> priceBreakupDialog(BuildContext context) {
+  static Future<dynamic> priceBreakupDialog(BuildContext context, {required PriceBreaking priceBreakModel}) {
     return Get.dialog(
       Dialog(
         child: Container(
@@ -20,10 +21,11 @@ class PriceBreakupDialog {
           child: Stack(
             alignment: Alignment.bottomCenter,
             children: [
-              ListView(
-                physics: const RangeMaintainingScrollPhysics(),
-                padding: EdgeInsets.zero,
-                shrinkWrap: true,
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                // physics: const RangeMaintainingScrollPhysics(),
+                // padding: EdgeInsets.zero,
+                // shrinkWrap: true,
                 children: [
                   /// Header
                   Padding(
@@ -51,102 +53,119 @@ class PriceBreakupDialog {
                   ),
                   (defaultPadding / 1.5).verticalSpace,
 
-                  /// Body
-                  Text(
-                    "GOLD",
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.primary),
-                  ),
-                  Padding(
-                    padding: bodyPadding,
-                    child: Divider(height: 5.h, color: Theme.of(context).dividerColor.withOpacity(.2)),
-                  ),
+                  ListView(
+                    // physics: const RangeMaintainingScrollPhysics(),
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    children: [
+                      /// Body
+                      Text(
+                        "Metal",
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.primary),
+                      ),
+                      Padding(
+                        padding: bodyPadding,
+                        child: Divider(height: 5.h, color: Theme.of(context).dividerColor.withOpacity(.2)),
+                      ),
 
-                  /// Table View
-                  Padding(
-                    padding: bodyPadding.copyWith(bottom: defaultPadding),
-                    child: Table(
-                      columnWidths: const {
-                        0: FlexColumnWidth(1),
-                        1: FlexColumnWidth(1),
-                        2: FlexColumnWidth(1),
-                      },
-                      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                      children: [
-                        /// Title Row
-                        priceTableRow(context, value1: "Weight", value2: "KT price", value3: "Total"),
+                      /// Table View
+                      Padding(
+                        padding: bodyPadding.copyWith(bottom: defaultPadding),
+                        child: Table(
+                          columnWidths: const {
+                            0: FlexColumnWidth(1),
+                            1: FlexColumnWidth(1),
+                            2: FlexColumnWidth(1),
+                          },
+                          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                          children: [
+                            /// Title Row
+                            priceTableRow(context, value1: "Weight", value2: "Per gram price", value3: "Total"),
 
-                        /// Value Row
-                        priceTableRow(
-                          context,
-                          isSubtitle: true,
-                          value1: "6.05 g",
-                          value2: UiUtils.amountFormat(5066, decimalDigits: 0),
-                          value3: UiUtils.amountFormat(43572, decimalDigits: 0),
+                            /// Value Row
+                            priceTableRow(
+                              context,
+                              isSubtitle: true,
+                              value1: "${priceBreakModel.metal?.metalWeight} g",
+                              value2: UiUtils.amountFormat(priceBreakModel.metal?.pricePerGram ?? 0, decimalDigits: 0),
+                              value3: UiUtils.amountFormat(priceBreakModel.metal?.metalPrice ?? 0, decimalDigits: 0),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
+                      ),
 
-                  /// Diamond Table Pricing
-                  Text(
-                    "DIAMOND",
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.primary),
-                  ),
-                  Padding(
-                    padding: bodyPadding,
-                    child: Divider(height: 5.h, color: Theme.of(context).dividerColor.withOpacity(.2)),
-                  ),
+                      /// Diamond Table Pricing
+                      Text(
+                        "DIAMOND",
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.primary),
+                      ),
+                      Padding(
+                        padding: bodyPadding,
+                        child: Divider(height: 5.h, color: Theme.of(context).dividerColor.withOpacity(.2)),
+                      ),
 
-                  /// Table View
-                  Padding(
-                    padding: bodyPadding.copyWith(bottom: defaultPadding),
-                    child: Table(
-                      columnWidths: const {
-                        0: FlexColumnWidth(1),
-                        1: FlexColumnWidth(1),
-                        // 2: FlexColumnWidth(1),
-                      },
-                      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                      children: [
-                        /// Title Row
-                        priceTableRow(context, value1: "Weight", value2: "Total"),
+                      /// Table View
+                      Padding(
+                        padding: bodyPadding.copyWith(bottom: defaultPadding),
+                        child: Table(
+                          columnWidths: const {
+                            0: FlexColumnWidth(1),
+                            1: FlexColumnWidth(1),
+                            // 2: FlexColumnWidth(1),
+                          },
+                          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                          children: [
+                            /// Title Row
+                            priceTableRow(context, value1: "Weight", value2: "Total"),
 
-                        /// Value Row
-                        priceTableRow(
-                          context,
-                          isSubtitle: true,
-                          value1: "0.662",
-                          value2: UiUtils.amountFormat(76130, decimalDigits: 0),
+                            /// Value Row
+                            priceTableRow(
+                              context,
+                              isSubtitle: true,
+                              value1: "${priceBreakModel.diamond?.diamondWeight ?? 0}",
+                              value2: UiUtils.amountFormat(priceBreakModel.diamond?.diamondPrice ?? 0, decimalDigits: 0),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
+                      ),
 
-                  /// Other Pricing
-                  Text(
-                    "OTHER",
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.primary),
-                  ),
-                  Padding(
-                    padding: bodyPadding,
-                    child: Divider(height: 5.h, color: Theme.of(context).dividerColor.withOpacity(.2)),
-                  ),
+                      /// Other Pricing
+                      Text(
+                        "OTHER",
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.primary),
+                      ),
+                      Padding(
+                        padding: bodyPadding,
+                        child: Divider(height: 5.h, color: Theme.of(context).dividerColor.withOpacity(.2)),
+                      ),
 
-                  /// Table View
-                  Padding(
-                    padding: bodyPadding,
-                    child: Table(
-                      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                      children: [
-                        priceTableRow(context, value1: "Labour", value2: UiUtils.amountFormat(12124, decimalDigits: 0)),
-                        priceTableRow(context, value1: "GST", value2: UiUtils.amountFormat(5772, decimalDigits: 0)),
-                      ],
-                    ),
-                  ),
-                  50.verticalSpace,
+                      /// Table View
+                      Padding(
+                        padding: bodyPadding,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                "Manufacturing Price",
+                                textAlign: TextAlign.start,
+                                style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.font),
+                              ),
+                            ),
+                            Text(
+                              UiUtils.amountFormat(priceBreakModel.other?.manufacturingPrice ?? 0, decimalDigits: 0),
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.font),
+                            ),
+                          ],
+                        ),
+                      ),
+                      50.verticalSpace,
+                    ],
+                  )
                 ],
               ),
 
@@ -174,7 +193,7 @@ class PriceBreakupDialog {
                       flex: 4,
                       child: Text(
                         textAlign: TextAlign.end,
-                        UiUtils.amountFormat(12703, decimalDigits: 0),
+                        UiUtils.amountFormat(priceBreakModel.total ?? 0, decimalDigits: 0),
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
                               fontSize: 14.sp,
                               fontWeight: FontWeight.w600,

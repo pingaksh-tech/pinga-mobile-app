@@ -3,15 +3,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import '../../../../exports.dart';
+import '../../product_details_controller.dart';
 import 'product_info_controller.dart';
 
 import '../../../../packages/like_button/like_button.dart';
 import '../../../../res/app_network_image.dart';
 
-class ProductInfo extends StatelessWidget {
-  ProductInfo({super.key});
+class ProductInfoTab extends StatelessWidget {
+  final List<MapEntry> infoList;
+
+  ProductInfoTab({super.key, required this.infoList});
 
   final ProductInfoController con = Get.put(ProductInfoController());
+  final ProductDetailsController productDetailsCon = Get.find<ProductDetailsController>();
 
   @override
   Widget build(BuildContext context) {
@@ -39,26 +43,27 @@ class ProductInfo extends StatelessWidget {
             //   ],
             // ),
 
-            ...con.productDetails.map((detail) {
-              return TableRow(
+            ...List.generate(
+              productDetailsCon.productDetailModel.value.productInfo?.toJson().length ?? 0,
+              (index) => TableRow(
                 children: [
                   Padding(
                     padding: EdgeInsets.all(defaultPadding / 3),
                     child: Text(
-                      detail.keys.first,
+                      "${(infoList[index]).key}",
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 12.sp),
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.all(defaultPadding / 3),
                     child: Text(
-                      detail.values.first,
+                      ((infoList[index].value).runtimeType == List && ((infoList[index]).value as List).isEmpty) ? "-" : "${(infoList[index]).value ?? ""}",
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 12.sp),
                     ),
                   ),
                 ],
-              );
-            }),
+              ),
+            )
           ],
         ),
       ),

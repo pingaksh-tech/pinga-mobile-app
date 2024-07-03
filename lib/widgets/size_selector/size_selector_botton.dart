@@ -100,14 +100,8 @@ Widget horizontalSelectorButton(
                 /// MULTI DIAMOND
                 AppDialogs.multiDiamondSelector(context, diamondList: diamondsList)?.then(
                   (value) {
-                    if (value != null && (value.runtimeType == DiamondModel)) {
-                      final DiamondModel diamondModel = (value as DiamondModel);
-
-                      selectedDiamond?.value = diamondModel;
-
-                      if (multiRubyOnChanged != null) {
-                        multiRubyOnChanged(diamondsList ?? []);
-                      }
+                    if (multiRubyOnChanged != null) {
+                      multiRubyOnChanged(diamondsList ?? []);
                     }
                   },
                 );

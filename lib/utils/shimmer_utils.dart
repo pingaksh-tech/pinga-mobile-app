@@ -78,12 +78,4 @@ class ShimmerUtils {
       ),
     );
   }
-
-// static Widget ProductsListShimmer(BuildContext context) {
-//   return ShimmerUtils.shimmer(child: ShimmerUtils.shimmerContainer(
-//     child: Column(
-//       children: [],
-//     )
-//   ));
-// }
 }

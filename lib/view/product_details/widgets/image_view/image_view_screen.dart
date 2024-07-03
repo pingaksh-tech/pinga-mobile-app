@@ -18,7 +18,7 @@ class ImageViewScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: MyAppBar(
-        title: "PLKMR7423746",
+        title: con.productName.value,
       ),
       body: Obx(() {
         return Padding(

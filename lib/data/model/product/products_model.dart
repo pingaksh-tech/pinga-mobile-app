@@ -180,7 +180,7 @@ class InventoryModel {
         "name": name,
         "slug": slug,
         "sku": sku,
-        "quantity": quantity.obs,
+        "quantity": quantity?.value,
         "inventory_images": inventoryImages == null ? [] : List<dynamic>.from(inventoryImages!.map((x) => x)),
         "category_id": categoryId,
         "sub_category_id": subCategoryId,
