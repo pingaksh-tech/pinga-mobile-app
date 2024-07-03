@@ -77,6 +77,8 @@ class CartScreen extends StatelessWidget {
                             separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
                             itemBuilder: (context, index) {
                               return ProductTile(
+                                inventoryId: con.cartList[index].inventoryId,
+                                productsListTypeType: ProductsListType.cart,
                                 selectMetalCart: (con.cartList[index].metalId ?? "").obs,
                                 selectDiamondCart: (con.cartList[index].diamondClarity ?? "").obs,
                                 sizeId: (value) {
