@@ -19,46 +19,46 @@ class OrdersScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Obx(
         () => SafeArea(
-          child: Column(
-            children: [
-              con.isLoading.isFalse
-                  ? (con.orderProductList.isNotEmpty
-                      ? Expanded(
+          child: con.isLoading.isFalse
+              ? (con.orderList.isNotEmpty
+                  ? Column(
+                      children: [
+                        Expanded(
                           child: ListView.separated(
                             controller: con.scrollController,
                             padding: EdgeInsets.all(defaultPadding / 1.5),
-                            itemCount: con.orderProductList.length,
+                            itemCount: con.orderList.length,
                             separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
                             itemBuilder: (context, index) {
                               return OrderTile(
-                                orderId: "71205484114-1/1",
-                                dateTime: con.orderProductList[index].createdAt ?? DateTime.now(),
-                                customerName: con.orderProductList[index].products?.first.product?.title ?? "",
-                                emrId: "0/24/PNK/39536",
-                                quantity: "2",
-                                totalDp: "12548",
-                                mrpPrice: (con.orderProductList[index].products?.first.price ?? 0).toString(),
+                                orderId: con.orderList[index].orderNo ?? "",
+                                dateTime: con.orderList[index].createdAt ?? DateTime.now(),
+                                customerName: con.orderList[index].retailer?.businessName ?? "",
+                                quantity: con.orderList[index].qty.toString(),
+                                mrpPrice: con.orderList[index].grandTotal.toString(),
                               );
                             },
                           ),
+                        ),
+
+                        /// PAGINATION LOADER
+                        Visibility(
+                          visible: con.paginationLoading.isTrue,
+                          child: const OrderShimmerTile(),
                         )
-                      : const Expanded(
-                          child: EmptyElement(
-                            title: "No orders found",
-                            imagePath: AppAssets.emptyData,
-                          ),
-                        ))
-                  : Expanded(
-                      child: ListView.separated(
-                        itemCount: 20,
-                        padding: EdgeInsets.all(defaultPadding),
-                        physics: const NeverScrollableScrollPhysics(),
-                        separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
-                        itemBuilder: (context, index) => const OrderShimmerTile(),
-                      ),
-                    ),
-            ],
-          ),
+                      ],
+                    )
+                  : const EmptyElement(
+                      title: "No orders found",
+                      imagePath: AppAssets.emptyData,
+                    ))
+              : ListView.separated(
+                  itemCount: 20,
+                  padding: EdgeInsets.all(defaultPadding),
+                  physics: const NeverScrollableScrollPhysics(),
+                  separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
+                  itemBuilder: (context, index) => const OrderShimmerTile(),
+                ),
         ),
       ),
       bottomNavigationBar: IntrinsicHeight(
@@ -72,8 +72,8 @@ class OrdersScreen extends StatelessWidget {
           ),
           child: Column(
             children: [
-              orderSummaryItem(context, title: "Total items", subTitle: "5"),
-              orderSummaryItem(context, title: "Total DP", subTitle: UiUtils.amountFormat("219850", decimalDigits: 0)),
+              orderSummaryItem(context, title: "Total items", subTitle: con.orderList.length.toString()),
+              // orderSummaryItem(context, title: "Total DP", subTitle: UiUtils.amountFormat("219850", decimalDigits: 0)),
               orderSummaryItem(context, title: "Total Amount", subTitle: UiUtils.amountFormat("284523", decimalDigits: 0)),
             ],
           ),

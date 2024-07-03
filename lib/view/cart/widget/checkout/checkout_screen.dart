@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 
 import '../../../../controller/predefine_value_controller.dart';
 import '../../../../data/model/cart/retailer_model.dart';
-import '../../../../data/repositories/cart/cart_repository.dart';
+import '../../../../data/repositories/orders/orders_repository.dart';
 import '../../../../exports.dart';
 import '../../../../res/app_bar.dart';
 import '../../../../res/app_dialog.dart';
@@ -41,14 +41,14 @@ class CheckoutScreen extends StatelessWidget {
             padding: EdgeInsets.only(bottom: defaultPadding, top: defaultPadding / 2),
             suffixIcon: SvgPicture.asset(AppAssets.downArrow, height: 10),
             onTap: () {
-              int index = con.retailerList.indexWhere((element) => element.id == con.retailerId.obs);
-              if (index != -1) {
-                con.retailerModel.value = con.retailerList[index];
-              }
+              // int index = con.retailerList.indexWhere((element) => element.id == con.retailerId.obs);
+              // if (index != -1) {
+              //   con.retailerModel.value = con.retailerList[index];
+              // }
               AppDialogs.retailerSelect(
                 context,
-                retailerList: con.retailerList,
-                selectedRetailer: !isValEmpty(con.retailerId.obs) ? con.retailerId.obs : RxString(con.retailerList[0].id?.value ?? ""),
+                selectedRetailer: con.retailerId.obs,
+                // !isValEmpty(con.retailerId.obs) ? con.retailerId.obs : RxString(con.retailerList[0].id?.value ?? ""),
               )?.then(
                 (value) {
                   if (value != null && (value.runtimeType == RetailerModel)) {
@@ -83,7 +83,6 @@ class CheckoutScreen extends StatelessWidget {
               )?.then(
                 (value) {
                   con.orderTypeCon.value.text = value;
-                  printYellow(value);
                 },
               );
             },
@@ -152,11 +151,11 @@ class CheckoutScreen extends StatelessWidget {
                                     };
                                   },
                                 ).toList();
-                                CartRepository.createOrder(
+                                OrdersRepository.createOrder(
                                   retailerId: con.retailerId,
                                   orderType: con.orderTypeCon.value.text,
                                   quantity: con.quantity.value,
-                                  loader: con.isLoading,
+                                  // loader: con.isLoading,
                                   subTotal: con.totalPrice.value.toString(),
                                   cartItems: cartItems,
                                 );

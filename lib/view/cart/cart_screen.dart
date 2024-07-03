@@ -114,10 +114,6 @@ class CartScreen extends StatelessWidget {
                                 productQuantity: RxInt(con.cartList[index].quantity ?? 0),
                                 selectSize: (con.cartList[index].sizeId ?? "").obs,
                                 deleteOnTap: () {
-                                  // if (con.selectedList.contains(con.cartList[index])) {
-                                  //   con.selectedList.remove(con.cartList[index]);
-                                  //   con.calculateSelectedQue();
-                                  // }
                                   //? CART DELETE API
                                   CartRepository.deleteCartAPi(cartId: con.cartList[index].id ?? "", isLoader: con.cartLoader);
                                   con.calculateSelectedItemPrice();

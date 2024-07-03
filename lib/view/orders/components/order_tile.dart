@@ -10,9 +10,9 @@ class OrderTile extends StatelessWidget {
   final String orderId;
   final DateTime dateTime;
   final String customerName;
-  final String emrId;
+  final String? emrId;
   final String quantity;
-  final String totalDp;
+  final String? totalDp;
   final String mrpPrice;
 
   const OrderTile({
@@ -20,9 +20,9 @@ class OrderTile extends StatelessWidget {
     required this.orderId,
     required this.dateTime,
     required this.customerName,
-    required this.emrId,
+    this.emrId,
     required this.quantity,
-    required this.totalDp,
+    this.totalDp,
     required this.mrpPrice,
   });
 
@@ -55,10 +55,10 @@ class OrderTile extends StatelessWidget {
                   children: [
                     Text(
                       orderId,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 13.sp, fontWeight: FontWeight.w500, height: 0),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 13.sp, fontWeight: FontWeight.w400, height: 0),
                     ),
                     Text(
-                      DateFormat('MM/dd/yyyy HH:mm:ss').format(dateTime),
+                      DateFormat('MM/dd/yyyy HH:mm:ss').format(dateTime.toLocal()),
                       style: AppTextStyle.subtitleStyle(context).copyWith(fontSize: 11.5.sp),
                     )
                   ],
@@ -73,32 +73,27 @@ class OrderTile extends StatelessWidget {
               titleFlex: 2,
               subTitleFlex: 8,
             ),
-            SizedBox(height: defaultPadding / 5),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: orderDetailsKeyValuePairWidget1(
-                    context,
-                    title: "EMR ID",
-                    subtitleText: emrId,
-                    subTitleFlex: 4,
-                    titleFlex: 3,
-                  ),
-                ),
-                defaultPadding.horizontalSpace,
-                Expanded(
-                  child: orderDetailsKeyValuePairWidget1(
-                    context,
-                    title: "Quantity",
-                    subtitleText: quantity,
-                    titleFlex: 3,
-                    subTitleFlex: 4,
-                  ),
-                ),
-              ],
+            SizedBox(height: defaultPadding / 7),
+            orderDetailsKeyValuePairWidget1(
+              context,
+              title: "Quantity",
+              subtitleText: quantity,
+              titleFlex: 2,
+              subTitleFlex: 8,
             ),
-            SizedBox(height: defaultPadding / 5),
+            SizedBox(height: defaultPadding / 7),
+            orderDetailsKeyValuePairWidget1(
+              context,
+              title: "MRP",
+              subtitleText: UiUtils.amountFormat(
+                mrpPrice,
+                decimalDigits: 2,
+              ),
+              titleFlex: 2,
+              subTitleFlex: 8,
+            ),
+            //? Total DownPayment and EMR ID
+            /*   SizedBox(height: defaultPadding / 5),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -118,17 +113,14 @@ class OrderTile extends StatelessWidget {
                 Expanded(
                   child: orderDetailsKeyValuePairWidget1(
                     context,
-                    title: "MRP",
-                    subtitleText: UiUtils.amountFormat(
-                      mrpPrice,
-                      decimalDigits: 2,
-                    ),
-                    titleFlex: 3,
+                    title: "EMR ID",
+                    subtitleText: emrId,
                     subTitleFlex: 4,
+                    titleFlex: 3,
                   ),
                 ),
               ],
-            )
+            ) */
           ],
         ),
       ),
@@ -150,15 +142,15 @@ class OrderTile extends StatelessWidget {
           child: Text(
             title,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontSize: 12.5.sp,
-                  color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(.7),
+                  fontSize: 12.sp,
+                  color: AppColors.font.withOpacity(.5),
                 ),
           ),
         ),
         Text(
           ":",
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontSize: 13.sp,
+                fontSize: 12.sp,
                 fontWeight: FontWeight.w600,
                 color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(.7),
               ),
@@ -169,7 +161,7 @@ class OrderTile extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: Text(
               subtitleText,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500, fontSize: 12.5.sp),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.font),
             ),
           ),
         ),

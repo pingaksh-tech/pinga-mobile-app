@@ -276,65 +276,111 @@ class OrdersRepository {
   };
 
   /// ***********************************************************************************
+  ///                                CREATE ORDER API
+  /// ***********************************************************************************
+  static Future<void> createOrder({
+    required String retailerId,
+    required String orderType,
+    required int quantity,
+    required String subTotal,
+    required List<Map<String, dynamic>> cartItems,
+    RxBool? loader,
+  }) async {
+    if (await getConnectivityResult()) {
+      try {
+        loader?.value = true;
+
+        /// API
+        await APIFunction.postApiCall(
+          apiUrl: ApiUrls.createOrGetOrder,
+          body: {
+            "retailer_id": retailerId,
+            "order_type": orderType,
+            "qty": quantity,
+            "sub_total": subTotal,
+            "orderItems": cartItems,
+          },
+          loader: loader,
+        ).then(
+          (response) async {
+            if (response != null) {
+              loader?.value = false;
+            } else {
+              loader?.value = false;
+            }
+
+            return response;
+          },
+        );
+      } catch (e) {
+        loader?.value = false;
+        printErrors(type: "createOrderApi", errText: e);
+      }
+    }
+  }
+
+  /// ***********************************************************************************
   ///                                    GET ALL ORDERS
   /// ***********************************************************************************
 
-  static Future<void> getAllOrdersAPI({bool isInitial = true}) async {
-    final OrdersController con = Get.find<OrdersController>();
+  static Future<dynamic> getAllOrdersAPI({
+    bool isInitial = true,
+    RxBool? loader,
+    bool background = false,
+  }) async {
+    ///
+    if (await getConnectivityResult() && isRegistered<OrdersController>()) {
+      final OrdersController con = Get.find<OrdersController>();
 
-    /// TEMP DATA
-    GetOrderListModel orderProductModel = GetOrderListModel.fromJson(ordersMap);
-    con.orderProductList.value = orderProductModel.data?.results ?? [];
-    con.page.value++;
-
-    printData(key: "Home product list length", value: con.orderProductList.length);
-    printData(key: "Home total products", value: orderProductModel.data?.totalResults ?? 0);
-
-    if (con.orderProductList.length.toString() == orderProductModel.data?.totalResults.toString()) {
-      con.nextPageStop.value = false;
-    }
-
-    /// ----  END TAMP DATA
-    /* if (await getConnectivityResult()) {
       try {
+        loader?.value = true;
+
         if (isInitial) {
-          con.orderProductList.clear();
+          if (!background) {
+            con.orderList.clear();
+          }
           con.page.value = 1;
-          con.isLoading.value = true;
-          con.nextPageStop.value = true;
+          con.nextPageAvailable.value = true;
         }
 
-        if (con.nextPageStop.isTrue) {
-          await APIFunction.getApiCall(
-            apiUrl: ApiUrls.orderProductUrl,
-            isLoading: con.isLoading,
-            params: {
-              "status": con.selectedType.value.toLowerCase(),
-
-              //!
-              "limit": "${50}",
-            },
-          ).then(
-            (response) async {
-              GetOrderListModel orderProductModel = GetOrderListModel.fromJson(response);
-              con.orderProductList.value = orderProductModel.data?.results ?? [];
-              con.page.value++;
-
-              printData(key: "Home product list length", value: con.orderProductList.length);
-              printData(key: "Home total products", value: orderProductModel.data?.totalResults ?? 0);
-
-              if (con.orderProductList.length.toString() == orderProductModel.data?.totalResults.toString()) {
-                con.nextPageStop.value = false;
+        /// API
+        await APIFunction.getApiCall(
+          apiUrl: ApiUrls.createOrGetOrder,
+          params: {
+            "page": con.page.value,
+            "limit": con.itemLimit.value,
+          },
+          loader: loader,
+        ).then(
+          (response) async {
+            if (response != null) {
+              GetOrderModel model = GetOrderModel.fromJson(response);
+              if (background) {
+                con.orderList.clear();
               }
-            },
-          );
-        }
+
+              if (model.data != null) {
+                if (isInitial) {
+                  con.orderList.value = model.data?.orders ?? [];
+                } else {
+                  con.orderList.addAll(model.data?.orders ?? []);
+                }
+                int currentPage = (model.data!.page ?? 1);
+                con.nextPageAvailable.value = currentPage < (model.data!.totalPages ?? 0);
+                con.page.value += currentPage;
+              }
+              loader?.value = false;
+            } else {
+              loader?.value = false;
+            }
+
+            return response;
+          },
+        );
       } catch (e) {
-        printErrors(type: "orderProductApi Function", errText: "$e");
-      } finally {
-        con.isLoading.value = false;
-        con.paginationLoading.value = false;
+        loader?.value = false;
+        printErrors(type: "getCartList", errText: e);
       }
-    }*/
+    }
   }
 }

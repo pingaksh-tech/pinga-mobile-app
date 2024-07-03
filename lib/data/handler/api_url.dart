@@ -43,10 +43,10 @@ class ApiUrls {
   static String placeOrderPOST = "order/create";
   static String getRetailerApi = "retailer/";
   static String getCartSummary = "/mobile/cart/summary";
-  static String createOrder = "/mobile/order/";
 
   /// ORDERS
   static String orderProductUrl = "order/list";
+  static String createOrGetOrder = "/mobile/order/";
 
   /// WISHLIST
   static String watchlistGet = "wishlist/get";

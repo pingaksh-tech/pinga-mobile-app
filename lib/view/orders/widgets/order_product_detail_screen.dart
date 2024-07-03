@@ -1,19 +1,18 @@
-import 'package:flutter/material.dart';
+/* import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import '../../../packages/cached_network_image/cached_network_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../exports.dart';
 import '../../../packages/animated_counter/animated_counter.dart';
+import '../../../packages/cached_network_image/cached_network_image.dart';
 import '../../../res/empty_element.dart';
-import '../orders_controller.dart';
 
 class OrderProductDetailScreen extends StatelessWidget {
-  OrderProductDetailScreen({super.key});
+  const OrderProductDetailScreen({super.key});
 
-  final OrderProductDetailController con = Get.put(OrderProductDetailController());
+  // final OrderProductDetailController con = Get.put(OrderProductDetailController());
 
   // final ProfileController profileCon = Get.find<ProfileController>();
 
@@ -403,3 +402,4 @@ class OrderProductDetailScreen extends StatelessWidget {
     );
   }
 }
+ */
