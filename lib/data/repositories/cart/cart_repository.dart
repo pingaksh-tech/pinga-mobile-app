@@ -67,6 +67,7 @@ class CartRepository {
     bool isInitial = true,
     RxBool? loader,
     bool background = false,
+    bool isPullToRefresh = false,
   }) async {
     ///
     if (await getConnectivityResult() && isRegistered<CartController>()) {
@@ -76,7 +77,7 @@ class CartRepository {
         loader?.value = true;
 
         if (isInitial) {
-          if (!background) {
+          if (!background || !isPullToRefresh) {
             con.cartList.clear();
           }
           con.page.value = 1;
@@ -95,12 +96,12 @@ class CartRepository {
           (response) async {
             if (response != null) {
               GetCartModel model = GetCartModel.fromJson(response);
-              if (background) {
-                con.cartList.clear();
-              }
+              // if (background) {
+              //   con.cartList.clear();
+              // }
 
               if (model.data != null) {
-                if (isInitial) {
+                if (isPullToRefresh) {
                   con.cartList.value = model.data?.cartList ?? [];
                 } else {
                   con.cartList.addAll(model.data?.cartList ?? []);
@@ -299,7 +300,7 @@ class CartRepository {
   /// ***********************************************************************************
   static Future<dynamic> updateCartApi({
     RxBool? isLoader,
-    required String cartId,
+    String? cartId,
     required String inventoryId,
     required int quantity,
     required String metalId,
@@ -312,7 +313,7 @@ class CartRepository {
         return await APIFunction.putApiCall(
           apiUrl: ApiUrls.cartUpdatePUT,
           body: {
-            "cart_id": cartId,
+            if (!isValEmpty(cartId)) "cart_id": cartId,
             "inventory_id": inventoryId,
             "quantity": quantity,
             "metal_id": metalId,

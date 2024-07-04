@@ -691,7 +691,7 @@ class _ProductTileState extends State<ProductTile> {
         },
         onIncrement: (value) {
           widget.productQuantity?.value = value;
-          printOkStatus(widget.productQuantity);
+          widget.incrementOnTap!(value);
         },
       );
 

@@ -266,17 +266,29 @@ enum FilterItemType {
 
 ///* ORDER FILTER ITEM TYPE
 enum OrderFilterType {
-  type(id: 1, label: "Type", slug: "type"),
-  date(id: 1, label: "Date", slug: "date");
+  type(
+    id: 1,
+    label: "Type",
+    slug: "type",
+    icon: AppAssets.deliveryIcon,
+  ),
+  date(
+    id: 1,
+    label: "Date",
+    slug: "date",
+    icon: AppAssets.deliveryIcon,
+  );
 
   final int id;
   final String label;
   final String slug;
+  final String icon;
 
   const OrderFilterType({
     required this.id,
     required this.label,
     required this.slug,
+    required this.icon,
   });
 
   static OrderFilterType fromId(int id) {

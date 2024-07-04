@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../data/repositories/orders/orders_repository.dart';
 import '../../exports.dart';
 import '../../res/empty_element.dart';
+import '../../widgets/pull_to_refresh_indicator.dart';
 import 'components/order_simmer_tile.dart';
 import 'components/order_tile.dart';
 import 'orders_controller.dart';
@@ -15,17 +17,19 @@ class OrdersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      body: Obx(
-        () => SafeArea(
-          child: con.isLoading.isFalse
+    return PullToRefreshIndicator(
+      onRefresh: () => OrdersRepository.getAllOrdersAPI(isPullToRefresh: true),
+      child: Obx(
+        () => Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          body: con.isLoading.isFalse
               ? (con.orderList.isNotEmpty
                   ? Column(
                       children: [
                         Expanded(
                           child: ListView.separated(
                             controller: con.scrollController,
+                            physics: const AlwaysScrollableScrollPhysics(),
                             padding: EdgeInsets.all(defaultPadding / 1.5),
                             itemCount: con.orderList.length,
                             separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
@@ -48,9 +52,13 @@ class OrdersScreen extends StatelessWidget {
                         )
                       ],
                     )
-                  : const EmptyElement(
-                      title: "No orders found",
-                      imagePath: AppAssets.emptyData,
+                  : ListView(
+                      children: [
+                        EmptyElement(
+                          title: "No orders found",
+                          padding: EdgeInsets.symmetric(vertical: Get.width / 2.5),
+                        ),
+                      ],
                     ))
               : ListView.separated(
                   itemCount: 20,
@@ -59,24 +67,28 @@ class OrdersScreen extends StatelessWidget {
                   separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
                   itemBuilder: (context, index) => const OrderShimmerTile(),
                 ),
-        ),
-      ),
-      bottomNavigationBar: IntrinsicHeight(
-        child: Container(
-          padding: EdgeInsets.all(defaultPadding).copyWith(bottom: MediaQuery.of(context).padding.bottom + defaultPadding),
-          decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor.withAlpha(20),
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(defaultRadius),
-            ),
-          ),
-          child: Column(
-            children: [
-              orderSummaryItem(context, title: "Total items", subTitle: con.orderList.length.toString()),
-              // orderSummaryItem(context, title: "Total DP", subTitle: UiUtils.amountFormat("219850", decimalDigits: 0)),
-              orderSummaryItem(context, title: "Total Amount", subTitle: UiUtils.amountFormat("284523", decimalDigits: 0)),
-            ],
-          ),
+          bottomNavigationBar: con.isLoading.isFalse
+              ? con.orderList.isNotEmpty
+                  ? IntrinsicHeight(
+                      child: Container(
+                        padding: EdgeInsets.all(defaultPadding).copyWith(bottom: MediaQuery.of(context).padding.bottom + defaultPadding),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor.withAlpha(20),
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(defaultRadius),
+                          ),
+                        ),
+                        child: Column(
+                          children: [
+                            orderSummaryItem(context, title: "Total items", subTitle: con.orderCounts.value.totalCount.toString()),
+                            // orderSummaryItem(context, title: "Total DP", subTitle: UiUtils.amountFormat("219850", decimalDigits: 0)),
+                            orderSummaryItem(context, title: "Total Amount", subTitle: UiUtils.amountFormat(con.orderCounts.value.totalAmount.toString(), decimalDigits: 0)),
+                          ],
+                        ),
+                      ),
+                    )
+                  : const SizedBox()
+              : const SizedBox(),
         ),
       ),
     );

@@ -15,7 +15,7 @@ class CartController extends GetxController {
 
   /// Cart List pagination
   RxList<CartModel> cartList = <CartModel>[].obs;
-  RxBool cartLoader = true.obs;
+  RxBool cartLoader = false.obs;
   ScrollController scrollController = ScrollController();
   RxInt page = 1.obs;
   RxInt itemLimit = 20.obs;

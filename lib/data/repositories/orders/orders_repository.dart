@@ -326,7 +326,10 @@ class OrdersRepository {
   static Future<dynamic> getAllOrdersAPI({
     bool isInitial = true,
     RxBool? loader,
-    bool background = false,
+    bool isPullToRefresh = false,
+    DateTime? startDate,
+    DateTime? endDate,
+    String? retailerId,
   }) async {
     ///
     if (await getConnectivityResult() && isRegistered<OrdersController>()) {
@@ -336,7 +339,7 @@ class OrdersRepository {
         loader?.value = true;
 
         if (isInitial) {
-          if (!background) {
+          if (!isPullToRefresh) {
             con.orderList.clear();
           }
           con.page.value = 1;
@@ -349,22 +352,23 @@ class OrdersRepository {
           params: {
             "page": con.page.value,
             "limit": con.itemLimit.value,
+            if (!isValEmpty(startDate)) "start_date": startDate?.toIso8601String(),
+            if (!isValEmpty(endDate)) "end_date": endDate?.toIso8601String(),
+            if (!isValEmpty(retailerId)) "retailer_id": retailerId,
           },
           loader: loader,
         ).then(
           (response) async {
             if (response != null) {
               GetOrderModel model = GetOrderModel.fromJson(response);
-              if (background) {
-                con.orderList.clear();
-              }
 
               if (model.data != null) {
-                if (isInitial) {
+                if (isPullToRefresh) {
                   con.orderList.value = model.data?.orders ?? [];
                 } else {
                   con.orderList.addAll(model.data?.orders ?? []);
                 }
+                con.orderCounts.value = model.data?.orderCounts ?? OrderCounts();
                 int currentPage = (model.data!.page ?? 1);
                 con.nextPageAvailable.value = currentPage < (model.data!.totalPages ?? 0);
                 con.page.value += currentPage;

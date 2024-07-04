@@ -3,15 +3,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
+import '../../../../data/model/cart/retailer_model.dart';
+import '../../../../data/repositories/orders/orders_repository.dart';
 import '../../../../exports.dart';
 import '../../../../res/app_bar.dart';
 import '../../../../res/app_dialog.dart';
+import '../../orders_controller.dart';
 import 'order_filter_controller.dart';
 
 class OrderFilterScreen extends StatelessWidget {
   OrderFilterScreen({super.key});
 
   final OrderFilterController con = Get.put(OrderFilterController());
+  final OrdersController ordersController = Get.find<OrdersController>();
 
   @override
   Widget build(BuildContext context) {
@@ -40,14 +44,17 @@ class OrderFilterScreen extends StatelessWidget {
                           padding: EdgeInsets.symmetric(vertical: defaultPadding, horizontal: defaultPadding / 1.5),
                           alignment: Alignment.centerLeft,
                           color: isSelected ? Theme.of(context).colorScheme.surface : Theme.of(context).scaffoldBackgroundColor,
-                          child: Row(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Expanded(
-                                child: Text(
-                                  OrderFilterType.values[index].label,
-                                  textAlign: TextAlign.start,
-                                  style: AppTextStyle.titleStyle(context).copyWith(fontSize: 14.sp, fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400),
-                                ),
+                              // SvgPicture.asset(
+                              //   OrderFilterType.values[index].icon,
+                              //   height: 19.h,
+                              // ),
+                              Text(
+                                OrderFilterType.values[index].label,
+                                textAlign: TextAlign.center,
+                                style: AppTextStyle.titleStyle(context).copyWith(fontSize: 13.sp, fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400),
                               ),
                             ],
                           ),
@@ -64,24 +71,47 @@ class OrderFilterScreen extends StatelessWidget {
               flex: 2,
               child: switch (con.filterType.value) {
                 OrderFilterType.type => Padding(
-                    padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding),
+                    padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding / 2),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         AppTextField(
                           title: "Retailers",
-                          contentPadding: EdgeInsets.all(defaultPadding),
+                          contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: defaultPadding / 1.5),
                           readOnly: true,
                           controller: con.retailerCon.value,
                           hintText: "Select Retailers",
                           padding: EdgeInsets.only(bottom: defaultPadding, top: defaultPadding / 2),
-                          suffixIcon: SvgPicture.asset(AppAssets.downArrow, height: 10),
+                          suffixIcon: con.retailerCon.value.text.isEmpty
+                              ? SvgPicture.asset(
+                                  AppAssets.downArrow,
+                                  height: 10,
+                                )
+                              : SvgPicture.asset(
+                                  AppAssets.crossIcon,
+                                  height: 20,
+                                ),
+                          suffixOnTap: con.retailerCon.value.text.isNotEmpty
+                              ? () async {
+                                  FocusScope.of(context).unfocus();
+
+                                  con.retailerCon.value.clear();
+                                  con.retailerId = "";
+                                }
+                              : null,
                           onTap: () {
                             AppDialogs.retailerSelect(
                               context,
-                              selectedRetailer: RxString("666c07c093b042a3647b12d5"),
+                              selectedRetailer: con.retailerId.obs,
                             )?.then(
-                              (value) {},
+                              (value) {
+                                if (value != null && (value.runtimeType == RetailerModel)) {
+                                  final RetailerModel retailerModel = (value as RetailerModel);
+                                  con.retailerModel.value = retailerModel;
+                                  con.retailerCon.value.text = con.retailerModel.value.businessName ?? "";
+                                  con.retailerId = con.retailerModel.value.id?.value ?? "";
+                                }
+                              },
                             );
                           },
                         ),
@@ -133,11 +163,8 @@ class OrderFilterScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Start Date",
-                          style: titleTextStyle,
-                        ).paddingOnly(bottom: defaultPadding / 3),
                         AppTextField(
+                          title: "Start Date",
                           textFieldType: TextFieldType.date,
                           controller: con.startDateCon.value,
                           contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: defaultPadding / 1.5).copyWith(right: 0),
@@ -145,30 +172,59 @@ class OrderFilterScreen extends StatelessWidget {
                           hintText: "Select start date",
                           selectedDate: con.startDate.value,
                           suffixIconSize: 20.w,
+                          validation: con.startDateValidation.value,
+                          errorMessage: con.dateError.value,
+                          suffixIcon: con.startDateCon.value.text.isNotEmpty
+                              ? SvgPicture.asset(
+                                  AppAssets.crossIcon,
+                                  height: 20,
+                                )
+                              : null,
+                          suffixOnTap: con.startDateCon.value.text.isNotEmpty
+                              ? () {
+                                  FocusScope.of(context).unfocus();
+                                  con.startDateCon.value.clear();
+                                  con.startDateValidation.value = true;
+                                }
+                              : null,
                           onDateOrTimeChange: (value) {
                             if (value.runtimeType == DateTime) {
                               con.startDateCon.value.text = UiUtils.convertDateToDotSeparate(value);
                               con.startDate.value = value;
+                              con.startDateValidation.value = true;
                             }
                           },
                         ),
                         defaultPadding.verticalSpace,
-                        Text(
-                          "End Date",
-                          style: titleTextStyle,
-                        ).paddingOnly(bottom: defaultPadding / 3),
                         AppTextField(
+                          title: "End Date",
                           textFieldType: TextFieldType.date,
                           controller: con.endDateCon.value,
                           contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: defaultPadding / 1.5),
                           hintText: "Select end date",
                           selectedDate: con.endDate.value,
+                          validation: con.endDateValidation.value,
+                          errorMessage: con.dateError.value,
                           suffixIconSize: 20.w,
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 14.sp, fontWeight: FontWeight.w500),
+                          suffixIcon: con.endDateCon.value.text.isNotEmpty
+                              ? SvgPicture.asset(
+                                  AppAssets.crossIcon,
+                                  height: 20,
+                                )
+                              : null,
+                          suffixOnTap: con.endDateCon.value.text.isNotEmpty
+                              ? () {
+                                  FocusScope.of(context).unfocus();
+                                  con.endDateCon.value.clear();
+                                  con.endDateValidation.value = true;
+                                }
+                              : null,
                           onDateOrTimeChange: (value) {
                             if (value.runtimeType == DateTime) {
                               con.endDateCon.value.text = UiUtils.convertDateToDotSeparate(value);
                               con.endDate.value = value;
+                              con.endDateValidation.value = true;
                             }
                           },
                         ),
@@ -188,7 +244,15 @@ class OrderFilterScreen extends StatelessWidget {
                   height: 30.h,
                   title: "Clear All",
                   buttonType: ButtonType.outline,
-                  onPressed: () {},
+                  onPressed: () {
+                    con.startDateCon.value.clear();
+                    con.endDateCon.value.clear();
+                    con.retailerCon.value.clear();
+                    con.retailerId = "";
+                    con.startDateValidation.value = true;
+                    con.endDateValidation.value = true;
+                    con.dateError.value = "";
+                  },
                 ),
               ),
               defaultPadding.horizontalSpace,
@@ -196,7 +260,21 @@ class OrderFilterScreen extends StatelessWidget {
                 child: AppButton(
                   height: 30.h,
                   title: "Apply",
-                  onPressed: () => Get.back(),
+                  onPressed: () {
+                    if (con.validateDates()) {
+                      OrdersRepository.getAllOrdersAPI(
+                        endDate: con.endDateCon.value.text.isNotEmpty ? con.endDate.value : null,
+                        startDate: con.startDateCon.value.text.isNotEmpty ? con.startDate.value : null,
+                        retailerId: con.retailerId,
+                        loader: ordersController.isLoading,
+                      ).then(
+                        (value) {
+                          int filterCount = con.countAppliedFilters();
+                          Get.back(result: filterCount);
+                        },
+                      );
+                    }
+                  },
                 ),
               ),
             ],

@@ -29,12 +29,14 @@ class GetOrderModel {
 }
 
 class GetOrderDataModel {
+  final OrderCounts? orderCounts;
   final int? totalCount;
   final int? page;
   final int? totalPages;
   final List<OrderModel>? orders;
 
   GetOrderDataModel({
+    this.orderCounts,
     this.totalCount,
     this.page,
     this.totalPages,
@@ -42,6 +44,7 @@ class GetOrderDataModel {
   });
 
   factory GetOrderDataModel.fromJson(Map<String, dynamic> json) => GetOrderDataModel(
+        orderCounts: json["orderCounts"] == null ? null : OrderCounts.fromJson(json["orderCounts"]),
         totalCount: json["totalCount"],
         page: json["page"],
         totalPages: json["totalPages"],
@@ -49,10 +52,35 @@ class GetOrderDataModel {
       );
 
   Map<String, dynamic> toJson() => {
+        "orderCounts": orderCounts?.toJson(),
         "totalCount": totalCount,
         "page": page,
         "totalPages": totalPages,
         "orders": orders == null ? [] : List<dynamic>.from(orders!.map((x) => x.toJson())),
+      };
+}
+
+class OrderCounts {
+  final dynamic id;
+  final int? totalCount;
+  final int? totalAmount;
+
+  OrderCounts({
+    this.id,
+    this.totalCount,
+    this.totalAmount,
+  });
+
+  factory OrderCounts.fromJson(Map<String, dynamic> json) => OrderCounts(
+        id: json["_id"],
+        totalCount: json["totalCount"],
+        totalAmount: json["totalAmount"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "_id": id,
+        "totalCount": totalCount,
+        "totalAmount": totalAmount,
       };
 }
 
@@ -62,9 +90,9 @@ class OrderModel {
   final String? orderType;
   final String? retailerId;
   final int? qty;
-  final double? subTotal;
+  final int? subTotal;
   final int? discount;
-  final double? grandTotal;
+  final int? grandTotal;
   final String? createdBy;
   final dynamic updatedBy;
   final dynamic deletedAt;
@@ -97,9 +125,9 @@ class OrderModel {
         orderType: json["order_type"],
         retailerId: json["retailer_id"],
         qty: json["qty"],
-        subTotal: json["sub_total"]?.toDouble(),
+        subTotal: json["sub_total"],
         discount: json["discount"],
-        grandTotal: json["grand_total"]?.toDouble(),
+        grandTotal: json["grand_total"],
         createdBy: json["created_by"],
         updatedBy: json["updated_by"],
         deletedAt: json["deleted_at"],
@@ -142,7 +170,7 @@ class Retailer {
   final bool? status;
   final String? createdBy;
   final String? updatedBy;
-  final DateTime? deletedAt;
+  final dynamic deletedAt;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
@@ -181,7 +209,7 @@ class Retailer {
         status: json["status"],
         createdBy: json["created_by"],
         updatedBy: json["updated_by"],
-        deletedAt: json["deleted_at"] == null ? null : DateTime.parse(json["deleted_at"]),
+        deletedAt: json["deleted_at"],
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
         v: json["__v"],
@@ -201,7 +229,7 @@ class Retailer {
         "status": status,
         "created_by": createdBy,
         "updated_by": updatedBy,
-        "deleted_at": deletedAt?.toIso8601String(),
+        "deleted_at": deletedAt,
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "__v": v,

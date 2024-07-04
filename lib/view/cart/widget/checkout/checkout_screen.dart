@@ -41,14 +41,9 @@ class CheckoutScreen extends StatelessWidget {
             padding: EdgeInsets.only(bottom: defaultPadding, top: defaultPadding / 2),
             suffixIcon: SvgPicture.asset(AppAssets.downArrow, height: 10),
             onTap: () {
-              // int index = con.retailerList.indexWhere((element) => element.id == con.retailerId.obs);
-              // if (index != -1) {
-              //   con.retailerModel.value = con.retailerList[index];
-              // }
               AppDialogs.retailerSelect(
                 context,
                 selectedRetailer: con.retailerId.obs,
-                // !isValEmpty(con.retailerId.obs) ? con.retailerId.obs : RxString(con.retailerList[0].id?.value ?? ""),
               )?.then(
                 (value) {
                   if (value != null && (value.runtimeType == RetailerModel)) {

@@ -13,6 +13,7 @@ import '../../packages/app_animated_cliprect.dart';
 import '../../res/app_bar.dart';
 import '../cart/components/cart_popup_menu.dart';
 import '../drawer/app_drawer.dart';
+import '../orders/orders_controller.dart';
 import 'bottombar_controller.dart';
 
 class BottomBarScreen extends StatelessWidget {
@@ -20,6 +21,7 @@ class BottomBarScreen extends StatelessWidget {
 
   final BottomBarController con = Get.put(BottomBarController());
   final PreDefinedValueController dialogCon = Get.find<PreDefinedValueController>();
+  final OrdersController orderCon = Get.find<OrdersController>();
 
   @override
   Widget build(BuildContext context) {
@@ -77,15 +79,47 @@ class BottomBarScreen extends StatelessWidget {
                           )*/
                         const SizedBox()
                         : con.currentBottomIndex.value == 3
-                            ? AppIconButton(
-                                onPressed: () => Get.toNamed(AppRoutes.orderFilterScreen),
-                                icon: SvgPicture.asset(
-                                  AppAssets.filter,
-                                  colorFilter: ColorFilter.mode(
-                                    Theme.of(context).primaryColor,
-                                    BlendMode.srcIn,
+                            ? Stack(
+                                alignment: Alignment.topRight,
+                                children: [
+                                  AppIconButton(
+                                    icon: SvgPicture.asset(
+                                      AppAssets.filter,
+                                      colorFilter: ColorFilter.mode(
+                                        Theme.of(context).primaryColor,
+                                        BlendMode.srcIn,
+                                      ),
+                                    ),
+                                    onPressed: () => Get.toNamed(AppRoutes.orderFilterScreen)?.then(
+                                      (value) {
+                                        orderCon.filterCount.value = value;
+                                      },
+                                    ),
                                   ),
-                                ),
+                                  orderCon.filterCount.value != 0
+                                      ? Positioned(
+                                          top: 2.h,
+                                          right: defaultPadding / 2,
+                                          child: Container(
+                                            padding: EdgeInsets.all(4.h).copyWith(top: 5.h),
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Theme.of(context).colorScheme.primary,
+                                            ),
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              orderCon.filterCount.value.toString(),
+                                              textAlign: TextAlign.center,
+                                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                                    fontSize: 10.sp,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: AppColors.background,
+                                                  ),
+                                            ),
+                                          ),
+                                        )
+                                      : const SizedBox(),
+                                ],
                               )
                             : const SizedBox(),
               ],

@@ -6,13 +6,14 @@ import '../../data/repositories/orders/orders_repository.dart';
 
 class OrdersController extends GetxController {
   ScrollController scrollController = ScrollController();
+  Rx<OrderCounts> orderCounts = OrderCounts().obs;
   RxList<OrderModel> orderList = <OrderModel>[].obs;
   RxInt page = 1.obs;
   RxInt itemLimit = 6.obs;
   RxBool nextPageAvailable = true.obs;
   RxBool isLoading = false.obs;
   RxBool paginationLoading = false.obs;
-
+  RxInt filterCount = 0.obs;
   @override
   void onInit() {
     super.onInit();

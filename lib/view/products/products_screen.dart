@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import '../../data/repositories/product/product_repository.dart';
 
+import '../../data/repositories/cart/cart_repository.dart';
+import '../../data/repositories/product/product_repository.dart';
 import '../../exports.dart';
 import '../../res/app_bar.dart';
 import '../../res/app_dialog.dart';
@@ -109,6 +110,15 @@ class ProductsScreen extends StatelessWidget {
                           children: List.generate(
                             con.inventoryProductList.length,
                             (index) => ProductTile(
+                              incrementOnTap: (value) {
+                                CartRepository.updateCartApi(
+                                  inventoryId: con.inventoryProductList[index].id ?? "",
+                                  quantity: value,
+                                  metalId: con.inventoryProductList[index].metalId ?? "",
+                                  sizeId: con.inventoryProductList[index].sizeId ?? "",
+                                  diamondClarity: con.inventoryProductList[index].diamonds?.first.diamondClarity?.value ?? "",
+                                );
+                              },
                               category: con.subCategory,
                               isFancy: con.isFancyDiamond.value,
                               inventoryId: con.inventoryProductList[index].id,

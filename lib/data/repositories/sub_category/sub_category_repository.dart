@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
+
 import '../../../exports.dart';
 import '../../../view/sub_category/sub_category_controller.dart';
-
 import '../../model/sub_category/sub_category_model.dart';
 
 class SubCategoryRepository {

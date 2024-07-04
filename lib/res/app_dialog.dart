@@ -1998,7 +1998,9 @@ class AppDialogs {
     return showGeneralDialog(
       context: context,
       pageBuilder: (context, animation, secondaryAnimation) {
-        return  RetailerScreen(id:selectedRetailer ,);
+        return RetailerDialog(
+          id: selectedRetailer,
+        );
       },
     );
   }

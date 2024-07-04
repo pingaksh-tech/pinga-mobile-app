@@ -6,6 +6,7 @@ import '../../../../exports.dart';
 
 class OrderFilterController extends GetxController {
   Rx<OrderFilterType> filterType = OrderFilterType.type.obs;
+
   RxString selectUserType = "".obs;
   RxList<String> userType = [
     "Sellers",
@@ -16,12 +17,33 @@ class OrderFilterController extends GetxController {
   Rx<DateTime> startDate = DateTime.now().obs;
   Rx<TextEditingController> endDateCon = TextEditingController().obs;
   Rx<DateTime> endDate = DateTime.now().obs;
-  RxList<RetailerModel> retailerList = <RetailerModel>[].obs;
+
   Rx<TextEditingController> retailerCon = TextEditingController().obs;
-  RxBool isLoading = true.obs;
-  ScrollController scrollController = ScrollController();
-  RxInt page = 1.obs;
-  RxInt itemLimit = 20.obs;
-  RxBool nextPageAvailable = true.obs;
-  RxBool paginationLoader = false.obs;
+  String retailerId = "";
+  Rx<RetailerModel> retailerModel = RetailerModel().obs;
+
+  RxBool startDateValidation = true.obs;
+  RxBool endDateValidation = true.obs;
+  RxString dateError = "".obs;
+  bool validateDates() {
+    if (startDateCon.value.text.trim().isNotEmpty && endDateCon.value.text.trim().isEmpty) {
+      dateError.value = "Please select end date";
+      endDateValidation.value = false;
+    } else if (endDateCon.value.text.trim().isNotEmpty && startDateCon.value.text.trim().isEmpty) {
+      dateError.value = "Please select start date";
+      startDateValidation.value = false;
+    } else {
+      startDateValidation.value = true;
+      endDateValidation.value = true;
+    }
+    return startDateValidation.value && endDateValidation.value;
+  }
+
+  int countAppliedFilters() {
+    int count = 0;
+    if (retailerCon.value.text.isNotEmpty) count++;
+    if (endDateCon.value.text.isNotEmpty && startDateCon.value.text.isNotEmpty) count++;
+
+    return count;
+  }
 }

@@ -9,15 +9,15 @@ import '../../../../exports.dart';
 import '../../../../res/empty_element.dart';
 import '../../../../widgets/custom_radio_button.dart';
 
-class RetailerScreen extends StatefulWidget {
+class RetailerDialog extends StatefulWidget {
   final RxString id;
-  const RetailerScreen({super.key, required this.id});
+  const RetailerDialog({super.key, required this.id});
 
   @override
-  State<RetailerScreen> createState() => _RetailerScreenState();
+  State<RetailerDialog> createState() => _RetailerDialogState();
 }
 
-class _RetailerScreenState extends State<RetailerScreen> {
+class _RetailerDialogState extends State<RetailerDialog> {
   RxList<RetailerModel> retailerList = <RetailerModel>[].obs;
   Rx<RetailerModel> retailerModel = RetailerModel().obs;
   Rx<TextEditingController> retailerCon = TextEditingController().obs;
@@ -37,6 +37,31 @@ class _RetailerScreenState extends State<RetailerScreen> {
       paginationLoader: paginationLoader,
       page: page,
       retailerList: retailerList,
+      loader: isLoading,
+    );
+    manageScrollController();
+  }
+
+  /// Pagination
+  void manageScrollController() async {
+    scrollController.addListener(
+      () {
+        if (scrollController.position.maxScrollExtent == scrollController.position.pixels) {
+          if (nextPageAvailable.value && paginationLoader.isFalse) {
+            /// PAGINATION CALL
+            /// GET Retailer API
+            CartRepository.getRetailerApi(
+              itemLimit: itemLimit,
+              nextPageAvailable: nextPageAvailable,
+              paginationLoader: paginationLoader,
+              page: page,
+              retailerList: retailerList,
+              loader: paginationLoader,
+              isInitial: false,
+            );
+          }
+        }
+      },
     );
   }
 
@@ -44,6 +69,8 @@ class _RetailerScreenState extends State<RetailerScreen> {
   //           if (index != -1) {
   //             con.retailerModel.value = con.retailerList[index];
   //           }
+  // isValEmpty(con.retailerId.obs) ? con.retailerId.obs : RxString(con.retailerList[0].id?.value ?? ""),
+
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -118,27 +145,45 @@ class _RetailerScreenState extends State<RetailerScreen> {
 
                 /// Records
                 Expanded(
-                  child: retailerList.isNotEmpty
-                      ? ListView.separated(
-                          physics: const RangeMaintainingScrollPhysics(),
-                          itemCount: retailerList.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) => ListTile(
-                            title: Text(
-                              retailerList[index].businessName ?? '',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
-                            ),
-                            trailing: AppRadioButton(
-                              isSelected: (retailerList[index].id?.value == retailerList[0].id?.value).obs,
-                            ),
-                            onTap: () {
-                              Get.back(result: retailerList[index]);
-                            },
-                          ),
-                          separatorBuilder: (context, index) => Divider(height: 1.h),
-                        )
-                      : const Center(
-                          child: EmptyElement(title: "Retailers not available"),
+                  child: isLoading.isFalse
+                      ? retailerList.isNotEmpty
+                          ? Column(
+                              children: [
+                                ListView.separated(
+                                  physics: const RangeMaintainingScrollPhysics(),
+                                  itemCount: retailerList.length,
+                                  shrinkWrap: true,
+                                  controller: scrollController,
+                                  itemBuilder: (context, index) => ListTile(
+                                    title: Text(
+                                      retailerList[index].businessName ?? '',
+                                      style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
+                                    ),
+                                    trailing: AppRadioButton(
+                                      isSelected: (retailerList[index].id?.value == widget.id.value).obs,
+                                    ),
+                                    onTap: () {
+                                      Get.back(result: retailerList[index]);
+                                    },
+                                  ),
+                                  separatorBuilder: (context, index) => Divider(height: 1.h),
+                                ),
+
+                                /// PAGINATION LOADER
+                                Visibility(
+                                  visible: paginationLoader.isTrue,
+                                  child: retailerShimmer(),
+                                ),
+                              ],
+                            )
+                          : const Center(
+                              child: EmptyElement(title: "Retailers not available"),
+                            )
+                      : ListView.separated(
+                          padding: EdgeInsets.all(defaultPadding),
+                          separatorBuilder: (context, index) => (defaultPadding).verticalSpace,
+                          itemBuilder: (context, index) => retailerShimmer(),
+                          itemCount: 20,
                         ),
                 ),
               ],
@@ -146,6 +191,31 @@ class _RetailerScreenState extends State<RetailerScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget retailerShimmer() {
+    return Row(
+      children: [
+        ShimmerUtils.shimmer(
+          child: ShimmerUtils.shimmerContainer(
+            height: 15,
+            width: Get.width * 0.4,
+            borderRadiusSize: defaultRadius,
+          ),
+        ),
+        const Spacer(),
+        ShimmerUtils.shimmer(
+          child: ShimmerUtils.shimmerContainer(
+            height: 22,
+            width: 22,
+            borderRadiusSize: defaultRadius,
+            borderRadius: BorderRadius.circular(
+              20,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
