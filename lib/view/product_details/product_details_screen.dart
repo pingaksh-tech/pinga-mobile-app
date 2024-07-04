@@ -223,8 +223,10 @@ class ProductDetailsScreen extends StatelessWidget {
                                 onPressed: () {
                                   AppDialogs.addMetalDialog(context, metalPrice: con.productDetailModel.value.priceBreaking?.metal?.pricePerGram ?? 0).then(
                                     (value) {
-                                      con.extraMetalPrice = value['price'];
-                                      con.extraMetalWt = value['wt'];
+                                      if (value != null) {
+                                        con.extraMetalPrice = value['price'];
+                                        con.extraMetalWt = value['wt'];
+                                      }
                                     },
                                   );
                                 },

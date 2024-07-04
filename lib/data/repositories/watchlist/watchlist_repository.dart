@@ -33,19 +33,5 @@ class WatchlistRepository {
       GetWatchlistModel model = GetWatchlistModel.fromJson(demoData /*response*/);
       watchlistCon.watchList.value = model.data ?? [];
     }
-
-    // try {
-    //   isLoader?.value = true;
-    //   await APIFunction.getApiCall(apiUrl: ApiUrls.wishlistGet).then(
-    //     (response) async {
-    //       GetWatchlistModel model = GetWatchlistModel.fromJson(response);
-    //       addWatchlistCon.watchList.value = model.data ?? [];
-    //     },
-    //   );
-    // } catch (e) {
-    //   printErrors(type: "Error", errText: "$e");
-    // } finally {
-    //   isLoader?.value = false;
-    // }
   }
 }

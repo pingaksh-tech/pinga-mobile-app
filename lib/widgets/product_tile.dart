@@ -607,7 +607,9 @@ class _ProductTileState extends State<ProductTile> {
         if ((value.runtimeType == MetalModel)) {
           widget.selectMetalCart = value.id;
           metalModel = value;
-          widget.metalId!(value.id?.value ?? "");
+          if (widget.metalId != null) {
+            widget.metalId!(value.id?.value ?? "");
+          }
 
           /// GET NEW PRODUCT PRICE
           await ProductRepository.getProductPriceAPI(
@@ -668,7 +670,9 @@ class _ProductTileState extends State<ProductTile> {
           if ((value.runtimeType == DiamondModel)) {
             diamondModel = value;
             widget.selectDiamondCart?.value = value.shortName ?? "";
-            widget.diamondOnTap!(value.shortName ?? "");
+            if (widget.diamondOnTap != null) {
+              widget.diamondOnTap!(value.shortName ?? "");
+            }
 
             /// GET NEW PRODUCT PRICE
             await ProductRepository.getProductPriceAPI(
