@@ -577,7 +577,7 @@ class _ProductTileState extends State<ProductTile> {
       isFlexible: isFlexible,
       selectedSize: sizeModel,
       selectedSizeCart: selectedSizeCart,
-      sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+      sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
       selectableItemType: SelectableItemType.size,
       axisDirection: direction,
       sizeOnChanged: (value) async {
@@ -605,8 +605,8 @@ class _ProductTileState extends State<ProductTile> {
       selectMetalCart: selectMetalCart,
       categoryId: metalModel.id?.value ?? "",
       selectedMetal: metalModel.obs,
-      sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
-      selectableItemType: SelectableItemType.color,
+      sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
+      selectableItemType: SelectableItemType.metal,
       axisDirection: direction,
       metalOnChanged: (value) async {
         /// Return Selected Metal
@@ -643,7 +643,7 @@ class _ProductTileState extends State<ProductTile> {
         diamondsList: widget.diamondList,
         selectDiamondCart: RxString(selectDiamondCart ?? ""),
         isFancy: widget.isFancy,
-        sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+        sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
         selectableItemType: SelectableItemType.diamond,
         axisDirection: direction,
         multiRubyOnChanged: (diamondList) async {
@@ -710,7 +710,7 @@ class _ProductTileState extends State<ProductTile> {
         isFlexible: isFlexible,
         remarkSelected: selectedRemark,
         selectableItemType: SelectableItemType.remarks,
-        sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+        sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
         axisDirection: direction,
         remarkOnChanged: (value) {
           selectedRemark.value = value;
@@ -722,7 +722,7 @@ class _ProductTileState extends State<ProductTile> {
         context,
         isFlexible: isFlexible,
         selectableItemType: SelectableItemType.stock,
-        sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+        sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
         axisDirection: direction,
         productName: widget.productName.obs,
       );

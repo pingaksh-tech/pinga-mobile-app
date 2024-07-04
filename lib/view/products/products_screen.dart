@@ -187,7 +187,7 @@ class ProductsScreen extends StatelessWidget {
             ),
           ),
           onPressed: () {
-            AppDialogs.productDownloadDialog(context);
+            AppDialogs.productDownloadDialog(context, isDownloadFileNameChange: true);
           },
         ),
       ),

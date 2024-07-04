@@ -8,6 +8,7 @@ import '../../data/model/sub_category/sub_category_model.dart';
 import '../../data/repositories/product/product_repository.dart';
 import '../../exports.dart';
 import '../home/home_controller.dart';
+import 'widgets/filter/filter_controller.dart';
 
 class ProductsController extends GetxController {
   RxBool isLoader = false.obs;
@@ -42,6 +43,7 @@ class ProductsController extends GetxController {
   RxBool loader = true.obs;
 
   final HomeController homeCon = Get.find<HomeController>();
+  final FilterController filterCon = Get.find<FilterController>();
 
   @override
   void onInit() {
@@ -49,9 +51,11 @@ class ProductsController extends GetxController {
     if (Get.arguments != null) {
       if (Get.arguments["category"].runtimeType == SubCategoryModel) {
         subCategory.value = Get.arguments["category"];
+        filterCon.subCategoryId = subCategory.value.id ?? "";
       }
       if (Get.arguments["categoryId"].runtimeType == String) {
         categoryId.value = Get.arguments["categoryId"];
+        filterCon.categoryId = categoryId.value;
       }
       if (Get.arguments["watchlistName"].runtimeType == String) {
         categoryName.value = Get.arguments["watchlistName"];

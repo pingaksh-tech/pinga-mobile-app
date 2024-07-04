@@ -32,11 +32,11 @@ class CatalogueScreen extends StatelessWidget {
           itemBuilder: (context, index) => catalogueTile(
             context,
             index: index,
-            title: con.catalogueList[index].title,
-            subtitle: con.catalogueList[index].subtitle,
-            date: con.catalogueList[index].createdAt.toString(),
+            title: con.catalogueList[index].name,
+            subtitle: "",
+            date: defaultDateTime.toString(),
             onPressed: () {
-              Get.toNamed(AppRoutes.pdfViewerScreen, arguments: {"title": con.catalogueList[index].title});
+              Get.toNamed(AppRoutes.pdfViewerScreen, arguments: {"title": con.catalogueList[index].name});
             },
           ),
         );
@@ -131,11 +131,11 @@ class CatalogueScreen extends StatelessWidget {
                     case "rename":
                       AppDialogs.renameCatalogueDialog(
                         context,
-                        name: con.catalogueList[index].title,
+                        name: con.catalogueList[index].name,
                         dialogTitle: "Rename Catalogue",
                         title: "Enter name",
                         onChanged: (val) {
-                          con.catalogueList[index].title = val;
+                          con.catalogueList[index].name = val;
                         },
                       );
                       break;

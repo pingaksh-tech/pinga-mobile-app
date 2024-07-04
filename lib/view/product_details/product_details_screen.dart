@@ -326,7 +326,7 @@ class ProductDetailsScreen extends StatelessWidget {
                   categoryId: con.productCategory.value,
                   selectedSize: con.selectedSize,
                   selectableItemType: SelectableItemType.size,
-                  sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+                  sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
                   axisDirection: Axis.vertical,
                   sizeOnChanged: (value) {
                     /// Selected Size
@@ -342,8 +342,8 @@ class ProductDetailsScreen extends StatelessWidget {
                 context,
                 categoryId: con.selectedMetal.value.id?.value ?? "",
                 selectedMetal: con.selectedMetal,
-                selectableItemType: SelectableItemType.color,
-                sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+                selectableItemType: SelectableItemType.metal,
+                sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
                 axisDirection: Axis.vertical,
                 metalOnChanged: (value) {
                   /// Selected Metal
@@ -362,7 +362,7 @@ class ProductDetailsScreen extends StatelessWidget {
                 isFancy: con.isFancy.value,
                 diamondsList: RxList(con.productDetailModel.value.diamonds ?? []),
                 selectableItemType: SelectableItemType.diamond,
-                sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+                sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
                 axisDirection: Axis.vertical,
                 multiRubyOnChanged: (diamondList) async {
                   /// Return List of Selected Diamond
@@ -402,7 +402,7 @@ class ProductDetailsScreen extends StatelessWidget {
                 context,
                 remarkSelected: con.selectedRemark,
                 selectableItemType: SelectableItemType.remarks,
-                sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+                sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
                 axisDirection: Axis.vertical,
                 remarkOnChanged: (value) {
                   con.selectedRemark.value = value;

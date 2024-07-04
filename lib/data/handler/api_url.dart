@@ -12,7 +12,7 @@ class ApiUrls {
   static const String sendMobileOtpPOST = "mobile/auth/login";
   static const String resendMobileOtpPOST = "mobile/auth/resend-otp";
   static const String verifyMobileOtpPOST = "mobile/auth/verify-otp";
-  static const String logOutPOST = "user/auth/logout";
+  static const String logOutPOST = "auth/logout";
   static const String refreshTokenUrl = "auth/refresh-token";
 
   /// BANNER
@@ -64,4 +64,7 @@ class ApiUrls {
 
   /// WISHLIST
   static String watchlistGet = "wishlist/get";
+
+  /// CATALOGUE
+  static String createAndGetCatalogueAPI = "mobile/catalogue";
 }

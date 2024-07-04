@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'view/products/widgets/filter/filter_controller.dart';
 
 import 'controller/predefine_value_controller.dart';
 import 'data/services/notification/notification_helper.dart';
@@ -56,5 +57,6 @@ class BaseBinding implements Bindings {
   void dependencies() {
     Get.put(BaseController(), permanent: true);
     Get.put(PreDefinedValueController(), permanent: true);
+    Get.put(FilterController(), permanent: true);
   }
 }
