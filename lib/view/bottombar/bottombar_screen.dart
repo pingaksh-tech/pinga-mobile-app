@@ -11,6 +11,7 @@ import '../../controller/predefine_value_controller.dart';
 import '../../exports.dart';
 import '../../packages/app_animated_cliprect.dart';
 import '../../res/app_bar.dart';
+import '../cart/cart_controller.dart';
 import '../cart/components/cart_popup_menu.dart';
 import '../drawer/app_drawer.dart';
 import 'bottombar_controller.dart';
@@ -20,6 +21,7 @@ class BottomBarScreen extends StatelessWidget {
 
   final BottomBarController con = Get.put(BottomBarController());
   final PreDefinedValueController dialogCon = Get.find<PreDefinedValueController>();
+  final CartController cartCon = Get.find<CartController>();
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +65,13 @@ class BottomBarScreen extends StatelessWidget {
               ),
               actions: [
                 con.currentBottomIndex.value == 2
-                    ? CartPopUpMenu()
+                    ? CartPopUpMenu(
+                        cardIds: (cartCon.selectedList
+                            .map(
+                              (element) => element.id ?? "",
+                            )
+                            .toList()),
+                      )
                     : con.currentBottomIndex.value == 0
                         ? /*AppIconButton(
                             onPressed: () => Get.toNamed(AppRoutes.settingsScreen),

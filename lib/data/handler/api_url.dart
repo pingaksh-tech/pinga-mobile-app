@@ -36,6 +36,12 @@ class ApiUrls {
   /// WISHLIST
   static const String createAndGetWishlistAPI = "mobile/wishlist";
 
+  /// WATCHLIST
+  static const String createAndGetWatchlistAPI = "mobile/watchlist";
+  static const String cartToWatchlistPOST = "mobile/watchlist/cart-to-watchlist";
+
+  static String getAndDeleteSingleWatchlistAPI({required String watchlistId}) => "mobile/watchlist/find-inventories/$watchlistId";
+
   /// USER
   static const String deleteAccountDELETE = "";
 
@@ -49,6 +55,8 @@ class ApiUrls {
   static String placeOrderPOST = "order/create";
   static String getRetailerApi = "retailer/";
   static String getCartSummary = "/mobile/cart/summary";
+
+  static String addWatchlistToCart({required String watchlistId}) => "mobile/watchlist/cart/$watchlistId";
 
   /// ORDERS
   static String orderProductUrl = "order/list";

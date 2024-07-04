@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../data/repositories/cart/cart_repository.dart';
+import '../../../data/repositories/watchlist/watchlist_repository.dart';
 import '../../../exports.dart';
 import '../../../res/app_dialog.dart';
 import '../../../res/pop_up_menu_button.dart';
@@ -10,13 +11,16 @@ import '../cart_controller.dart';
 
 // ignore: must_be_immutable
 class CartPopUpMenu extends StatelessWidget {
-  CartPopUpMenu({super.key});
+  final List<String> cardIds;
+
+  CartPopUpMenu({super.key, required this.cardIds});
 
   CartController con = Get.find<CartController>();
   Rx<TextEditingController> nameCon = TextEditingController().obs;
 
   RxBool nameValidation = true.obs;
   RxString nameError = ''.obs;
+
   bool validation() {
     if (nameCon.value.text.trim().isEmpty) {
       nameError.value = "Please enter watchList name";
@@ -46,9 +50,9 @@ class CartPopUpMenu extends StatelessWidget {
       ).paddingOnly(right: defaultPadding / 5),
       onSelect: (value) {
         switch (value) {
-          case "download cart items":
+          case "Download cart items":
             break;
-          case "add to watchlist":
+          case "Add to watchList":
             AppDialogs.cartDialog(
               context,
               buttonTitle2: "ADD",
@@ -79,20 +83,27 @@ class CartPopUpMenu extends StatelessWidget {
                   ),
                 ),
               ),
-              onPressed: () {
+              onPressed: () async {
                 if (validation()) {
-                  Get.back();
-                  AppDialogs.cartAlertDialog(
-                    context,
-                    isCancelButtonShow: true,
-                    contentText: "Do you want to empty cart after items are added in watchList",
-                    onPressed: () {},
-                  );
+                  if (cardIds.isNotEmpty) {
+                    /// ADD CART TO WATCHLIST API
+                    await WatchlistRepository.addCartToWatchlistAPI(watchlistName: nameCon.value.text.trim(), cartIds: cardIds);
+                    Get.back();
+                    AppDialogs.cartAlertDialog(
+                      context,
+                      isCancelButtonShow: true,
+                      contentText: "Do you want to empty cart after items are added in watchList",
+                      onPressed: () {},
+                    );
+                  } else {
+                    UiUtils.toast("Select Cart Items");
+                  }
                 }
               },
             );
             break;
-          case "clear cart":
+
+          case "Clear cart":
             AppDialogs.cartDialog(
               context,
               contentText: "Are you sure,\nyou want to clear cart?",

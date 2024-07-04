@@ -22,6 +22,7 @@ class ProductDetailsController extends GetxController {
   Rx<DiamondModel> selectedDiamond = DiamondModel().obs;
   RxString selectedRemark = "".obs;
   RxString productCategory = "".obs;
+  RxInt quantity = 0.obs;
 
   Rx<SingleProductModel> productDetailModel = SingleProductModel().obs;
   RxString inventoryId = "".obs;
@@ -56,6 +57,8 @@ class ProductDetailsController extends GetxController {
   @override
   void onReady() {
     super.onReady();
+
+    printOkStatus(productCategory);
     ProductRepository.getSingleProductAPI(inventoryId: inventoryId.value).then(
       (value) {
         predefinedValue();
@@ -93,7 +96,7 @@ class ProductDetailsController extends GetxController {
         RxList<DiamondModel> sizeList = <DiamondModel>[].obs;
 
         for (var element in allSizes) {
-          if (element.name?.toLowerCase() == productCategory.toLowerCase() && element.data != null) {
+          if (element.id?.value == productCategory.value && element.data != null) {
             sizeList = element.data!.obs;
 
             index = sizeList.indexWhere((element) => element.id?.value == productDetailModel.value.sizeId);

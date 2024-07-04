@@ -28,7 +28,13 @@ class CartScreen extends StatelessWidget {
             ? MyAppBar(
                 title: "My Cart",
                 actions: [
-                  CartPopUpMenu(),
+                  CartPopUpMenu(
+                    cardIds: (con.selectedList
+                        .map(
+                          (element) => element.id ?? "",
+                        )
+                        .toList()),
+                  ),
                 ],
               )
             : null,

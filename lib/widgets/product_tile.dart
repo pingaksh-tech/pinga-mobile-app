@@ -221,7 +221,13 @@ class _ProductTileState extends State<ProductTile> {
                           });
                           break;
                         case AppStrings.addToWatchlist:
-                          Get.toNamed(AppRoutes.addWatchListScreen);
+                          Get.toNamed(AppRoutes.addWatchListScreen, arguments: {
+                            'inventoryId': widget.inventoryId,
+                            'quantity': widget.productQuantity?.value ?? 0,
+                            'sizeId': sizeModel.value.id?.value ?? "",
+                            'metalId': metalModel.id?.value ?? "",
+                            'diamond': (widget.diamondList != null && widget.diamondList!.isNotEmpty) ? widget.diamondList?.first.diamondClarity?.value : "",
+                          });
                           break;
                       }
                     },
@@ -567,7 +573,7 @@ class _ProductTileState extends State<ProductTile> {
   }) {
     return horizontalSelectorButton(
       context,
-      categorySlug: categorySlug,
+      categoryId: category?.id ?? "",
       isFlexible: isFlexible,
       selectedSize: sizeModel,
       selectedSizeCart: selectedSizeCart,
@@ -597,7 +603,7 @@ class _ProductTileState extends State<ProductTile> {
       context,
       isFlexible: isFlexible,
       selectMetalCart: selectMetalCart,
-      categorySlug: categorySlug,
+      categoryId: metalModel.id?.value ?? "",
       selectedMetal: metalModel.obs,
       sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
       selectableItemType: SelectableItemType.color,
@@ -632,7 +638,7 @@ class _ProductTileState extends State<ProductTile> {
       horizontalSelectorButton(
         context,
         isFlexible: isFlexible,
-        categorySlug: categorySlug,
+        categoryId: diamondModel.id?.value ?? "",
         selectedDiamond: diamondModel.obs,
         diamondsList: widget.diamondList,
         selectDiamondCart: RxString(selectDiamondCart ?? ""),

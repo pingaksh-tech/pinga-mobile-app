@@ -10,7 +10,6 @@ class WishlistController extends GetxController {
   RxList<AllWishlistModel> productsList = <AllWishlistModel>[].obs;
 
   RxBool loader = true.obs;
-
   ScrollController scrollController = ScrollController();
   RxInt page = 1.obs;
   RxInt itemLimit = 10.obs;

@@ -49,7 +49,10 @@ class ProductsScreen extends StatelessWidget {
                     onTap: () {
                       showModalBottomSheet(
                         context: context,
-                        builder: (context) => SortingBottomSheet(),
+                        builder: (context) => SortingBottomSheet(
+                          watchlistId: con.watchlistId.value,
+                          productsListType: con.productListType.value,
+                        ),
                       );
                     },
                   ),
@@ -62,7 +65,12 @@ class ProductsScreen extends StatelessWidget {
                   SortAndFilterButton(
                     title: "Filter",
                     image: AppAssets.filter,
-                    onTap: () => Get.toNamed(AppRoutes.filterScreen, arguments: {"subCategoryId": con.subCategory.value.id, "categoryId": con.categoryId.value}),
+                    onTap: () => Get.toNamed(AppRoutes.filterScreen, arguments: {
+                      "subCategoryId": con.subCategory.value.id,
+                      "categoryId": con.categoryId.value,
+                      "watchlistId": con.watchlistId.value,
+                      "productListType": con.productListType.value,
+                    }),
                   ),
                   SizedBox(
                     height: 20.h,
@@ -86,8 +94,17 @@ class ProductsScreen extends StatelessWidget {
           ),
         ),
         body: PullToRefreshIndicator(
-          onRefresh: () => ProductRepository.getFilterProductsListAPI(categoryId: con.categoryId.value, productsListType: ProductsListType.normal, subCategoryId: con.subCategory.value.id ?? ""),
+          onRefresh: () async {
+            /// GET ALL PRODUCTS
+            return await ProductRepository.getFilterProductsListAPI(
+              isPullToRefresh: true,
+              categoryId: con.categoryId.value,
+              productsListType: ProductsListType.normal,
+              subCategoryId: con.subCategory.value.id ?? "",
+            );
+          },
           child: ListView(
+            controller: con.scrollController,
             padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2, vertical: defaultPadding).copyWith(top: 0, bottom: defaultPadding * 5),
             children: [
               Divider(
@@ -97,7 +114,7 @@ class ProductsScreen extends StatelessWidget {
                 endIndent: defaultPadding / 2,
               ),
               Text(
-                "Total Products ${con.totalCount}",
+                "Total Products ${con.inventoryProductList.length}",
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.subText),
                 textAlign: TextAlign.center,
               ).paddingOnly(top: defaultPadding / 3),
@@ -105,62 +122,58 @@ class ProductsScreen extends StatelessWidget {
               /// PRODUCTS
               con.loader.isFalse
                   ? con.inventoryProductList.isNotEmpty
-                      ? Wrap(
-                          children: List.generate(
-                            con.inventoryProductList.length,
-                            (index) => ProductTile(
-                              category: con.subCategory,
-                              isFancy: con.isFancyDiamond.value,
-                              inventoryId: con.inventoryProductList[index].id,
-                              diamondList: RxList(con.inventoryProductList[index].diamonds ?? []),
-                              categorySlug: con.subCategory.value.name ?? "ring" /*Product Category*/,
-                              productTileType: con.isProductViewChange.isTrue ? ProductTileType.grid : ProductTileType.list,
-                              onTap: () => Get.toNamed(AppRoutes.productDetailsScreen, arguments: {
-                                "category": con.subCategory.value.name ?? '',
-                                'isSize': con.isSizeAvailable.value,
-                                'isFancy': con.isFancyDiamond.value,
-                                'inventoryId': con.inventoryProductList[index].id,
-                                'name': con.inventoryProductList[index].name,
-                              }),
-                              isLike: (con.wishlistList.contains(con.inventoryProductList[index])).obs,
-                              imageUrl: (con.inventoryProductList[index].inventoryImages != null && con.inventoryProductList[index].inventoryImages!.isNotEmpty) ? con.inventoryProductList[index].inventoryImages![0] : "",
-                              productName: con.inventoryProductList[index].name ?? "",
-                              productPrice: con.inventoryProductList[index].inventoryTotalPrice.toString(),
-                              productQuantity: con.inventoryProductList[index].quantity,
-                              isSizeAvailable: con.isSizeAvailable.value,
-                              likeOnChanged: (value) {
-                                /// Add product to wishlist
-                                if (!con.wishlistList.contains(con.inventoryProductList[index])) {
-                                  con.wishlistList.add(con.inventoryProductList[index]);
-                                } else {
-                                  con.wishlistList.remove(con.inventoryProductList[index]);
-                                }
-                                printOkStatus(con.wishlistList);
-                              },
-                              diamonds: con.inventoryProductList[index].diamonds,
+                      ? ListView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          children: [
+                            Wrap(
+                              children: List.generate(
+                                con.inventoryProductList.length,
+                                (index) => Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ProductTile(
+                                      category: con.subCategory,
+                                      isFancy: con.isFancyDiamond.value,
+                                      inventoryId: con.inventoryProductList[index].id,
+                                      diamondList: RxList(con.inventoryProductList[index].diamonds ?? []),
+                                      categorySlug: con.subCategory.value.name ?? "ring" /*Product Category*/,
+                                      productTileType: con.isProductViewChange.isTrue ? ProductTileType.grid : ProductTileType.list,
+                                      onTap: () => Get.toNamed(AppRoutes.productDetailsScreen, arguments: {
+                                        "category": con.inventoryProductList[index].subCategoryId ?? '',
+                                        'isSize': con.isSizeAvailable.value,
+                                        'isFancy': con.isFancyDiamond.value,
+                                        'inventoryId': con.inventoryProductList[index].id,
+                                        'name': con.inventoryProductList[index].name,
+                                      }),
+                                      isLike: con.inventoryProductList[index].isWishlist,
+                                      imageUrl: (con.inventoryProductList[index].inventoryImages != null && con.inventoryProductList[index].inventoryImages!.isNotEmpty) ? con.inventoryProductList[index].inventoryImages![0] : "",
+                                      productName: con.inventoryProductList[index].name ?? "",
+                                      productPrice: con.inventoryProductList[index].inventoryTotalPrice.toString(),
+                                      productQuantity: con.inventoryProductList[index].quantity,
+                                      isSizeAvailable: con.isSizeAvailable.value,
+                                      selectSize: (con.inventoryProductList[index].sizeId ?? "").obs,
+                                      selectMetalCart: (con.inventoryProductList[index].metalId ?? "").obs,
+                                      selectDiamondCart: (con.inventoryProductList[index].diamonds != null && con.inventoryProductList[index].diamonds!.isNotEmpty) ? (con.inventoryProductList[index].diamonds?.first.diamondClarity?.value ?? "").obs : "".obs,
+                                      diamonds: con.inventoryProductList[index].diamonds,
+                                    ),
+                                    if (con.paginationLoader.value && index + 1 == con.inventoryProductList.length) productShimmer(context)
+                                  ],
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         )
                       :
 
                       /// EMPTY DATA VIEW
                       EmptyElement(
-                          title: "${con.subCategory.value.name} Not Found!",
+                          title: "${con.subCategory.value.name ?? "Products"} Not Found!",
                           alignment: Alignment.center,
                           padding: EdgeInsets.symmetric(vertical: Get.width / 2.5),
                         )
-                  : Padding(
-                      padding: EdgeInsets.all(defaultPadding / 2),
-                      child: Wrap(
-                        spacing: defaultPadding,
-                        runSpacing: defaultPadding,
-                        direction: Axis.horizontal,
-                        children: List.generate(
-                          6,
-                          (index) => ShimmerUtils.productsListShimmer(context),
-                        ),
-                      ),
-                    ),
+                  : productShimmer(context, length: 6),
             ],
           ),
         ),
@@ -176,6 +189,21 @@ class ProductsScreen extends StatelessWidget {
           onPressed: () {
             AppDialogs.productDownloadDialog(context);
           },
+        ),
+      ),
+    );
+  }
+
+  Widget productShimmer(BuildContext context, {int length = 2}) {
+    return Padding(
+      padding: EdgeInsets.all(defaultPadding / 2),
+      child: Wrap(
+        spacing: defaultPadding,
+        runSpacing: defaultPadding,
+        direction: Axis.horizontal,
+        children: List.generate(
+          length,
+          (index) => ShimmerUtils.productsListShimmer(context),
         ),
       ),
     );

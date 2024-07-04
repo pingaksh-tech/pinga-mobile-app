@@ -12,7 +12,7 @@ import '../../packages/marquee_widget/marquee_widget.dart';
 
 Widget horizontalSelectorButton(
   BuildContext context, {
-  String? categorySlug,
+  String? categoryId,
   Rx<DiamondModel>? selectedSize,
   Rx<MetalModel>? selectedMetal,
   Rx<DiamondModel>? selectedDiamond,
@@ -47,9 +47,9 @@ Widget horizontalSelectorButton(
               RxList<DiamondModel> sizeList = <DiamondModel>[].obs;
 
               for (var element in allSizeList) {
-                if (element.name?.toLowerCase() == categorySlug?.toLowerCase() && element.data != null) {
+                if (element.id?.value == categoryId && element.data != null) {
                   sizeList = element.data!.obs;
-                }
+                } else {}
               }
 
               /// Size Selector

@@ -5,6 +5,7 @@ import '../../../../data/model/filter/gender_model.dart';
 import '../../../../data/model/filter/stock_available_model.dart';
 import '../../../../data/repositories/filter/filter_repository.dart';
 import '../../../../exports.dart';
+import '../../../../utils/enums/common_enums.dart';
 
 class FilterController extends GetxController {
   RxBool isLoader = false.obs;
@@ -81,6 +82,35 @@ class FilterController extends GetxController {
     {"title": "Crafting The Sparkle", "isChecked": false.obs},
   ];
 
+  String subCategoryId = "";
+  String categoryId = "";
+  String watchlistId = "";
+  ProductsListType productsListType = ProductsListType.normal;
+
+  @override
+  void onInit() {
+    super.onInit();
+    if (Get.arguments != null) {
+      if (Get.arguments['subCategoryId'].runtimeType == String) {
+        subCategoryId = Get.arguments['subCategoryId'];
+        categoryId = Get.arguments['categoryId'];
+      }
+      if (Get.arguments['productListType'].runtimeType == ProductsListType) {
+        productsListType = Get.arguments['productListType'];
+      }
+      if (Get.arguments['watchlistId'].runtimeType == String) {
+        watchlistId = Get.arguments['watchlistId'];
+      }
+    }
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    FilterRepository.stockAvailableList();
+    FilterRepository.genderListAPI();
+  }
+
 //? Clear All Filter
   void clearAllFilters() {
     minMetalWt.value = 0.01;
@@ -110,46 +140,25 @@ class FilterController extends GetxController {
   }
 
 //? Count Active filter
-  int getActiveFilterCount(String filterType) {
-    switch (filterType) {
-      case "Range":
-        return rangeCount();
-      case "Gender":
-        return genderList.where((gender) => false /*gender["isChecked"].textValue*/).length;
-      case "Diamond":
-        return diamondList.where((brand) => false /*brand["isChecked"].textValue*/).length;
-
-      case "KT":
-        return ktList.where((kt) => false /*kt["isChecked"].textValue*/).length;
-      case "Delivery":
-        return deliveryList.where((delivery) => false /*delivery["isChecked"].textValue*/).length;
-      case "Production Name":
-        return productionNameList.where((tag) => false /*tag["isChecked"].textValue*/).length;
-      case "Collection":
-        return collectionList.where((collection) => false /*collection["isChecked"].textValue*/).length;
-      default:
-        return 0;
-    }
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-    FilterRepository.stockAvailableList();
-    FilterRepository.genderListAPI();
-  }
-
-  String subCategoryId = "";
-  String categoryId = "";
-
-  @override
-  void onInit() {
-    super.onInit();
-    if (Get.arguments != null) {
-      if (Get.arguments['subCategoryId'].runtimeType == String) {
-        subCategoryId = Get.arguments['subCategoryId'];
-        categoryId = Get.arguments['categoryId'];
-      }
-    }
-  }
+//   int getActiveFilterCount(String filterType) {
+//     switch (filterType) {
+//       case "Range":
+//         return rangeCount();
+//       case "Gender":
+//         return genderList.where((gender) => false /*gender["isChecked"].textValue*/).length;
+//       case "Diamond":
+//         return diamondList.where((brand) => false /*brand["isChecked"].textValue*/).length;
+//
+//       case "KT":
+//         return ktList.where((kt) => false /*kt["isChecked"].textValue*/).length;
+//       case "Delivery":
+//         return deliveryList.where((delivery) => false /*delivery["isChecked"].textValue*/).length;
+//       case "Production Name":
+//         return productionNameList.where((tag) => false /*tag["isChecked"].textValue*/).length;
+//       case "Collection":
+//         return collectionList.where((collection) => false /*collection["isChecked"].textValue*/).length;
+//       default:
+//         return 0;
+//     }
+//   }
 }

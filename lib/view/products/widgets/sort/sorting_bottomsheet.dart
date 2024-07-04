@@ -9,7 +9,10 @@ import '../../../../widgets/checkbox_title_tile.dart';
 import '../../products_controller.dart';
 
 class SortingBottomSheet extends StatelessWidget {
-  SortingBottomSheet({super.key});
+  final ProductsListType productsListType;
+  final String watchlistId;
+
+  SortingBottomSheet({super.key, required this.productsListType, required this.watchlistId});
 
   final ProductsController con = Get.find<ProductsController>();
 
@@ -184,8 +187,9 @@ class SortingBottomSheet extends StatelessWidget {
                         onPressed: () async {
                           if (con.sortList.isNotEmpty) {
                             await ProductRepository.getFilterProductsListAPI(
+                              watchlistId: watchlistId,
+                              productsListType: con.productListType.value,
                               categoryId: con.categoryId.value,
-                              productsListType: ProductsListType.normal,
                               subCategoryId: con.subCategory.value.id ?? "",
                               loader: con.isLoader,
                               sortBy: [
@@ -193,6 +197,7 @@ class SortingBottomSheet extends StatelessWidget {
                                 if (con.selectNewestOrOldest.value.isNotEmpty) "createdAt:${con.selectNewestOrOldest.value.split("/").last}",
                               ],
                             );
+
                             Get.back();
                           }
                         }),
