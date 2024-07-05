@@ -70,6 +70,8 @@ dependencies:
   firebase_messaging: ^15.0.1
   in_app_update: ^4.2.3
   awesome_notifications: ^0.9.3+1
+  file_downloader_flutter: ^0.0.5
+  flutter_pdfview: ^1.0.0
 
 dev_dependencies:
   flutter_test:

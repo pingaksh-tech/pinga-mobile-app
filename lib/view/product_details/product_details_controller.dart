@@ -30,6 +30,8 @@ class ProductDetailsController extends GetxController {
   num extraMetalPrice = 0;
   num extraMetalWt = 0.0;
 
+  RxBool loader = true.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -59,7 +61,7 @@ class ProductDetailsController extends GetxController {
     super.onReady();
 
     printOkStatus(productCategory);
-    ProductRepository.getSingleProductAPI(inventoryId: inventoryId.value).then(
+    ProductRepository.getSingleProductAPI(inventoryId: inventoryId.value, loader: loader).then(
       (value) {
         predefinedValue();
       },

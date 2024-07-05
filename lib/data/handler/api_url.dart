@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'app_environment.dart';
 
 class ApiUrls {
@@ -67,4 +66,8 @@ class ApiUrls {
 
   /// CATALOGUE
   static String createAndGetCatalogueAPI = "mobile/catalogue";
+
+  static String deleteAndRenameCatalogue({required String catalogueId}) => "mobile/catalogue/$catalogueId";
+
+  static String downloadCatalogueGET({required String catalogueId, required String catalogueType}) => "mobile/catalogue/$catalogueType/$catalogueId";
 }

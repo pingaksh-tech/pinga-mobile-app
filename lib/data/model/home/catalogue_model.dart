@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:get/get.dart';
+
 GetCatalogueModel getCatalogueModelFromJson(String str) => GetCatalogueModel.fromJson(json.decode(str));
 
 String getCatalogueModelToJson(GetCatalogueModel data) => json.encode(data.toJson());
@@ -58,28 +60,32 @@ class CatalogueModel {
 
 class Catalogue {
   final String? id;
-  String? name;
+  RxString? name;
   final List<String>? inventoryIds;
   final String? createdBy;
+  final DateTime? createdAt;
 
   Catalogue({
     this.id,
     this.name,
     this.inventoryIds,
     this.createdBy,
+    this.createdAt,
   });
 
   factory Catalogue.fromJson(Map<String, dynamic> json) => Catalogue(
         id: json["_id"],
-        name: json["name"],
+        name: RxString(json["name"].toString()),
         inventoryIds: json["inventory_ids"] == null ? [] : List<String>.from(json["inventory_ids"]!.map((x) => x)),
         createdBy: json["created_by"],
+        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
       );
 
   Map<String, dynamic> toJson() => {
         "_id": id,
-        "name": name,
+        "name": name?.value,
         "inventory_ids": inventoryIds == null ? [] : List<dynamic>.from(inventoryIds!.map((x) => x)),
         "created_by": createdBy,
+        "createdAt": createdAt?.toIso8601String(),
       };
 }

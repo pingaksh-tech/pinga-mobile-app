@@ -112,6 +112,9 @@ enum ProductsListType { normal, watchlist, wishlist, cart }
 ///* PRODUCT TILE TYPE
 enum ProductTileType { grid, list, variant, cartTile }
 
+///* CATALOGUE TYPE
+enum CatalogueType { grid, list }
+
 ///* SELECTABLE ITEM TYPE
 enum SelectableItemType {
   size(

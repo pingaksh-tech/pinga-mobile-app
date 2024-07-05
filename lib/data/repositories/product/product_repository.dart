@@ -109,10 +109,8 @@ class ProductRepository {
                 if (model.data != null) {
                   if (isPullToRefresh) {
                     con.inventoryProductList.value = model.data?.inventories ?? [];
-                    con.totalCount.value = model.data?.totalCount ?? 0;
                   } else {
                     con.inventoryProductList.addAll(model.data?.inventories ?? []);
-                    con.totalCount.value = model.data?.totalCount ?? 0;
                   }
 
                   int currentPage = (model.data!.page ?? 1);

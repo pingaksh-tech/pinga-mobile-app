@@ -24,6 +24,7 @@ class APIFunction {
     dynamic body,
     bool? isDecode,
     dynamic params,
+    Options? options,
     Duration? receiveTimeout,
     bool withBaseUrl = false,
     bool showErrorToast = true,
@@ -35,7 +36,7 @@ class APIFunction {
         body: body,
         queryParameters: params,
         isDecode: isDecode ?? false,
-        options: getOptionsAndHeader(receiveTimeout: receiveTimeout),
+        options: options ?? getOptionsAndHeader(receiveTimeout: receiveTimeout),
         loader: loader,
       );
       return response;
@@ -59,7 +60,7 @@ class APIFunction {
         isDecode: isDecode ?? false,
         body: body,
         queryParameters: params,
-        options: getOptionsAndHeader(receiveTimeout: receiveTimeout,useRefreshToken: useRefreshToken),
+        options: getOptionsAndHeader(receiveTimeout: receiveTimeout, useRefreshToken: useRefreshToken),
         loader: loader,
       );
       return response;

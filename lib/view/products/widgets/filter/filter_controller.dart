@@ -17,8 +17,8 @@ class FilterController extends GetxController {
   RxString selectSeller = "".obs;
   RxString selectLatestDesign = "".obs;
 
-  Rx<TextEditingController> itemNameCon = TextEditingController().obs;
   RxString selectFilter = "Range".obs;
+  Rx<TextEditingController> itemNameCon = TextEditingController().obs;
   Rx<FilterItemType> filterType = FilterItemType.range.obs;
 
   RxBool? isAvailable;
@@ -29,7 +29,6 @@ class FilterController extends GetxController {
   Rx<TextEditingController> mrpFromCon = TextEditingController().obs;
   Rx<TextEditingController> mrpToCon = TextEditingController().obs;
 
-  RxMap selectMrp = {"label": "".obs, "min": 0, "max": 0}.obs;
   RxList mrpList = [
     {"label": "upto 25,000".obs, "min": 0, "max": 25000},
     {"label": "25,001 - 50,000".obs, "min": 25001, "max": 50000},
@@ -37,6 +36,7 @@ class FilterController extends GetxController {
     {"label": "75,001 - 1,00,000".obs, "min": 75001, "max": 100000},
     {"label": "1,00,001 to above".obs, "min": 100001, "max": 0},
   ].obs;
+  RxMap selectMrp = {"label": "".obs, "min": 0, "max": 0}.obs;
 
   final RxList<dynamic> selectedDiamonds = [].obs;
   final RxList<dynamic> selectedGender = [].obs;
@@ -44,43 +44,6 @@ class FilterController extends GetxController {
   final RxList<dynamic> selectedDelivery = [].obs;
   final RxList<dynamic> selectedProductNames = [].obs;
   final RxList<dynamic> selectedCollections = [].obs;
-
-  final List<Map<String, dynamic>> diamondList = [
-    {"title": "VVS-EF", "isChecked": false.obs},
-    {"title": "VS-SI-GH", "isChecked": false.obs},
-    {"title": "VS-SI-HI", "isChecked": false.obs},
-    {"title": "SI-HI", "isChecked": false.obs},
-  ];
-
-  final List<Map<String, dynamic>> ktList = [
-    {"title": "14KT (55)", "isChecked": false.obs},
-    {"title": "18KT (50)", "isChecked": false.obs},
-    {"title": "950PT (32)", "isChecked": false.obs},
-  ];
-
-  final List<Map<String, dynamic>> deliveryList = [
-    {"title": "30 Days", "isChecked": false.obs},
-    {"title": "56 Hours", "isChecked": false.obs},
-    {"title": "15 Days", "isChecked": false.obs},
-  ];
-  final List<Map<String, dynamic>> productionNameList = [
-    {"title": "Anantam", "isChecked": false.obs},
-    {"title": "Celebration", "isChecked": false.obs},
-    {"title": "Tvamev", "isChecked": false.obs},
-    {"title": "Rista", "isChecked": false.obs},
-    {"title": "Shine Forever", "isChecked": false.obs},
-    {"title": "Ghoomar", "isChecked": false.obs},
-  ];
-
-  final List<Map<String, dynamic>> collectionList = [
-    {"title": "Fashion (3)", "isChecked": false.obs},
-    {"title": "Mens (2)", "isChecked": false.obs},
-    {"title": "Ghoomar 6", "isChecked": false.obs},
-    {"title": "Desire 4", "isChecked": false.obs},
-    {"title": "Cluster (1)", "isChecked": false.obs},
-    {"title": "Color Stone (5)", "isChecked": false.obs},
-    {"title": "Crafting The Sparkle", "isChecked": false.obs},
-  ];
 
   String subCategoryId = "";
   String categoryId = "";
@@ -115,6 +78,8 @@ class FilterController extends GetxController {
   void clearAllFilters() {
     minMetalWt.value = 0.01;
     maxMetalWt.value = 200.0;
+    minDiamondWt.value = 0.01;
+    maxDiamondWt.value = 20.0;
 
     selectedProductNames.clear();
     selectedDelivery.clear();
@@ -122,23 +87,107 @@ class FilterController extends GetxController {
     selectedDiamonds.clear();
     selectedCollections.clear();
     selectedGender.clear();
+    selectMrp.value = {"label": "".obs, "min": 0, "max": 0} as Map<dynamic, dynamic>;
+    isAvailable?.value = false;
 
     selectSeller.value = "";
     selectLatestDesign.value = "";
   }
 
-  int rangeCount() {
+  void rangeCount() {
     int range = 0;
-    if ((minMetalWt.value > 0.0 || maxMetalWt.value < 12.0) && (minDiamondWt.value > 0.0 || maxDiamondWt.value < 50.0)) {
+    if ((minMetalWt.value > 0.01 || maxMetalWt.value < 200.0) && (minDiamondWt.value > 0.01 || maxDiamondWt.value < 20.0)) {
       range = 2;
-    } else if (minMetalWt.value > 0.0 || maxMetalWt.value < 12.0) {
+    } else if (minMetalWt.value > 0.01 || maxMetalWt.value < 200.0) {
       range = 1;
-    } else if (minDiamondWt.value > 0.0 || maxDiamondWt.value < 50.0) {
+    } else if (minDiamondWt.value > 0.01 || maxDiamondWt.value < 20.0) {
       range = 1;
     }
-    return range;
+
+    count += range;
   }
 
+  int count = 0;
+
+  void getCount() {
+    rangeCount();
+    if (selectMrp == {"label": "".obs, "min": 0, "max": 0}.obs) {
+      count += 1;
+    } else {
+      count += 0;
+    }
+    if (selectedGender.isNotEmpty) {
+      count += 1;
+    } else {
+      count += 0;
+    }
+    if (selectedDiamonds.isNotEmpty) {
+      count += 1;
+    } else {
+      count += 0;
+    }
+    if (selectedKt.isNotEmpty) {
+      count += 1;
+    } else {
+      count += 0;
+    }
+    if (selectedDelivery.isNotEmpty) {
+      count += 1;
+    } else {
+      count += 0;
+    }
+    if (selectedProductNames.isNotEmpty) {
+      count += 1;
+    } else {
+      count += 0;
+    }
+    if (selectedCollections.isNotEmpty) {
+      count += 1;
+    } else {
+      count += 0;
+    }
+
+    // switch (filterType.value) {
+    //   case FilterItemType.range:
+    //     rangeCount();
+    //
+    //   case FilterItemType.mrp:
+    //     if (selectMrp == {"label": "".obs, "min": 0, "max": 0}.obs) {
+    //       count += 1;
+    //     }
+    //
+    //   case FilterItemType.available:
+    //   case FilterItemType.gender:
+    //     if (selectedGender.isNotEmpty) {
+    //       count += 1;
+    //     }
+    //
+    //   case FilterItemType.diamond:
+    //     if (selectedDiamonds.isNotEmpty) {
+    //       count += 1;
+    //     }
+    //
+    //   case FilterItemType.kt:
+    //     if (selectedKt.isNotEmpty) {
+    //       count += 1;
+    //     }
+    //
+    //   case FilterItemType.delivery:
+    //     if (selectedDelivery.isNotEmpty) {
+    //       count += 1;
+    //     }
+    //
+    //   case FilterItemType.production:
+    //     if (selectedProductNames.isNotEmpty) {
+    //       count += 1;
+    //     }
+    //
+    //   case FilterItemType.collection:
+    //     if (selectedCollections.isNotEmpty) {
+    //       count += 1;
+    //     }
+    // }
+  }
 //? Count Active filter
 //   int getActiveFilterCount(String filterType) {
 //     switch (filterType) {

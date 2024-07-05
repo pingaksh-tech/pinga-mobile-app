@@ -1233,6 +1233,8 @@ class AppDialogs {
   // RENAME CATALOGUE
   static Future<dynamic> renameCatalogueDialog(BuildContext context, {String? name, required Function(String) onChanged, required String title, required String dialogTitle}) {
     TextEditingController controller = TextEditingController(text: name ?? '');
+    RxString errorMessage = "".obs;
+    RxBool isValidate = true.obs;
     return Get.dialog(
       AlertDialog(
         backgroundColor: AppColors.background,
@@ -1247,19 +1249,26 @@ class AppDialogs {
             ),
           ],
         ),
-        content: SizedBox(
-          width: Get.width,
-          child: AppTextField(
-            title: title,
-            hintText: "Enter name",
-            controller: controller,
-            autofocus: true,
-            titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: Theme.of(context).colorScheme.primary),
-            contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.4, horizontal: defaultPadding / 1.7),
-            keyboardType: TextInputType.text,
-            textInputAction: TextInputAction.done,
-          ),
-        ),
+        content: Obx(() {
+          return SizedBox(
+            width: Get.width,
+            child: AppTextField(
+              title: title,
+              hintText: "Enter name",
+              controller: controller,
+              autofocus: true,
+              errorMessage: errorMessage.value,
+              validation: isValidate.value,
+              titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: Theme.of(context).colorScheme.primary),
+              contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.4, horizontal: defaultPadding / 1.7),
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.done,
+              onChanged: (_) {
+                isValidate.value = true;
+              },
+            ),
+          );
+        }),
         actions: [
           /// CANCEL
           TextButton(
@@ -1287,7 +1296,10 @@ class AppDialogs {
                   ),
             ),
             onPressed: () {
-              Get.back();
+              if (controller.value.text.trim().isEmpty) {
+                errorMessage.value = "Enter Valid Name";
+                isValidate.value = false;
+              }
               onChanged(controller.value.text.trim());
             },
           ),
@@ -1630,7 +1642,7 @@ class AppDialogs {
                 onTap: () {
                   Get.back();
                   isDownloadFileNameChange
-                      ? addFileName(context)
+                      ? addFileName(context, viewType: CatalogueType.grid)
                       : AppDialogs.cartAlertDialog(
                           context,
                           onPressed: () async {
@@ -1645,7 +1657,7 @@ class AppDialogs {
                 onTap: () {
                   Get.back();
                   isDownloadFileNameChange
-                      ? addFileName(context)
+                      ? addFileName(context, viewType: CatalogueType.list)
                       : AppDialogs.cartAlertDialog(
                           context,
                           onPressed: () {},
@@ -1727,7 +1739,7 @@ class AppDialogs {
   }
 
   // Add FileName Dialog
-  static Future<dynamic> addFileName(BuildContext context) {
+  static Future<dynamic> addFileName(BuildContext context, {required CatalogueType viewType}) {
     final FilterController con = Get.find<FilterController>();
     RxBool loader = false.obs;
 
@@ -1818,6 +1830,7 @@ class AppDialogs {
                     /// CREATE CATALOGUE
                     await CatalogueRepository.createCatalogueAPI(
                       loader: loader,
+                      catalogueType: viewType,
                       catalogueName: fileCon.value.text.trim(),
                       categoryId: con.categoryId,
                       subCategoryId: con.subCategoryId,

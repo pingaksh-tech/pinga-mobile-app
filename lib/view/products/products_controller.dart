@@ -14,7 +14,6 @@ class ProductsController extends GetxController {
   RxBool isLoader = false.obs;
   RxBool isSizeAvailable = false.obs;
   RxString categoryId = "".obs;
-  RxInt totalCount = 0.obs;
 
   Rx<CategoryModel> currentCategory = CategoryModel().obs;
   RxBool isFancyDiamond = false.obs;
@@ -31,6 +30,7 @@ class ProductsController extends GetxController {
   RxList<String> sortList = <String>[].obs;
   RxList<InventoryModel> inventoryProductList = <InventoryModel>[].obs;
 
+  RxInt countFiler = 0.obs;
   Rx<ProductsListType> productListType = ProductsListType.normal.obs;
   RxString watchlistId = "".obs;
 
@@ -48,6 +48,8 @@ class ProductsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    Get.put(FilterController());
+
     if (Get.arguments != null) {
       if (Get.arguments["category"].runtimeType == SubCategoryModel) {
         subCategory.value = Get.arguments["category"];

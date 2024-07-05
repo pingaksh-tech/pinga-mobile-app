@@ -106,7 +106,6 @@ class CartScreen extends StatelessWidget {
                               category: con.category,
                               isSizeAvailable: true,
                               productTileType: ProductTileType.cartTile,
-                              categorySlug: con.category.value.name ?? "ring",
                               isCartSelected: RxBool(
                                 con.selectedList.contains(
                                   con.cartList[index],

@@ -25,7 +25,7 @@ class VariantsTab extends StatelessWidget {
               'isSize': isSize,
             },
             preventDuplicates: false),
-        categorySlug: productCategory,
+        // subCategoryId: productCategory,
         isSizeAvailable: isSize,
         productTileType: ProductTileType.variant,
         imageUrl: con.variantList[index].image ?? "",

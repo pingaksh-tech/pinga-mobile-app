@@ -17,6 +17,6 @@ class CatalogueController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    CatalogueRepository.getCatalogue();
+    CatalogueRepository.getCatalogue(loader: loader);
   }
 }

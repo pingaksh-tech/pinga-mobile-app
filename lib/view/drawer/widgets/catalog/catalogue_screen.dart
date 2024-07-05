@@ -4,11 +4,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../../../data/repositories/home/catalogue_repository.dart';
 import '../../../../exports.dart';
 import '../../../../res/app_bar.dart';
 import '../../../../res/app_dialog.dart';
+import '../../../../res/empty_element.dart';
 import '../../../../res/pop_up_menu_button.dart';
 import '../../../../utils/app_datetime_formator.dart';
+import '../../../../widgets/pull_to_refresh_indicator.dart';
 import 'catalogue_controller.dart';
 
 class CatalogueScreen extends StatelessWidget {
@@ -24,27 +27,78 @@ class CatalogueScreen extends StatelessWidget {
         title: "Catalogue",
       ),
       body: Obx(() {
-        return ListView.separated(
-          physics: const RangeMaintainingScrollPhysics(),
-          padding: EdgeInsets.all(defaultPadding),
-          itemCount: con.catalogueList.length,
-          separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
-          itemBuilder: (context, index) => catalogueTile(
-            context,
-            index: index,
-            title: con.catalogueList[index].name,
-            subtitle: "",
-            date: defaultDateTime.toString(),
-            onPressed: () {
-              Get.toNamed(AppRoutes.pdfViewerScreen, arguments: {"title": con.catalogueList[index].name});
-            },
+        return PullToRefreshIndicator(
+          onRefresh: () => CatalogueRepository.getCatalogue(isPullToRefresh: true),
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              con.loader.isFalse
+                  ? con.catalogueList.isNotEmpty
+                      ? ListView.separated(
+                          shrinkWrap: true,
+                          padding: EdgeInsets.all(defaultPadding),
+                          itemCount: con.catalogueList.length,
+                          separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
+                          itemBuilder: (context, index) => Obx(() {
+                            return catalogueTile(
+                              context,
+                              index: index,
+                              title: con.catalogueList[index].name,
+                              subtitle: con.catalogueList[index].name?.value,
+                              date: con.catalogueList[index].createdAt.toString(),
+                              onPressed: () {
+                                Get.toNamed(AppRoutes.pdfViewerScreen, arguments: {
+                                  "title": con.catalogueList[index].name?.value,
+                                  "catalogueId": con.catalogueList[index].id ?? "",
+                                });
+                              },
+                            );
+                          }),
+                        )
+                      :
+
+                      /// EMPTY DATA VIEW
+                      EmptyElement(
+                          title: "Catalogue Not Found!",
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.symmetric(vertical: Get.width / 2.5),
+                        )
+                  :
+
+                  /// LOADING VIEW
+                  shimmerListView()
+            ],
           ),
         );
       }),
     );
   }
 
-  Widget catalogueTile(BuildContext context, {String? title, String? subtitle, String? date, int index = 0, required VoidCallback onPressed}) {
+  Widget shimmerTile({bool showShimmer = true}) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: defaultPadding / 2),
+      width: Get.width,
+      height: Get.width / 4,
+      child: showShimmer
+          ? ShimmerUtils.shimmer(
+              child: ShimmerUtils.shimmerContainer(
+                borderRadiusSize: defaultRadius,
+              ),
+            )
+          : const SizedBox(),
+    );
+  }
+
+  Widget shimmerListView() {
+    return ListView.builder(
+      padding: EdgeInsets.all(defaultPadding),
+      shrinkWrap: true,
+      itemBuilder: (context, index) => shimmerTile(),
+      itemCount: 10,
+    );
+  }
+
+  Widget catalogueTile(BuildContext context, {RxString? title, String? subtitle, String? date, int index = 0, required VoidCallback onPressed}) {
     return InkWell(
       borderRadius: BorderRadius.circular(defaultRadius),
       highlightColor: Colors.transparent,
@@ -78,7 +132,7 @@ class CatalogueScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      title ?? '',
+                      title?.value ?? '',
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontSize: 12.5.sp,
@@ -118,29 +172,43 @@ class CatalogueScreen extends StatelessWidget {
                     /*   case "show":
                       Get.toNamed(AppRoutes.pdfViewerScreen, arguments: {"title": title});
                       break;*/
-                    case "download":
-                      UiUtils.toast("Downloading...");
+                    case "Download":
+                      await CatalogueRepository.downloadCatalogueAPI(catalogueId: con.catalogueList[index].id ?? "", catalogueType: CatalogueType.grid).then(
+                        (value) {
+                          // FileDownloaderFlutter().;
+                        },
+                      );
+                      // UiUtils.toast("Downloading...");
                       break;
-                    case "share":
+
+                    case "Share":
 
                       /// share wishlist
                       await Share.share(
                         "Catalogue : $title\nCreated Date : $date",
                       );
                       break;
-                    case "rename":
+                    case "Rename":
                       AppDialogs.renameCatalogueDialog(
                         context,
-                        name: con.catalogueList[index].name,
+                        name: con.catalogueList[index].name?.value ?? "",
                         dialogTitle: "Rename Catalogue",
                         title: "Enter name",
-                        onChanged: (val) {
-                          con.catalogueList[index].name = val;
+                        onChanged: (val) async {
+                          if (!isValEmpty(val)) {
+                            con.catalogueList[index].name?.value = val;
+
+                            /// RENAME CATALOGUE
+                            await CatalogueRepository.renameCatalogueAPI(catalogueId: con.catalogueList[index].id ?? "", catalogueName: val);
+                          }
                         },
                       );
                       break;
-                    case "delete":
-                      con.catalogueList.removeAt(index);
+                    case "Delete":
+                      printOkStatus("dss");
+
+                      /// DELETE CATALOGUE API
+                      await CatalogueRepository.deleteCatalogueAPI(catalogueId: con.catalogueList[index].id ?? "");
                       break;
                   }
                 },

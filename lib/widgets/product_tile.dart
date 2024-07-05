@@ -31,7 +31,8 @@ class ProductTile extends StatefulWidget {
   final String? inventoryId;
   final bool isFancy;
   final RxList<DiamondListModel>? diamondList;
-  final String? categorySlug;
+
+  // final String? subCategoryId;
   final String productPrice;
   final bool isSizeAvailable;
   final RxInt? productQuantity;
@@ -70,7 +71,7 @@ class ProductTile extends StatefulWidget {
     this.deleteOnTap,
     this.isFancy = false,
     this.cartDetailOnTap,
-    this.categorySlug,
+    // this.subCategoryId,
     this.isCartSelected,
     this.onChanged,
     this.isSizeAvailable = true,
@@ -119,12 +120,11 @@ class _ProductTileState extends State<ProductTile> {
       } else {
         metalModel = metalList[0];
       }
-
       //? Size Value Select in default
       if (allSizeList.isNotEmpty) {
         RxList<DiamondModel> sizeList = <DiamondModel>[].obs;
         for (var element in allSizeList) {
-          if (element.name?.toLowerCase() == widget.categorySlug?.toLowerCase() && element.data != null) {
+          if (element.id?.value == widget.category?.value.id && element.data != null) {
             sizeList = element.data!.obs;
             int index = sizeList.indexWhere((element) => element.id == widget.selectSize);
             if (index != -1) {
@@ -217,7 +217,7 @@ class _ProductTileState extends State<ProductTile> {
                         case AppStrings.variants:
                           Get.toNamed(AppRoutes.variantsScreen, arguments: {
                             'isSize': widget.isSizeAvailable,
-                            'category': widget.categorySlug,
+                            // 'category': widget.subCategoryId,
                           });
                           break;
                         case AppStrings.addToWatchlist:
@@ -267,11 +267,11 @@ class _ProductTileState extends State<ProductTile> {
               child: Row(
                 children: [
                   /// Size
-                  if (widget.isSizeAvailable) sizeSelector(categorySlug: widget.categorySlug ?? '', category: widget.category?.value),
+                  if (widget.isSizeAvailable) sizeSelector(category: widget.category?.value),
                   (defaultPadding / 4).horizontalSpace,
 
                   /// Diamond
-                  diamondSelector(categorySlug: widget.categorySlug ?? ''),
+                  diamondSelector(),
                 ],
               ),
             ),
@@ -281,7 +281,7 @@ class _ProductTileState extends State<ProductTile> {
               child: Row(
                 children: [
                   /// Color
-                  metalSelector(categorySlug: widget.categorySlug ?? ''),
+                  metalSelector(),
                   (defaultPadding / 4).horizontalSpace,
 
                   /// Remark
@@ -444,15 +444,15 @@ class _ProductTileState extends State<ProductTile> {
                 child: Row(
                   children: [
                     /// Size Selector
-                    if (widget.isSizeAvailable) sizeSelector(direction: Axis.vertical, categorySlug: widget.categorySlug ?? ''),
+                    if (widget.isSizeAvailable) sizeSelector(direction: Axis.vertical, category: widget.category?.value),
                     6.horizontalSpace,
 
                     /// Color Selector
-                    metalSelector(direction: Axis.vertical, categorySlug: widget.categorySlug ?? ''),
+                    metalSelector(direction: Axis.vertical),
                     6.horizontalSpace,
 
                     /// Diamond Selector
-                    diamondSelector(direction: Axis.vertical, categorySlug: widget.categorySlug ?? ''),
+                    diamondSelector(direction: Axis.vertical),
                     6.horizontalSpace,
 
                     /// Remark Selector
@@ -538,15 +538,15 @@ class _ProductTileState extends State<ProductTile> {
                     Row(
                       children: [
                         /// Size Selector
-                        if (widget.isSizeAvailable) sizeSelector(isFlexible: true, direction: Axis.vertical, categorySlug: widget.categorySlug ?? ''),
+                        if (widget.isSizeAvailable) sizeSelector(isFlexible: true, direction: Axis.vertical, category: widget.category?.value),
                         6.horizontalSpace,
 
                         /// Color Selector
-                        metalSelector(isFlexible: true, direction: Axis.vertical, categorySlug: widget.categorySlug ?? ''),
+                        metalSelector(isFlexible: true, direction: Axis.vertical),
                         6.horizontalSpace,
 
                         /// Diamond Selector
-                        diamondSelector(isFlexible: true, direction: Axis.vertical, categorySlug: widget.categorySlug ?? ''),
+                        diamondSelector(isFlexible: true, direction: Axis.vertical),
                         6.horizontalSpace,
 
                         /// Remark Selector
@@ -567,7 +567,6 @@ class _ProductTileState extends State<ProductTile> {
   Widget sizeSelector({
     bool isFlexible = false,
     Axis direction = Axis.horizontal,
-    required String categorySlug,
     SubCategoryModel? category,
     RxString? selectedSizeCart,
   }) {
@@ -596,7 +595,6 @@ class _ProductTileState extends State<ProductTile> {
   Widget metalSelector({
     bool isFlexible = false,
     Axis direction = Axis.horizontal,
-    required String categorySlug,
     RxString? selectMetalCart,
   }) {
     return horizontalSelectorButton(
@@ -632,7 +630,6 @@ class _ProductTileState extends State<ProductTile> {
   Widget diamondSelector({
     bool isFlexible = false,
     Axis direction = Axis.horizontal,
-    required String categorySlug,
     String? selectDiamondCart,
   }) =>
       horizontalSelectorButton(
@@ -917,20 +914,20 @@ class _ProductTileState extends State<ProductTile> {
                         direction: Axis.vertical,
                         isFlexible: true,
                         selectedSizeCart: widget.selectSize,
-                        categorySlug: widget.categorySlug ?? '',
+                        category: widget.category?.value,
                       ),
                     (defaultPadding / 4).horizontalSpace,
                     metalSelector(
                       direction: Axis.vertical,
                       isFlexible: true,
-                      categorySlug: widget.categorySlug ?? '',
+                      // categorySlug: widget.subCategoryId ?? '',
                       selectMetalCart: RxString(widget.selectMetalCart?.value ?? ""),
                     ),
                     (defaultPadding / 4).horizontalSpace,
                     diamondSelector(
                       direction: Axis.vertical,
                       isFlexible: true,
-                      categorySlug: widget.categorySlug ?? '',
+                      // categorySlug: widget.subCategoryId ?? '',
                       selectDiamondCart: widget.selectDiamondCart?.value,
                     ),
                     (defaultPadding / 4).horizontalSpace,

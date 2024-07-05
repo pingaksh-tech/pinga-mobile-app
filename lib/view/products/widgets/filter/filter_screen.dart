@@ -243,18 +243,20 @@ class FilterScreen extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: defaultPadding / 2),
                     itemCount: preValCon.genderList.length,
                     separatorBuilder: (context, index) => separateDivider,
-                    itemBuilder: (context, index) => CustomCheckboxTile(
-                      scale: 1,
-                      title: preValCon.genderList[index].capitalizeFirst,
-                      isSelected: RxBool(con.selectedGender.contains(preValCon.genderList[index])),
-                      onChanged: (val) {
-                        if (con.selectedGender.contains(preValCon.genderList[index])) {
-                          con.selectedGender.remove(preValCon.genderList[index]);
-                        } else {
-                          con.selectedGender.add(preValCon.genderList[index]);
-                        }
-                      },
-                    ),
+                    itemBuilder: (context, index) => Obx(() {
+                      return CustomCheckboxTile(
+                        scale: 1,
+                        title: preValCon.genderList[index].capitalizeFirst,
+                        isSelected: RxBool(con.selectedGender.contains(preValCon.genderList[index])),
+                        onChanged: (val) {
+                          if (con.selectedGender.contains(preValCon.genderList[index])) {
+                            con.selectedGender.remove(preValCon.genderList[index]);
+                          } else {
+                            con.selectedGender.add(preValCon.genderList[index]);
+                          }
+                        },
+                      );
+                    }),
                   ),
 
                 //? diamond Type Tab UI
@@ -316,6 +318,7 @@ class FilterScreen extends StatelessWidget {
                   buttonType: ButtonType.outline,
                   onPressed: () {
                     con.clearAllFilters();
+                    con.count = 0;
                   },
                 ),
               ),
@@ -326,6 +329,9 @@ class FilterScreen extends StatelessWidget {
                   height: 30.h,
                   title: "Apply",
                   onPressed: () async {
+                    con.getCount();
+                    printOkStatus(con.count);
+
                     await ProductRepository.getFilterProductsListAPI(
                       watchlistId: con.watchlistId,
                       productsListType: con.productsListType,

@@ -29,7 +29,7 @@ class VariantScreen extends StatelessWidget {
               "category": con.category.value,
               'isSize': con.isSize.value,
             }),
-            categorySlug: con.category.value,
+            // subCategoryId: con.category.value,
             isSizeAvailable: con.isSize.value,
             productTileType: ProductTileType.variant,
             imageUrl: con.variantList[index].image ?? "",
