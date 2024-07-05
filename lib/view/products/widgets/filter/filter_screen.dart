@@ -278,7 +278,7 @@ class FilterScreen extends StatelessWidget {
                     diamondList: preValCon.diamondsList,
                     type: FilterItemType.diamond,
                     onSelect: (value) {
-                      con.selectedDiamonds.value = value;
+                      // con.selectedDiamonds.value = value;
                     },
                   ),
 
@@ -287,7 +287,7 @@ class FilterScreen extends StatelessWidget {
                     metalList: preValCon.metalsList,
                     type: FilterItemType.kt,
                     onSelect: (value) {
-                      con.selectedKt.value = value;
+                      // con.selectedKt.value = value;
                     },
                   ),
 
@@ -296,7 +296,7 @@ class FilterScreen extends StatelessWidget {
                     deliveryList: preValCon.deliveriesList,
                     type: FilterItemType.delivery,
                     onSelect: (value) {
-                      con.selectedDelivery.value = value;
+                      // con.selectedDelivery.value = value;
                     },
                   ),
 
@@ -305,7 +305,7 @@ class FilterScreen extends StatelessWidget {
                     deliveryList: preValCon.productNamesList,
                     type: FilterItemType.production,
                     onSelect: (value) {
-                      con.selectedProductNames.value = value;
+                      // con.selectedProductNames.value = value;
                     },
                   ),
 
@@ -314,7 +314,7 @@ class FilterScreen extends StatelessWidget {
                     collectionList: preValCon.collectionList,
                     type: FilterItemType.collection,
                     onSelect: (value) {
-                      con.selectedCollections.value = value;
+                      // con.selectedCollections.value = value;
                     },
                   )
               },
@@ -343,7 +343,7 @@ class FilterScreen extends StatelessWidget {
                   height: 30.h,
                   title: "Apply",
                   onPressed: () async {
-                    con.getCount();
+                    // con.getCount();
                     printOkStatus(con.count);
 
                     await ProductRepository.getFilterProductsListAPI(

@@ -39,12 +39,12 @@ class FilterController extends GetxController {
   ].obs;
   RxMap selectMrp = {"label": "".obs, "min": 0, "max": 0}.obs;
 
-  final RxList<dynamic> selectedDiamonds = [].obs;
-  final RxList<dynamic> selectedGender = [].obs;
-  final RxList<dynamic> selectedKt = [].obs;
-  final RxList<dynamic> selectedDelivery = [].obs;
-  final RxList<dynamic> selectedProductNames = [].obs;
-  final RxList<dynamic> selectedCollections = [].obs;
+  final RxList<String> selectedDiamonds = <String>[].obs;
+  final RxList<String> selectedGender = <String>[].obs;
+  final RxList<String> selectedKt = <String>[].obs;
+  final RxList<String> selectedDelivery = <String>[].obs;
+  final RxList<String> selectedProductNames = <String>[].obs;
+  final RxList<String> selectedCollections = <String>[].obs;
 
   String subCategoryId = "";
   String categoryId = "";
@@ -115,50 +115,50 @@ class FilterController extends GetxController {
 
   int count = 0;
 
-  void getCount() {
-    rangeCount();
-    if (selectMrp != {"label": "".obs, "min": 0, "max": 0}.obs) {
-      count++;
-    } else {
-      count--;
-    }
-
-    if (selectedGender.isNotEmpty) {
-      count++;
-    } else {
-      count--;
-    }
-
-    if (selectedDiamonds.isNotEmpty) {
-      count++;
-    } else {
-      count--;
-    }
-
-    if (selectedKt.isNotEmpty) {
-      count++;
-    } else {
-      count--;
-    }
-
-    if (selectedDelivery.isNotEmpty) {
-      count++;
-    } else {
-      count--;
-    }
-
-    if (selectedProductNames.isNotEmpty) {
-      count++;
-    } else {
-      count--;
-    }
-
-    if (selectedCollections.isNotEmpty) {
-      count++;
-    } else {
-      count--;
-    }
-  }
+// void getCount() {
+//   rangeCount();
+//   if (selectMrp != {"label": "".obs, "min": 0, "max": 0}.obs) {
+//     count++;
+//   } else {
+//     count--;
+//   }
+//
+//   if (selectedGender.isNotEmpty) {
+//     count++;
+//   } else {
+//     count--;
+//   }
+//
+//   if (selectedDiamonds.isNotEmpty) {
+//     count++;
+//   } else {
+//     count--;
+//   }
+//
+//   if (selectedKt.isNotEmpty) {
+//     count++;
+//   } else {
+//     count--;
+//   }
+//
+//   if (selectedDelivery.isNotEmpty) {
+//     count++;
+//   } else {
+//     count--;
+//   }
+//
+//   if (selectedProductNames.isNotEmpty) {
+//     count++;
+//   } else {
+//     count--;
+//   }
+//
+//   if (selectedCollections.isNotEmpty) {
+//     count++;
+//   } else {
+//     count--;
+//   }
+// }
 //? Count Active filter
 //   int getActiveFilterCount(String filterType) {
 //     switch (filterType) {
