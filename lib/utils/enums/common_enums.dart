@@ -251,12 +251,7 @@ enum FilterItemType {
   final String slug;
   final String icon;
 
-  const FilterItemType({
-    required this.id,
-    required this.label,
-    required this.slug,
-    required this.icon,
-  });
+  const FilterItemType({required this.id, required this.label, required this.slug, required this.icon});
 
   static FilterItemType fromId(int id) {
     return FilterItemType.values.firstWhere((e) => e.id == id);

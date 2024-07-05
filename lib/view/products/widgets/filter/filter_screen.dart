@@ -33,7 +33,7 @@ class FilterScreen extends StatelessWidget {
             Expanded(
               child: ListView.separated(
                 physics: const RangeMaintainingScrollPhysics(),
-                itemCount: FilterItemType.values.length,
+                itemCount: con.filterOptions.length,
                 separatorBuilder: (context, index) => Divider(
                   height: 0,
                   color: dividerColor,
@@ -41,11 +41,11 @@ class FilterScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return Obx(
                     () {
-                      bool isSelected = con.filterType.value == FilterItemType.values[index];
+                      bool isSelected = con.filterType.value == con.filterOptions[index];
                       // int activeCount = con.getActiveFilterCount(FilterItemType.values[index].label);
                       return GestureDetector(
                         onTap: () {
-                          con.filterType.value = FilterItemType.values[index];
+                          con.filterType.value = con.filterOptions[index];
                         },
                         child: Container(
                           padding: EdgeInsets.symmetric(vertical: defaultPadding, horizontal: defaultPadding / 1.5),
@@ -54,11 +54,11 @@ class FilterScreen extends StatelessWidget {
                           child: Column(
                             children: [
                               SvgPicture.asset(
-                                FilterItemType.values[index].icon,
+                                con.filterOptions[index].icon,
                                 height: 19.h,
                               ),
                               Text(
-                                FilterItemType.values[index].label,
+                                con.filterOptions[index].label,
                                 textAlign: TextAlign.center,
                                 style: AppTextStyle.titleStyle(context).copyWith(fontSize: 13.sp, fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400),
                               ),
@@ -100,6 +100,8 @@ class FilterScreen extends StatelessWidget {
                             onChanged: (value) {
                               con.minMetalWt.value = value.start;
                               con.maxMetalWt.value = value.end;
+                              con.rangeCount();
+                              // printYellow(con.count);
                             },
                           ),
                         ),
@@ -126,6 +128,7 @@ class FilterScreen extends StatelessWidget {
                             onChanged: (value) {
                               con.minDiamondWt.value = value.start;
                               con.maxDiamondWt.value = value.end;
+                              con.rangeCount();
                             },
                           ),
                         ),
@@ -226,10 +229,15 @@ class FilterScreen extends StatelessWidget {
                     itemBuilder: (context, index) => CustomCheckboxTile(
                       scale: 1,
                       title: con.availableList[index].title ?? "",
-                      isSelected: con.isAvailable ?? false.obs,
+                      isSelected: con.isAvailable,
                       onChanged: (val) {
                         if (val != null) {
-                          con.isAvailable?.value = val;
+                          con.isAvailable.value = val;
+                          if (con.isAvailable.isTrue) {
+                            con.count += 1;
+                          } else {
+                            con.count -= 1;
+                          }
                         }
                       },
                     ),
@@ -251,7 +259,13 @@ class FilterScreen extends StatelessWidget {
                         onChanged: (val) {
                           if (con.selectedGender.contains(preValCon.genderList[index])) {
                             con.selectedGender.remove(preValCon.genderList[index]);
+                            if (con.selectedGender.isEmpty) {
+                              con.count--;
+                            }
                           } else {
+                            if (con.selectedGender.isEmpty) {
+                              con.count++;
+                            }
                             con.selectedGender.add(preValCon.genderList[index]);
                           }
                         },
@@ -344,14 +358,14 @@ class FilterScreen extends StatelessWidget {
                       maxDiamond: con.maxDiamondWt.value,
                       minMrp: con.selectMrp['min'],
                       maxMrp: con.selectMrp['max'],
-                      inStock: con.isAvailable?.value,
+                      inStock: con.isAvailable.value,
                       genderList: con.selectedGender,
                       diamondList: con.selectedDiamonds,
                       ktList: con.selectedKt,
                       deliveryList: con.selectedDelivery,
                       productionNameList: con.selectedProductNames,
                       colectionList: con.selectedCollections,
-                    ).then((value) => Get.back());
+                    ).then((value) => Get.back(result: con.count));
                   },
                 ),
               ),

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../data/model/common/splash_model.dart';
 
 import '../exports.dart';
+import '../view/products/widgets/filter/filter_controller.dart';
 import 'custom_check_box_tile.dart';
 
 class FilterListViewWidget extends StatefulWidget {
@@ -21,6 +22,7 @@ class FilterListViewWidget extends StatefulWidget {
 }
 
 class _FilterListViewWidgetState extends State<FilterListViewWidget> {
+  final FilterController filterCon = Get.find<FilterController>();
   List<dynamic> selectedFilter = [];
 
   @override
@@ -68,16 +70,32 @@ class _FilterListViewWidgetState extends State<FilterListViewWidget> {
             case FilterItemType.diamond:
               if (selectedFilter.contains(widget.diamondList?[index].name)) {
                 selectedFilter.remove(widget.diamondList?[index].name);
+
+                if (selectedFilter.isEmpty) {
+                  filterCon.count -= 1;
+                }
               } else {
+                if (selectedFilter.isEmpty) {
+                  filterCon.count += 1;
+                }
+
                 selectedFilter.add(widget.diamondList?[index].name);
               }
-
+              printOkStatus(filterCon.count);
               break;
 
             case FilterItemType.delivery:
               if (selectedFilter.contains(widget.deliveryList?[index])) {
                 selectedFilter.remove(widget.deliveryList?[index]);
+
+                if (selectedFilter.isEmpty) {
+                  filterCon.count -= 1;
+                }
               } else {
+                if (selectedFilter.isEmpty) {
+                  filterCon.count -= 1;
+                }
+
                 selectedFilter.add(widget.deliveryList?[index]);
               }
               break;
@@ -85,7 +103,14 @@ class _FilterListViewWidgetState extends State<FilterListViewWidget> {
             case FilterItemType.production:
               if (selectedFilter.contains(widget.deliveryList?[index])) {
                 selectedFilter.remove(widget.deliveryList?[index]);
+
+                if (selectedFilter.isEmpty) {
+                  filterCon.count -= 1;
+                }
               } else {
+                if (selectedFilter.isEmpty) {
+                  filterCon.count -= 1;
+                }
                 selectedFilter.add(widget.deliveryList?[index]);
               }
               break;
@@ -93,7 +118,14 @@ class _FilterListViewWidgetState extends State<FilterListViewWidget> {
             case FilterItemType.kt:
               if (selectedFilter.contains(widget.metalList?[index].id)) {
                 selectedFilter.remove(widget.metalList?[index].id);
+
+                if (selectedFilter.isEmpty) {
+                  filterCon.count -= 1;
+                }
               } else {
+                if (selectedFilter.isEmpty) {
+                  filterCon.count -= 1;
+                }
                 selectedFilter.add(widget.metalList?[index].id?.value);
               }
               break;
@@ -101,7 +133,13 @@ class _FilterListViewWidgetState extends State<FilterListViewWidget> {
             case FilterItemType.collection:
               if (selectedFilter.contains(widget.collectionList?[index].id)) {
                 selectedFilter.remove(widget.collectionList?[index].id);
+                if (selectedFilter.isEmpty) {
+                  filterCon.count -= 1;
+                }
               } else {
+                if (selectedFilter.isEmpty) {
+                  filterCon.count -= 1;
+                }
                 selectedFilter.add(widget.collectionList?[index].id);
               }
               break;

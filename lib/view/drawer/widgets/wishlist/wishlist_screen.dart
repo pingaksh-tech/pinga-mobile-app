@@ -37,7 +37,7 @@ class WishlistScreen extends StatelessWidget {
                             (index) => ProductTile(
                               inventoryId: con.productsList[index].inventory?.id ?? "",
                               productsListTypeType: ProductsListType.wishlist,
-                              // subCategoryId: "ring",
+                              // category: con.productsList[index].inventory.subCategoryId ?? "",
                               selectSize: (con.productsList[index].inventory?.sizeId ?? "").obs,
                               productTileType: ProductTileType.grid,
                               onTap: () => Get.toNamed(AppRoutes.productDetailsScreen, arguments: {

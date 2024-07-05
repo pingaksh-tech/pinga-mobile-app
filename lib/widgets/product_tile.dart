@@ -572,7 +572,7 @@ class _ProductTileState extends State<ProductTile> {
   }) {
     return horizontalSelectorButton(
       context,
-      categoryId: category?.id ?? "",
+      categoryId: /*category?.id ??*/ "667cbeaedd04772674cb511b",
       isFlexible: isFlexible,
       selectedSize: sizeModel,
       selectedSizeCart: selectedSizeCart,

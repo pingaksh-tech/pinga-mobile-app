@@ -48,7 +48,7 @@ class ProductsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    Get.put(FilterController());
+    filterCon.clearAllFilters();
 
     if (Get.arguments != null) {
       if (Get.arguments["category"].runtimeType == SubCategoryModel) {
@@ -67,14 +67,6 @@ class ProductsController extends GetxController {
       }
       if (Get.arguments["watchlistId"].runtimeType == String) {
         watchlistId.value = Get.arguments["watchlistId"];
-      }
-    }
-
-    int index = homeCon.categoriesList.indexWhere((element) => element.id == categoryId.value);
-    if (index != -1) {
-      currentCategory.value = homeCon.categoriesList[index];
-      if (currentCategory.value.id == "667cbcc3dd04772674c966c4") {
-        isFancyDiamond.value = true;
       }
     }
   }
@@ -99,6 +91,14 @@ class ProductsController extends GetxController {
       subCategoryId: subCategory.value.id ?? "",
     );
 
+    int index = homeCon.categoriesList.indexWhere((element) => element.id == categoryId.value);
+    if (index != -1) {
+      currentCategory.value = homeCon.categoriesList[index];
+
+      if (currentCategory.value.id == "667cbcc3dd04772674c966c4") {
+        isFancyDiamond.value = true;
+      }
+    }
     preValueAvailable();
   }
 

@@ -64,7 +64,7 @@ class ProductsScreen extends StatelessWidget {
                     ),
                   ),
                   SortAndFilterButton(
-                    title: "Filter${con.countFiler.value}",
+                    title: "Filter (${con.countFiler.value})",
                     image: AppAssets.filter,
                     onTap: () => Get.toNamed(AppRoutes.filterScreen, arguments: {
                       "subCategoryId": con.subCategory.value.id,
@@ -111,7 +111,6 @@ class ProductsScreen extends StatelessWidget {
             );
           },
           child: ListView(
-            controller: con.scrollController,
             padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2, vertical: defaultPadding).copyWith(top: 0, bottom: defaultPadding * 5),
             children: [
               Divider(
@@ -125,64 +124,70 @@ class ProductsScreen extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.subText),
                 textAlign: TextAlign.center,
               ).paddingOnly(top: defaultPadding / 3),
-
-              /// PRODUCTS
-              con.loader.isFalse
-                  ? con.inventoryProductList.isNotEmpty
-                      ? Wrap(
-                          children: List.generate(
-                            con.inventoryProductList.length,
-                            (index) => Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ProductTile(
-                                  incrementOnTap: (value) {
-                                    CartRepository.updateCartApi(
-                                      inventoryId: con.inventoryProductList[index].id ?? "",
-                                      quantity: value,
-                                      metalId: con.inventoryProductList[index].metalId ?? "",
-                                      sizeId: con.inventoryProductList[index].sizeId ?? "",
-                                      diamondClarity: con.inventoryProductList[index].diamonds?.first.diamondClarity?.value ?? "",
-                                    );
-                                  },
-                                  category: con.subCategory,
-                                  isFancy: con.isFancyDiamond.value,
-                                  inventoryId: con.inventoryProductList[index].id,
-                                  diamondList: RxList(con.inventoryProductList[index].diamonds ?? []),
-                                  // subCategoryId: con.inventoryProductList[index].subCategoryId ?? "ring" /*Product Category*/,
-                                  productTileType: con.isProductViewChange.isTrue ? ProductTileType.grid : ProductTileType.list,
-                                  onTap: () => Get.toNamed(AppRoutes.productDetailsScreen, arguments: {
-                                    "category": con.inventoryProductList[index].subCategoryId ?? '',
-                                    'isSize': con.isSizeAvailable.value,
-                                    'isFancy': con.isFancyDiamond.value,
-                                    'inventoryId': con.inventoryProductList[index].id,
-                                    'name': con.inventoryProductList[index].name,
-                                  }),
-                                  isLike: con.inventoryProductList[index].isWishlist,
-                                  imageUrl: (con.inventoryProductList[index].inventoryImages != null && con.inventoryProductList[index].inventoryImages!.isNotEmpty) ? con.inventoryProductList[index].inventoryImages![0] : "",
-                                  productName: con.inventoryProductList[index].name ?? "",
-                                  productPrice: con.inventoryProductList[index].inventoryTotalPrice.toString(),
-                                  productQuantity: con.inventoryProductList[index].quantity,
-                                  isSizeAvailable: con.isSizeAvailable.value,
-                                  selectSize: (con.inventoryProductList[index].sizeId ?? "").obs,
-                                  selectMetalCart: (con.inventoryProductList[index].metalId ?? "").obs,
-                                  selectDiamondCart: (con.inventoryProductList[index].diamonds != null && con.inventoryProductList[index].diamonds!.isNotEmpty) ? (con.inventoryProductList[index].diamonds?.first.diamondClarity?.value ?? "").obs : "".obs,
-                                  diamonds: con.inventoryProductList[index].diamonds,
+              ListView(
+                padding: EdgeInsets.zero,
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                children: [
+                  /// PRODUCTS
+                  con.loader.isFalse
+                      ? con.inventoryProductList.isNotEmpty
+                          ? Wrap(
+                              children: List.generate(
+                                con.inventoryProductList.length,
+                                (index) => Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ProductTile(
+                                      incrementOnTap: (value) {
+                                        CartRepository.updateCartApi(
+                                          inventoryId: con.inventoryProductList[index].id ?? "",
+                                          quantity: value,
+                                          metalId: con.inventoryProductList[index].metalId ?? "",
+                                          sizeId: con.inventoryProductList[index].sizeId ?? "",
+                                          diamondClarity: con.inventoryProductList[index].diamonds?.first.diamondClarity?.value ?? "",
+                                        );
+                                      },
+                                      category: con.subCategory,
+                                      isFancy: con.isFancyDiamond.value,
+                                      inventoryId: con.inventoryProductList[index].id,
+                                      diamondList: RxList(con.inventoryProductList[index].diamonds ?? []),
+                                      // subCategoryId: con.inventoryProductList[index].subCategoryId ?? "ring" /*Product Category*/,
+                                      productTileType: con.isProductViewChange.isTrue ? ProductTileType.grid : ProductTileType.list,
+                                      onTap: () => Get.toNamed(AppRoutes.productDetailsScreen, arguments: {
+                                        "category": con.inventoryProductList[index].subCategoryId ?? '',
+                                        'isSize': con.isSizeAvailable.value,
+                                        'isFancy': con.isFancyDiamond.value,
+                                        'inventoryId': con.inventoryProductList[index].id,
+                                        'name': con.inventoryProductList[index].name,
+                                      }),
+                                      isLike: con.inventoryProductList[index].isWishlist,
+                                      imageUrl: (con.inventoryProductList[index].inventoryImages != null && con.inventoryProductList[index].inventoryImages!.isNotEmpty) ? con.inventoryProductList[index].inventoryImages![0] : "",
+                                      productName: con.inventoryProductList[index].name ?? "",
+                                      productPrice: con.inventoryProductList[index].inventoryTotalPrice.toString(),
+                                      productQuantity: con.inventoryProductList[index].quantity,
+                                      isSizeAvailable: con.isSizeAvailable.value,
+                                      selectSize: (con.inventoryProductList[index].sizeId ?? "").obs,
+                                      selectMetalCart: (con.inventoryProductList[index].metalId ?? "").obs,
+                                      selectDiamondCart: (con.inventoryProductList[index].diamonds != null && con.inventoryProductList[index].diamonds!.isNotEmpty) ? (con.inventoryProductList[index].diamonds?.first.diamondClarity?.value ?? "").obs : "".obs,
+                                      diamonds: con.inventoryProductList[index].diamonds,
+                                    ),
+                                    if (con.paginationLoader.value && index + 1 == con.inventoryProductList.length) productShimmer(context)
+                                  ],
                                 ),
-                                if (con.paginationLoader.value && index + 1 == con.inventoryProductList.length) productShimmer(context)
-                              ],
-                            ),
-                          ),
-                        )
-                      :
+                              ),
+                            )
+                          :
 
-                      /// EMPTY DATA VIEW
-                      EmptyElement(
-                          title: "${con.subCategory.value.name ?? "Products"} Not Found!",
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.symmetric(vertical: Get.width / 2.5),
-                        )
-                  : productShimmer(context, length: 6),
+                          /// EMPTY DATA VIEW
+                          EmptyElement(
+                              title: "${con.subCategory.value.name ?? "Products"} Not Found!",
+                              alignment: Alignment.center,
+                              padding: EdgeInsets.symmetric(vertical: Get.width / 2.5),
+                            )
+                      : productShimmer(context, length: 6),
+                ],
+              )
             ],
           ),
         ),

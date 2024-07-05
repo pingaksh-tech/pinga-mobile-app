@@ -5,10 +5,11 @@ import '../../../../data/model/filter/gender_model.dart';
 import '../../../../data/model/filter/stock_available_model.dart';
 import '../../../../data/repositories/filter/filter_repository.dart';
 import '../../../../exports.dart';
-import '../../../../utils/enums/common_enums.dart';
 
 class FilterController extends GetxController {
   RxBool isLoader = false.obs;
+
+  RxList<FilterItemType> filterOptions = FilterItemType.values.obs;
 
   RxDouble minMetalWt = 0.01.obs;
   RxDouble maxMetalWt = 200.0.obs;
@@ -21,7 +22,7 @@ class FilterController extends GetxController {
   Rx<TextEditingController> itemNameCon = TextEditingController().obs;
   Rx<FilterItemType> filterType = FilterItemType.range.obs;
 
-  RxBool? isAvailable;
+  RxBool isAvailable = true.obs;
   RxList<StockAvailableList> availableList = <StockAvailableList>[].obs;
   RxList<Product> genderList = <Product>[].obs;
 
@@ -88,105 +89,75 @@ class FilterController extends GetxController {
     selectedCollections.clear();
     selectedGender.clear();
     selectMrp.value = {"label": "".obs, "min": 0, "max": 0} as Map<dynamic, dynamic>;
-    isAvailable?.value = false;
 
     selectSeller.value = "";
     selectLatestDesign.value = "";
+    count = 0;
   }
 
   void rangeCount() {
     int range = 0;
-    if ((minMetalWt.value > 0.01 || maxMetalWt.value < 200.0) && (minDiamondWt.value > 0.01 || maxDiamondWt.value < 20.0)) {
-      range = 2;
-    } else if (minMetalWt.value > 0.01 || maxMetalWt.value < 200.0) {
-      range = 1;
-    } else if (minDiamondWt.value > 0.01 || maxDiamondWt.value < 20.0) {
-      range = 1;
+    if (minMetalWt.value >= 0.01 && maxMetalWt.value < 200.0) {
+      printOkStatus("dn");
+      if (range == 0) {
+        range = 1;
+        count += range;
+        printOkStatus(count);
+      }
+    } else {
+      if (range == 1) {
+        range = 0;
+        count -= 1;
+        printOkStatus(count);
+      }
     }
-
-    count += range;
   }
 
   int count = 0;
 
   void getCount() {
     rangeCount();
-    if (selectMrp == {"label": "".obs, "min": 0, "max": 0}.obs) {
-      count += 1;
+    if (selectMrp != {"label": "".obs, "min": 0, "max": 0}.obs) {
+      count++;
     } else {
-      count += 0;
-    }
-    if (selectedGender.isNotEmpty) {
-      count += 1;
-    } else {
-      count += 0;
-    }
-    if (selectedDiamonds.isNotEmpty) {
-      count += 1;
-    } else {
-      count += 0;
-    }
-    if (selectedKt.isNotEmpty) {
-      count += 1;
-    } else {
-      count += 0;
-    }
-    if (selectedDelivery.isNotEmpty) {
-      count += 1;
-    } else {
-      count += 0;
-    }
-    if (selectedProductNames.isNotEmpty) {
-      count += 1;
-    } else {
-      count += 0;
-    }
-    if (selectedCollections.isNotEmpty) {
-      count += 1;
-    } else {
-      count += 0;
+      count--;
     }
 
-    // switch (filterType.value) {
-    //   case FilterItemType.range:
-    //     rangeCount();
-    //
-    //   case FilterItemType.mrp:
-    //     if (selectMrp == {"label": "".obs, "min": 0, "max": 0}.obs) {
-    //       count += 1;
-    //     }
-    //
-    //   case FilterItemType.available:
-    //   case FilterItemType.gender:
-    //     if (selectedGender.isNotEmpty) {
-    //       count += 1;
-    //     }
-    //
-    //   case FilterItemType.diamond:
-    //     if (selectedDiamonds.isNotEmpty) {
-    //       count += 1;
-    //     }
-    //
-    //   case FilterItemType.kt:
-    //     if (selectedKt.isNotEmpty) {
-    //       count += 1;
-    //     }
-    //
-    //   case FilterItemType.delivery:
-    //     if (selectedDelivery.isNotEmpty) {
-    //       count += 1;
-    //     }
-    //
-    //   case FilterItemType.production:
-    //     if (selectedProductNames.isNotEmpty) {
-    //       count += 1;
-    //     }
-    //
-    //   case FilterItemType.collection:
-    //     if (selectedCollections.isNotEmpty) {
-    //       count += 1;
-    //     }
-    // }
+    if (selectedGender.isNotEmpty) {
+      count++;
+    } else {
+      count--;
+    }
+
+    if (selectedDiamonds.isNotEmpty) {
+      count++;
+    } else {
+      count--;
+    }
+
+    if (selectedKt.isNotEmpty) {
+      count++;
+    } else {
+      count--;
+    }
+
+    if (selectedDelivery.isNotEmpty) {
+      count++;
+    } else {
+      count--;
+    }
+
+    if (selectedProductNames.isNotEmpty) {
+      count++;
+    } else {
+      count--;
+    }
+
+    if (selectedCollections.isNotEmpty) {
+      count++;
+    } else {
+      count--;
+    }
   }
 //? Count Active filter
 //   int getActiveFilterCount(String filterType) {
