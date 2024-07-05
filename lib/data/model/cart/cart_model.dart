@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import '../product/products_model.dart';
+
 GetCartModel getCartModelFromJson(String str) => GetCartModel.fromJson(json.decode(str));
 
 String getCartModelToJson(GetCartModel data) => json.encode(data.toJson());
@@ -62,65 +64,74 @@ class GetCartDataModel {
 
 class CartModel {
   final String? id;
+  final String? metalId;
+  final String? diamondClarity;
   final String? sizeId;
   final String? userId;
-  final String? metalId;
-  final String? inventoryId;
-  final String? diamondClarity;
+  final List<DiamondListModel>? diamonds;
   final int? quantity;
-  final String? remark;
+  final dynamic remark;
+  final String? inventoryId;
+  final String? subCategoryId;
   final String? inventoryName;
   final List<String>? inventoryImage;
-  final num? inventoryTotalPrice;
+  final double? inventoryTotalPrice;
 
   CartModel({
     this.id,
-    this.sizeId,
-    this.userId,
     this.metalId,
     this.diamondClarity,
+    this.sizeId,
+    this.userId,
+    this.diamonds,
     this.quantity,
     this.remark,
+    this.inventoryId,
+    this.subCategoryId,
     this.inventoryName,
     this.inventoryImage,
     this.inventoryTotalPrice,
-    this.inventoryId,
   });
 
   factory CartModel.fromJson(Map<String, dynamic> json) => CartModel(
         id: json["_id"],
-        sizeId: json["size_id"],
-        userId: json["user_id"],
         metalId: json["metal_id"],
         diamondClarity: json["diamond_clarity"],
+        sizeId: json["size_id"],
+        userId: json["user_id"],
+        diamonds: json["diamonds"] == null ? [] : List<DiamondListModel>.from(json["diamonds"]!.map((x) => DiamondListModel.fromJson(x))),
         quantity: json["quantity"],
         remark: json["remark"],
+        inventoryId: json["inventory_id"],
+        subCategoryId: json["sub_category_id"],
         inventoryName: json["inventory_name"],
         inventoryImage: json["inventory_image"] == null ? [] : List<String>.from(json["inventory_image"]!.map((x) => x)),
         inventoryTotalPrice: json["inventory_total_price"]?.toDouble(),
-        inventoryId: json["inventory_id"],
       );
 
   Map<String, dynamic> toJson() => {
         "_id": id,
-        "size_id": sizeId,
-        "user_id": userId,
         "metal_id": metalId,
         "diamond_clarity": diamondClarity,
+        "size_id": sizeId,
+        "user_id": userId,
+        "diamonds": diamonds == null ? [] : List<dynamic>.from(diamonds!.map((x) => x.toJson())),
         "quantity": quantity,
         "remark": remark,
+        "inventory_id": inventoryId,
+        "sub_category_id": subCategoryId,
         "inventory_name": inventoryName,
         "inventory_image": inventoryImage == null ? [] : List<dynamic>.from(inventoryImage!.map((x) => x)),
         "inventory_total_price": inventoryTotalPrice,
-        "inventory_id": inventoryId,
       };
 }
 
+
 class CartsDetails {
-  final String? id;
+  final dynamic id;
   final int? totalItems;
   final int? totalQuantity;
-  final num? totalPrice;
+  final double? totalPrice;
 
   CartsDetails({
     this.id,

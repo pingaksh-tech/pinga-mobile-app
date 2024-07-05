@@ -131,19 +131,19 @@ class LocalStorage {
   static String get termsURL => prefs.read(_termsURL) ?? defaultTermsURL;
 
   /// ABOUT US
-  static set aboutUsURL(String? value) => prefs.write(_aboutUsURL, value??defaultAboutUsURL);
+  static set aboutUsURL(String? value) => prefs.write(_aboutUsURL, value ?? defaultAboutUsURL);
   static String get aboutUsURL => prefs.read(_aboutUsURL) ?? defaultAboutUsURL;
 
   /// CONTACT US
-  static set contactUsURL(String? value) => prefs.write(_contactUsURL, value??defaultContactUsURL);
+  static set contactUsURL(String? value) => prefs.write(_contactUsURL, value ?? defaultContactUsURL);
   static String get contactUsURL => prefs.read(_contactUsURL) ?? defaultContactUsURL;
 
   /// CONTACT - MOBILE NUMBER
-  static set contactMobileNumber(String? value) => prefs.write(_contactMobileNumber, value?? defaultContactMobileNUmber);
+  static set contactMobileNumber(String? value) => prefs.write(_contactMobileNumber, value ?? defaultContactMobileNUmber);
   static String get contactMobileNumber => prefs.read(_contactMobileNumber) ?? defaultContactMobileNUmber;
 
   /// CONTACT - EMAIL ID
-  static set contactEmailID(String? value) => prefs.write(_contactEmailID, value??defaultContactEmailID);
+  static set contactEmailID(String? value) => prefs.write(_contactEmailID, value ?? defaultContactEmailID);
   static String get contactEmailID => prefs.read(_contactEmailID) ?? defaultContactEmailID;
 
   /// ***********************************************************************************

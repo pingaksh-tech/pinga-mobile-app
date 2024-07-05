@@ -11,7 +11,7 @@ import '../controller/predefine_value_controller.dart';
 import '../data/model/cart/cart_model.dart';
 import '../data/model/common/splash_model.dart';
 import '../data/model/product/products_model.dart';
-import '../data/model/sub_category/sub_category_model.dart';
+import '../data/repositories/cart/cart_repository.dart';
 import '../data/repositories/product/product_repository.dart';
 import '../data/repositories/wishlist/wishlist_repository.dart';
 import '../exports.dart';
@@ -27,7 +27,7 @@ class ProductTile extends StatefulWidget {
   final VoidCallback onTap;
   final String imageUrl;
   final String productName;
-  final Rx<SubCategoryModel>? category;
+  final RxString? category;
   final String? inventoryId;
   final bool isFancy;
   final RxList<DiamondListModel>? diamondList;
@@ -45,16 +45,13 @@ class ProductTile extends StatefulWidget {
   final RxBool? isCartSelected;
   final void Function(bool?)? onChanged;
   final CartModel? item;
-  final void Function(int value)? incrementOnTap;
-  final void Function(int value)? decrementOnTap;
-  final void Function(int value)? addOnTap;
-  final void Function(String value)? sizeId;
+
   final List<DiamondListModel>? diamonds;
-  final void Function(String value)? metalId;
-  final void Function(String value)? diamondOnTap;
+
   RxString? selectSize;
   RxString? selectMetalCart;
   RxString? selectDiamondCart;
+  String? cartId;
 
   ProductTile({
     super.key,
@@ -77,18 +74,13 @@ class ProductTile extends StatefulWidget {
     this.item,
     this.category,
     this.selectSize,
-    this.incrementOnTap,
-    this.sizeId,
     this.inventoryId,
     this.diamondList,
     this.diamonds,
     this.productsListTypeType = ProductsListType.normal,
     this.selectMetalCart,
     this.selectDiamondCart,
-    this.metalId,
-    this.decrementOnTap,
-    this.addOnTap,
-    this.diamondOnTap,
+    this.cartId,
   });
 
   @override
@@ -96,6 +88,8 @@ class ProductTile extends StatefulWidget {
 }
 
 class _ProductTileState extends State<ProductTile> {
+  Timer? cartDebounce;
+
   Rx<DiamondModel> sizeModel = DiamondModel().obs;
   MetalModel metalModel = MetalModel();
   DiamondModel diamondModel = DiamondModel();
@@ -568,12 +562,12 @@ class _ProductTileState extends State<ProductTile> {
     bool isFlexible = false,
     Axis direction = Axis.horizontal,
     required String categorySlug,
-    SubCategoryModel? category,
+    String? category,
     RxString? selectedSizeCart,
   }) {
     return horizontalSelectorButton(
       context,
-      categoryId: category?.id ?? "",
+      categoryId: category ?? "",
       isFlexible: isFlexible,
       selectedSize: sizeModel,
       selectedSizeCart: selectedSizeCart,
@@ -585,9 +579,7 @@ class _ProductTileState extends State<ProductTile> {
         if ((value.runtimeType == DiamondModel)) {
           widget.selectSize = value.id;
           sizeModel.value = value;
-        }
-        if (widget.sizeId != null) {
-          widget.sizeId!(value.id?.value ?? "");
+          addOrUpdateCart(sizeId: value.id?.value ?? "");
         }
       },
     );
@@ -613,9 +605,7 @@ class _ProductTileState extends State<ProductTile> {
         if ((value.runtimeType == MetalModel)) {
           widget.selectMetalCart = value.id;
           metalModel = value;
-          if (widget.metalId != null) {
-            widget.metalId!(value.id?.value ?? "");
-          }
+          addOrUpdateCart(metalId: value.id?.value ?? "");
 
           /// GET NEW PRODUCT PRICE
           await ProductRepository.getProductPriceAPI(
@@ -625,6 +615,43 @@ class _ProductTileState extends State<ProductTile> {
             diamondClarity: diamondModel.name ?? "",
           );
         }
+      },
+    );
+  }
+
+  Future<void> addOrUpdateCart({
+    String? metalId,
+    String? sizeId,
+    String? diamondClarity,
+    int? quantity,
+    String? inventoryId,
+    String? cartId,
+    List<Map<String, dynamic>>? diamonds,
+  }) async {
+    if (cartDebounce?.isActive ?? false) cartDebounce?.cancel();
+    cartDebounce = Timer(
+      defaultSearchDebounceDuration,
+      () async {
+        /// Add to cart api
+        await CartRepository.updateCartApi(
+          cartId: widget.cartId,
+          inventoryId: inventoryId ?? widget.inventoryId ?? "",
+          quantity: quantity ?? widget.productQuantity?.value ?? 0,
+          metalId: metalId ?? metalModel.id?.value ?? "",
+          sizeId: sizeId ?? sizeModel.value.id?.value ?? "",
+          diamondClarity: diamondClarity ?? diamondClarity ?? (diamondModel.name ?? ""),
+          diamonds: diamonds ??
+              List.generate(
+                widget.diamonds!.length,
+                (index) => {
+                  "diamond_clarity": widget.diamonds?[index].diamondClarity?.value ?? "",
+                  "diamond_shape": widget.diamonds?[index].diamondShape ?? "",
+                  "diamond_size": widget.diamonds?[index].diamondSize ?? "",
+                  "diamond_count": widget.diamonds?[index].diamondCount ?? 0,
+                  "_id": widget.diamonds?[index].id ?? "",
+                },
+              ),
+        );
       },
     );
   }
@@ -651,6 +678,19 @@ class _ProductTileState extends State<ProductTile> {
           if ((diamondList.runtimeType == RxList<DiamondListModel>)) {
             diamondList = diamondList;
 
+            addOrUpdateCart(
+              diamonds: List.generate(
+                widget.diamonds!.length,
+                (index) => {
+                  "diamond_clarity": widget.diamonds?[index].diamondClarity?.value ?? "",
+                  "diamond_shape": widget.diamonds?[index].diamondShape ?? "",
+                  "diamond_size": widget.diamonds?[index].diamondSize ?? "",
+                  "diamond_count": widget.diamonds?[index].diamondCount ?? 0,
+                  "_id": widget.diamonds?[index].id ?? "",
+                },
+              ),
+            );
+
             /// GET NEW PRODUCT PRICE
             await ProductRepository.getProductPriceAPI(
               productListType: widget.productsListTypeType,
@@ -676,9 +716,7 @@ class _ProductTileState extends State<ProductTile> {
           if ((value.runtimeType == DiamondModel)) {
             diamondModel = value;
             widget.selectDiamondCart?.value = value.shortName ?? "";
-            if (widget.diamondOnTap != null) {
-              widget.diamondOnTap!(value.shortName ?? "");
-            }
+            addOrUpdateCart(diamondClarity: value.shortName);
 
             /// GET NEW PRODUCT PRICE
             await ProductRepository.getProductPriceAPI(
@@ -697,11 +735,11 @@ class _ProductTileState extends State<ProductTile> {
         textValue: widget.productQuantity ?? RxInt(0),
         onDecrement: (value) {
           widget.productQuantity?.value = value;
-          printOkStatus(widget.productQuantity);
+          addOrUpdateCart(quantity: value);
         },
         onIncrement: (value) {
           widget.productQuantity?.value = value;
-          widget.incrementOnTap!(value);
+          addOrUpdateCart(quantity: value);
         },
       );
 
@@ -864,7 +902,7 @@ class _ProductTileState extends State<ProductTile> {
                                     isCart: true,
                                     textValue: widget.productQuantity ?? RxInt(0),
                                     onTap: (value) {
-                                      widget.addOnTap!(value);
+                                      addOrUpdateCart(quantity: value);
                                       if (widget.productQuantity?.value == 0) {
                                         widget.deleteOnTap;
                                       }
@@ -873,11 +911,11 @@ class _ProductTileState extends State<ProductTile> {
                                     },
                                     onIncrement: (value) {
                                       cartCon.incrementQuantity(widget.item ?? CartModel());
-                                      widget.incrementOnTap!(value);
+                                      addOrUpdateCart(quantity: value);
                                     },
                                     onDecrement: (value) {
                                       cartCon.decrementQuantity(widget.item ?? CartModel());
-                                      widget.decrementOnTap!(value);
+                                      widget.productQuantity?.value != 0 ? addOrUpdateCart(quantity: value) : null;
 
                                       widget.productQuantity?.value == 0
                                           ? AppDialogs.cartDialog(
@@ -916,6 +954,7 @@ class _ProductTileState extends State<ProductTile> {
                       sizeSelector(
                         direction: Axis.vertical,
                         isFlexible: true,
+                        // category: ,
                         selectedSizeCart: widget.selectSize,
                         categorySlug: widget.categorySlug ?? '',
                       ),

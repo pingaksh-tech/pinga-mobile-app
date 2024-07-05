@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../data/model/category/category_model.dart';
 
 import '../../controller/predefine_value_controller.dart';
+import '../../data/model/category/category_model.dart';
 import '../../data/model/product/products_model.dart';
 import '../../data/model/sub_category/sub_category_model.dart';
 import '../../data/repositories/product/product_repository.dart';
