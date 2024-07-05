@@ -9,6 +9,7 @@ import '../../../../data/repositories/orders/orders_repository.dart';
 import '../../../../exports.dart';
 import '../../../../res/app_bar.dart';
 import '../../../../res/app_dialog.dart';
+import '../../../bottombar/bottombar_controller.dart';
 import 'checkout_controller.dart';
 
 class CheckoutScreen extends StatelessWidget {
@@ -150,10 +151,15 @@ class CheckoutScreen extends StatelessWidget {
                                   retailerId: con.retailerId,
                                   orderType: con.orderTypeCon.value.text,
                                   quantity: con.quantity.value,
-                                  // loader: con.isLoading,
                                   subTotal: con.totalPrice.value.toString(),
                                   cartItems: cartItems,
                                 );
+                                Get.back();
+                                Get.back();
+                                if (isRegistered<BottomBarController>()) {
+                                  BottomBarController bottomCon = Get.find<BottomBarController>();
+                                  bottomCon.currentBottomIndex.value = 3;
+                                }
                               },
                             );
                           },

@@ -93,7 +93,7 @@ class CartScreen extends StatelessWidget {
                                 category: RxString(con.cartList[index].subCategoryId ?? ""),
                                 isSizeAvailable: true,
                                 productTileType: ProductTileType.cartTile,
-                                categorySlug: con.category.value.name ?? "ring",
+                                categorySlug: con.cartList[index].subCategoryId ?? "",
                                 isCartSelected: RxBool(
                                   con.selectedList.contains(
                                     con.cartList[index],
@@ -125,7 +125,13 @@ class CartScreen extends StatelessWidget {
                                 onTap: () {
                                   Get.toNamed(
                                     AppRoutes.productDetailsScreen,
-                                    arguments: {},
+                                    arguments: {
+                                      "category": con.cartList[index].subCategoryId ?? '',
+                                      // 'isSize': con.isSizeAvailable.value,
+                                      // 'isFancy': con.isFancyDiamond.value,
+                                      'inventoryId': con.cartList[index].inventoryId,
+                                      'name': con.cartList[index].inventoryName,
+                                    },
                                   );
                                 },
                               );

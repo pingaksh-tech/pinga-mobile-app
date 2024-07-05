@@ -118,8 +118,9 @@ class _ProductTileState extends State<ProductTile> {
       if (allSizeList.isNotEmpty) {
         RxList<DiamondModel> sizeList = <DiamondModel>[].obs;
         for (var element in allSizeList) {
-          if (element.name?.toLowerCase() == widget.categorySlug?.toLowerCase() && element.data != null) {
+          if (element.id?.value == widget.category?.value && element.data != null) {
             sizeList = element.data!.obs;
+            printYellow(sizeList.first);
             int index = sizeList.indexWhere((element) => element.id == widget.selectSize);
             if (index != -1) {
               sizeModel.value = sizeList[index];
@@ -679,16 +680,18 @@ class _ProductTileState extends State<ProductTile> {
             diamondList = diamondList;
 
             addOrUpdateCart(
-              diamonds: List.generate(
-                widget.diamonds!.length,
-                (index) => {
-                  "diamond_clarity": widget.diamonds?[index].diamondClarity?.value ?? "",
-                  "diamond_shape": widget.diamonds?[index].diamondShape ?? "",
-                  "diamond_size": widget.diamonds?[index].diamondSize ?? "",
-                  "diamond_count": widget.diamonds?[index].diamondCount ?? 0,
-                  "_id": widget.diamonds?[index].id ?? "",
-                },
-              ),
+              diamonds: widget.diamonds != null
+                  ? List.generate(
+                      widget.diamonds!.length,
+                      (index) => {
+                        "diamond_clarity": widget.diamonds?[index].diamondClarity?.value ?? "",
+                        "diamond_shape": widget.diamonds?[index].diamondShape ?? "",
+                        "diamond_size": widget.diamonds?[index].diamondSize ?? "",
+                        "diamond_count": widget.diamonds?[index].diamondCount ?? 0,
+                        "_id": widget.diamonds?[index].id ?? "",
+                      },
+                    )
+                  : null,
             );
 
             /// GET NEW PRODUCT PRICE
@@ -954,9 +957,9 @@ class _ProductTileState extends State<ProductTile> {
                       sizeSelector(
                         direction: Axis.vertical,
                         isFlexible: true,
-                        // category: ,
                         selectedSizeCart: widget.selectSize,
                         categorySlug: widget.categorySlug ?? '',
+                        category: widget.category?.value,
                       ),
                     (defaultPadding / 4).horizontalSpace,
                     metalSelector(

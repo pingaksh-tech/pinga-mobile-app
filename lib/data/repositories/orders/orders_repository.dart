@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../../../exports.dart';
 import '../../../view/orders/orders_controller.dart';
 import '../../model/order/order_list_model.dart';
+import '../cart/cart_repository.dart';
 
 class OrdersRepository {
   static Map<String, dynamic> ordersMap = {
@@ -304,6 +305,8 @@ class OrdersRepository {
         ).then(
           (response) async {
             if (response != null) {
+              getAllOrdersAPI(isPullToRefresh: true);
+              CartRepository.getCartApi(isPullToRefresh: true);
               loader?.value = false;
             } else {
               loader?.value = false;

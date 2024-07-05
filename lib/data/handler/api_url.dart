@@ -44,6 +44,8 @@ class ApiUrls {
 
   /// USER
   static const String deleteAccountDELETE = "";
+  static String getUserAPI({required String userId}) => "mobile/profile/$userId";
+  static String updateUserAPI = "mobile/profile";
 
   /// CART
   static String getAllCartGET = "mobile/cart/";

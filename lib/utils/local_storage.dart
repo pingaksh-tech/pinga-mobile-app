@@ -209,6 +209,7 @@ class LocalStorage {
     printDate("User Data");
 
     printData(key: "Access Token", value: accessToken);
+    printData(key: "User ID", value: userModel.id);
     printData(key: "Refresh Token", value: refreshToken);
 
     printDate("Device Permanent Data");

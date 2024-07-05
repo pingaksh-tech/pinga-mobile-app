@@ -68,6 +68,7 @@ class CartModel {
   final String? diamondClarity;
   final String? sizeId;
   final String? userId;
+  final String? categoryId;
   final List<DiamondListModel>? diamonds;
   final int? quantity;
   final dynamic remark;
@@ -91,6 +92,7 @@ class CartModel {
     this.inventoryName,
     this.inventoryImage,
     this.inventoryTotalPrice,
+    this.categoryId,
   });
 
   factory CartModel.fromJson(Map<String, dynamic> json) => CartModel(
@@ -99,6 +101,7 @@ class CartModel {
         diamondClarity: json["diamond_clarity"],
         sizeId: json["size_id"],
         userId: json["user_id"],
+        categoryId: json["category_id"],
         diamonds: json["diamonds"] == null ? [] : List<DiamondListModel>.from(json["diamonds"]!.map((x) => DiamondListModel.fromJson(x))),
         quantity: json["quantity"],
         remark: json["remark"],
@@ -115,6 +118,7 @@ class CartModel {
         "diamond_clarity": diamondClarity,
         "size_id": sizeId,
         "user_id": userId,
+        "category_id": categoryId,
         "diamonds": diamonds == null ? [] : List<dynamic>.from(diamonds!.map((x) => x.toJson())),
         "quantity": quantity,
         "remark": remark,
@@ -125,7 +129,6 @@ class CartModel {
         "inventory_total_price": inventoryTotalPrice,
       };
 }
-
 
 class CartsDetails {
   final dynamic id;
