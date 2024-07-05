@@ -35,7 +35,7 @@ class AppPopUpMenuButton extends StatelessWidget {
         itemBuilder: (context) => menuList
             .map(
               (e) => PopupMenuItem(
-                value: e.toString().toLowerCase(),
+                value: e.toString(),
                 child: Text(
                   e,
                   style: style ?? Theme.of(context).textTheme.titleMedium,

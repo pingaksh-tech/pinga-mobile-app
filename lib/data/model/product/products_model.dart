@@ -92,50 +92,51 @@ class InventoryModel {
   final DateTime? updatedAt;
   final int? v;
   final MetalListModel? metal;
-  final List<DiamondPricingModel>? diamondPricings;
-  final List<DiamondWeight>? diamondWeight;
   RxNum? inventoryTotalPrice;
   final String? singleInvImage;
+  final List<DiamondPricingModel>? diamondPricings;
+  final List<DiamondWeight>? diamondWeight;
   final List<CollectionModel>? collection;
   final List<dynamic>? watchlist;
+  RxBool? isWishlist;
 
-  InventoryModel({
-    this.id,
-    this.name,
-    this.slug,
-    this.sku,
-    this.inventoryImages,
-    this.categoryId,
-    this.subCategoryId,
-    this.sizeId,
-    this.metalId,
-    this.metalWeight,
-    this.status,
-    this.diamonds,
-    this.diamondTotalPrice,
-    this.manufacturingPrice,
-    this.gender,
-    this.productTags,
-    this.createdBy,
-    this.updatedBy,
-    this.inStock,
-    this.wearItItem,
-    this.delivery,
-    this.productionName,
-    this.deletedAt,
-    this.familyProducts,
-    this.createdAt,
-    this.updatedAt,
-    this.v,
-    this.metal,
-    this.diamondPricings,
-    this.diamondWeight,
-    this.inventoryTotalPrice,
-    this.singleInvImage,
-    this.collection,
-    this.watchlist,
-    this.quantity,
-  });
+  InventoryModel(
+      {this.id,
+      this.name,
+      this.slug,
+      this.sku,
+      this.inventoryImages,
+      this.categoryId,
+      this.subCategoryId,
+      this.sizeId,
+      this.metalId,
+      this.metalWeight,
+      this.status,
+      this.diamonds,
+      this.diamondTotalPrice,
+      this.manufacturingPrice,
+      this.gender,
+      this.productTags,
+      this.createdBy,
+      this.updatedBy,
+      this.inStock,
+      this.wearItItem,
+      this.delivery,
+      this.productionName,
+      this.deletedAt,
+      this.familyProducts,
+      this.createdAt,
+      this.updatedAt,
+      this.v,
+      this.metal,
+      this.diamondPricings,
+      this.diamondWeight,
+      this.inventoryTotalPrice,
+      this.singleInvImage,
+      this.collection,
+      this.watchlist,
+      this.quantity,
+      this.isWishlist});
 
   factory InventoryModel.fromJson(Map<String, dynamic> json) => InventoryModel(
         id: json["_id"],
@@ -173,6 +174,7 @@ class InventoryModel {
         singleInvImage: json["single_inv_image"],
         collection: json["collection"] == null ? [] : List<CollectionModel>.from(json["collection"]!.map((x) => CollectionModel.fromJson(x))),
         watchlist: json["watchlist"] == null ? [] : List<dynamic>.from(json["watchlist"]!.map((x) => x)),
+        isWishlist: RxBool(json["isWishList"] ?? false),
       );
 
   Map<String, dynamic> toJson() => {
@@ -211,6 +213,7 @@ class InventoryModel {
         "single_inv_image": singleInvImage,
         "collection": collection == null ? [] : List<dynamic>.from(collection!.map((x) => x.toJson())),
         "watchlist": watchlist == null ? [] : List<dynamic>.from(watchlist!.map((x) => x)),
+        "isWishList": isWishlist?.value,
       };
 }
 

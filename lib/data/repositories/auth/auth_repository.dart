@@ -146,6 +146,7 @@ class AuthRepository {
         ).then(
           (response) async {
             if (response != null) {
+              Get.offAllNamed(AppRoutes.authScreen);
               loader?.value = false;
               return true;
             }

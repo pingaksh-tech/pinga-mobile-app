@@ -44,6 +44,7 @@ class SubCategoriesTabView extends StatelessWidget {
                                   arguments: {
                                     "category": con.subCategoriesList[index],
                                     "categoryId": con.categoryId.value,
+                                    "type": ProductsListType.normal,
                                   },
                                 ),
                               ),

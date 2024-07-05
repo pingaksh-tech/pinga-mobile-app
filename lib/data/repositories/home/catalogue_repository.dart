@@ -1,44 +1,161 @@
 import 'package:get/get.dart';
 
+import '../../../exports.dart';
 import '../../../view/drawer/widgets/catalog/catalogue_controller.dart';
 import '../../model/home/catalogue_model.dart';
 
 class CatalogueRepository {
-  static Map<String, dynamic> catalogueList = {
-    "success": true,
-    "message": "Watchlist fetched",
-    "data": [
-      {"id": "1", "title": "Gleam Solitair -COLLECTION-20", "subtitle": "Gleam Solitair -COLLECTION-20", "created_at": "2024-06-11 12:00:00.974368", "pdf": ""},
-      {"id": "2", "title": "Gleam Platinum -COLLECTION-50", "subtitle": "Gleam Solitair -COLLECTION-50", "created_at": "2024-04-21 12:00:00.974368", "pdf": ""},
-      {"id": "3", "title": "Gleam Rangtrang -COLLECTION-32", "subtitle": "Gleam Solitair -COLLECTION-32", "created_at": "2024-02-14 12:00:00.974368", "pdf": ""},
-      {"id": "4", "title": "Gleam Pingaksh -COLLECTION-14", "subtitle": "Gleam Solitair -COLLECTION-14", "created_at": "2024-06-02 12:00:00.974368", "pdf": ""},
-      {"id": "5", "title": "Gleam Fancy Diamond -COLLECTION-53", "subtitle": "Gleam Solitair -COLLECTION-53", "created_at": "2024-05-26 12:00:00.974368", "pdf": ""},
-      {"id": "6", "title": "Gleam Solitair -COLLECTION-34", "subtitle": "Gleam Solitair -COLLECTION-34", "created_at": "2024-05-12 12:00:00.974368", "pdf": ""},
-    ]
-  };
+  /// ***********************************************************************************
+  ///                                     GET PRODUCTS LIST
+  /// ***********************************************************************************
+
+  static Future<void> createCatalogueAPI({
+    String? catalogueName,
+    required String categoryId,
+    required String subCategoryId,
+    List<String>? sortBy,
+    double? minMetal,
+    double? maxMetal,
+    double? minDiamond,
+    double? maxDiamond,
+    bool? inStock,
+    int? minMrp,
+    int? maxMrp,
+    List<dynamic>? genderList,
+    List<dynamic>? diamondList,
+    List<dynamic>? ktList,
+    List<dynamic>? deliveryList,
+    List<dynamic>? productionNameList,
+    List<dynamic>? collectionList,
+    bool isInitial = true,
+    bool isPullToRefresh = false,
+    RxBool? loader,
+  }) async {
+    if (await getConnectivityResult()) {
+      try {
+        loader?.value = true;
+
+        /// API
+        await APIFunction.postApiCall(
+          apiUrl: ApiUrls.createAndGetCatalogueAPI,
+          body: {
+            "view_type": "grid",
+            "catalogue_name": catalogueName,
+            if (!isValEmpty(categoryId)) "category_id": categoryId,
+            if (!isValEmpty(subCategoryId)) "sub_category_id": subCategoryId,
+            if (!isValEmpty(sortBy)) "sortBy": sortBy,
+            if ((!isValEmpty(minMetal) && !isValEmpty(maxMetal)))
+              "range": {
+                if ((!isValEmpty(minMetal) && !isValEmpty(maxMetal))) "metal_wt": {"min": minMetal, "max": maxMetal},
+                if ((!isValEmpty(minDiamond) && !isValEmpty(maxDiamond))) "diamond_wt": {"min": minDiamond, "max": maxDiamond}
+              },
+            if ((!isValEmpty(minMrp) && !isValEmpty(maxMrp))) "mrp": {"min": minMrp, "max": maxMrp},
+            if (inStock != null)
+              "available": {
+                "in_stock": inStock,
+              },
+            if (genderList != null && genderList.isNotEmpty) "gender": genderList,
+            if (diamondList != null && diamondList.isNotEmpty) "diamond": diamondList,
+            if (ktList != null && ktList.isNotEmpty) "metal_ids": ktList,
+            if (deliveryList != null && deliveryList.isNotEmpty) "delivery": deliveryList,
+            if (productionNameList != null && productionNameList.isNotEmpty) "production_name": productionNameList,
+            if (collectionList != null && collectionList.isNotEmpty) "collection": collectionList,
+          },
+          loader: loader,
+        ).then(
+          (response) async {
+            if (response != null) {
+              // GetProductsModel model = GetProductsModel.fromJson(response);
+              //
+              // if (model.data != null) {
+              //   if (isPullToRefresh) {
+              //     con.inventoryProductList.value = model.data?.inventories ?? [];
+              //     con.totalCount.value = model.data?.totalCount ?? 0;
+              //   } else {
+              //     con.inventoryProductList.addAll(model.data?.inventories ?? []);
+              //     con.totalCount.value = model.data?.totalCount ?? 0;
+              //   }
+              //
+              //   int currentPage = (model.data!.page ?? 1);
+              //   con.nextPageAvailable.value = currentPage < (model.data!.totalPages ?? 0);
+              //   con.page.value += currentPage;
+              // }
+
+              loader?.value = false;
+            } else {
+              loader?.value = false;
+            }
+
+            return response;
+          },
+        );
+      } catch (e) {
+        loader?.value = false;
+        printErrors(type: "createCatalogueAPI", errText: e);
+      }
+    } else {}
+  }
 
   /// ***********************************************************************************
   ///                                   GET CATALOGUE
   /// ***********************************************************************************
 
-  static Future<dynamic> getCatalogueAPI({RxBool? isLoading}) async {
-    final CatalogueController catalogueCon = Get.find<CatalogueController>();
-    GetCatalogueModel model = GetCatalogueModel.fromJson(catalogueList /*response*/);
-    catalogueCon.catalogueList.value = model.data ?? [];
-    // try {
-    //   isLoading?.value = true;
-    //
-    //   await APIFunction.getApiCall(apiUrl: 'getCatalogue' /* API URl*/).then(
-    //     (response) async {
-    //      final CatalogueController catalogueCon = Get.find<CatalogueController>();
-    //      GetCatalogueModel model = GetCatalogueModel.fromJson(/*response*/);
-    //      catalogueCon.catalogueList.value = model.data ?? [];
-    //       isLoading?.value = false;
-    //     },
-    //   );
-    // } catch (e) {
-    //   printErrors(type: "Error", errText: "$e");
-    //   isLoading?.value = false;
-    // } finally {}
+  static Future<void> getCatalogue({
+    bool isInitial = true,
+    bool isPullToRefresh = false,
+    RxBool? loader,
+  }) async {
+    final CatalogueController con = Get.find<CatalogueController>();
+
+    if (await getConnectivityResult()) {
+      try {
+        loader?.value = true;
+
+        if (isInitial) {
+          if (!isPullToRefresh) {
+            con.catalogueList.clear();
+          }
+          con.page.value = 1;
+          con.nextPageAvailable.value = true;
+        }
+
+        /// API
+        await APIFunction.getApiCall(
+          apiUrl: ApiUrls.createAndGetCatalogueAPI,
+          params: {
+            "page": con.page.value,
+            "limit": con.itemLimit.value,
+          },
+          loader: loader,
+        ).then(
+          (response) async {
+            if (response != null) {
+              GetCatalogueModel model = GetCatalogueModel.fromJson(response);
+
+              if (model.data != null) {
+                if (isPullToRefresh) {
+                  con.catalogueList.value = model.data?.catalogues ?? [];
+                } else {
+                  con.catalogueList.addAll(model.data?.catalogues ?? []);
+                }
+
+                int currentPage = (model.data!.page ?? 1);
+                con.nextPageAvailable.value = currentPage < (model.data!.totalPages ?? 0);
+                con.page.value += currentPage;
+              }
+
+              loader?.value = false;
+            } else {
+              loader?.value = false;
+            }
+
+            return response;
+          },
+        );
+      } catch (e) {
+        loader?.value = false;
+        printErrors(type: "getWatchlistAPI", errText: e);
+      }
+    } else {}
   }
 }

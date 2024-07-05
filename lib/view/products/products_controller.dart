@@ -8,6 +8,7 @@ import '../../data/model/sub_category/sub_category_model.dart';
 import '../../data/repositories/product/product_repository.dart';
 import '../../exports.dart';
 import '../home/home_controller.dart';
+import 'widgets/filter/filter_controller.dart';
 
 class ProductsController extends GetxController {
   RxBool isLoader = false.obs;
@@ -29,8 +30,11 @@ class ProductsController extends GetxController {
 
   RxList<String> sortList = <String>[].obs;
   RxList<InventoryModel> inventoryProductList = <InventoryModel>[].obs;
-  RxList<InventoryModel> wishlistList = <InventoryModel>[].obs;
 
+  Rx<ProductsListType> productListType = ProductsListType.normal.obs;
+  RxString watchlistId = "".obs;
+
+  /// PAGINATION
   ScrollController scrollController = ScrollController();
   RxInt page = 1.obs;
   RxInt itemLimit = 10.obs;
@@ -39,6 +43,7 @@ class ProductsController extends GetxController {
   RxBool loader = true.obs;
 
   final HomeController homeCon = Get.find<HomeController>();
+  final FilterController filterCon = Get.find<FilterController>();
 
   @override
   void onInit() {
@@ -46,12 +51,20 @@ class ProductsController extends GetxController {
     if (Get.arguments != null) {
       if (Get.arguments["category"].runtimeType == SubCategoryModel) {
         subCategory.value = Get.arguments["category"];
+        filterCon.subCategoryId = subCategory.value.id ?? "";
       }
       if (Get.arguments["categoryId"].runtimeType == String) {
         categoryId.value = Get.arguments["categoryId"];
+        filterCon.categoryId = categoryId.value;
       }
       if (Get.arguments["watchlistName"].runtimeType == String) {
         categoryName.value = Get.arguments["watchlistName"];
+      }
+      if (Get.arguments["type"].runtimeType == ProductsListType) {
+        productListType.value = Get.arguments["type"];
+      }
+      if (Get.arguments["watchlistId"].runtimeType == String) {
+        watchlistId.value = Get.arguments["watchlistId"];
       }
     }
 
@@ -68,14 +81,23 @@ class ProductsController extends GetxController {
   void onReady() {
     super.onReady();
     ProductRepository.getPredefineValueAPI();
-    preValueAvailable();
 
-    ProductRepository.getFilterProductsListAPI(
+    getProductList(loader: loader);
+    manageScrollController();
+  }
+
+  /// API
+  Future<void> getProductList({RxBool? loader}) async {
+    /// GET ALL PRODUCTS
+    await ProductRepository.getFilterProductsListAPI(
       loader: loader,
+      productsListType: productListType.value,
+      watchlistId: watchlistId.value,
       categoryId: categoryId.value,
-      productsListType: ProductsListType.normal,
       subCategoryId: subCategory.value.id ?? "",
     );
+
+    preValueAvailable();
   }
 
   final RxList sortWithPriceList = [
@@ -109,11 +131,34 @@ class ProductsController extends GetxController {
       final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
 
       for (var element in preValueCon.categoryWiseSizesList) {
-        if (element.id?.value == subCategory.value.id) {
-          isSizeAvailable.value = true;
-          break;
+        if (productListType.value == ProductsListType.normal) {
+          if (element.id?.value == subCategory.value.id) {
+            isSizeAvailable.value = true;
+            break;
+          }
+        } else {
+          for (var e in inventoryProductList) {
+            if (element.id?.value == e.subCategoryId) {
+              isSizeAvailable.value = true;
+              break;
+            }
+          }
         }
       }
     }
+  }
+
+  void manageScrollController() {
+    ///  PRODUCTS
+    scrollController.addListener(
+      () {
+        if (scrollController.position.maxScrollExtent == scrollController.position.pixels) {
+          if (nextPageAvailable.value && paginationLoader.isFalse) {
+            /// GET PRODUCTS API
+            getProductList(loader: paginationLoader);
+          }
+        }
+      },
+    );
   }
 }

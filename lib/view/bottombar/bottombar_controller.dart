@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../data/model/bottombar/bottombar_model.dart';
+import '../../data/repositories/watchlist/watchlist_repository.dart';
 import '../../exports.dart';
 import '../cart/cart_screen.dart';
 import '../collections/watch_list/watch_list_screen.dart';
@@ -66,7 +67,7 @@ class BottomBarController extends GetxController {
       }
 
       if (i == 1) {
-        // await CartRepository.cartListApi();
+        await WatchlistRepository.getWatchlistAPI(isPullToRefresh: true);
       }
 
       if (i == 2) {

@@ -104,7 +104,7 @@ enum OrderStatus { all, pending, accepted, rejected, completed }
 // enum FilterType { range, available, gender, diamond, kt, delivery, production, collection, complexity, subComplexity, bestSeller, latestDesign }
 
 ///* SIZE-COLOR SELECTOR BUTTON SIZE TYPE
-enum SizeColorSelectorButtonType { small, medium, large }
+enum SizeMetalSelectorButtonType { small, medium, large }
 
 ///* PRODUCT LIST TYPE
 enum ProductsListType { normal, watchlist, wishlist, cart }
@@ -122,11 +122,11 @@ enum SelectableItemType {
     icon: AppAssets.ringSizeIcon,
     selectedIcon: AppAssets.ringSizeIcon,
   ),
-  color(
+  metal(
     id: 1,
     colors: Color(0xFF221361),
-    label: "Color",
-    slug: "colors",
+    label: "Metal",
+    slug: "metal",
     icon: AppAssets.colorIcon,
     selectedIcon: AppAssets.colorIcon,
   ),

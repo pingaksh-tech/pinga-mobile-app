@@ -337,6 +337,34 @@ class CartRepository {
   }
 
   /// ***********************************************************************************
+  ///                                ADD WATCHLIST TO CART API
+  /// ***********************************************************************************
+  static Future<dynamic> addWatchlistToCartAPI({
+    RxBool? isLoader,
+    required String watchlistId,
+  }) async {
+    if (await getConnectivityResult()) {
+      try {
+        isLoader?.value = true;
+        return await APIFunction.postApiCall(
+          apiUrl: ApiUrls.addWatchlistToCart(watchlistId: watchlistId),
+        ).then(
+          (response) async {
+            if (response != null && response['data'] == true) {
+              UiUtils.toast("Added Successfully");
+            }
+            isLoader?.value = false;
+            return response;
+          },
+        );
+      } catch (e) {
+        isLoader?.value = false;
+        printErrors(type: "addWatchlistToCartAPI", errText: e);
+      }
+    }
+  }
+
+  /// ***********************************************************************************
   ///                                     GET STOCK
   /// **********************************************************************************
   static Future<void> getStockAPI({RxBool? isLoader}) async {

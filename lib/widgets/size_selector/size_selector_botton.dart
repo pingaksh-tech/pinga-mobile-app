@@ -12,7 +12,7 @@ import '../../packages/marquee_widget/marquee_widget.dart';
 
 Widget horizontalSelectorButton(
   BuildContext context, {
-  String? categorySlug,
+  String? categoryId,
   Rx<DiamondModel>? selectedSize,
   Rx<MetalModel>? selectedMetal,
   Rx<DiamondModel>? selectedDiamond,
@@ -21,7 +21,7 @@ Widget horizontalSelectorButton(
   RxString? remarkSelected,
   RxString? productName,
   required SelectableItemType selectableItemType,
-  SizeColorSelectorButtonType sizeColorSelectorButtonType = SizeColorSelectorButtonType.medium,
+  SizeMetalSelectorButtonType sizeColorSelectorButtonType = SizeMetalSelectorButtonType.medium,
   Color? backgroundColor,
   bool isFlexible = false,
   Axis axisDirection = Axis.horizontal,
@@ -47,9 +47,9 @@ Widget horizontalSelectorButton(
               RxList<DiamondModel> sizeList = <DiamondModel>[].obs;
 
               for (var element in allSizeList) {
-                if (element.name?.toLowerCase() == categorySlug?.toLowerCase() && element.data != null) {
+                if (element.id?.value == categoryId && element.data != null) {
                   sizeList = element.data!.obs;
-                }
+                } else {}
               }
 
               /// Size Selector
@@ -73,7 +73,7 @@ Widget horizontalSelectorButton(
             }
             break;
 
-          case SelectableItemType.color:
+          case SelectableItemType.metal:
             if (isRegistered<PreDefinedValueController>()) {
               final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
               RxList<MetalModel> metalList = preValueCon.metalsList;
@@ -173,9 +173,9 @@ Widget horizontalSelectorButton(
                     SvgPicture.asset(
                       remarkSelected?.isNotEmpty ?? false ? selectableItemType.selectedIcon ?? '' : selectableItemType.icon,
                       height: switch (sizeColorSelectorButtonType) {
-                        SizeColorSelectorButtonType.small => 12.h,
-                        SizeColorSelectorButtonType.medium => 14.h,
-                        SizeColorSelectorButtonType.large => 16.h,
+                        SizeMetalSelectorButtonType.small => 12.h,
+                        SizeMetalSelectorButtonType.medium => 14.h,
+                        SizeMetalSelectorButtonType.large => 16.h,
                       },
                       colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
                     ),
@@ -183,7 +183,7 @@ Widget horizontalSelectorButton(
                     Text(
                       switch (selectableItemType) {
                         SelectableItemType.size => ("Size ${isValEmpty(selectedSize?.value.shortName) ? "(0)" : "(${selectedSize?.value.shortName})"}"),
-                        SelectableItemType.color => ("Metal ${isValEmpty(selectedMetal?.value.shortName) ? "(-)" : "(${selectedMetal?.value.shortName})"}"),
+                        SelectableItemType.metal => ("Metal ${isValEmpty(selectedMetal?.value.shortName) ? "(-)" : "(${selectedMetal?.value.shortName})"}"),
                         SelectableItemType.diamond => isValEmpty(selectedDiamond?.value.shortName) ? "-" : selectedDiamond?.value.shortName ?? '',
                         SelectableItemType.remarks => "Remark",
                         SelectableItemType.stock => "Stock",
@@ -191,9 +191,9 @@ Widget horizontalSelectorButton(
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontSize: switch (sizeColorSelectorButtonType) {
-                            SizeColorSelectorButtonType.small => 8.h,
-                            SizeColorSelectorButtonType.medium => 10.h,
-                            SizeColorSelectorButtonType.large => 14.h,
+                            SizeMetalSelectorButtonType.small => 8.h,
+                            SizeMetalSelectorButtonType.medium => 10.h,
+                            SizeMetalSelectorButtonType.large => 14.h,
                           },
                           color: AppColors.primary),
                     )
@@ -208,9 +208,9 @@ Widget horizontalSelectorButton(
                   SvgPicture.asset(
                     remarkSelected?.isNotEmpty ?? false ? selectableItemType.selectedIcon ?? '' : selectableItemType.icon,
                     height: switch (sizeColorSelectorButtonType) {
-                      SizeColorSelectorButtonType.small => 12.h,
-                      SizeColorSelectorButtonType.medium => 14.h,
-                      SizeColorSelectorButtonType.large => 16.h,
+                      SizeMetalSelectorButtonType.small => 12.h,
+                      SizeMetalSelectorButtonType.medium => 14.h,
+                      SizeMetalSelectorButtonType.large => 16.h,
                     },
                     colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
                   ),
@@ -218,7 +218,7 @@ Widget horizontalSelectorButton(
                     child: Text(
                       switch (selectableItemType) {
                         SelectableItemType.size => ("Size ${isValEmpty(selectedSize?.value.shortName) ? "(0)" : "(${selectedSize?.value.shortName})"}"),
-                        SelectableItemType.color => ("Metal ${isValEmpty(selectedMetal?.value.shortName) ? "(-)" : "(${selectedMetal?.value.shortName?.split(" ").first})"}"),
+                        SelectableItemType.metal => ("Metal ${isValEmpty(selectedMetal?.value.shortName) ? "(-)" : "(${selectedMetal?.value.shortName?.split(" ").first})"}"),
                         SelectableItemType.diamond => isValEmpty(selectedDiamond?.value.shortName) ? "-" : selectedDiamond?.value.shortName ?? '',
                         SelectableItemType.remarks => "Remark",
                         SelectableItemType.stock => "Stock",
@@ -226,9 +226,9 @@ Widget horizontalSelectorButton(
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontSize: switch (sizeColorSelectorButtonType) {
-                            SizeColorSelectorButtonType.small => 8.h,
-                            SizeColorSelectorButtonType.medium => 10.h,
-                            SizeColorSelectorButtonType.large => 14.h,
+                            SizeMetalSelectorButtonType.small => 8.h,
+                            SizeMetalSelectorButtonType.medium => 10.h,
+                            SizeMetalSelectorButtonType.large => 14.h,
                           },
                           color: AppColors.primary),
                     ),

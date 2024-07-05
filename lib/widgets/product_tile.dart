@@ -221,7 +221,13 @@ class _ProductTileState extends State<ProductTile> {
                           });
                           break;
                         case AppStrings.addToWatchlist:
-                          Get.toNamed(AppRoutes.addWatchListScreen);
+                          Get.toNamed(AppRoutes.addWatchListScreen, arguments: {
+                            'inventoryId': widget.inventoryId,
+                            'quantity': widget.productQuantity?.value ?? 0,
+                            'sizeId': sizeModel.value.id?.value ?? "",
+                            'metalId': metalModel.id?.value ?? "",
+                            'diamond': (widget.diamondList != null && widget.diamondList!.isNotEmpty) ? widget.diamondList?.first.diamondClarity?.value : "",
+                          });
                           break;
                       }
                     },
@@ -567,11 +573,11 @@ class _ProductTileState extends State<ProductTile> {
   }) {
     return horizontalSelectorButton(
       context,
-      categorySlug: categorySlug,
+      categoryId: category?.id ?? "",
       isFlexible: isFlexible,
       selectedSize: sizeModel,
       selectedSizeCart: selectedSizeCart,
-      sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+      sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
       selectableItemType: SelectableItemType.size,
       axisDirection: direction,
       sizeOnChanged: (value) async {
@@ -597,17 +603,19 @@ class _ProductTileState extends State<ProductTile> {
       context,
       isFlexible: isFlexible,
       selectMetalCart: selectMetalCart,
-      categorySlug: categorySlug,
+      categoryId: metalModel.id?.value ?? "",
       selectedMetal: metalModel.obs,
-      sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
-      selectableItemType: SelectableItemType.color,
+      sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
+      selectableItemType: SelectableItemType.metal,
       axisDirection: direction,
       metalOnChanged: (value) async {
         /// Return Selected Metal
         if ((value.runtimeType == MetalModel)) {
           widget.selectMetalCart = value.id;
           metalModel = value;
-          widget.metalId!(value.id?.value ?? "");
+          if (widget.metalId != null) {
+            widget.metalId!(value.id?.value ?? "");
+          }
 
           /// GET NEW PRODUCT PRICE
           await ProductRepository.getProductPriceAPI(
@@ -630,12 +638,12 @@ class _ProductTileState extends State<ProductTile> {
       horizontalSelectorButton(
         context,
         isFlexible: isFlexible,
-        categorySlug: categorySlug,
+        categoryId: diamondModel.id?.value ?? "",
         selectedDiamond: diamondModel.obs,
         diamondsList: widget.diamondList,
         selectDiamondCart: RxString(selectDiamondCart ?? ""),
         isFancy: widget.isFancy,
-        sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+        sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
         selectableItemType: SelectableItemType.diamond,
         axisDirection: direction,
         multiRubyOnChanged: (diamondList) async {
@@ -668,7 +676,9 @@ class _ProductTileState extends State<ProductTile> {
           if ((value.runtimeType == DiamondModel)) {
             diamondModel = value;
             widget.selectDiamondCart?.value = value.shortName ?? "";
-            widget.diamondOnTap!(value.shortName ?? "");
+            if (widget.diamondOnTap != null) {
+              widget.diamondOnTap!(value.shortName ?? "");
+            }
 
             /// GET NEW PRODUCT PRICE
             await ProductRepository.getProductPriceAPI(
@@ -700,7 +710,7 @@ class _ProductTileState extends State<ProductTile> {
         isFlexible: isFlexible,
         remarkSelected: selectedRemark,
         selectableItemType: SelectableItemType.remarks,
-        sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+        sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
         axisDirection: direction,
         remarkOnChanged: (value) {
           selectedRemark.value = value;
@@ -712,7 +722,7 @@ class _ProductTileState extends State<ProductTile> {
         context,
         isFlexible: isFlexible,
         selectableItemType: SelectableItemType.stock,
-        sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+        sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
         axisDirection: direction,
         productName: widget.productName.obs,
       );

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../../../exports.dart';
 import '../../../packages/cached_network_image/cached_network_image.dart';
+import '../../data/repositories/auth/auth_repository.dart';
 import '../../packages/app_animated_cliprect.dart';
 import '../../res/app_dialog.dart';
 import '../../widgets/webview.dart';
@@ -285,13 +286,13 @@ class AppDrawer extends StatelessWidget {
               onTap: () {
                 AppDialogs.logoutDialog(
                   Get.context!,
-                  isLoader: false.obs,
-                  fullName: "Dishank Gajera",
+                  isLoader: con.isLoader,
+                  fullName: "${LocalStorage.userModel.firstName} ${LocalStorage.userModel.lastName}",
                   onCancellation: () {
                     Get.back();
                   },
                   onLogout: () async {
-                    Get.offAllNamed(AppRoutes.authScreen);
+                    await AuthRepository.logOutAPI(loader: con.isLoader);
                   },
                 );
               },

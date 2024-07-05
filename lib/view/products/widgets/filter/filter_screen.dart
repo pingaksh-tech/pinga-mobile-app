@@ -327,7 +327,8 @@ class FilterScreen extends StatelessWidget {
                   title: "Apply",
                   onPressed: () async {
                     await ProductRepository.getFilterProductsListAPI(
-                      productsListType: ProductsListType.normal,
+                      watchlistId: con.watchlistId,
+                      productsListType: con.productsListType,
                       loader: con.isLoader,
                       categoryId: con.categoryId,
                       subCategoryId: con.subCategoryId,

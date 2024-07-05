@@ -12,8 +12,10 @@ import 'package:get/get.dart';
 import '../controller/predefine_value_controller.dart';
 import '../data/model/common/splash_model.dart';
 import '../data/model/product/products_model.dart';
+import '../data/repositories/home/catalogue_repository.dart';
 import '../exports.dart';
 import '../view/orders/widgets/retailer/retailer_screen.dart';
+import '../view/products/widgets/filter/filter_controller.dart';
 import '../widgets/custom_radio_button.dart';
 import '../widgets/download_selection_tile.dart';
 import 'empty_element.dart';
@@ -1631,7 +1633,9 @@ class AppDialogs {
                       ? addFileName(context)
                       : AppDialogs.cartAlertDialog(
                           context,
-                          onPressed: () {},
+                          onPressed: () async {
+                            Get.back();
+                          },
                         );
                 },
               ),
@@ -1724,6 +1728,9 @@ class AppDialogs {
 
   // Add FileName Dialog
   static Future<dynamic> addFileName(BuildContext context) {
+    final FilterController con = Get.find<FilterController>();
+    RxBool loader = false.obs;
+
     Rx<TextEditingController> fileCon = TextEditingController().obs;
     RxBool fileNameValidation = true.obs;
     RxString nameError = ''.obs;
@@ -1765,53 +1772,76 @@ class AppDialogs {
             ),
           ],
         ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "File Name",
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontSize: 13.sp,
-                    fontWeight: FontWeight.w400,
-                  ),
-            ).paddingOnly(bottom: defaultPadding / 3),
-            Text(
-              "PS: Avoid using special characters. Use'_'instead of space",
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontSize: 11.sp,
-                    fontWeight: FontWeight.w400,
-                  ),
-            ).paddingOnly(bottom: defaultPadding / 2),
-            Obx(
-              () => AppTextField(
-                hintText: "Add file name",
-                controller: fileCon.value,
-                contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.4, horizontal: defaultPadding / 1.7),
-                keyboardType: TextInputType.text,
-                validation: fileNameValidation.value,
-                errorMessage: nameError.value,
-                textInputAction: TextInputAction.done,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9_]')),
-                ],
-                onChanged: (value) {
-                  fileNameValidation.value = true;
+        content: Obx(() {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "File Name",
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+              ).paddingOnly(bottom: defaultPadding / 3),
+              Text(
+                "PS: Avoid using special characters. Use'_'instead of space",
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontSize: 11.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+              ).paddingOnly(bottom: defaultPadding / 2),
+              Obx(
+                () => AppTextField(
+                  hintText: "Add file name",
+                  controller: fileCon.value,
+                  contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.4, horizontal: defaultPadding / 1.7),
+                  keyboardType: TextInputType.text,
+                  validation: fileNameValidation.value,
+                  errorMessage: nameError.value,
+                  textInputAction: TextInputAction.done,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9_]')),
+                  ],
+                  onChanged: (value) {
+                    fileNameValidation.value = true;
+                  },
+                ),
+              ),
+              (defaultPadding).verticalSpace,
+              AppButton(
+                title: "Submit",
+                loader: loader.value,
+                flexibleHeight: true,
+                onPressed: () async {
+                  if (validation()) {
+                    /// CREATE CATALOGUE
+                    await CatalogueRepository.createCatalogueAPI(
+                      loader: loader,
+                      catalogueName: fileCon.value.text.trim(),
+                      categoryId: con.categoryId,
+                      subCategoryId: con.subCategoryId,
+                      minMetal: con.minMetalWt.value,
+                      maxMetal: con.maxMetalWt.value,
+                      minDiamond: con.minDiamondWt.value,
+                      maxDiamond: con.maxDiamondWt.value,
+                      minMrp: con.selectMrp['min'],
+                      maxMrp: con.selectMrp['max'],
+                      inStock: con.isAvailable?.value,
+                      genderList: con.selectedGender,
+                      diamondList: con.selectedDiamonds,
+                      ktList: con.selectedKt,
+                      deliveryList: con.selectedDelivery,
+                      productionNameList: con.selectedProductNames,
+                      collectionList: con.selectedCollections,
+                    );
+                    Get.back();
+                  }
                 },
               ),
-            ),
-            (defaultPadding).verticalSpace,
-            AppButton(
-              title: "Submit",
-              flexibleHeight: true,
-              onPressed: () {
-                if (validation()) {
-                  Get.back();
-                }
-              },
-            ),
-          ],
-        ),
+            ],
+          );
+        }),
       ),
     );
   }

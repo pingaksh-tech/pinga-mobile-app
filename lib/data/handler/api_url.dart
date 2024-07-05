@@ -12,7 +12,7 @@ class ApiUrls {
   static const String sendMobileOtpPOST = "mobile/auth/login";
   static const String resendMobileOtpPOST = "mobile/auth/resend-otp";
   static const String verifyMobileOtpPOST = "mobile/auth/verify-otp";
-  static const String logOutPOST = "user/auth/logout";
+  static const String logOutPOST = "auth/logout";
   static const String refreshTokenUrl = "auth/refresh-token";
 
   /// BANNER
@@ -36,6 +36,12 @@ class ApiUrls {
   /// WISHLIST
   static const String createAndGetWishlistAPI = "mobile/wishlist";
 
+  /// WATCHLIST
+  static const String createAndGetWatchlistAPI = "mobile/watchlist";
+  static const String cartToWatchlistPOST = "mobile/watchlist/cart-to-watchlist";
+
+  static String getAndDeleteSingleWatchlistAPI({required String watchlistId}) => "mobile/watchlist/find-inventories/$watchlistId";
+
   /// USER
   static const String deleteAccountDELETE = "";
 
@@ -50,10 +56,15 @@ class ApiUrls {
   static String getRetailerApi = "retailer/";
   static String getCartSummary = "/mobile/cart/summary";
 
+  static String addWatchlistToCart({required String watchlistId}) => "mobile/watchlist/cart/$watchlistId";
+
   /// ORDERS
   static String orderProductUrl = "order/list";
   static String createOrGetOrder = "/mobile/order/";
 
   /// WISHLIST
   static String watchlistGet = "wishlist/get";
+
+  /// CATALOGUE
+  static String createAndGetCatalogueAPI = "mobile/catalogue";
 }

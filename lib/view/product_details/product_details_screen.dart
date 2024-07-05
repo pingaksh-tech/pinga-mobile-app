@@ -212,7 +212,13 @@ class ProductDetailsScreen extends StatelessWidget {
                                 icon: AppAssets.watchlistFilled,
                                 title: "Watch",
                                 onPressed: () {
-                                  Get.toNamed(AppRoutes.addWatchListScreen);
+                                  Get.toNamed(AppRoutes.addWatchListScreen, arguments: {
+                                    'inventoryId': con.inventoryId.value,
+                                    'quantity': con.quantity.value,
+                                    'sizeId': con.productDetailModel.value.sizeId,
+                                    'metalId': con.productDetailModel.value.metalId,
+                                    'diamond': (con.productDetailModel.value.diamonds != null && con.productDetailModel.value.diamonds!.isNotEmpty) ? con.productDetailModel.value.diamonds?.first.diamondClarity?.value : "",
+                                  });
                                 },
                               ),
 
@@ -223,8 +229,10 @@ class ProductDetailsScreen extends StatelessWidget {
                                 onPressed: () {
                                   AppDialogs.addMetalDialog(context, metalPrice: con.productDetailModel.value.priceBreaking?.metal?.pricePerGram ?? 0).then(
                                     (value) {
-                                      con.extraMetalPrice = value['price'];
-                                      con.extraMetalWt = value['wt'];
+                                      if (value != null) {
+                                        con.extraMetalPrice = value['price'];
+                                        con.extraMetalWt = value['wt'];
+                                      }
                                     },
                                   );
                                 },
@@ -315,10 +323,10 @@ class ProductDetailsScreen extends StatelessWidget {
               if (con.isSize.isTrue)
                 horizontalSelectorButton(
                   context,
-                  categorySlug: con.productCategory.value,
+                  categoryId: con.productCategory.value,
                   selectedSize: con.selectedSize,
                   selectableItemType: SelectableItemType.size,
-                  sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+                  sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
                   axisDirection: Axis.vertical,
                   sizeOnChanged: (value) {
                     /// Selected Size
@@ -332,10 +340,10 @@ class ProductDetailsScreen extends StatelessWidget {
               /// Metal Selector
               horizontalSelectorButton(
                 context,
-                categorySlug: con.productCategory.value,
+                categoryId: con.selectedMetal.value.id?.value ?? "",
                 selectedMetal: con.selectedMetal,
-                selectableItemType: SelectableItemType.color,
-                sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+                selectableItemType: SelectableItemType.metal,
+                sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
                 axisDirection: Axis.vertical,
                 metalOnChanged: (value) {
                   /// Selected Metal
@@ -349,12 +357,12 @@ class ProductDetailsScreen extends StatelessWidget {
               /// Diamond Selector
               horizontalSelectorButton(
                 context,
-                categorySlug: con.productCategory.value,
+                categoryId: con.selectedDiamond.value.id?.value ?? "",
                 selectedDiamond: con.selectedDiamond,
                 isFancy: con.isFancy.value,
                 diamondsList: RxList(con.productDetailModel.value.diamonds ?? []),
                 selectableItemType: SelectableItemType.diamond,
-                sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+                sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
                 axisDirection: Axis.vertical,
                 multiRubyOnChanged: (diamondList) async {
                   /// Return List of Selected Diamond
@@ -394,7 +402,7 @@ class ProductDetailsScreen extends StatelessWidget {
                 context,
                 remarkSelected: con.selectedRemark,
                 selectableItemType: SelectableItemType.remarks,
-                sizeColorSelectorButtonType: SizeColorSelectorButtonType.small,
+                sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
                 axisDirection: Axis.vertical,
                 remarkOnChanged: (value) {
                   con.selectedRemark.value = value;
@@ -403,7 +411,7 @@ class ProductDetailsScreen extends StatelessWidget {
               (defaultPadding / 5).horizontalSpace,
               plusMinusTile(
                 context,
-                textValue: 0.obs,
+                textValue: con.quantity,
                 onIncrement: (v) {
                   // UiUtils.toast("Added Successfully");
                 },
