@@ -9,7 +9,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../data/api/api_utils.dart';
+import '../../data/repositories/auth/auth_repository.dart';
+import '../../data/repositories/user/user_repository.dart';
 import '../../exports.dart';
 import '../../res/app_dialog.dart';
 import 'profile_controller.dart';
@@ -74,10 +75,12 @@ class ProfileScreen extends StatelessWidget {
                           image: DecorationImage(
                             alignment: Alignment.topCenter,
                             image: con.selectUserProfile.value.isEmpty
-                                ? const NetworkImage(
-                                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBE3Jjpigpv57mkc0yD2MEVK19vFBZVF_G9f0y8GfVgYk1cxdHHMMTQAkidmjXD_r0o6s&usqp=CAU",
+                                ? NetworkImage(
+                                    con.userDetail.value.userImage ?? LocalStorage.userModel.userImage,
                                   )
-                                : FileImage(File(con.selectUserProfile.value)),
+                                : FileImage(
+                                    File(con.selectUserProfile.value),
+                                  ),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -105,9 +108,10 @@ class ProfileScreen extends StatelessWidget {
                                 context,
                                 isCircleCrop: true,
                                 source: ImageSource.gallery,
-                                croppedFileChange: (cropper) {
+                                croppedFileChange: (cropper) async {
                                   if (cropper != null) {
                                     con.selectUserProfile.value = cropper.path;
+                                    await ProfileRepository.updateProfileApi(userImagePath: con.selectUserProfile.value, isLoader: con.isLoader);
                                   }
                                 },
                               );
@@ -140,28 +144,28 @@ class ProfileScreen extends StatelessWidget {
                   profileTile(
                     context,
                     title: "Username",
-                    subTitle: "Dishank Gajera",
+                    subTitle: "${LocalStorage.userModel.firstName ?? ""} ${LocalStorage.userModel.lastName ?? ""}",
                     iconImage: AppAssets.usernameIcon,
                   ),
                   divider,
                   profileTile(
                     context,
                     title: "User type",
-                    subTitle: "GUEST",
+                    subTitle: LocalStorage.userModel.roleId?.name ?? con.userDetail.value.roleId?.name ?? "",
                     iconImage: AppAssets.userIcon,
                   ),
                   divider,
                   profileTile(
                     context,
                     title: "Contact no.",
-                    subTitle: "9558277156",
+                    subTitle: LocalStorage.userModel.phone ?? con.userDetail.value.phone ?? "",
                     iconImage: AppAssets.contactIcon,
                   ),
                   divider,
                   profileTile(
                     context,
                     title: "Address",
-                    subTitle: "B-450,9th Floor,The Capital,Bkc , Bandra,Mumbai-408051 -408051",
+                    subTitle: con.userDetail.value.address ?? con.userDetail.value.address ?? "",
                     iconImage: AppAssets.addressIcon,
                     height: 30.h,
                   ),
@@ -169,7 +173,7 @@ class ProfileScreen extends StatelessWidget {
                   profileTile(
                     context,
                     title: "GST no.",
-                    subTitle: "27AAAAP0267H2ZN",
+                    subTitle: LocalStorage.userModel.gstNo ?? con.userDetail.value.gstNo ?? "",
                     iconImage: AppAssets.gstIcon,
                   ),
                   divider,
@@ -177,13 +181,13 @@ class ProfileScreen extends StatelessWidget {
                     onTap: () {
                       AppDialogs.logoutDialog(
                         Get.context!,
-                        isLoader: con.isLoading,
-                        fullName: "Dishank Gajera",
+                        isLoader: con.isLoader,
+                        fullName: "${LocalStorage.userModel.firstName} ${LocalStorage.userModel.lastName}",
                         onCancellation: () {
                           Get.back();
                         },
                         onLogout: () async {
-                          ApiUtils.logoutAndCleanAllUserData();
+                          await AuthRepository.logOutAPI(loader: con.isLoader);
                         },
                       );
                     },

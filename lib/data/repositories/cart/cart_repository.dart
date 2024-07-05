@@ -77,7 +77,7 @@ class CartRepository {
         loader?.value = true;
 
         if (isInitial) {
-          if (!background || !isPullToRefresh) {
+          if (!isPullToRefresh) {
             con.cartList.clear();
           }
           con.page.value = 1;
@@ -96,9 +96,6 @@ class CartRepository {
           (response) async {
             if (response != null) {
               GetCartModel model = GetCartModel.fromJson(response);
-              // if (background) {
-              //   con.cartList.clear();
-              // }
 
               if (model.data != null) {
                 if (isPullToRefresh) {
@@ -306,6 +303,7 @@ class CartRepository {
     required String metalId,
     required String sizeId,
     required String diamondClarity,
+    List<Map<String, dynamic>>? diamonds,
   }) async {
     if (await getConnectivityResult()) {
       try {
@@ -318,12 +316,13 @@ class CartRepository {
             "quantity": quantity,
             "metal_id": metalId,
             "size_id": sizeId,
-            "diamond_clarity": diamondClarity,
+            if (!isValEmpty(diamondClarity)) "diamond_clarity": diamondClarity,
+            if (!isValEmpty(diamonds)) "diamonds": diamonds,
           },
         ).then(
           (response) async {
             if (response != null) {
-              getCartApi(background: true);
+              getCartApi(background: true, isPullToRefresh: true);
             }
             isLoader?.value = false;
             return response;

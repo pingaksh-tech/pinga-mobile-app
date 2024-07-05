@@ -40,7 +40,7 @@ class CartPopUpMenu extends StatelessWidget {
       ),
       style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500, fontSize: 15.sp),
       menuList: const [
-        "Download cart items",
+        // "Download cart items",
         "Add to watchList",
         "Clear cart",
       ],
@@ -50,8 +50,8 @@ class CartPopUpMenu extends StatelessWidget {
       ).paddingOnly(right: defaultPadding / 5),
       onSelect: (value) {
         switch (value) {
-          case "Download cart items":
-            break;
+          // case "Download cart items":
+          //   break;
           case "Add to watchList":
             AppDialogs.cartDialog(
               context,

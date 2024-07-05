@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import '../../data/model/cart/cart_model.dart';
 import '../../data/model/sub_category/sub_category_model.dart';
 import '../../data/repositories/cart/cart_repository.dart';
+import '../home/home_controller.dart';
 
 class CartController extends GetxController {
   Rx<SubCategoryModel> category = SubCategoryModel().obs;
@@ -30,6 +31,8 @@ class CartController extends GetxController {
   RxDouble selectedPrice = 0.0.obs;
   Timer? updateCartDebounce;
   RxBool isCartItemSelected = false.obs;
+  final HomeController homeCon = Get.find<HomeController>();
+  RxString categoryId = "".obs;
 
   @override
   void onReady() {

@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-import '../../data/repositories/cart/cart_repository.dart';
 import '../../data/repositories/product/product_repository.dart';
 import '../../exports.dart';
 import '../../res/app_bar.dart';
@@ -139,16 +138,7 @@ class ProductsScreen extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     ProductTile(
-                                      incrementOnTap: (value) {
-                                        CartRepository.updateCartApi(
-                                          inventoryId: con.inventoryProductList[index].id ?? "",
-                                          quantity: value,
-                                          metalId: con.inventoryProductList[index].metalId ?? "",
-                                          sizeId: con.inventoryProductList[index].sizeId ?? "",
-                                          diamondClarity: con.inventoryProductList[index].diamonds?.first.diamondClarity?.value ?? "",
-                                        );
-                                      },
-                                      category: con.subCategory,
+                                      category: RxString(con.subCategory.value.id ?? ""),
                                       isFancy: con.isFancyDiamond.value,
                                       inventoryId: con.inventoryProductList[index].id,
                                       diamondList: RxList(con.inventoryProductList[index].diamonds ?? []),

@@ -35,6 +35,7 @@ class WishlistScreen extends StatelessWidget {
                           children: List.generate(
                             con.productsList.length,
                             (index) => ProductTile(
+                              category: RxString(con.productsList[index].inventory?.subCategoryId ?? ""),
                               inventoryId: con.productsList[index].inventory?.id ?? "",
                               productsListTypeType: ProductsListType.wishlist,
                               // category: con.productsList[index].inventory.subCategoryId ?? "",

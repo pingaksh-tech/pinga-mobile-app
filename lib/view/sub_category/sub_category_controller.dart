@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../../data/model/latest_products/latest_products_model.dart';
 import '../../data/model/sub_category/sub_category_model.dart';
 import '../../data/repositories/latest_products/latest_products_repository.dart';
