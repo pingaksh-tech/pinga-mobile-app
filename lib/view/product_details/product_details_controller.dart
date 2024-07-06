@@ -33,7 +33,6 @@ class ProductDetailsController extends GetxController {
   num extraMetalWt = 0.0;
 
   RxBool loader = true.obs;
-  List<DiamondListModel> diamondList = <DiamondListModel>[];
 
   @override
   void onInit() {
