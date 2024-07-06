@@ -13,12 +13,14 @@ import '../../widgets/pull_to_refresh_indicator.dart';
 import 'components/cart_icon_button.dart';
 import 'components/sort_filter_button.dart';
 import 'products_controller.dart';
+import 'widgets/filter/filter_controller.dart';
 import 'widgets/sort/sorting_bottomsheet.dart';
 
 class ProductsScreen extends StatelessWidget {
   ProductsScreen({super.key});
 
   final ProductsController con = Get.put(ProductsController());
+  final FilterController filterCon = Get.find<FilterController>();
 
   @override
   Widget build(BuildContext context) {
@@ -63,20 +65,14 @@ class ProductsScreen extends StatelessWidget {
                     ),
                   ),
                   SortAndFilterButton(
-                    title: "Filter (${con.countFiler.value})",
+                    title: "Filter ${filterCon.count != 0 ? "(${filterCon.count})" : ""}",
                     image: AppAssets.filter,
                     onTap: () => Get.toNamed(AppRoutes.filterScreen, arguments: {
                       "subCategoryId": con.subCategory.value.id,
                       "categoryId": con.categoryId.value,
                       "watchlistId": con.watchlistId.value,
                       "productListType": con.productListType.value,
-                    })?.then(
-                      (value) {
-                        if (value != null) {
-                          con.countFiler.value = value;
-                        }
-                      },
-                    ),
+                    }),
                   ),
                   SizedBox(
                     height: 20.h,
@@ -142,7 +138,6 @@ class ProductsScreen extends StatelessWidget {
                                       isFancy: con.isFancyDiamond.value,
                                       inventoryId: con.inventoryProductList[index].id,
                                       diamondList: RxList(con.inventoryProductList[index].diamonds ?? []),
-                                      // subCategoryId: con.inventoryProductList[index].subCategoryId ?? "ring" /*Product Category*/,
                                       productTileType: con.isProductViewChange.isTrue ? ProductTileType.grid : ProductTileType.list,
                                       onTap: () => Get.toNamed(AppRoutes.productDetailsScreen, arguments: {
                                         "category": con.inventoryProductList[index].subCategoryId ?? '',
@@ -150,6 +145,7 @@ class ProductsScreen extends StatelessWidget {
                                         'isFancy': con.isFancyDiamond.value,
                                         'inventoryId': con.inventoryProductList[index].id,
                                         'name': con.inventoryProductList[index].name,
+                                        'like': con.inventoryProductList[index].isWishlist,
                                       }),
                                       isLike: con.inventoryProductList[index].isWishlist,
                                       imageUrl: (con.inventoryProductList[index].inventoryImages != null && con.inventoryProductList[index].inventoryImages!.isNotEmpty) ? con.inventoryProductList[index].inventoryImages![0] : "",

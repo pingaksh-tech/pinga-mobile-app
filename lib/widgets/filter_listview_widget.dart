@@ -13,7 +13,7 @@ class FilterListViewWidget extends StatefulWidget {
   final List<DiamondModel>? diamondList;
   final List<MetalModel>? metalList;
   final List<CollectionModel>? collectionList;
-  final Function(List<dynamic>) onSelect;
+  final Function() onSelect;
 
   const FilterListViewWidget({super.key, required this.type, this.filterTabList, this.diamondList, this.deliveryList, this.metalList, required this.onSelect, this.collectionList});
 
@@ -23,8 +23,6 @@ class FilterListViewWidget extends StatefulWidget {
 
 class _FilterListViewWidgetState extends State<FilterListViewWidget> {
   final FilterController filterCon = Get.find<FilterController>();
-
-  // List<dynamic> selectedFilter = [];
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +57,7 @@ class _FilterListViewWidgetState extends State<FilterListViewWidget> {
           FilterItemType.diamond => RxBool(filterCon.selectedDiamonds.contains(widget.diamondList?[index].name)),
           FilterItemType.delivery => RxBool(filterCon.selectedDelivery.contains(widget.deliveryList?[index])),
           FilterItemType.production => RxBool(filterCon.selectedProductNames.contains(widget.deliveryList?[index])),
-          FilterItemType.kt => RxBool(filterCon.selectedKt.contains(widget.metalList?[index].id ?? "")),
+          FilterItemType.kt => RxBool(filterCon.selectedKt.contains(widget.metalList?[index].id?.value ?? "")),
           FilterItemType.collection => RxBool(filterCon.selectedCollections.contains(widget.collectionList?[index].id)),
           FilterItemType.range => false.obs,
           FilterItemType.mrp => false.obs,
@@ -158,7 +156,7 @@ class _FilterListViewWidgetState extends State<FilterListViewWidget> {
               break;
           }
 
-          // widget.onSelect(selectedFilter);
+          widget.onSelect();
         },
       ),
       separatorBuilder: (context, index) => Divider(

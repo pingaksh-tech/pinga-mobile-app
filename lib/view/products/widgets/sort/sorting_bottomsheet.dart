@@ -191,7 +191,7 @@ class SortingBottomSheet extends StatelessWidget {
                               productsListType: con.productListType.value,
                               categoryId: con.categoryId.value,
                               subCategoryId: con.subCategory.value.id ?? "",
-                              loader: con.isLoader,
+                              loader: con.loader,
                               sortBy: [
                                 if (con.selectPrice.value.isNotEmpty) "manufacturing_price:${con.selectPrice.value.split("/").last}",
                                 if (con.selectNewestOrOldest.value.isNotEmpty) "createdAt:${con.selectNewestOrOldest.value.split("/").last}",

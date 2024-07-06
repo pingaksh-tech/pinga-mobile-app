@@ -69,7 +69,7 @@ class PriceBreaking {
   final Metal? metal;
   final PriceBreakingDiamond? diamond;
   final Other? other;
-  final num? total;
+  num? total;
 
   PriceBreaking({
     this.metal,

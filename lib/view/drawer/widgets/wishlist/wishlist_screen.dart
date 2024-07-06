@@ -38,13 +38,11 @@ class WishlistScreen extends StatelessWidget {
                               category: RxString(con.productsList[index].inventory?.subCategoryId ?? ""),
                               inventoryId: con.productsList[index].inventory?.id ?? "",
                               productsListTypeType: ProductsListType.wishlist,
-                              // category: con.productsList[index].inventory.subCategoryId ?? "",
                               selectSize: (con.productsList[index].inventory?.sizeId ?? "").obs,
                               productTileType: ProductTileType.grid,
                               onTap: () => Get.toNamed(AppRoutes.productDetailsScreen, arguments: {
-                                "category": /* con.category.value.name ?? */ 'ring',
-                                // 'isSize': con.isSizeAvailable.value,
-                                // 'isFancy': con.isFancyDiamond.value,
+                                "category": con.productsList[index].inventory?.subCategoryId ?? 'ring',
+                                // 'isFancy': con.productsList[index].,
                                 'inventoryId': con.productsList[index].inventory?.id ?? "",
                                 'name': con.productsList[index].inventory?.name ?? "",
                               }),
@@ -53,7 +51,6 @@ class WishlistScreen extends StatelessWidget {
                               productName: con.productsList[index].inventory?.name ?? "",
                               productPrice: con.productsList[index].inventory?.inventoryTotalPrice.toString() ?? "",
                               productQuantity: con.productsList[index].inventory?.quantity,
-                              // isSizeAvailable: con.isSizeAvailable.value, /*if product does not have size*/
                               likeOnChanged: (value) {},
                             ),
                           ),

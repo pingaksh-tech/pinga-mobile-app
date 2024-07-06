@@ -7,6 +7,7 @@ import '../../../view/product_details/product_details_controller.dart';
 import '../../../view/product_details/widgets/variants/variants_tab_controller.dart';
 import '../../../view/products/products_controller.dart';
 import '../../../view/products/widgets/variant/variant_controller.dart';
+import '../../model/product/product_price_model.dart';
 import '../../model/product/products_model.dart';
 import '../../model/product/single_product_model.dart';
 import '../../model/product/variant_product_model.dart';
@@ -54,7 +55,7 @@ class ProductRepository {
     List<dynamic>? ktList,
     List<dynamic>? deliveryList,
     List<dynamic>? productionNameList,
-    List<dynamic>? colectionList,
+    List<dynamic>? collectionList,
     bool isInitial = true,
     bool isPullToRefresh = false,
     RxBool? loader,
@@ -97,7 +98,7 @@ class ProductRepository {
             if (ktList != null && ktList.isNotEmpty) "metal_ids": ktList,
             if (deliveryList != null && deliveryList.isNotEmpty) "delivery": deliveryList,
             if (productionNameList != null && productionNameList.isNotEmpty) "production_name": productionNameList,
-            if (colectionList != null && colectionList.isNotEmpty) "collection": colectionList,
+            if (collectionList != null && collectionList.isNotEmpty) "collection": collectionList,
           },
           loader: loader,
         ).then(
@@ -151,10 +152,11 @@ class ProductRepository {
   ///                                     GET PRODUCTS PRICE
   /// ***********************************************************************************
 
-  static Future<void> getProductPriceAPI({
-    required ProductsListType productListType,
+  static Future<GetProductPriceModel?> getProductPriceAPI({
+    ProductsListType? productListType,
     required String inventoryId,
     required String metalId,
+    String? sizeId,
     String? diamondClarity,
     List<Map<String, dynamic>>? diamonds,
     RxBool? loader,
@@ -164,11 +166,12 @@ class ProductRepository {
         loader?.value = true;
 
         /// API
-        await APIFunction.postApiCall(
+        return await APIFunction.postApiCall(
           apiUrl: ApiUrls.getProductPricePOST,
           body: {
             "inventory_id": inventoryId,
             "metal_id": metalId,
+            if (!isValEmpty(sizeId)) "size_id": sizeId,
             if (!isValEmpty(diamondClarity)) "diamond_clarity": diamondClarity,
             if (diamonds != null && diamonds.isNotEmpty) "diamonds": diamonds,
           },
@@ -176,13 +179,18 @@ class ProductRepository {
         ).then(
           (response) async {
             if (response != null) {
-              if (response['data'] != null) {
+              GetProductPriceModel model = GetProductPriceModel.fromJson(response);
+
+              if (model.data != null) {
                 switch (productListType) {
                   case ProductsListType.normal:
                     final ProductsController con = Get.find<ProductsController>();
                     int index = con.inventoryProductList.indexWhere((element) => element.id == inventoryId);
                     if (index != -1) {
-                      con.inventoryProductList[index].inventoryTotalPrice?.value = response['data'];
+                      con.inventoryProductList[index].inventoryTotalPrice?.value = model.data?.inventoryTotalPrice?.value ?? 0;
+                      con.inventoryProductList[index].quantity?.value = model.data?.cartQty?.quantity ?? 0;
+
+                      printOkStatus(con.inventoryProductList[index].quantity?.value);
                     }
                     break;
 
@@ -190,7 +198,8 @@ class ProductRepository {
                     final WishlistController con = Get.find<WishlistController>();
                     int index = con.productsList.indexWhere((element) => element.inventoryId == inventoryId);
                     if (index != -1) {
-                      con.productsList[index].inventory?.inventoryTotalPrice?.value = response['data'];
+                      con.productsList[index].inventory?.inventoryTotalPrice?.value = model.data?.inventoryTotalPrice?.value ?? 0;
+                      con.productsList[index].inventory?.quantity?.value = model.data?.cartQty?.quantity ?? 0;
                     }
                     break;
 
@@ -199,15 +208,17 @@ class ProductRepository {
 
                   case ProductsListType.cart:
                     break;
+                  default:
+                    break;
                 }
               }
 
               loader?.value = false;
+              return model;
             } else {
               loader?.value = false;
+              return response;
             }
-
-            return response;
           },
         );
       } catch (e) {
@@ -215,6 +226,7 @@ class ProductRepository {
         printErrors(type: "getProductPriceAPI", errText: e);
       }
     } else {}
+    return null;
   }
 
   /// ***********************************************************************************

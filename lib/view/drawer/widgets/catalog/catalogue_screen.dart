@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:share_plus/share_plus.dart';
 
 import '../../../../data/repositories/home/catalogue_repository.dart';
 import '../../../../exports.dart';
@@ -161,7 +160,7 @@ class CatalogueScreen extends StatelessWidget {
                 ),
               ),
               AppPopUpMenuButton(
-                menuList: const ["Download", "Share", "Rename", "Delete"],
+                menuList: const ["Download", "Rename", "Delete"],
                 child: Icon(
                   shadows: const [Shadow(color: AppColors.background, blurRadius: 4)],
                   Icons.more_vert_rounded,
@@ -181,13 +180,6 @@ class CatalogueScreen extends StatelessWidget {
                       // UiUtils.toast("Downloading...");
                       break;
 
-                    case "Share":
-
-                      /// share wishlist
-                      await Share.share(
-                        "Catalogue : $title\nCreated Date : $date",
-                      );
-                      break;
                     case "Rename":
                       AppDialogs.renameCatalogueDialog(
                         context,
@@ -213,17 +205,6 @@ class CatalogueScreen extends StatelessWidget {
                   }
                 },
               )
-              // AppIconButton(
-              //   size: 20.sp,
-              //   icon: Icon(
-              //     shadows: const [Shadow(color: AppColors.background, blurRadius: 4)],
-              //     Icons.more_vert_rounded,
-              //     size: 18.sp,
-              //   ),
-              //   onPressed: () {
-              //     Get.toNamed(AppRoutes.pdfViewerScreen, arguments: {"title": title});
-              //   },
-              // )
             ],
           ),
         ),

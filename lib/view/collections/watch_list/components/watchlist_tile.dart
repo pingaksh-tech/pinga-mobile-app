@@ -12,7 +12,6 @@ class WatchlistTile extends StatelessWidget {
   final int? noOfItem;
   final String? createdBy;
   final VoidCallback? downloadOnPressed;
-  final VoidCallback? shareOnPressed;
   final VoidCallback? deleteOnPressed;
   final VoidCallback? cartOnPressed;
   final bool? isShowButtons;
@@ -26,7 +25,6 @@ class WatchlistTile extends StatelessWidget {
     this.noOfItem,
     this.createdBy,
     this.downloadOnPressed,
-    this.shareOnPressed,
     this.deleteOnPressed,
     this.isShowButtons = true,
     this.selected,
@@ -65,33 +63,32 @@ class WatchlistTile extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           /// CART
-                          IconTitleButton(
-                            title: "Add to Cart",
-                            icon: AppAssets.cart,
-                            onPressed: cartOnPressed,
+                          Expanded(
+                            child: IconTitleButton(
+                              title: "Add to Cart",
+                              icon: AppAssets.cart,
+                              onPressed: cartOnPressed,
+                            ),
                           ),
 
                           /// DOWNLOAD
-                          IconTitleButton(
-                            title: "Download",
-                            icon: AppAssets.downloadIcon,
-                            onPressed: () {
-                              AppDialogs.watchListDownloadDialog(context);
-                            },
-                          ),
-
-                          /// SHARE
-                          IconTitleButton(
-                            title: "Share",
-                            icon: AppAssets.shareIcon,
-                            onPressed: shareOnPressed,
+                          Expanded(
+                            child: IconTitleButton(
+                              title: "Download",
+                              icon: AppAssets.downloadIcon,
+                              onPressed: () {
+                                AppDialogs.watchListDownloadDialog(context);
+                              },
+                            ),
                           ),
 
                           /// DELETE
-                          IconTitleButton(
-                            title: "Delete",
-                            icon: AppAssets.trash,
-                            onPressed: deleteOnPressed,
+                          Expanded(
+                            child: IconTitleButton(
+                              title: "Delete",
+                              icon: AppAssets.trash,
+                              onPressed: deleteOnPressed,
+                            ),
                           ),
                         ],
                       ),

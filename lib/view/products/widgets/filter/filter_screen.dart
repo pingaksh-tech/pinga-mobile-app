@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../../../controller/predefine_value_controller.dart';
+import '../../../../data/model/filter/mrp_model.dart';
 import '../../../../data/repositories/product/product_repository.dart';
 import '../../../../exports.dart';
 import '../../../../res/app_bar.dart';
@@ -42,7 +43,6 @@ class FilterScreen extends StatelessWidget {
                   return Obx(
                     () {
                       bool isSelected = con.filterType.value == con.filterOptions[index];
-                      // int activeCount = con.getActiveFilterCount(FilterItemType.values[index].label);
                       return GestureDetector(
                         onTap: () {
                           con.filterType.value = con.filterOptions[index];
@@ -58,7 +58,7 @@ class FilterScreen extends StatelessWidget {
                                 height: 19.h,
                               ),
                               Text(
-                                con.filterOptions[index].label,
+                                "${con.filterOptions[index].label} ${con.applyFilterCounts[index] != 0 ? "(${con.applyFilterCounts[index]})" : ""}",
                                 textAlign: TextAlign.center,
                                 style: AppTextStyle.titleStyle(context).copyWith(fontSize: 13.sp, fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400),
                               ),
@@ -100,8 +100,10 @@ class FilterScreen extends StatelessWidget {
                             onChanged: (value) {
                               con.minMetalWt.value = value.start;
                               con.maxMetalWt.value = value.end;
-                              con.rangeCount();
-                              // printYellow(con.count);
+
+                              if (con.applyFilterCounts.isNotEmpty) {
+                                con.applyFilterCounts[0] = 1;
+                              }
                             },
                           ),
                         ),
@@ -128,7 +130,10 @@ class FilterScreen extends StatelessWidget {
                             onChanged: (value) {
                               con.minDiamondWt.value = value.start;
                               con.maxDiamondWt.value = value.end;
-                              con.rangeCount();
+
+                              if (con.applyFilterCounts.isNotEmpty) {
+                                con.applyFilterCounts[0] = 1;
+                              }
                             },
                           ),
                         ),
@@ -145,14 +150,21 @@ class FilterScreen extends StatelessWidget {
                           itemBuilder: (context, index) => Obx(() {
                             return CustomCheckboxTile(
                               scale: 1,
-                              isSelected: (con.selectMrp['label'] == con.mrpList[index]['label']).obs,
-                              title: con.mrpList[index]['label'].value,
-                              titleStyle: TextStyle(fontSize: 13.sp, fontWeight: con.selectMrp['label'] == con.mrpList[index]['label'] ? FontWeight.w500 : FontWeight.w400),
+                              isSelected: (con.selectMrp.value.label == con.mrpList[index].label).obs,
+                              title: con.mrpList[index].label?.value,
+                              titleStyle: TextStyle(fontSize: 13.sp, fontWeight: con.selectMrp.value.label == con.mrpList[index].label ? FontWeight.w500 : FontWeight.w400),
                               onChanged: (value) {
                                 if (value == false) {
-                                  con.selectMrp.value = {"label": "".obs, "min": 0, "max": 0} as Map<dynamic, dynamic>;
+                                  con.selectMrp.value = MrpModel();
                                 } else {
                                   con.selectMrp.value = con.mrpList[index];
+                                }
+                                if (con.selectMrp.value.label != null && con.selectMrp.value.label!.isNotEmpty) {
+                                  con.count++;
+                                  con.applyFilterCounts[1] = 1;
+                                } else {
+                                  con.count--;
+                                  con.applyFilterCounts[1] = 0;
                                 }
 
                                 con.selectMrp.refresh();
@@ -165,19 +177,20 @@ class FilterScreen extends StatelessWidget {
                       }),
                       CustomCheckboxTile(
                         scale: 1,
-                        isSelected: (con.selectMrp['label'] == 'customs').obs,
+                        isSelected: (con.selectMrp.value.label?.value == 'customs').obs,
                         title: "Customs",
-                        titleStyle: TextStyle(fontSize: 13.sp, fontWeight: con.selectMrp['label'].toString().toLowerCase() == 'customs' ? FontWeight.w500 : FontWeight.w400),
+                        titleStyle: TextStyle(fontSize: 13.sp, fontWeight: con.selectMrp.value.label.toString().toLowerCase() == 'customs' ? FontWeight.w500 : FontWeight.w400),
                         onChanged: (value) {
                           if (value == false) {
-                            con.selectMrp.value = {"label": "".obs, "min": 0, "max": 0} as Map<dynamic, dynamic>;
+                            con.selectMrp.value = MrpModel();
                           } else {
-                            con.selectMrp.value = {"label": "customs".obs, "min": 0, "max": 0} as Map<dynamic, dynamic>;
+                            con.selectMrp.value = MrpModel(label: "customs".obs);
                           }
+                          (con.selectMrp.value.label != null && con.selectMrp.value.label!.isNotEmpty) ? con.applyFilterCounts[1] = 1 : con.applyFilterCounts[1] = 0;
                         },
                       ),
                       10.verticalSpace,
-                      if (con.selectMrp['label'] == "customs".obs)
+                      if (con.selectMrp.value.label == "customs".obs)
                         Row(
                           children: [
                             Expanded(
@@ -196,6 +209,9 @@ class FilterScreen extends StatelessWidget {
                                   ),
                                   borderSide: BorderSide.none,
                                 ),
+                                onChanged: (val) {
+                                  con.selectMrp.value.min?.value;
+                                },
                               ),
                             ),
                             10.horizontalSpace,
@@ -234,10 +250,11 @@ class FilterScreen extends StatelessWidget {
                         if (val != null) {
                           con.isAvailable.value = val;
                           if (con.isAvailable.isTrue) {
-                            con.count += 1;
+                            con.count++;
                           } else {
-                            con.count -= 1;
+                            con.count--;
                           }
+                          con.isAvailable.value ? con.applyFilterCounts[2] = 1 : con.applyFilterCounts[2] = 0;
                         }
                       },
                     ),
@@ -268,6 +285,8 @@ class FilterScreen extends StatelessWidget {
                             }
                             con.selectedGender.add(preValCon.genderList[index]);
                           }
+
+                          con.applyFilterCounts[3] = con.selectedGender.length;
                         },
                       );
                     }),
@@ -277,8 +296,8 @@ class FilterScreen extends StatelessWidget {
                 FilterItemType.diamond => FilterListViewWidget(
                     diamondList: preValCon.diamondsList,
                     type: FilterItemType.diamond,
-                    onSelect: (value) {
-                      // con.selectedDiamonds.value = value;
+                    onSelect: () {
+                      con.applyFilterCounts[4] = con.selectedDiamonds.length;
                     },
                   ),
 
@@ -286,8 +305,8 @@ class FilterScreen extends StatelessWidget {
                 FilterItemType.kt => FilterListViewWidget(
                     metalList: preValCon.metalsList,
                     type: FilterItemType.kt,
-                    onSelect: (value) {
-                      // con.selectedKt.value = value;
+                    onSelect: () {
+                      con.applyFilterCounts[5] = con.selectedKt.length;
                     },
                   ),
 
@@ -295,8 +314,8 @@ class FilterScreen extends StatelessWidget {
                 FilterItemType.delivery => FilterListViewWidget(
                     deliveryList: preValCon.deliveriesList,
                     type: FilterItemType.delivery,
-                    onSelect: (value) {
-                      // con.selectedDelivery.value = value;
+                    onSelect: () {
+                      con.applyFilterCounts[6] = con.selectedDelivery.length;
                     },
                   ),
 
@@ -304,8 +323,8 @@ class FilterScreen extends StatelessWidget {
                 FilterItemType.production => FilterListViewWidget(
                     deliveryList: preValCon.productNamesList,
                     type: FilterItemType.production,
-                    onSelect: (value) {
-                      // con.selectedProductNames.value = value;
+                    onSelect: () {
+                      con.applyFilterCounts[7] = con.selectedProductNames.length;
                     },
                   ),
 
@@ -313,8 +332,9 @@ class FilterScreen extends StatelessWidget {
                 FilterItemType.collection => FilterListViewWidget(
                     collectionList: preValCon.collectionList,
                     type: FilterItemType.collection,
-                    onSelect: (value) {
-                      // con.selectedCollections.value = value;
+                    onSelect: () {
+                      con.applyFilterCounts[8] = con.selectedCollections.length;
+                      printOkStatus(con.applyFilterCounts[8]);
                     },
                   )
               },
@@ -330,9 +350,14 @@ class FilterScreen extends StatelessWidget {
                   height: 30.h,
                   title: "Clear All",
                   buttonType: ButtonType.outline,
-                  onPressed: () {
+                  onPressed: () async {
                     con.clearAllFilters();
-                    con.count = 0;
+                    await ProductRepository.getFilterProductsListAPI(
+                      productsListType: con.productsListType,
+                      watchlistId: con.watchlistId,
+                      categoryId: con.categoryId,
+                      subCategoryId: con.subCategoryId,
+                    ).then((value) => Get.back());
                   },
                 ),
               ),
@@ -343,9 +368,7 @@ class FilterScreen extends StatelessWidget {
                   height: 30.h,
                   title: "Apply",
                   onPressed: () async {
-                    // con.getCount();
-                    printOkStatus(con.count);
-
+                    /// GET FILTER PRODUCT
                     await ProductRepository.getFilterProductsListAPI(
                       watchlistId: con.watchlistId,
                       productsListType: con.productsListType,
@@ -356,15 +379,15 @@ class FilterScreen extends StatelessWidget {
                       maxMetal: con.maxMetalWt.value,
                       minDiamond: con.minDiamondWt.value,
                       maxDiamond: con.maxDiamondWt.value,
-                      minMrp: con.selectMrp['min'],
-                      maxMrp: con.selectMrp['max'],
+                      minMrp: con.selectMrp.value.min?.value,
+                      maxMrp: con.selectMrp.value.max?.value,
                       inStock: con.isAvailable.value,
                       genderList: con.selectedGender,
                       diamondList: con.selectedDiamonds,
                       ktList: con.selectedKt,
                       deliveryList: con.selectedDelivery,
                       productionNameList: con.selectedProductNames,
-                      colectionList: con.selectedCollections,
+                      collectionList: con.selectedCollections,
                     ).then((value) => Get.back(result: con.count));
                   },
                 ),

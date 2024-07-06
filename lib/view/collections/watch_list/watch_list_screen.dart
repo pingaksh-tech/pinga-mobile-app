@@ -10,7 +10,6 @@ import '../../../res/app_dialog.dart';
 import '../../../widgets/pull_to_refresh_indicator.dart';
 import 'components/watchlist_tile.dart';
 import 'watch_list_controller.dart';
-import 'package:share_plus/share_plus.dart';
 
 import '../../../res/empty_element.dart';
 
@@ -107,6 +106,7 @@ class WatchListScreen extends StatelessWidget {
                                 "watchlistName": con.watchList[index].name,
                                 "watchlistId": con.watchList[index].id?.value ?? "",
                                 "type": ProductsListType.watchlist,
+                                // 'catagory' :  con.watchList[index].?.value,
                               },
                             );
                           },
@@ -114,35 +114,10 @@ class WatchListScreen extends StatelessWidget {
                             name: con.watchList[index].name,
                             noOfItem: con.watchList[index].watchListItemCount ?? 0,
                             createdBy: "${LocalStorage.userModel.firstName ?? ""} ${LocalStorage.userModel.lastName ?? ""}",
-                            downloadOnPressed: () async {
-                              // Convert into CSV
-                              /*     con.rows.add(con.row);
-                          List<List<dynamic>> rowsAsListOfValues = const CsvToListConverter().convert(con.rows.toString());
-
-                          String csv = const ListToCsvConverter().convert(rowsAsListOfValues);
-                          printYellow(csv);
-                          String dir = (await getTemporaryDirectory()).path ?? '';
-                          String filePath = "$dir/list.csv";
-
-                          File file = File(filePath);
-                          await file.writeAsString(csv);
-
-                          printOkStatus(filePath);
-
-                          final result = await Share.shareXFiles([XFile(filePath)], text: '');
-                          if (result.status == ShareResultStatus.success) {
-                            printOkStatus('Thank you for sharing!');
-                          }*/
-                            },
+                            downloadOnPressed: () async {},
                             cartOnPressed: () async {
                               /// ADD WATCHLIST TO CART
                               await CartRepository.addWatchlistToCartAPI(watchlistId: con.watchList[index].id?.value ?? "");
-                            },
-                            shareOnPressed: () async {
-                              /// share wishlist
-                              await Share.share(
-                                "Name : ${con.watchList[index].name}\nNo of Items : ${con.watchList[index].watchListItemCount ?? 0}\nCreated By : ${LocalStorage.userModel.firstName}",
-                              );
                             },
                             deleteOnPressed: () {
                               AppDialogs.cartDialog(

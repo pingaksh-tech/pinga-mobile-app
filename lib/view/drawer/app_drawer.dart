@@ -27,9 +27,9 @@ class AppDrawer extends StatelessWidget {
           physics: const RangeMaintainingScrollPhysics(),
           children: [
             /// Drawer Header
-            Stack(
+            const Stack(
               children: [
-                const DrawerHeader(
+                DrawerHeader(
                   margin: EdgeInsets.zero,
                   padding: EdgeInsets.zero,
                   child: AppNetworkImage(
@@ -38,20 +38,6 @@ class AppDrawer extends StatelessWidget {
                     imageUrl: 'https://media.designrush.com/tinymce_images/316674/conversions/Desiree-Qelaj-content.jpg',
                   ),
                 ),
-                // AppNetworkImage(
-                //   height: 60.h,
-                //   imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVErxeqhTxrd4NYxO73norO2MWmwcziMvFWg&s',
-                //   padding: EdgeInsets.only(top: defaultPadding * 8.5),
-                //   shape: BoxShape.circle,
-                // ),
-                Positioned(
-                  top: defaultPadding * 9,
-                  right: defaultPadding,
-                  child: Text(
-                    "",
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(),
-                  ),
-                )
               ],
             ),
 
@@ -156,17 +142,18 @@ class AppDrawer extends StatelessWidget {
                         ),
                         const Spacer(),
                         AppIconButton(
-                          size: 40,
-                          icon: Icon(
-                            Icons.call,
-                            color: Theme.of(context).colorScheme.primary,
-                            size: 20,
-                          ),
-                          onPressed: () => makePhoneCall('+91 9409349493'),
-                        ),
+                            size: 40,
+                            icon: Icon(
+                              Icons.call,
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 20,
+                            ),
+                            onPressed: () {
+                              makePhoneCall(LocalStorage.contactMobileNumber);
+                            }),
                         AppIconButton(
                           size: 40,
-                          onPressed: () => sendEmail("demo@gmail.com"),
+                          onPressed: () => sendEmail(LocalStorage.contactEmailID),
                           icon: Icon(
                             Icons.email_rounded,
                             color: Theme.of(context).colorScheme.primary,
@@ -212,7 +199,7 @@ class AppDrawer extends StatelessWidget {
                   /// Privacy Policy
                   subOptionTile(context, icon: AppAssets.productDetailSVG, title: "Privacy Policy", onPressed: () {
                     Get.back();
-                    Get.to(const MyWebView(title: "Privacy Policy", webURL: "https://api.flutter.dev/flutter/material/Switch/thumbColor.html"));
+                    Get.to(MyWebView(title: "Privacy Policy", webURL: LocalStorage.privacyURL));
                   }),
 
                   const Divider(height: 1, indent: 40),
@@ -220,7 +207,7 @@ class AppDrawer extends StatelessWidget {
                   /// Return Policy
                   subOptionTile(context, icon: AppAssets.rtp, title: "Return Policy", onPressed: () {
                     Get.back();
-                    Get.to(const MyWebView(title: "Return Policy", webURL: "https://api.flutter.dev/flutter/material/Switch/thumbColor.html"));
+                    Get.to(MyWebView(title: "Return Policy", webURL: LocalStorage.termsURL));
                   }),
                 ],
               ),

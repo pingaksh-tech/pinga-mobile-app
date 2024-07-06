@@ -442,10 +442,13 @@ class ProductDetailsScreen extends StatelessWidget {
                   selectableItemType: SelectableItemType.size,
                   sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
                   axisDirection: Axis.vertical,
-                  sizeOnChanged: (value) {
+                  sizeOnChanged: (value) async {
                     /// Selected Size
                     if ((value.runtimeType == DiamondModel)) {
                       con.selectedSize.value = value;
+
+                      /// GET NEW PRODUCT PRICE
+                      con.priceChangeAPI();
                     }
                   },
                 ),
@@ -459,10 +462,15 @@ class ProductDetailsScreen extends StatelessWidget {
                 selectableItemType: SelectableItemType.metal,
                 sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
                 axisDirection: Axis.vertical,
-                metalOnChanged: (value) {
+                metalOnChanged: (value) async {
+                  printYellow(value.name);
+
                   /// Selected Metal
                   if ((value.runtimeType == MetalModel)) {
                     con.selectedMetal.value = value;
+
+                    /// GET NEW PRODUCT PRICE
+                    con.priceChangeAPI();
                   }
                 },
               ),
@@ -481,31 +489,19 @@ class ProductDetailsScreen extends StatelessWidget {
                 multiRubyOnChanged: (diamondList) async {
                   /// Return List of Selected Diamond
                   if ((diamondList.runtimeType == RxList<DiamondListModel>)) {
-                    diamondList = diamondList;
+                    con.diamondList = diamondList;
 
                     /// GET NEW PRODUCT PRICE
-                    // await ProductRepository.getProductPriceAPI(
-                    //   inventoryId: widget.inventoryId ?? '',
-                    //   metalId: metalModel.id?.value ?? "",
-                    //   diamonds: widget.diamonds != null
-                    //       ? List.generate(
-                    //           widget.diamonds!.length,
-                    //           (index) => {
-                    //             "diamond_clarity": widget.diamonds?[index].diamondClarity?.value ?? "",
-                    //             "diamond_shape": widget.diamonds?[index].diamondShape ?? "",
-                    //             "diamond_size": widget.diamonds?[index].diamondSize ?? "",
-                    //             "diamond_count": widget.diamonds?[index].diamondCount ?? 0,
-                    //             "_id": widget.diamonds?[index].id ?? "",
-                    //           },
-                    //         )
-                    //       : [],
-                    // );
+                    con.priceChangeAPI();
                   }
                 },
                 rubyOnChanged: (value) {
                   /// Selected Diamond
                   if ((value.runtimeType == DiamondModel)) {
                     con.selectedDiamond.value = value;
+
+                    /// GET NEW PRODUCT PRICE
+                    con.priceChangeAPI();
                   }
                 },
               ),

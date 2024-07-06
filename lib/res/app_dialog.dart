@@ -851,7 +851,6 @@ class AppDialogs {
     required RxString selectedDiamond,
   }) {
     TextEditingController controller = TextEditingController();
-    printYellow(selectedDiamond.value);
     return showGeneralDialog(
       context: context,
       pageBuilder: (context, animation, secondaryAnimation) {
@@ -1076,7 +1075,6 @@ class AppDialogs {
                                                     final DiamondModel diamondModel = (value as DiamondModel);
                                                     // diamondList[index].diamondClarity?.value = diamondModel.name ?? "";
                                                     diamonds[index] = diamondModel.name ?? "";
-                                                    printYellow(diamonds[index]);
                                                   }
                                                 },
                                               );
@@ -1838,9 +1836,9 @@ class AppDialogs {
                       maxMetal: con.maxMetalWt.value,
                       minDiamond: con.minDiamondWt.value,
                       maxDiamond: con.maxDiamondWt.value,
-                      minMrp: con.selectMrp['min'],
-                      maxMrp: con.selectMrp['max'],
-                      inStock: con.isAvailable?.value,
+                      minMrp: con.selectMrp.value.min?.value,
+                      maxMrp: con.selectMrp.value.max?.value,
+                      inStock: con.isAvailable.value,
                       genderList: con.selectedGender,
                       diamondList: con.selectedDiamonds,
                       ktList: con.selectedKt,

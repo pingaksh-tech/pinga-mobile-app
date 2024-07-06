@@ -30,7 +30,6 @@ class ProductsController extends GetxController {
   RxList<String> sortList = <String>[].obs;
   RxList<InventoryModel> inventoryProductList = <InventoryModel>[].obs;
 
-  RxInt countFiler = 0.obs;
   Rx<ProductsListType> productListType = ProductsListType.normal.obs;
   RxString watchlistId = "".obs;
 

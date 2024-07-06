@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../controller/predefine_value_controller.dart';
 import '../../data/model/common/splash_model.dart';
+import '../../data/model/product/products_model.dart';
 import '../../data/model/product/single_product_model.dart';
 import '../../data/repositories/product/product_repository.dart';
 import '../../exports.dart';
@@ -31,6 +32,7 @@ class ProductDetailsController extends GetxController {
   num extraMetalWt = 0.0;
 
   RxBool loader = true.obs;
+  List<DiamondListModel> diamondList = <DiamondListModel>[];
 
   @override
   void onInit() {
@@ -52,6 +54,7 @@ class ProductDetailsController extends GetxController {
       }
       if (Get.arguments['name'].runtimeType == String) {
         productName.value = Get.arguments['name'];
+        isLike = Get.arguments['like'] ?? false.obs;
       }
     }
   }
@@ -64,8 +67,34 @@ class ProductDetailsController extends GetxController {
     ProductRepository.getSingleProductAPI(inventoryId: inventoryId.value, loader: loader).then(
       (value) {
         predefinedValue();
+        // priceChangeAPI();
       },
     );
+  }
+
+  /// Product Pricing API
+  Future<void> priceChangeAPI() async {
+    await ProductRepository.getProductPriceAPI(
+      inventoryId: inventoryId.value,
+      sizeId: selectedSize.value.id?.value ?? "",
+      metalId: selectedMetal.value.id?.value ?? "",
+      diamondClarity: isFancy.isFalse ? selectedDiamond.value.name ?? "" : "",
+      diamonds: isFancy.isTrue
+          ? List.generate(
+              productDetailModel.value.diamonds != null ? productDetailModel.value.diamonds!.length : 0,
+              (index) => {
+                "diamond_clarity": diamondList[index].diamondClarity?.value ?? "",
+                "diamond_shape": diamondList[index].diamondShape ?? "",
+                "diamond_size": diamondList[index].diamondSize ?? "",
+                "diamond_count": diamondList[index].diamondCount ?? 0,
+                "_id": diamondList[index].id ?? "",
+              },
+            )
+          : [],
+    ).then((value) {
+      productDetailModel.value.priceBreaking?.total = value?.data?.inventoryTotalPrice?.value ?? 0;
+      quantity.value = value?.data?.cartQty?.quantity ?? 0;
+    });
   }
 
   /// Set Default Select Value Of Product
@@ -82,7 +111,7 @@ class ProductDetailsController extends GetxController {
       if (index != -1) {
         selectedDiamond.value = diamondList[index];
       } else {
-        selectedDiamond.value = diamondList[0];
+        selectedDiamond.value = diamondList.first;
       }
 
       /// Selected Metal
@@ -90,7 +119,7 @@ class ProductDetailsController extends GetxController {
       if (index != -1) {
         selectedMetal.value = metalList[index];
       } else {
-        selectedMetal.value = metalList[0];
+        selectedMetal.value = metalList.first;
       }
 
       /// Selected Size

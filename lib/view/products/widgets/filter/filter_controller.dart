@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 import '../../../../data/model/filter/gender_model.dart';
+import '../../../../data/model/filter/mrp_model.dart';
 import '../../../../data/model/filter/stock_available_model.dart';
 import '../../../../data/repositories/filter/filter_repository.dart';
 import '../../../../exports.dart';
@@ -10,6 +11,7 @@ class FilterController extends GetxController {
   RxBool isLoader = false.obs;
 
   RxList<FilterItemType> filterOptions = FilterItemType.values.obs;
+  RxList<int> applyFilterCounts = <int>[].obs;
 
   RxDouble minMetalWt = 0.01.obs;
   RxDouble maxMetalWt = 200.0.obs;
@@ -30,14 +32,14 @@ class FilterController extends GetxController {
   Rx<TextEditingController> mrpFromCon = TextEditingController().obs;
   Rx<TextEditingController> mrpToCon = TextEditingController().obs;
 
-  RxList mrpList = [
-    {"label": "upto 25,000".obs, "min": 0, "max": 25000},
-    {"label": "25,001 - 50,000".obs, "min": 25001, "max": 50000},
-    {"label": "50,001 - 75,000".obs, "min": 50001, "max": 75000},
-    {"label": "75,001 - 1,00,000".obs, "min": 75001, "max": 100000},
-    {"label": "1,00,001 to above".obs, "min": 100001, "max": 0},
+  RxList<MrpModel> mrpList = [
+    MrpModel(label: "upto 25,000".obs, min: 0.obs, max: 25000.obs),
+    MrpModel(label: "25,001 - 50,000".obs, min: 25001.obs, max: 50000.obs),
+    MrpModel(label: "50,001 - 75,000".obs, min: 50001.obs, max: 75000.obs),
+    MrpModel(label: "75,001 - 1,00,000".obs, min: 75001.obs, max: 100000.obs),
+    MrpModel(label: "1,00,001 to above".obs, min: 100001.obs),
   ].obs;
-  RxMap selectMrp = {"label": "".obs, "min": 0, "max": 0}.obs;
+  Rx<MrpModel> selectMrp = MrpModel().obs;
 
   final RxList<String> selectedDiamonds = <String>[].obs;
   final RxList<String> selectedGender = <String>[].obs;
@@ -50,10 +52,13 @@ class FilterController extends GetxController {
   String categoryId = "";
   String watchlistId = "";
   ProductsListType productsListType = ProductsListType.normal;
+  int count = 0;
 
   @override
   void onInit() {
     super.onInit();
+    applyFilterCounts.addAll(List.generate(filterOptions.length, (index) => 0));
+
     if (Get.arguments != null) {
       if (Get.arguments['subCategoryId'].runtimeType == String) {
         subCategoryId = Get.arguments['subCategoryId'];
@@ -69,10 +74,9 @@ class FilterController extends GetxController {
   }
 
   @override
-  void onReady() {
+  void onReady() async {
     super.onReady();
-    FilterRepository.stockAvailableList();
-    FilterRepository.genderListAPI();
+    await FilterRepository.stockAvailableList();
   }
 
 //? Clear All Filter
@@ -88,11 +92,13 @@ class FilterController extends GetxController {
     selectedDiamonds.clear();
     selectedCollections.clear();
     selectedGender.clear();
-    selectMrp.value = {"label": "".obs, "min": 0, "max": 0} as Map<dynamic, dynamic>;
+    selectMrp.value = MrpModel();
 
     selectSeller.value = "";
     selectLatestDesign.value = "";
     count = 0;
+
+    applyFilterCounts.value = (List.generate(filterOptions.length, (index) => 0));
   }
 
   void rangeCount() {
@@ -112,8 +118,6 @@ class FilterController extends GetxController {
       }
     }
   }
-
-  int count = 0;
 
 // void getCount() {
 //   rangeCount();

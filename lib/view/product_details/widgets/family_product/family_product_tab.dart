@@ -26,10 +26,11 @@ class FamilyProductTab extends StatelessWidget {
                 children: List.generate(
                   productList.length,
                   (index) => ProductTile(
+                    category: (productList[index].subCategoryId ?? "").obs,
+                    selectSize: (productList[index].sizeId ?? "").obs,
                     inventoryId: productList[index].id ?? "",
                     productTileType: ProductTileType.grid,
                     onTap: () {},
-                    // subCategoryId: category ?? "",
                     isLike: false.obs,
                     imageUrl: productList[index].singleInvImage ?? "",
                     productName: productList[index].name ?? "",
