@@ -7,6 +7,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../data/model/common/splash_model.dart';
 import '../../data/model/product/products_model.dart';
 import '../../data/model/product/single_product_model.dart';
+import '../../data/repositories/cart/cart_repository.dart';
 import '../../data/repositories/wishlist/wishlist_repository.dart';
 import '../../exports.dart';
 import '../../res/app_bar.dart';
@@ -489,7 +490,7 @@ class ProductDetailsScreen extends StatelessWidget {
                 multiRubyOnChanged: (diamondList) async {
                   /// Return List of Selected Diamond
                   if ((diamondList.runtimeType == RxList<DiamondListModel>)) {
-                    con.diamondList = diamondList;
+                    con.diamondList.value = diamondList;
 
                     /// GET NEW PRODUCT PRICE
                     con.priceChangeAPI();
@@ -522,10 +523,44 @@ class ProductDetailsScreen extends StatelessWidget {
               plusMinusTile(
                 context,
                 textValue: con.quantity,
-                onIncrement: (v) {
-                  // UiUtils.toast("Added Successfully");
+                onIncrement: (value) {
+                  CartRepository.updateCartApi(
+                    inventoryId: con.inventoryId.value,
+                    quantity: value,
+                    metalId: con.selectedMetal.value.id?.value ?? "",
+                    sizeId: con.selectedSize.value.id?.value ?? "",
+                    diamondClarity: con.selectedDiamond.value.shortName ?? "",
+                    diamonds: List.generate(
+                      con.diamondList.length,
+                      (index) => {
+                        "diamond_clarity": con.diamondList[index].diamondClarity?.value ?? "",
+                        "diamond_shape": con.diamondList[index].diamondShape ?? "",
+                        "diamond_size": con.diamondList[index].diamondSize ?? "",
+                        "diamond_count": con.diamondList[index].diamondCount ?? 0,
+                        "_id": con.diamondList[index].id ?? "",
+                      },
+                    ),
+                  );
                 },
-                onDecrement: (v) {},
+                onDecrement: (value) {
+                  CartRepository.updateCartApi(
+                    inventoryId: con.inventoryId.value,
+                    quantity: value,
+                    metalId: con.selectedMetal.value.id?.value ?? "",
+                    sizeId: con.selectedSize.value.id?.value ?? "",
+                    diamondClarity: con.selectedDiamond.value.shortName ?? "",
+                    diamonds: List.generate(
+                      con.diamondList.length,
+                      (index) => {
+                        "diamond_clarity": con.diamondList[index].diamondClarity?.value ?? "",
+                        "diamond_shape": con.diamondList[index].diamondShape ?? "",
+                        "diamond_size": con.diamondList[index].diamondSize ?? "",
+                        "diamond_count": con.diamondList[index].diamondCount ?? 0,
+                        "_id": con.diamondList[index].id ?? "",
+                      },
+                    ),
+                  );
+                },
               )
             ],
           ),

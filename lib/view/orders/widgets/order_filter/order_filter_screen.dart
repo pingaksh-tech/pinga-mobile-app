@@ -35,22 +35,22 @@ class OrderFilterScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return Obx(
                     () {
-                      bool isSelected = con.filterType.value != OrderFilterType.values[index];
+                      bool isSelected = con.filterType.value == OrderFilterType.values[index];
                       return GestureDetector(
                         onTap: () {
                           con.filterType.value = OrderFilterType.values[index];
                         },
                         child: Container(
                           padding: EdgeInsets.symmetric(vertical: defaultPadding, horizontal: defaultPadding / 1.5),
-                          alignment: Alignment.centerLeft,
+                          alignment: Alignment.center,
                           color: isSelected ? Theme.of(context).colorScheme.surface : Theme.of(context).scaffoldBackgroundColor,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              // SvgPicture.asset(
-                              //   OrderFilterType.values[index].icon,
-                              //   height: 19.h,
-                              // ),
+                              SvgPicture.asset(
+                                OrderFilterType.values[index].icon,
+                                height: 19.h,
+                              ),
                               Text(
                                 OrderFilterType.values[index].label,
                                 textAlign: TextAlign.center,

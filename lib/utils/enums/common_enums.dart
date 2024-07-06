@@ -268,13 +268,13 @@ enum OrderFilterType {
     id: 1,
     label: "Type",
     slug: "type",
-    icon: AppAssets.deliveryIcon,
+    icon: AppAssets.typeSVG,
   ),
   date(
     id: 1,
     label: "Date",
     slug: "date",
-    icon: AppAssets.deliveryIcon,
+    icon: AppAssets.dateSVG,
   );
 
   final int id;

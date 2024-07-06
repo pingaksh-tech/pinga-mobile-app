@@ -21,6 +21,7 @@ class ProductDetailsController extends GetxController {
   Rx<DiamondModel> selectedSize = DiamondModel().obs;
   Rx<MetalModel> selectedMetal = MetalModel().obs;
   Rx<DiamondModel> selectedDiamond = DiamondModel().obs;
+  RxList<DiamondListModel> diamondList = <DiamondListModel>[].obs;
   RxString selectedRemark = "".obs;
   RxString productCategory = "".obs;
   RxInt quantity = 0.obs;
@@ -62,8 +63,6 @@ class ProductDetailsController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-
-    printOkStatus(productCategory);
     ProductRepository.getSingleProductAPI(inventoryId: inventoryId.value, loader: loader).then(
       (value) {
         predefinedValue();
