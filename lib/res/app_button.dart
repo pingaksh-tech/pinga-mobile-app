@@ -244,9 +244,9 @@ class _AppButtonState extends State<AppButton> {
 
   Color? get titleColor {
     if (widget.buttonType == ButtonType.outline) {
-      return Theme.of(context).colorScheme.primary /*.withOpacity(disableOpacity)*/;
+      return Theme.of(context).colorScheme.primary.withOpacity(disableOpacity);
     } else {
-      return AppColors.getColorOnBackground(Theme.of(context).primaryColor) /*.withOpacity(disableOpacity)*/;
+      return AppColors.getColorOnBackground(Theme.of(context).primaryColor).withOpacity(disableOpacity);
     }
   }
 
@@ -263,6 +263,6 @@ class _AppButtonState extends State<AppButton> {
   }
 
   double get disableOpacity {
-    return widget.disableButton == true ? (Get.isDarkMode ? .6 : .9) : .35;
+    return widget.disableButton == true ? (Get.isDarkMode ? .6 : .9) : 1;
   }
 }

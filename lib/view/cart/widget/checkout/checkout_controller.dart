@@ -5,6 +5,8 @@ import '../../../../data/model/cart/cart_model.dart';
 import '../../../../data/model/cart/retailer_model.dart';
 
 class CheckoutController extends GetxController {
+  RxBool disableButton = true.obs;
+
   RxInt quantity = 0.obs;
   RxDouble totalPrice = 0.0.obs;
   String retailerId = "";
@@ -32,5 +34,9 @@ class CheckoutController extends GetxController {
         cartList = Get.arguments["cartList"];
       }
     }
+  }
+
+  void checkButtonDisableStatus() {
+    disableButton.value = !(orderTypeCon.value.text.isNotEmpty && retailerCon.value.text.isNotEmpty);
   }
 }

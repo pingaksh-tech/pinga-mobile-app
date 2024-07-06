@@ -146,6 +146,7 @@ class ProfileScreen extends StatelessWidget {
                     title: "Username",
                     subTitle: "${LocalStorage.userModel.firstName ?? ""} ${LocalStorage.userModel.lastName ?? ""}",
                     iconImage: AppAssets.usernameIcon,
+                    height: 15.h,
                   ),
                   divider,
                   profileTile(
@@ -178,6 +179,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   divider,
                   GestureDetector(
+                    behavior: HitTestBehavior.translucent,
                     onTap: () {
                       AppDialogs.logoutDialog(
                         Get.context!,
@@ -193,12 +195,14 @@ class ProfileScreen extends StatelessWidget {
                     },
                     child: Row(
                       children: [
-                        SvgPicture.asset(
-                          AppAssets.logOutIcon,
-                          color: Theme.of(context).primaryColor,
-                          height: 18.h,
-                        ).paddingOnly(left: defaultPadding / 1.8),
-                        (defaultPadding / 1.1).horizontalSpace,
+                        Container(
+                          child: SvgPicture.asset(
+                            AppAssets.logOutSVG,
+                            color: Theme.of(context).primaryColor,
+                            height: 23.h,
+                          ).paddingOnly(left: defaultPadding / 3.5),
+                        ),
+                        (defaultPadding / 2).horizontalSpace,
                         Text(
                           "Log out",
                           style: AppTextStyle.subtitleStyle(context).copyWith(
@@ -209,7 +213,7 @@ class ProfileScreen extends StatelessWidget {
                           ),
                         ),
                       ],
-                    ),
+                    ).paddingSymmetric(vertical: defaultPadding / 2.5),
                   ),
                   divider,
                 ],
@@ -249,10 +253,14 @@ class ProfileScreen extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SvgPicture.asset(
-          iconImage,
-          color: Theme.of(context).primaryColor,
-          height: height ?? 26.h,
+        SizedBox(
+          width: 24.h,
+          height: 24.h,
+          child: SvgPicture.asset(
+            iconImage,
+            color: Theme.of(context).primaryColor,
+            height: height ?? 20.h,
+          ),
         ),
         (defaultPadding / 1.5).horizontalSpace,
         Expanded(

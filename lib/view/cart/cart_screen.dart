@@ -83,6 +83,7 @@ class CartScreen extends StatelessWidget {
                             separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
                             itemBuilder: (context, index) {
                               return ProductTile(
+                                isFancy: con.cartList[index].isDiamondMultiple ?? false,
                                 cartId: con.cartList[index].id,
                                 diamonds: con.cartList[index].diamonds,
                                 inventoryId: con.cartList[index].inventoryId,
@@ -93,6 +94,7 @@ class CartScreen extends StatelessWidget {
                                 category: RxString(con.cartList[index].subCategoryId ?? ""),
                                 isSizeAvailable: true,
                                 productTileType: ProductTileType.cartTile,
+                                diamondList: RxList(con.cartList[index].diamonds ?? []),
                                 isCartSelected: RxBool(
                                   con.selectedList.contains(
                                     con.cartList[index],
@@ -126,8 +128,8 @@ class CartScreen extends StatelessWidget {
                                     AppRoutes.productDetailsScreen,
                                     arguments: {
                                       "category": con.cartList[index].subCategoryId ?? '',
-                                      // 'isSize': con.isSizeAvailable.value,
-                                      // 'isFancy': con.isFancyDiamond.value,
+                                      // 'isSize': con.cartList[index].isDiamondMultiple,
+                                      'isFancy': con.cartList[index].isDiamondMultiple,
                                       'inventoryId': con.cartList[index].inventoryId,
                                       'name': con.cartList[index].inventoryName,
                                     },

@@ -77,6 +77,7 @@ class CartModel {
   final String? inventoryName;
   final List<String>? inventoryImage;
   final double? inventoryTotalPrice;
+  final bool? isDiamondMultiple;
 
   CartModel({
     this.id,
@@ -93,6 +94,7 @@ class CartModel {
     this.inventoryImage,
     this.inventoryTotalPrice,
     this.categoryId,
+    this.isDiamondMultiple,
   });
 
   factory CartModel.fromJson(Map<String, dynamic> json) => CartModel(
@@ -110,6 +112,7 @@ class CartModel {
         inventoryName: json["inventory_name"],
         inventoryImage: json["inventory_image"] == null ? [] : List<String>.from(json["inventory_image"]!.map((x) => x)),
         inventoryTotalPrice: json["inventory_total_price"]?.toDouble(),
+        isDiamondMultiple: json["isDiamondMultiple"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -127,6 +130,7 @@ class CartModel {
         "inventory_name": inventoryName,
         "inventory_image": inventoryImage == null ? [] : List<dynamic>.from(inventoryImage!.map((x) => x)),
         "inventory_total_price": inventoryTotalPrice,
+        "isDiamondMultiple": isDiamondMultiple,
       };
 }
 

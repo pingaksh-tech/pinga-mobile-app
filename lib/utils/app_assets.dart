@@ -127,6 +127,9 @@ class AppAssets {
   static const String productNameSVG = '${svgPath}product_name_icon.svg';
   static const String rangeSVG = '${svgPath}range_icon.svg';
   static const String diamondSVg = '${svgPath}diamond_ic.svg';
+  static const String dateSVG = '${svgPath}date_icon.svg';
+  static const String typeSVG = '${svgPath}type_icon.svg';
+  static const String logOutSVG = '${svgPath}logout_icon.svg';
 
   /// ***********************************************************************************
   ///                                   JSON

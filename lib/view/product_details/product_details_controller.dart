@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../controller/predefine_value_controller.dart';
 import '../../data/model/common/splash_model.dart';
+import '../../data/model/product/products_model.dart';
 import '../../data/model/product/single_product_model.dart';
 import '../../data/repositories/product/product_repository.dart';
 import '../../exports.dart';
@@ -20,6 +21,7 @@ class ProductDetailsController extends GetxController {
   Rx<DiamondModel> selectedSize = DiamondModel().obs;
   Rx<MetalModel> selectedMetal = MetalModel().obs;
   Rx<DiamondModel> selectedDiamond = DiamondModel().obs;
+  RxList<DiamondListModel> diamondList = <DiamondListModel>[].obs;
   RxString selectedRemark = "".obs;
   RxString productCategory = "".obs;
   RxInt quantity = 0.obs;
@@ -59,8 +61,6 @@ class ProductDetailsController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-
-    printOkStatus(productCategory);
     ProductRepository.getSingleProductAPI(inventoryId: inventoryId.value, loader: loader).then(
       (value) {
         predefinedValue();
