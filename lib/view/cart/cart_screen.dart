@@ -23,7 +23,7 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PullToRefreshIndicator(
-      onRefresh: () => CartRepository.getCartApi(isPullToRefresh: true, background: true),
+      onRefresh: () => CartRepository.getCartApi(isPullToRefresh: true),
       child: Obx(
         () => Scaffold(
           backgroundColor: Theme.of(context).colorScheme.surface,
@@ -43,119 +43,124 @@ class CartScreen extends StatelessWidget {
               : null,
           body: con.cartLoader.isFalse
               ? (con.cartList.isNotEmpty
-                  ? ListView(controller: con.scrollController, physics: const AlwaysScrollableScrollPhysics(), children: [
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: defaultPadding / 1.2),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor.withAlpha(20),
-                          borderRadius: BorderRadius.circular(defaultRadius),
-                        ),
-                        child: CustomCheckboxTile(
-                            title: "Select all items",
-                            behavior: HitTestBehavior.deferToChild,
-                            isSelected: RxBool(con.selectedList.length == con.cartList.length),
-                            titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                ),
-                            scale: 1.1,
-                            borderWidth: 1.6,
-                            onChanged: (_) {
-                              if (con.selectedList.length != con.cartList.length) {
-                                con.selectedList.addAll(
-                                  con.cartList.where(
-                                    (item) => !con.selectedList.contains(item),
-                                  ),
-                                );
-                              } else {
-                                con.selectedList.clear();
-                              }
-                              con.calculateSelectedItemPrice();
-                              con.calculateSelectedQue();
-                            }).paddingOnly(left: defaultPadding),
-                      ),
-                      Column(
-                        children: [
-                          ListView.separated(
-                            padding: EdgeInsets.symmetric(vertical: defaultPadding),
-                            itemCount: con.cartList.length,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
-                            itemBuilder: (context, index) {
-                              return ProductTile(
-                                isFancy: con.cartList[index].isDiamondMultiple ?? false,
-                                cartId: con.cartList[index].id,
-                                diamonds: con.cartList[index].diamonds,
-                                inventoryId: con.cartList[index].inventoryId,
-                                productsListTypeType: ProductsListType.cart,
-                                selectMetalCart: (con.cartList[index].metalId ?? "").obs,
-                                selectDiamondCart: (con.cartList[index].diamondClarity ?? "").obs,
-                                item: con.cartList[index],
-                                category: RxString(con.cartList[index].subCategoryId ?? ""),
-                                isSizeAvailable: true,
-                                productTileType: ProductTileType.cartTile,
-                                diamondList: RxList(con.cartList[index].diamonds ?? []),
-                                isCartSelected: RxBool(
-                                  con.selectedList.contains(
-                                    con.cartList[index],
-                                  ),
-                                ),
-                                imageUrl: (con.cartList[index].inventoryImage != null && con.cartList[index].inventoryImage!.isNotEmpty) ? con.cartList[index].inventoryImage![0] : "",
-                                productName: (con.cartList[index].inventoryName ?? ""),
-                                productPrice: con.cartList[index].inventoryTotalPrice.toString(),
-                                brandName: con.cartList[index].inventoryName ?? "Unknown",
-                                productQuantity: RxInt(con.cartList[index].quantity ?? 0),
-                                selectSize: (con.cartList[index].sizeId ?? "").obs,
-                                deleteOnTap: () {
-                                  //? CART DELETE API
-                                  CartRepository.deleteCartAPi(cartId: con.cartList[index].id ?? "", isLoader: con.cartLoader);
-                                  con.calculateSelectedItemPrice();
-                                  con.calculateSelectedQue();
-                                  Get.back();
-                                },
-                                onChanged: (_) {
-                                  if (!con.selectedList.contains(con.cartList[index])) {
-                                    con.selectedList.add(con.cartList[index]);
-                                    con.calculateSelectedQue();
-                                  } else {
-                                    con.selectedList.remove(con.cartList[index]);
-                                  }
-                                  con.calculateSelectedItemPrice();
-                                  con.calculateSelectedQue();
-                                },
-                                onTap: () {
-                                  Get.toNamed(
-                                    AppRoutes.productDetailsScreen,
-                                    arguments: {
-                                      "category": con.cartList[index].subCategoryId ?? '',
-                                      // 'isSize': con.cartList[index].isDiamondMultiple,
-                                      'isFancy': con.cartList[index].isDiamondMultiple,
-                                      'inventoryId': con.cartList[index].inventoryId,
-                                      'name': con.cartList[index].inventoryName,
-                                    },
-                                  );
-                                },
-                              );
-                            },
+                  ? ListView(
+                      controller: con.scrollController,
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      children: [
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: defaultPadding / 1.2),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor.withAlpha(20),
+                            borderRadius: BorderRadius.circular(defaultRadius),
                           ),
+                          child: CustomCheckboxTile(
+                              title: "Select all items",
+                              behavior: HitTestBehavior.deferToChild,
+                              isSelected: RxBool(con.selectedList.length == con.cartList.length),
+                              titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                              scale: 1.1,
+                              borderWidth: 1.6,
+                              onChanged: (_) {
+                                if (con.selectedList.length != con.cartList.length) {
+                                  con.selectedList.addAll(
+                                    con.cartList.where(
+                                      (item) => !con.selectedList.contains(item),
+                                    ),
+                                  );
+                                } else {
+                                  con.selectedList.clear();
+                                }
+                                con.calculateSelectedItemPrice();
+                                con.calculateSelectedQue();
+                              }).paddingOnly(left: defaultPadding),
+                        ),
+                        Column(
+                          children: [
+                            ListView.separated(
+                              padding: EdgeInsets.symmetric(vertical: defaultPadding),
+                              itemCount: con.cartList.length,
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
+                              itemBuilder: (context, index) {
+                                return ProductTile(
+                                  isFancy: con.cartList[index].isDiamondMultiple ?? false,
+                                  cartId: con.cartList[index].id,
+                                  diamonds: con.cartList[index].diamonds,
+                                  inventoryId: con.cartList[index].inventoryId,
+                                  productsListTypeType: ProductsListType.cart,
+                                  selectMetalCart: (con.cartList[index].metalId ?? "").obs,
+                                  selectDiamondCart: (con.cartList[index].diamondClarity ?? "").obs,
+                                  item: con.cartList[index],
+                                  category: RxString(con.cartList[index].subCategoryId ?? ""),
+                                  isSizeAvailable: true,
+                                  productTileType: ProductTileType.cartTile,
+                                  diamondList: RxList(con.cartList[index].diamonds ?? []),
+                                  isCartSelected: RxBool(
+                                    con.selectedList.contains(
+                                      con.cartList[index],
+                                    ),
+                                  ),
+                                  imageUrl: (con.cartList[index].inventoryImage != null && con.cartList[index].inventoryImage!.isNotEmpty) ? con.cartList[index].inventoryImage![0] : "",
+                                  productName: (con.cartList[index].inventoryName ?? ""),
+                                  productPrice: con.cartList[index].inventoryTotalPrice.toString(),
+                                  brandName: con.cartList[index].inventoryName ?? "Unknown",
+                                  productQuantity: RxInt(con.cartList[index].quantity ?? 0),
+                                  selectSize: (con.cartList[index].sizeId ?? "").obs,
+                                  deleteOnTap: () {
+                                    //? CART DELETE API
+                                    CartRepository.deleteCartAPi(cartId: con.cartList[index].id ?? "", isLoader: con.cartLoader);
+                                    con.calculateSelectedItemPrice();
+                                    con.calculateSelectedQue();
+                                    con.selectedList.refresh();
+                                    Get.back();
+                                  },
+                                  onChanged: (_) {
+                                    if (!con.selectedList.contains(con.cartList[index])) {
+                                      con.selectedList.add(con.cartList[index]);
+                                      con.calculateSelectedQue();
+                                    } else {
+                                      con.selectedList.remove(con.cartList[index]);
+                                    }
+                                    con.calculateSelectedItemPrice();
+                                    con.calculateSelectedQue();
+                                  },
+                                  onTap: () {
+                                    Get.toNamed(
+                                      AppRoutes.productDetailsScreen,
+                                      arguments: {
+                                        "category": con.cartList[index].subCategoryId ?? '',
+                                        'isFancy': con.cartList[index].isDiamondMultiple,
+                                        'cartId': con.cartList[index].id,
+                                        "inventoryId": con.cartList[index].inventoryId,
+                                        'name': con.cartList[index].inventoryName,
+                                      },
+                                    );
+                                  },
+                                );
+                              },
+                            ),
 
-                          /// PAGINATION LOADER
-                          Visibility(
-                            visible: con.paginationLoader.isTrue,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding / 2).copyWith(top: 0),
-                              child: ShimmerUtils.shimmer(
-                                child: ShimmerUtils.shimmerContainer(
-                                  borderRadiusSize: defaultRadius,
-                                  height: Get.width / 3,
-                                  width: Get.width,
+                            /// PAGINATION LOADER
+                            Visibility(
+                              visible: con.paginationLoader.isTrue,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding / 2).copyWith(top: 0),
+                                child: ShimmerUtils.shimmer(
+                                  child: ShimmerUtils.shimmerContainer(
+                                    borderRadiusSize: defaultRadius,
+                                    height: Get.width / 3,
+                                    width: Get.width,
+                                  ),
                                 ),
                               ),
-                            ),
-                          )
-                        ],
-                      )
-                    ])
+                            )
+                          ],
+                        )
+                      ],
+                    )
                   : ListView(
                       children: [
                         EmptyElement(
@@ -276,6 +281,9 @@ class CartScreen extends StatelessWidget {
                                                   }
                                                 },
                                               );
+                                              con.calculateSelectedItemPrice();
+                                              con.calculateSelectedQue();
+                                              con.selectedList.refresh();
                                             },
                                           ),
                                         ),

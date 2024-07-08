@@ -5,11 +5,13 @@ import '../../../exports.dart';
 import '../../../view/cart/cart_controller.dart';
 import '../../../view/cart/widget/stock/cart_stock_controller.dart';
 import '../../../view/cart/widget/summary/summary_controller.dart';
+import '../../../view/product_details/product_details_controller.dart';
 import '../../model/cart/cart_model.dart';
 import '../../model/cart/cart_summary_model.dart';
 import '../../model/cart/product_detail_model.dart';
 import '../../model/cart/retailer_model.dart';
 import '../../model/cart/stock_model.dart';
+import '../../model/product/single_product_model.dart';
 
 class CartRepository {
   /// ***********************************************************************************
@@ -46,18 +48,6 @@ class CartRepository {
       ]
     }
   };
-  static Map<String, dynamic> summaryList = {
-    "success": true,
-    "message": "Product fetched successfully",
-    "data": {
-      "productDetail": [
-        {
-          "delivery": ["15 DAYS", "48 HOURS", "7 DAYS", "Immediate", "ORO - 15 Days"],
-          "quantity": ["680", "480", "20", "1", ""],
-        },
-      ]
-    }
-  };
 
   /// ***********************************************************************************
   ///                                 GET CART API
@@ -66,7 +56,6 @@ class CartRepository {
   static Future<dynamic> getCartApi({
     bool isInitial = true,
     RxBool? loader,
-    bool background = false,
     bool isPullToRefresh = false,
   }) async {
     ///
@@ -139,12 +128,14 @@ class CartRepository {
         ).then(
           (response) async {
             if (response != null) {
+              /// Get cart api
+              await getCartApi(isPullToRefresh: true);
               if (isRegistered<CartController>()) {
                 final CartController con = Get.find<CartController>();
                 if (!isValEmpty(cartId)) {
-                  int index = con.cartList.indexWhere((e) => e.id == cartId);
+                  int index = con.selectedList.indexWhere((e) => e.id == cartId);
                   if (index != -1) {
-                    con.cartList.removeAt(index);
+                    con.selectedList.removeAt(index);
                   }
                 } else {
                   con.cartList.clear();
@@ -179,9 +170,11 @@ class CartRepository {
         ).then(
           (response) async {
             if (response != null) {
+              /// Get cart api
+
+              await getCartApi(isPullToRefresh: true);
               if (isRegistered<CartController>()) {
                 final CartController con = Get.find<CartController>();
-
                 con.cartList.removeWhere((item) => con.selectedList.contains(item));
                 con.selectedList.clear();
               }
@@ -303,6 +296,7 @@ class CartRepository {
     required String metalId,
     required String sizeId,
     required String diamondClarity,
+    num? extraMetalWeight,
     List<Map<String, dynamic>>? diamonds,
   }) async {
     if (await getConnectivityResult()) {
@@ -315,14 +309,16 @@ class CartRepository {
             "inventory_id": inventoryId,
             "quantity": quantity,
             "metal_id": metalId,
-            "size_id": sizeId,
+            if (!isValEmpty(sizeId)) "size_id": sizeId,
             if (!isValEmpty(diamondClarity)) "diamond_clarity": diamondClarity,
             if (!isValEmpty(diamonds)) "diamonds": diamonds,
+            if (!isValEmpty(extraMetalWeight)) "extra_metal_weight": extraMetalWeight,
           },
         ).then(
           (response) async {
             if (response != null) {
-              getCartApi(background: true, isPullToRefresh: true);
+              /// Get cart api
+              await getCartApi(isPullToRefresh: true);
             }
             isLoader?.value = false;
             return response;
@@ -361,6 +357,44 @@ class CartRepository {
         printErrors(type: "addWatchlistToCartAPI", errText: e);
       }
     }
+  }
+
+  /// ***********************************************************************************
+  ///                                 GET CART DETAIL
+  /// ***********************************************************************************
+
+  static Future<dynamic> getSingleCartItemAPI({RxBool? loader, required String cartId}) async {
+    ///
+    if (await getConnectivityResult() && isRegistered<ProductDetailsController>()) {
+      final ProductDetailsController con = Get.find<ProductDetailsController>();
+
+      try {
+        loader?.value = true;
+
+        /// API
+        await APIFunction.getApiCall(
+          apiUrl: ApiUrls.getSingleCartDetailGET(cartId: cartId),
+          loader: loader,
+        ).then(
+          (response) async {
+            if (response != null) {
+              GetSingleProductModel model = GetSingleProductModel.fromJson(response);
+
+              if (model.data != null) {
+                con.productDetailModel.value = model.data!;
+              }
+              loader?.value = false;
+            } else {
+              loader?.value = false;
+            }
+            return response;
+          },
+        );
+      } catch (e) {
+        loader?.value = false;
+        printErrors(type: "getSingleCartAPI", errText: e);
+      }
+    } else {}
   }
 
   /// ***********************************************************************************

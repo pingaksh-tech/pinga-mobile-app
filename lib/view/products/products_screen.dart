@@ -32,7 +32,7 @@ class ProductsScreen extends StatelessWidget {
           shadowColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.3),
           title: con.categoryName.isNotEmpty ? con.categoryName.value : con.subCategory.value.name,
 
-          actions: const [
+          actions:  [
             CartIconButton(),
           ],
 
@@ -134,19 +134,22 @@ class ProductsScreen extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     ProductTile(
-                                      category: RxString(con.subCategory.value.id ?? ""),
+                                      category: RxString(con.inventoryProductList[index].subCategoryId ?? ""),
                                       isFancy: con.isFancyDiamond.value,
                                       inventoryId: con.inventoryProductList[index].id,
                                       diamondList: RxList(con.inventoryProductList[index].diamonds ?? []),
                                       productTileType: con.isProductViewChange.isTrue ? ProductTileType.grid : ProductTileType.list,
-                                      onTap: () => Get.toNamed(AppRoutes.productDetailsScreen, arguments: {
-                                        "category": con.inventoryProductList[index].subCategoryId ?? '',
-                                        'isSize': con.isSizeAvailable.value,
-                                        'isFancy': con.isFancyDiamond.value,
-                                        'inventoryId': con.inventoryProductList[index].id,
-                                        'name': con.inventoryProductList[index].name,
-                                        'like': con.inventoryProductList[index].isWishlist,
-                                      }),
+                                      onTap: () => Get.toNamed(
+                                        AppRoutes.productDetailsScreen,
+                                        arguments: {
+                                          "category": con.inventoryProductList[index].subCategoryId ?? '',
+                                          'isSize': con.isSizeAvailable.value,
+                                          'isFancy': con.isFancyDiamond.value,
+                                          'inventoryId': con.inventoryProductList[index].id,
+                                          'name': con.inventoryProductList[index].name,
+                                          'like': con.inventoryProductList[index].isWishlist,
+                                        },
+                                      ),
                                       isLike: con.inventoryProductList[index].isWishlist,
                                       imageUrl: (con.inventoryProductList[index].inventoryImages != null && con.inventoryProductList[index].inventoryImages!.isNotEmpty) ? con.inventoryProductList[index].inventoryImages![0] : "",
                                       productName: con.inventoryProductList[index].name ?? "",

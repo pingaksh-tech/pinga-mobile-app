@@ -14,7 +14,7 @@ import '../../res/app_bar.dart';
 import '../cart/cart_controller.dart';
 import '../cart/components/cart_popup_menu.dart';
 import '../drawer/app_drawer.dart';
-import '../orders/orders_controller.dart';
+import '../orders/widgets/order_filter/order_filter_controller.dart';
 import 'bottombar_controller.dart';
 
 class BottomBarScreen extends StatelessWidget {
@@ -22,7 +22,7 @@ class BottomBarScreen extends StatelessWidget {
 
   final BottomBarController con = Get.put(BottomBarController());
   final PreDefinedValueController dialogCon = Get.find<PreDefinedValueController>();
-  final OrdersController orderCon = Get.find<OrdersController>();
+  final OrderFilterController orderCon = Get.find<OrderFilterController>();
   final CartController cartCon = Get.find<CartController>();
 
   @override
@@ -98,35 +98,30 @@ class BottomBarScreen extends StatelessWidget {
                                         BlendMode.srcIn,
                                       ),
                                     ),
-                                    onPressed: () => Get.toNamed(AppRoutes.orderFilterScreen)?.then(
-                                      (value) {
-                                        orderCon.filterCount.value = value;
-                                      },
-                                    ),
+                                    onPressed: () => Get.toNamed(AppRoutes.orderFilterScreen),
                                   ),
-                                  orderCon.filterCount.value != 0
-                                      ? Positioned(
-                                          top: 2.h,
-                                          right: defaultPadding / 2,
-                                          child: Container(
-                                            padding: EdgeInsets.all(4.h).copyWith(top: 5.h),
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Theme.of(context).colorScheme.primary,
-                                            ),
-                                            alignment: Alignment.center,
-                                            child: Text(
-                                              orderCon.filterCount.value.toString(),
-                                              textAlign: TextAlign.center,
-                                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                                    fontSize: 10.sp,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: AppColors.background,
-                                                  ),
-                                            ),
-                                          ),
-                                        )
-                                      : const SizedBox(),
+                                  if (orderCon.filterCount.value != 0)
+                                    Positioned(
+                                      top: 2.h,
+                                      right: defaultPadding / 2,
+                                      child: Container(
+                                        padding: EdgeInsets.all(4.h).copyWith(top: 5.h),
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Theme.of(context).colorScheme.primary,
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          orderCon.filterCount.value.toString(),
+                                          textAlign: TextAlign.center,
+                                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                                fontSize: 10.sp,
+                                                fontWeight: FontWeight.w600,
+                                                color: AppColors.background,
+                                              ),
+                                        ),
+                                      ),
+                                    )
                                 ],
                               )
                             : const SizedBox(),

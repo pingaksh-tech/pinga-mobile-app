@@ -5,6 +5,7 @@ import '../../controller/predefine_value_controller.dart';
 import '../../data/model/common/splash_model.dart';
 import '../../data/model/product/products_model.dart';
 import '../../data/model/product/single_product_model.dart';
+import '../../data/repositories/cart/cart_repository.dart';
 import '../../data/repositories/product/product_repository.dart';
 import '../../exports.dart';
 
@@ -28,6 +29,7 @@ class ProductDetailsController extends GetxController {
 
   Rx<SingleProductModel> productDetailModel = SingleProductModel().obs;
   RxString inventoryId = "".obs;
+  RxString cartId = "".obs;
   RxString productName = "".obs;
   num extraMetalPrice = 0;
   num extraMetalWt = 0.0;
@@ -52,6 +54,9 @@ class ProductDetailsController extends GetxController {
       if (Get.arguments['inventoryId'].runtimeType == String) {
         inventoryId.value = Get.arguments['inventoryId'];
       }
+      if (Get.arguments['cartId'].runtimeType == String) {
+        cartId.value = Get.arguments['cartId'];
+      }
       if (Get.arguments['name'].runtimeType == String) {
         productName.value = Get.arguments['name'];
         isLike = Get.arguments['like'] ?? false.obs;
@@ -62,12 +67,21 @@ class ProductDetailsController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    ProductRepository.getSingleProductAPI(inventoryId: inventoryId.value, loader: loader).then(
-      (value) {
-        predefinedValue();
-        // priceChangeAPI();
-      },
-    );
+    if (isValEmpty(cartId)) {
+      ProductRepository.getSingleProductAPI(inventoryId: inventoryId.value, loader: loader).then(
+        (value) {
+          predefinedValue();
+          // priceChangeAPI();
+        },
+      );
+    } else {
+      CartRepository.getSingleCartItemAPI(cartId: cartId.value, loader: loader).then(
+        (value) {
+          predefinedValue();
+          // priceChangeAPI();
+        },
+      );
+    }
   }
 
   /// Product Pricing API
@@ -136,6 +150,11 @@ class ProductDetailsController extends GetxController {
             }
           }
         }
+      }
+      if (!isValEmpty(cartId)) {
+        quantity.value = productDetailModel.value.cartQuantity ?? 0;
+        isLike.value = productDetailModel.value.isWishList ?? false;
+        extraMetalWt = productDetailModel.value.extraMetalWeight ?? 0;
       }
     }
   }

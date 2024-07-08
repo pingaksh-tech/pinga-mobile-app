@@ -16,6 +16,7 @@ import '../view/drawer/widgets/feedback/feedback_screen.dart';
 import '../view/drawer/widgets/pdf_viewer/pdf_viewer.dart';
 import '../view/drawer/widgets/settings/settings_screen.dart';
 import '../view/drawer/widgets/wishlist/wishlist_screen.dart';
+import '../view/orders/widgets/order_detail/order_detail_screen.dart';
 import '../view/orders/widgets/order_filter/order_filter_screen.dart';
 import '../view/product_details/product_details_screen.dart';
 import '../view/product_details/widgets/image_view/image_view_screen.dart';
@@ -68,5 +69,6 @@ class AppPages {
     _getPage(name: AppRoutes.catalogueScreen, page: () => CatalogueScreen()),
     _getPage(name: AppRoutes.pdfViewerScreen, page: () => PdfViewerScreen()),
     _getPage(name: AppRoutes.checkoutScreen, page: () => CheckoutScreen()),
+    _getPage(name: AppRoutes.orderDetailScreen, page: () => OrderDetailScreen()),
   ];
 }

@@ -9,11 +9,11 @@ class OrdersController extends GetxController {
   Rx<OrderCounts> orderCounts = OrderCounts().obs;
   RxList<OrderModel> orderList = <OrderModel>[].obs;
   RxInt page = 1.obs;
-  RxInt itemLimit = 6.obs;
+  RxInt itemLimit = 20.obs;
   RxBool nextPageAvailable = true.obs;
   RxBool isLoading = false.obs;
   RxBool paginationLoading = false.obs;
-  RxInt filterCount = 0.obs;
+
   @override
   void onInit() {
     super.onInit();

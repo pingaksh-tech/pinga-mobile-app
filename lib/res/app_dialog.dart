@@ -1306,8 +1306,8 @@ class AppDialogs {
     );
   }
 
-  static Future<dynamic> addMetalDialog(BuildContext context, {num metalPrice = 1}) {
-    Rx<TextEditingController> controller = TextEditingController().obs;
+  static Future<dynamic> addMetalDialog(BuildContext context, {num metalPrice = 1, num? metalWeight}) {
+    Rx<TextEditingController> controller = TextEditingController(text: metalWeight != 0 ? (metalWeight).toString() : "").obs;
     printOkStatus(metalPrice);
     num totalPrice = 1;
     return Get.dialog(
@@ -1361,11 +1361,13 @@ class AppDialogs {
               textInputAction: TextInputAction.done,
               onChanged: (val) {
                 /// Debounce
-                commonDebounce(callback: () async {
-                  controller.refresh();
-                  totalPrice = (num.tryParse(val) ?? 1) * metalPrice;
-                  await null;
-                });
+                commonDebounce(
+                  callback: () async {
+                    controller.refresh();
+                    totalPrice = (num.tryParse(val) ?? 1) * metalPrice;
+                    await null;
+                  },
+                );
               },
             ),
             (defaultPadding / 1.5).verticalSpace,

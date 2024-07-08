@@ -159,11 +159,20 @@ class CheckoutScreen extends StatelessWidget {
                                     subTotal: con.totalPrice.value.toString(),
                                     cartItems: cartItems,
                                   );
-                                  Get.back();
-                                  Get.back();
-                                  if (isRegistered<BottomBarController>()) {
-                                    BottomBarController bottomCon = Get.find<BottomBarController>();
-                                    bottomCon.currentBottomIndex.value = 3;
+                                  if (Get.currentRoute != AppRoutes.cartScreen) {
+                                    Get.back();
+                                    Get.back();
+                                    if (isRegistered<BottomBarController>()) {
+                                      BottomBarController bottomCon = Get.find<BottomBarController>();
+                                      bottomCon.currentBottomIndex.value = 3;
+                                    }
+                                  } else {
+                                    Get.back();
+                                    Get.back();
+                                    if (isRegistered<BottomBarController>()) {
+                                      BottomBarController bottomCon = Get.find<BottomBarController>();
+                                      bottomCon.currentBottomIndex.value = 3;
+                                    }
                                   }
                                 },
                               );

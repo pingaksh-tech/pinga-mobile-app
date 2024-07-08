@@ -34,7 +34,7 @@ class SubCategoryScreen extends StatelessWidget {
               backgroundColor: Theme.of(context).colorScheme.surface,
               shadowColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.3),
               title: con.categoryName.value,
-              actions: const [
+              actions:  [
                 /* AppIconButton(
                   onPressed: () => Get.toNamed(AppRoutes.settingsScreen),
                   icon: SvgPicture.asset(

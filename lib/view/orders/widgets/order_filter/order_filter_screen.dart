@@ -52,7 +52,7 @@ class OrderFilterScreen extends StatelessWidget {
                                 height: 19.h,
                               ),
                               Text(
-                                OrderFilterType.values[index].label,
+                                "${OrderFilterType.values[index].label} ${con.applyFilterCounts[index] != 0 ? "(${con.applyFilterCounts[index]})" : ""}",
                                 textAlign: TextAlign.center,
                                 style: AppTextStyle.titleStyle(context).copyWith(fontSize: 13.sp, fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400),
                               ),
@@ -94,7 +94,6 @@ class OrderFilterScreen extends StatelessWidget {
                           suffixOnTap: con.retailerCon.value.text.isNotEmpty
                               ? () async {
                                   FocusScope.of(context).unfocus();
-
                                   con.retailerCon.value.clear();
                                   con.retailerId = "";
                                 }
@@ -110,6 +109,11 @@ class OrderFilterScreen extends StatelessWidget {
                                   con.retailerModel.value = retailerModel;
                                   con.retailerCon.value.text = con.retailerModel.value.businessName ?? "";
                                   con.retailerId = con.retailerModel.value.id?.value ?? "";
+                                  con.countAppliedFilters();
+
+                                  if (con.retailerCon.value.text.isNotEmpty) {
+                                    con.applyFilterCounts[0] = 1;
+                                  }
                                 }
                               },
                             );
@@ -192,6 +196,10 @@ class OrderFilterScreen extends StatelessWidget {
                               con.startDateCon.value.text = UiUtils.convertDateToDotSeparate(value);
                               con.startDate.value = value;
                               con.startDateValidation.value = true;
+                              con.countAppliedFilters();
+                              if (con.startDateCon.value.text.isNotEmpty) {
+                                con.applyFilterCounts[1] = 1;
+                              }
                             }
                           },
                         ),
@@ -225,6 +233,10 @@ class OrderFilterScreen extends StatelessWidget {
                               con.endDateCon.value.text = UiUtils.convertDateToDotSeparate(value);
                               con.endDate.value = value;
                               con.endDateValidation.value = true;
+                              con.countAppliedFilters();
+                              if (con.endDateCon.value.text.isNotEmpty) {
+                                con.applyFilterCounts[1] = 1;
+                              }
                             }
                           },
                         ),
@@ -244,15 +256,7 @@ class OrderFilterScreen extends StatelessWidget {
                   height: 30.h,
                   title: "Clear All",
                   buttonType: ButtonType.outline,
-                  onPressed: () {
-                    con.startDateCon.value.clear();
-                    con.endDateCon.value.clear();
-                    con.retailerCon.value.clear();
-                    con.retailerId = "";
-                    con.startDateValidation.value = true;
-                    con.endDateValidation.value = true;
-                    con.dateError.value = "";
-                  },
+                  onPressed: () => con.clearFilter(),
                 ),
               ),
               defaultPadding.horizontalSpace,
@@ -269,8 +273,7 @@ class OrderFilterScreen extends StatelessWidget {
                         loader: ordersController.isLoading,
                       ).then(
                         (value) {
-                          int filterCount = con.countAppliedFilters();
-                          Get.back(result: filterCount);
+                          Get.back();
                         },
                       );
                     }

@@ -40,7 +40,9 @@ class ProductDetailsScreen extends StatelessWidget {
         appBar: MyAppBar(
           title: con.productName.value,
           backgroundColor: Colors.white,
-          actions: const [CartIconButton()],
+          actions: [
+            CartIconButton(),
+          ],
         ),
         body: con.loader.isFalse
             ? DefaultTabController(
@@ -214,13 +216,16 @@ class ProductDetailsScreen extends StatelessWidget {
                                       icon: AppAssets.watchlistFilled,
                                       title: "Watch",
                                       onPressed: () {
-                                        Get.toNamed(AppRoutes.addWatchListScreen, arguments: {
-                                          'inventoryId': con.inventoryId.value,
-                                          'quantity': con.quantity.value,
-                                          'sizeId': con.productDetailModel.value.sizeId,
-                                          'metalId': con.productDetailModel.value.metalId,
-                                          'diamond': (con.productDetailModel.value.diamonds != null && con.productDetailModel.value.diamonds!.isNotEmpty) ? con.productDetailModel.value.diamonds?.first.diamondClarity?.value : "",
-                                        });
+                                        Get.toNamed(
+                                          AppRoutes.addWatchListScreen,
+                                          arguments: {
+                                            'inventoryId': con.inventoryId.value,
+                                            'quantity': con.quantity.value,
+                                            'sizeId': con.productDetailModel.value.sizeId,
+                                            'metalId': con.productDetailModel.value.metalId,
+                                            'diamond': (con.productDetailModel.value.diamonds != null && con.productDetailModel.value.diamonds!.isNotEmpty) ? con.productDetailModel.value.diamonds?.first.diamondClarity?.value : "",
+                                          },
+                                        );
                                       },
                                     ),
 
@@ -229,7 +234,11 @@ class ProductDetailsScreen extends StatelessWidget {
                                       size: 58.h,
                                       title: "Add\nmetal",
                                       onPressed: () {
-                                        AppDialogs.addMetalDialog(context, metalPrice: con.productDetailModel.value.priceBreaking?.metal?.pricePerGram ?? 0).then(
+                                        AppDialogs.addMetalDialog(
+                                          context,
+                                          metalWeight: con.productDetailModel.value.extraMetalWeight,
+                                          metalPrice: con.productDetailModel.value.priceBreaking?.metal?.pricePerGram ?? 0,
+                                        ).then(
                                           (value) {
                                             if (value != null) {
                                               con.extraMetalPrice = value['price'];
@@ -435,7 +444,7 @@ class ProductDetailsScreen extends StatelessWidget {
           child: Row(
             children: [
               /// Size Selector
-              if (con.isSize.isTrue)
+              if (!isValEmpty(con.productDetailModel.value.sizeId))
                 horizontalSelectorButton(
                   context,
                   categoryId: con.productCategory.value,
@@ -527,6 +536,7 @@ class ProductDetailsScreen extends StatelessWidget {
                   CartRepository.updateCartApi(
                     inventoryId: con.inventoryId.value,
                     quantity: value,
+                    extraMetalWeight: con.extraMetalWt,
                     metalId: con.selectedMetal.value.id?.value ?? "",
                     sizeId: con.selectedSize.value.id?.value ?? "",
                     diamondClarity: con.selectedDiamond.value.shortName ?? "",
@@ -545,6 +555,7 @@ class ProductDetailsScreen extends StatelessWidget {
                 onDecrement: (value) {
                   CartRepository.updateCartApi(
                     inventoryId: con.inventoryId.value,
+                    extraMetalWeight: con.extraMetalWt,
                     quantity: value,
                     metalId: con.selectedMetal.value.id?.value ?? "",
                     sizeId: con.selectedSize.value.id?.value ?? "",

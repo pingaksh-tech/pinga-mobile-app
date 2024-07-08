@@ -6,6 +6,8 @@ import '../../../../exports.dart';
 
 class OrderFilterController extends GetxController {
   Rx<OrderFilterType> filterType = OrderFilterType.type.obs;
+  RxList<int> applyFilterCounts = <int>[].obs;
+  RxInt filterCount = 0.obs;
 
   RxString selectUserType = "".obs;
   RxList<String> userType = [
@@ -39,11 +41,29 @@ class OrderFilterController extends GetxController {
     return startDateValidation.value && endDateValidation.value;
   }
 
-  int countAppliedFilters() {
+  @override
+  void onInit() {
+    super.onInit();
+    applyFilterCounts.addAll(List.generate(OrderFilterType.values.length, (index) => 0));
+  }
+
+  void countAppliedFilters() {
     int count = 0;
     if (retailerCon.value.text.isNotEmpty) count++;
     if (endDateCon.value.text.isNotEmpty && startDateCon.value.text.isNotEmpty) count++;
+    filterCount.value = count;
+  }
 
-    return count;
+  void clearFilter() {
+    Get.back();
+    startDateCon.value.clear();
+    endDateCon.value.clear();
+    retailerCon.value.clear();
+    retailerId = "";
+    startDateValidation.value = true;
+    endDateValidation.value = true;
+    dateError.value = "";
+    countAppliedFilters();
+    applyFilterCounts.value = (List.generate(OrderFilterType.values.length, (index) => 0));
   }
 }

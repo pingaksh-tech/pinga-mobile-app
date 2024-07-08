@@ -21,7 +21,7 @@ class WishlistScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: MyAppBar(
         title: "My Wishlist",
-        actions: const [CartIconButton()],
+        actions:  [CartIconButton()],
       ),
       body: Obx(() {
         return con.loader.isFalse

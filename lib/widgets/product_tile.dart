@@ -739,7 +739,6 @@ class _ProductTileState extends State<ProductTile> {
           if ((value.runtimeType == DiamondModel)) {
             diamondModel = value;
             widget.selectDiamondCart?.value = value.shortName ?? "";
-       
 
             /// GET NEW PRODUCT PRICE
             await ProductRepository.getProductPriceAPI(
@@ -752,8 +751,6 @@ class _ProductTileState extends State<ProductTile> {
             if (!isValEmpty(widget.cartId)) {
               addOrUpdateCart(diamondClarity: value.shortName);
             }
-
-        
           }
         },
       );
@@ -1007,7 +1004,7 @@ class _ProductTileState extends State<ProductTile> {
                 (defaultPadding / 2).verticalSpace,
                 Row(
                   children: [
-                    if (widget.isSizeAvailable)
+                    if (!isValEmpty(widget.selectSize))
                       sizeSelector(
                         direction: Axis.vertical,
                         isFlexible: true,
@@ -1018,14 +1015,12 @@ class _ProductTileState extends State<ProductTile> {
                     metalSelector(
                       direction: Axis.vertical,
                       isFlexible: true,
-                      // categorySlug: widget.subCategoryId ?? '',
                       selectMetalCart: RxString(widget.selectMetalCart?.value ?? ""),
                     ),
                     (defaultPadding / 4).horizontalSpace,
                     diamondSelector(
                       direction: Axis.vertical,
                       isFlexible: true,
-                      // categorySlug: widget.subCategoryId ?? '',
                       selectDiamondCart: widget.selectDiamondCart?.value,
                     ),
                     (defaultPadding / 4).horizontalSpace,

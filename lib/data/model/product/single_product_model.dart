@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'products_model.dart';
 
 GetSingleProductModel getSignleProductModelFromJson(String str) => GetSingleProductModel.fromJson(json.decode(str));
@@ -28,6 +29,9 @@ class GetSingleProductModel {
 class SingleProductModel {
   final String? sizeId;
   final String? metalId;
+  final int? cartQuantity;
+  final num? extraMetalWeight;
+  final bool? isWishList;
   final List<String>? inventoryImages;
   final PriceBreaking? priceBreaking;
   final ProductInfo? productInfo;
@@ -42,11 +46,17 @@ class SingleProductModel {
     this.familyProducts,
     this.sizeId,
     this.metalId,
+    this.cartQuantity,
+    this.extraMetalWeight,
+    this.isWishList,
   });
 
   factory SingleProductModel.fromJson(Map<String, dynamic> json) => SingleProductModel(
         sizeId: json["size_id"],
         metalId: json["metal_id"],
+        cartQuantity: json["cartQty"],
+        extraMetalWeight: json["extra_metal_weight"],
+        isWishList: json["isWishList"],
         inventoryImages: json["inventory_images"] == null ? [] : List<String>.from(json["inventory_images"]!.map((x) => x)),
         priceBreaking: json["price_breaking"] == null ? null : PriceBreaking.fromJson(json["price_breaking"]),
         productInfo: json["product_info"] == null ? null : ProductInfo.fromJson(json["product_info"]),
@@ -57,6 +67,9 @@ class SingleProductModel {
   Map<String, dynamic> toJson() => {
         "size_id": sizeId,
         "metal_id": metalId,
+        "cartQty": cartQuantity,
+        "isWishList": isWishList,
+        "extra_metal_weight": extraMetalWeight,
         "inventory_images": inventoryImages == null ? [] : List<dynamic>.from(inventoryImages!.map((x) => x)),
         "price_breaking": priceBreaking?.toJson(),
         "product_info": productInfo?.toJson(),

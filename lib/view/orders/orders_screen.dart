@@ -9,16 +9,21 @@ import '../../widgets/pull_to_refresh_indicator.dart';
 import 'components/order_simmer_tile.dart';
 import 'components/order_tile.dart';
 import 'orders_controller.dart';
+import 'widgets/order_filter/order_filter_controller.dart';
 
 class OrdersScreen extends StatelessWidget {
   OrdersScreen({super.key});
 
   final OrdersController con = Get.put(OrdersController());
+  final OrderFilterController filterController = Get.put(OrderFilterController());
 
   @override
   Widget build(BuildContext context) {
     return PullToRefreshIndicator(
-      onRefresh: () => OrdersRepository.getAllOrdersAPI(isPullToRefresh: true),
+      onRefresh: () {
+        filterController.clearFilter();
+        return OrdersRepository.getAllOrdersAPI(isPullToRefresh: true);
+      },
       child: Obx(
         () => Scaffold(
           backgroundColor: Theme.of(context).colorScheme.surface,
@@ -34,12 +39,17 @@ class OrdersScreen extends StatelessWidget {
                             itemCount: con.orderList.length,
                             separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
                             itemBuilder: (context, index) {
-                              return OrderTile(
-                                orderId: con.orderList[index].orderNo ?? "",
-                                dateTime: con.orderList[index].createdAt ?? DateTime.now(),
-                                customerName: con.orderList[index].retailer?.businessName ?? "",
-                                quantity: con.orderList[index].qty.toString(),
-                                mrpPrice: con.orderList[index].grandTotal.toString(),
+                              return GestureDetector(
+                                onTap: () {
+                                  Get.toNamed(AppRoutes.orderDetailScreen, arguments: {"orderId": con.orderList[index].id});
+                                },
+                                child: OrderTile(
+                                  orderId: con.orderList[index].orderNo ?? "",
+                                  dateTime: con.orderList[index].createdAt ?? DateTime.now(),
+                                  customerName: con.orderList[index].retailer?.businessName ?? "",
+                                  quantity: con.orderList[index].qty.toString(),
+                                  mrpPrice: con.orderList[index].grandTotal.toString(),
+                                ),
                               );
                             },
                           ),

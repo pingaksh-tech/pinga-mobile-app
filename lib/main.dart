@@ -5,14 +5,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'view/products/widgets/filter/filter_controller.dart';
 
 import 'controller/predefine_value_controller.dart';
-import 'data/services/notification/notification_helper.dart';
 import 'data/services/notification/firebase_notification_service.dart';
+import 'data/services/notification/notification_helper.dart';
 import 'exports.dart';
 import 'firebase_options.dart';
 import 'utils/global_context.dart';
+import 'view/orders/widgets/order_filter/order_filter_controller.dart';
+import 'view/products/widgets/filter/filter_controller.dart';
 import 'widgets/stretch_scroll_behavior.dart';
 
 void main() async {
@@ -58,5 +59,6 @@ class BaseBinding implements Bindings {
     Get.put(BaseController(), permanent: true);
     Get.put(PreDefinedValueController(), permanent: true);
     Get.put(FilterController(), permanent: true);
+    Get.put(OrderFilterController(), permanent: true);
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'app_environment.dart';
 
 class ApiUrls {
@@ -29,7 +30,6 @@ class ApiUrls {
   /// PRODUCTS
   static const String getAllProductsPOST = "inventory/filter";
   static const String getProductPricePOST = "inventory/changing-price";
-
   static String getSingleProductDetailGET({required String inventoryId}) => "inventory/$inventoryId";
 
   /// WISHLIST
@@ -56,12 +56,14 @@ class ApiUrls {
   static String placeOrderPOST = "order/create";
   static String getRetailerApi = "retailer/";
   static String getCartSummary = "/mobile/cart/summary";
+  static String getSingleCartDetailGET({required String cartId}) => "/mobile/cart/item/$cartId";
 
   static String addWatchlistToCart({required String watchlistId}) => "mobile/watchlist/cart/$watchlistId";
 
   /// ORDERS
   static String orderProductUrl = "order/list";
   static String createOrGetOrder = "/mobile/order/";
+  static String getSingleOrderDetailGET({required String orderId}) => "/mobile/order/$orderId";
 
   /// WISHLIST
   static String watchlistGet = "wishlist/get";
