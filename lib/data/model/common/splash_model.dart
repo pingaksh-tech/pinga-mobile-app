@@ -35,6 +35,7 @@ class GetSplashModel {
 }
 
 class SplashDataModel {
+  final String? profileBanner;
   final AppConfigData? appConfigData;
   final List<String>? gender;
   final List<CollectionModel>? collections;
@@ -55,9 +56,11 @@ class SplashDataModel {
     this.metals,
     this.diamonds,
     this.orderType,
+    this.profileBanner,
   });
 
   factory SplashDataModel.fromJson(Map<String, dynamic> json) => SplashDataModel(
+        profileBanner: json["profileBanner"],
         appConfigData: json["appMaintenance"] == null ? null : AppConfigData.fromJson(json["appMaintenance"]),
         collections: json["collections"] == null ? [] : List<CollectionModel>.from(json["collections"]!.map((x) => CollectionModel.fromJson(x))),
         gender: json["gender"] == null ? [] : List<String>.from(json["gender"]!.map((x) => x)),
@@ -70,6 +73,7 @@ class SplashDataModel {
       );
 
   Map<String, dynamic> toJson() => {
+        "profileBanner": profileBanner,
         "appMaintenance": appConfigData?.toJson(),
         "collections": collections == null ? [] : List<dynamic>.from(collections!.map((x) => x.toJson())),
         "gender": gender == null ? [] : List<dynamic>.from(gender!.map((x) => x)),

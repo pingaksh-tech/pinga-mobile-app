@@ -38,6 +38,7 @@ class SplashRepository {
 
                   if (isRegistered<PreDefinedValueController>()) {
                     final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
+                    preValueCon.profileBanner.value = model.data?.profileBanner ?? "";
                     preValueCon.categoryWiseSizesList.value = model.data!.categoryWiseSizes ?? [];
                     preValueCon.metalsList.value = model.data!.metals ?? [];
                     preValueCon.diamondsList.value = model.data!.diamonds ?? [];

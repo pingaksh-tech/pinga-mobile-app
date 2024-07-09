@@ -87,13 +87,18 @@ class CartPopUpMenu extends StatelessWidget {
                 if (validation()) {
                   if (cardIds.isNotEmpty) {
                     /// ADD CART TO WATCHLIST API
-                    await WatchListRepository.addCartToWatchlistAPI(watchlistName: nameCon.value.text.trim(), cartIds: cardIds);
+
                     Get.back();
                     AppDialogs.cartAlertDialog(
                       context,
                       isCancelButtonShow: true,
                       contentText: "Do you want to empty cart after items are added in watchList",
-                      onPressed: () {},
+                      yesOnPressed: () {
+                        CartRepository.deleteCartAPi();
+                      },
+                      noOnPressed: () async {
+                        await WatchListRepository.addCartToWatchlistAPI(watchlistName: nameCon.value.text.trim(), cartIds: cardIds);
+                      },
                     );
                   } else {
                     UiUtils.toast("Select Cart Items");

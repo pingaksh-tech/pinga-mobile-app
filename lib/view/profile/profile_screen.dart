@@ -9,6 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../controller/predefine_value_controller.dart';
 import '../../data/repositories/auth/auth_repository.dart';
 import '../../data/repositories/user/user_repository.dart';
 import '../../exports.dart';
@@ -19,6 +20,7 @@ class ProfileScreen extends StatelessWidget {
   ProfileScreen({super.key});
 
   final ProfileController con = Get.put(ProfileController());
+  final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +45,7 @@ class ProfileScreen extends StatelessWidget {
                       width: Get.width,
                       decoration: const BoxDecoration(
                         image: DecorationImage(
-                          image: NetworkImage("https://media.designrush.com/tinymce_images/316674/conversions/Desiree-Qelaj-content.jpg"),
+                          image: NetworkImage(/* preValueCon.profileBanner.value  */ "https://media.designrush.com/tinymce_images/316674/conversions/Desiree-Qelaj-content.jpg"),
                           fit: BoxFit.cover,
                         ),
                       ),

@@ -1552,7 +1552,8 @@ class AppDialogs {
 
   static Future<dynamic> cartAlertDialog(
     BuildContext context, {
-    required void Function()? onPressed,
+    void Function()? yesOnPressed,
+    void Function()? noOnPressed,
     String? contentText,
     bool isCancelButtonShow = false,
   }) {
@@ -1581,6 +1582,7 @@ class AppDialogs {
             flexibleWidth: true,
             onPressed: () {
               Get.back();
+              noOnPressed!();
             },
           ),
           AppButton(
@@ -1589,6 +1591,7 @@ class AppDialogs {
             flexibleWidth: true,
             onPressed: () {
               Get.back();
+              yesOnPressed!();
             },
           ),
           if (isCancelButtonShow)
@@ -1644,9 +1647,6 @@ class AppDialogs {
                       ? addFileName(context, viewType: CatalogueType.grid)
                       : AppDialogs.cartAlertDialog(
                           context,
-                          onPressed: () async {
-                            Get.back();
-                          },
                         );
                 },
               ),
@@ -1659,7 +1659,6 @@ class AppDialogs {
                       ? addFileName(context, viewType: CatalogueType.list)
                       : AppDialogs.cartAlertDialog(
                           context,
-                          onPressed: () {},
                         );
                 },
               ),

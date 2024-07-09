@@ -204,7 +204,10 @@ class WatchListRepository {
           },
         ).then(
           (response) async {
-            if (response != null) {}
+            if (response != null) {
+              /// Get WatchList api
+              await getWatchListAPI();
+            }
             isLoader?.value = false;
             return response;
           },

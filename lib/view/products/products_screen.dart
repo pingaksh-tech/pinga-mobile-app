@@ -104,6 +104,8 @@ class ProductsScreen extends StatelessWidget {
         ),
         body: PullToRefreshIndicator(
           onRefresh: () async {
+            filterCon.clearAllFilters();
+
             /// GET ALL PRODUCTS
             return await ProductRepository.getFilterProductsListAPI(
               isPullToRefresh: true,

@@ -8,6 +8,8 @@ import '../data/repositories/product/product_repository.dart';
 import '../exports.dart';
 
 class PreDefinedValueController extends GetxController {
+  RxString profileBanner = "".obs;
+
   /// CATEGORY WISE SIZES
   RxList<CategoryWiseSize> categoryWiseSizesList = <CategoryWiseSize>[].obs;
 
