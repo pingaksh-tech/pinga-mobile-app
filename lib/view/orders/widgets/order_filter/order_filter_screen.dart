@@ -7,7 +7,6 @@ import '../../../../data/model/cart/retailer_model.dart';
 import '../../../../data/repositories/orders/orders_repository.dart';
 import '../../../../exports.dart';
 import '../../../../res/app_bar.dart';
-import '../../../../res/app_dialog.dart';
 import '../../orders_controller.dart';
 import 'order_filter_controller.dart';
 
@@ -99,10 +98,7 @@ class OrderFilterScreen extends StatelessWidget {
                                 }
                               : null,
                           onTap: () {
-                            AppDialogs.retailerSelect(
-                              context,
-                              selectedRetailer: con.retailerId.obs,
-                            )?.then(
+                            Get.toNamed(AppRoutes.retailerScreen, arguments: {"id": con.retailerId})?.then(
                               (value) {
                                 if (value != null && (value.runtimeType == RetailerModel)) {
                                   final RetailerModel retailerModel = (value as RetailerModel);

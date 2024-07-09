@@ -9,7 +9,6 @@ import '../../../view/product_details/product_details_controller.dart';
 import '../../model/cart/cart_model.dart';
 import '../../model/cart/cart_summary_model.dart';
 import '../../model/cart/product_detail_model.dart';
-import '../../model/cart/retailer_model.dart';
 import '../../model/cart/stock_model.dart';
 import '../../model/product/single_product_model.dart';
 
@@ -26,7 +25,7 @@ class CartRepository {
         {"id": "stock1", "value": "VVS-EF", "stock": "Diamond", "image": AppAssets.diamondIcon},
         {"id": "stock2", "value": "0.00 ct", "stock": "Diamond Wt", "image": AppAssets.diamondWeight},
         {"id": "stock3", "value": "2.86 gm", "stock": "Metal Wt", "image": AppAssets.metalWeight},
-        {"id": "stock4", "value": "Yellow + White", "stock": "Color", "image": AppAssets.colorIcon},
+        {"id": "stock4", "value": "Yellow + White", "stock": "Color", "image": AppAssets.metalWeight},
         {"id": "stock4", "value": "16", "stock": "Size", "image": AppAssets.ringSizeIcon},
         {"id": "stock4", "value": "1", "stock": "Available quantity", "image": AppAssets.stockIcon}
       ]
@@ -57,6 +56,7 @@ class CartRepository {
     bool isInitial = true,
     RxBool? loader,
     bool isPullToRefresh = false,
+    bool isBackground = false,
   }) async {
     ///
     if (await getConnectivityResult() && isRegistered<CartController>()) {
@@ -130,6 +130,7 @@ class CartRepository {
             if (response != null) {
               /// Get cart api
               await getCartApi(isPullToRefresh: true);
+
               if (isRegistered<CartController>()) {
                 final CartController con = Get.find<CartController>();
                 if (!isValEmpty(cartId)) {
@@ -137,11 +138,14 @@ class CartRepository {
                   if (index != -1) {
                     con.selectedList.removeAt(index);
                   }
+                  con.calculateSelectedQue();
+                  con.calculateSelectedItemPrice();
                 } else {
                   con.cartList.clear();
                   con.selectedList.clear();
                 }
               }
+              isLoader?.value = false;
             }
             isLoader?.value = false;
             return response;
@@ -177,6 +181,8 @@ class CartRepository {
                 final CartController con = Get.find<CartController>();
                 con.cartList.removeWhere((item) => con.selectedList.contains(item));
                 con.selectedList.clear();
+                con.calculateSelectedQue();
+                con.calculateSelectedItemPrice();
               }
             }
             isLoader?.value = false;
@@ -187,62 +193,6 @@ class CartRepository {
     } catch (e) {
       isLoader?.value = false;
       printErrors(type: "deleteCartApi", errText: "$e");
-    }
-  }
-
-  /// ***********************************************************************************
-  ///                                 GET RETAILER API
-  /// ***********************************************************************************
-  static Future<dynamic> getRetailerApi({
-    bool isInitial = true,
-    RxBool? loader,
-    required RxInt page,
-    required RxInt itemLimit,
-    required RxBool nextPageAvailable,
-    required RxBool paginationLoader,
-    required RxList<RetailerModel> retailerList,
-  }) async {
-    ///
-    if (await getConnectivityResult()) {
-      try {
-        loader?.value = true;
-        if (isInitial) {
-          retailerList.clear();
-          page.value = 1;
-          nextPageAvailable.value = true;
-        }
-
-        /// API
-        await APIFunction.getApiCall(
-          apiUrl: ApiUrls.getRetailerApi,
-          params: {
-            "page": page.value,
-            "limit": itemLimit.value,
-          },
-          loader: loader,
-        ).then(
-          (response) async {
-            if (response != null) {
-              GetRetailerModel model = GetRetailerModel.fromJson(response);
-
-              if (model.data != null) {
-                retailerList.addAll(model.data?.retailers ?? []);
-                int currentPage = (model.data!.page ?? 1);
-                nextPageAvailable.value = currentPage < (model.data!.totalPages ?? 0);
-                page.value += currentPage;
-              }
-              loader?.value = false;
-            } else {
-              loader?.value = false;
-            }
-
-            return response;
-          },
-        );
-      } catch (e) {
-        loader?.value = false;
-        printErrors(type: "getRetailerList", errText: e);
-      }
     }
   }
 
@@ -346,7 +296,7 @@ class CartRepository {
         ).then(
           (response) async {
             if (response != null && response['data'] == true) {
-              UiUtils.toast("Added Successfully");
+              await getCartApi(isPullToRefresh: true);
             }
             isLoader?.value = false;
             return response;

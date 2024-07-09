@@ -354,7 +354,7 @@ class FilterScreen extends StatelessWidget {
                     con.clearAllFilters();
                     await ProductRepository.getFilterProductsListAPI(
                       productsListType: con.productsListType,
-                      watchlistId: con.watchlistId,
+                      watchListId: con.watchlistId,
                       categoryId: con.categoryId,
                       subCategoryId: con.subCategoryId,
                     ).then((value) => Get.back());
@@ -370,7 +370,7 @@ class FilterScreen extends StatelessWidget {
                   onPressed: () async {
                     /// GET FILTER PRODUCT
                     await ProductRepository.getFilterProductsListAPI(
-                      watchlistId: con.watchlistId,
+                      watchListId: con.watchlistId,
                       productsListType: con.productsListType,
                       loader: con.isLoader,
                       categoryId: con.categoryId,

@@ -64,7 +64,6 @@ class ProductTile extends StatefulWidget {
     this.deleteOnTap,
     this.isFancy = false,
     this.cartDetailOnTap,
-    // this.subCategoryId,
     this.isCartSelected,
     this.onChanged,
     this.isSizeAvailable = true,
@@ -223,7 +222,8 @@ class _ProductTileState extends State<ProductTile> {
                             'quantity': widget.productQuantity?.value ?? 0,
                             'sizeId': sizeModel.value.id?.value ?? "",
                             'metalId': metalModel.id?.value ?? "",
-                            'diamond': (widget.diamondList != null && widget.diamondList!.isNotEmpty) ? widget.diamondList?.first.diamondClarity?.value : "",
+                            'diamondClarity': (widget.diamondList != null && widget.diamondList!.isNotEmpty) ? widget.diamondList?.first.diamondClarity?.value : "",
+                            "diamond": widget.diamonds,
                           });
                           break;
                       }
@@ -602,6 +602,42 @@ class _ProductTileState extends State<ProductTile> {
     );
   }
 
+  Future<void> getProductPriceAPI({
+    String? metalId,
+    String? sizeId,
+    String? diamondClarity,
+    String? inventoryId,
+    List<Map<String, dynamic>>? diamonds,
+  }) async {
+    if (cartDebounce?.isActive ?? false) cartDebounce?.cancel();
+    cartDebounce = Timer(
+      defaultSearchDebounceDuration,
+      () async {
+        /// Get Product Price api
+        await ProductRepository.getProductPriceAPI(
+          productListType: widget.productsListTypeType,
+          inventoryId: inventoryId ?? widget.inventoryId ?? "",
+          metalId: metalId ?? metalModel.id?.value ?? "",
+          sizeId: sizeId ?? sizeModel.value.id?.value ?? "",
+          diamondClarity: widget.isFancy == false ? diamondClarity ?? diamondClarity ?? (diamondModel.name ?? "") : "",
+          diamonds: widget.isFancy == true
+              ? diamonds ??
+                  List.generate(
+                    widget.diamonds!.length,
+                    (index) => {
+                      "diamond_clarity": widget.diamonds?[index].diamondClarity?.value ?? "",
+                      "diamond_shape": widget.diamonds?[index].diamondShape ?? "",
+                      "diamond_size": widget.diamonds?[index].diamondSize ?? "",
+                      "diamond_count": widget.diamonds?[index].diamondCount ?? 0,
+                      "_id": widget.diamonds?[index].id ?? "",
+                    },
+                  )
+              : null,
+        );
+      },
+    );
+  }
+
   Widget sizeSelector({
     bool isFlexible = false,
     Axis direction = Axis.horizontal,
@@ -624,13 +660,8 @@ class _ProductTileState extends State<ProductTile> {
           sizeModel.value = value;
 
           /// GET NEW PRODUCT PRICE
-          await ProductRepository.getProductPriceAPI(
-            productListType: widget.productsListTypeType,
-            inventoryId: widget.inventoryId ?? '',
-            sizeId: sizeModel.value.id?.value ?? "",
-            metalId: metalModel.id?.value ?? "",
-            diamondClarity: diamondModel.name ?? "",
-          );
+          await getProductPriceAPI(sizeId: sizeModel.value.id?.value ?? "");
+
           if (!isValEmpty(widget.cartId)) {
             addOrUpdateCart(sizeId: value.id?.value ?? "");
           }
@@ -664,13 +695,7 @@ class _ProductTileState extends State<ProductTile> {
           }
 
           /// GET NEW PRODUCT PRICE
-          await ProductRepository.getProductPriceAPI(
-            productListType: widget.productsListTypeType,
-            inventoryId: widget.inventoryId ?? '',
-            sizeId: sizeModel.value.id?.value ?? "",
-            metalId: metalModel.id?.value ?? "",
-            diamondClarity: diamondModel.name ?? "",
-          );
+          await getProductPriceAPI(metalId: metalModel.id?.value ?? "");
         }
       },
     );
@@ -714,11 +739,7 @@ class _ProductTileState extends State<ProductTile> {
             }
 
             /// GET NEW PRODUCT PRICE
-            await ProductRepository.getProductPriceAPI(
-              sizeId: sizeModel.value.id?.value ?? "",
-              productListType: widget.productsListTypeType,
-              inventoryId: widget.inventoryId ?? '',
-              metalId: metalModel.id?.value ?? "",
+            await getProductPriceAPI(
               diamonds: widget.diamonds != null
                   ? List.generate(
                       widget.diamonds!.length,
@@ -730,7 +751,7 @@ class _ProductTileState extends State<ProductTile> {
                         "_id": widget.diamonds?[index].id ?? "",
                       },
                     )
-                  : [],
+                  : null,
             );
           }
         },
@@ -741,13 +762,8 @@ class _ProductTileState extends State<ProductTile> {
             widget.selectDiamondCart?.value = value.shortName ?? "";
 
             /// GET NEW PRODUCT PRICE
-            await ProductRepository.getProductPriceAPI(
-              productListType: widget.productsListTypeType,
-              sizeId: sizeModel.value.id?.value ?? "",
-              inventoryId: widget.inventoryId ?? '',
-              metalId: metalModel.id?.value ?? "",
-              diamondClarity: diamondModel.name ?? "",
-            );
+            await getProductPriceAPI(diamondClarity: diamondModel.shortName ?? "");
+
             if (!isValEmpty(widget.cartId)) {
               addOrUpdateCart(diamondClarity: value.shortName);
             }

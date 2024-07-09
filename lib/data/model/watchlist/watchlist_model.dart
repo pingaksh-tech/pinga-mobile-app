@@ -6,20 +6,20 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 
-GetWatchlistModel getWatchlistModelFromJson(String str) => GetWatchlistModel.fromJson(json.decode(str));
+GetWatchListModel getWatchlistModelFromJson(String str) => GetWatchListModel.fromJson(json.decode(str));
 
-String getWatchlistModelToJson(GetWatchlistModel data) => json.encode(data.toJson());
+String getWatchlistModelToJson(GetWatchListModel data) => json.encode(data.toJson());
 
-class GetWatchlistModel {
+class GetWatchListModel {
   final String? message;
   final WatchlistModel? data;
 
-  GetWatchlistModel({
+  GetWatchListModel({
     this.message,
     this.data,
   });
 
-  factory GetWatchlistModel.fromJson(Map<String, dynamic> json) => GetWatchlistModel(
+  factory GetWatchListModel.fromJson(Map<String, dynamic> json) => GetWatchListModel(
         message: json["message"],
         data: json["data"] == null ? null : WatchlistModel.fromJson(json["data"]),
       );

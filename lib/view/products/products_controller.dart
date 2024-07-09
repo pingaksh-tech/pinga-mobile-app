@@ -16,7 +16,7 @@ class ProductsController extends GetxController {
   RxString categoryId = "".obs;
 
   Rx<CategoryModel> currentCategory = CategoryModel().obs;
-  RxBool isFancyDiamond = false.obs;
+  // RxBool isFancyDiamond = false.obs;
 
   RxString categoryName = "".obs;
   Rx<SubCategoryModel> subCategory = SubCategoryModel().obs;
@@ -85,19 +85,19 @@ class ProductsController extends GetxController {
     await ProductRepository.getFilterProductsListAPI(
       loader: loader,
       productsListType: productListType.value,
-      watchlistId: watchlistId.value,
+      watchListId: watchlistId.value,
       categoryId: categoryId.value,
       subCategoryId: subCategory.value.id ?? "",
     );
 
-    int index = homeCon.categoriesList.indexWhere((element) => element.id == categoryId.value);
-    if (index != -1) {
-      currentCategory.value = homeCon.categoriesList[index];
+    // int index = homeCon.categoriesList.indexWhere((element) => element.id == categoryId.value);
+    // if (index != -1) {
+    //   currentCategory.value = homeCon.categoriesList[index];
 
-      if (currentCategory.value.id == "667cbcc3dd04772674c966c4") {
-        isFancyDiamond.value = true;
-      }
-    }
+    //   if (currentCategory.value.id == "667cbcc3dd04772674c966c4") {
+    //     isFancyDiamond.value = true;
+    //   }
+    // }
     preValueAvailable();
   }
 

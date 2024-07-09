@@ -38,7 +38,7 @@ class ProductRepository {
   /// ***********************************************************************************
 
   static Future<void> getFilterProductsListAPI({
-    String? watchlistId,
+    String? watchListId,
     required ProductsListType productsListType,
     required String categoryId,
     required String subCategoryId,
@@ -76,7 +76,7 @@ class ProductRepository {
 
         /// API
         await APIFunction.postApiCall(
-          apiUrl: productsListType == ProductsListType.normal ? ApiUrls.getAllProductsPOST : ApiUrls.getAndDeleteSingleWatchlistAPI(watchlistId: watchlistId ?? ""),
+          apiUrl: productsListType == ProductsListType.normal ? ApiUrls.getAllProductsPOST : ApiUrls.getSingleWatchListAPI(watchListId: watchListId ?? ""),
           body: {
             if (!isValEmpty(categoryId)) "category_id": categoryId,
             if (!isValEmpty(subCategoryId)) "sub_category_id": subCategoryId,

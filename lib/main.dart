@@ -11,6 +11,7 @@ import 'data/services/notification/firebase_notification_service.dart';
 import 'data/services/notification/notification_helper.dart';
 import 'exports.dart';
 import 'firebase_options.dart';
+import 'utils/custom_route_observer.dart';
 import 'utils/global_context.dart';
 import 'view/orders/widgets/order_filter/order_filter_controller.dart';
 import 'view/products/widgets/filter/filter_controller.dart';
@@ -47,6 +48,7 @@ class MyApp extends StatelessWidget {
           scrollBehavior: ScrollBehaviorModified(),
           getPages: AppPages.pages,
           initialRoute: AppRoutes.splashScreen,
+          navigatorObservers: [CustomRouteObserver()],
         );
       },
     );

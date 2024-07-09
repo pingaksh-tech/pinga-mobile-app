@@ -34,7 +34,7 @@ class SubCategoryScreen extends StatelessWidget {
               backgroundColor: Theme.of(context).colorScheme.surface,
               shadowColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.3),
               title: con.categoryName.value,
-              actions:  [
+              actions: [
                 /* AppIconButton(
                   onPressed: () => Get.toNamed(AppRoutes.settingsScreen),
                   icon: SvgPicture.asset(
@@ -45,7 +45,14 @@ class SubCategoryScreen extends StatelessWidget {
                     ),
                   ),
                 ),*/
-                CartIconButton()
+                CartIconButton(
+                  onPressed: () {
+                    Get.offAllNamed(
+                      AppRoutes.cartScreen,
+                      predicate: (route) => route.settings.name == AppRoutes.categoryScreen,
+                    );
+                  },
+                )
               ],
               bottom: PreferredSize(
                 preferredSize: Size.fromHeight(40.h),

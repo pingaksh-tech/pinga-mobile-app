@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+
+import '../../../../data/model/product/products_model.dart';
 import '../../../../data/model/watchlist/watchlist_model.dart';
 import '../../../../data/repositories/watchlist/watchlist_repository.dart';
 
-class AddWatchlistController extends GetxController {
+class AddWatchListController extends GetxController {
   Rx<TextEditingController> nameCon = TextEditingController().obs;
   RxBool nameValidation = true.obs;
   RxString nameError = ''.obs;
@@ -18,8 +20,8 @@ class AddWatchlistController extends GetxController {
   RxString sizeId = "".obs;
   RxString metalId = "".obs;
   RxInt quantity = 0.obs;
-  RxString diamond = "".obs;
-
+  RxString diamondClarity = "".obs;
+  List<DiamondListModel> diamonds = [];
   @override
   void onInit() {
     super.onInit();
@@ -37,8 +39,11 @@ class AddWatchlistController extends GetxController {
       if (Get.arguments['metalId'].runtimeType == String) {
         metalId.value = Get.arguments['metalId'];
       }
-      if (Get.arguments['diamond'].runtimeType == String) {
-        diamond.value = Get.arguments['diamond'];
+      if (Get.arguments['diamondClarity'].runtimeType == String) {
+        diamondClarity.value = Get.arguments['diamondClarity'];
+      }
+      if (Get.arguments['diamond'].runtimeType == List<DiamondListModel>) {
+        diamonds = Get.arguments['diamond'];
       }
     }
   }
@@ -48,7 +53,7 @@ class AddWatchlistController extends GetxController {
     super.onReady();
 
     /// GET WATCHLIST
-    WatchlistRepository.getWatchlistAPI(loader: loader, isPullToRefresh: true);
+    WatchListRepository.getWatchListAPI(loader: loader);
   }
 
   void checkDisableButton() {

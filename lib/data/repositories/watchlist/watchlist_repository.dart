@@ -1,11 +1,12 @@
 import 'package:get/get.dart';
+
+import '../../../exports.dart';
+import '../../../view/collections/watch_list/watch_list_controller.dart';
 import '../../../view/drawer/widgets/wishlist/wishlist_controller.dart';
 import '../../model/watchlist/single_watchlist_model.dart';
 import '../../model/watchlist/watchlist_model.dart';
-import '../../../exports.dart';
-import '../../../view/collections/watch_list/watch_list_controller.dart';
 
-class WatchlistRepository {
+class WatchListRepository {
   /// ***********************************************************************************
   ///                                     CREATE WATCHLIST API
   /// ***********************************************************************************
@@ -17,8 +18,9 @@ class WatchlistRepository {
     required int quantity,
     required String metalId,
     required String sizeId,
-    required String diamond,
+    required String diamondClarity,
     String? remark,
+    List<Map<String, dynamic>>? diamonds,
     RxBool? loader,
   }) async {
     if (await getConnectivityResult()) {
@@ -33,8 +35,9 @@ class WatchlistRepository {
             "inventory_id": inventoryId,
             "quantity": quantity,
             "metal_id": metalId,
-            "size_id": sizeId,
-            "diamond_clarity": diamond,
+            if (!isValEmpty(sizeId)) "size_id": sizeId,
+            if (!isValEmpty(diamondClarity)) "diamond_clarity": diamondClarity,
+            if (!isValEmpty(diamonds)) "diamonds": diamonds,
             if (!isValEmpty(remark)) "remark": remark,
           },
           loader: loader,
@@ -73,7 +76,7 @@ class WatchlistRepository {
   ///                                     GET WATCHLIST API
   /// ***********************************************************************************
 
-  static Future<void> getWatchlistAPI({
+  static Future<void> getWatchListAPI({
     String? searchText,
     bool isInitial = true,
     bool isPullToRefresh = false,
@@ -105,7 +108,7 @@ class WatchlistRepository {
         ).then(
           (response) async {
             if (response != null) {
-              GetWatchlistModel model = GetWatchlistModel.fromJson(response);
+              GetWatchListModel model = GetWatchListModel.fromJson(response);
 
               if (model.data != null) {
                 if (isPullToRefresh) {
@@ -148,7 +151,7 @@ class WatchlistRepository {
 
         /// API
         await APIFunction.deleteApiCall(
-          apiUrl: ApiUrls.getAndDeleteSingleWatchlistAPI(watchlistId: watchlistId),
+          apiUrl: ApiUrls.getAndDeleteSingleWatchListAPI(watchlistId: watchlistId),
           loader: loader,
         ).then(
           (response) async {

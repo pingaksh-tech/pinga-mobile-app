@@ -16,7 +16,7 @@ class CartController extends GetxController {
 
   /// Cart List pagination
   RxList<CartModel> cartList = <CartModel>[].obs;
-  RxBool cartLoader = false.obs;
+  RxBool cartLoader = true.obs;
   ScrollController scrollController = ScrollController();
   RxInt page = 1.obs;
   RxInt itemLimit = 20.obs;
@@ -39,8 +39,8 @@ class CartController extends GetxController {
     super.onReady();
     CartRepository.getCartApi(loader: cartLoader);
     manageScrollController();
-    calculateTotalPrice();
-    calculateQuantity();
+    calculateSelectedQue();
+    calculateSelectedItemPrice();
   }
 
   /// Pagination

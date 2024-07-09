@@ -17,64 +17,83 @@ class WishlistScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: MyAppBar(
-        title: "My Wishlist",
-        actions:  [CartIconButton()],
-      ),
-      body: Obx(() {
-        return con.loader.isFalse
-            ? con.productsList.isNotEmpty
-                ? PullToRefreshIndicator(
-                    onRefresh: () => WishlistRepository.getWishlistAPI(isPullToRefresh: true),
-                    child: ListView(
-                      children: [
-                        /// PRODUCTS
-                        Wrap(
-                          children: List.generate(
-                            con.productsList.length,
-                            (index) => ProductTile(
-                              category: RxString(con.productsList[index].inventory?.subCategoryId ?? ""),
-                              inventoryId: con.productsList[index].inventory?.id ?? "",
-                              productsListTypeType: ProductsListType.wishlist,
-                              selectSize: (con.productsList[index].inventory?.sizeId ?? "").obs,
-                              productTileType: ProductTileType.grid,
-                              onTap: () => Get.toNamed(AppRoutes.productDetailsScreen, arguments: {
-                                "category": con.productsList[index].inventory?.subCategoryId ?? 'ring',
-                                // 'isFancy': con.productsList[index].,
-                                'inventoryId': con.productsList[index].inventory?.id ?? "",
-                                'name': con.productsList[index].inventory?.name ?? "",
-                              }),
-                              isLike: true.obs,
-                              imageUrl: con.productsList[index].inventory?.singleInvImage ?? "",
-                              productName: con.productsList[index].inventory?.name ?? "",
-                              productPrice: con.productsList[index].inventory?.inventoryTotalPrice.toString() ?? "",
-                              productQuantity: con.productsList[index].inventory?.quantity,
-                              likeOnChanged: (value) {},
+    return PullToRefreshIndicator(
+      onRefresh: () => WishlistRepository.getWishlistAPI(isPullToRefresh: true),
+      child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        appBar: MyAppBar(
+          title: "My Wishlist",
+          actions: [CartIconButton(onPressed: () {
+            
+          },)],
+        ),
+        body: Obx(
+          () {
+            return ListView(
+              padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2).copyWith(bottom: defaultPadding),
+              children: [
+                /// PRODUCTS
+                con.loader.isFalse
+                    ? con.productsList.isNotEmpty
+                        ? Wrap(
+                            children: List.generate(
+                              con.productsList.length,
+                              (index) => Column(
+                                children: [
+                                  ProductTile(
+                                    category: RxString(con.productsList[index].inventory?.subCategoryId ?? ""),
+                                    inventoryId: con.productsList[index].inventory?.id ?? "",
+                                    productsListTypeType: ProductsListType.wishlist,
+                                    selectSize: (con.productsList[index].inventory?.sizeId ?? "").obs,
+                                    productTileType: ProductTileType.grid,
+                                    isFancy: con.productsList[index].inventory?.isDiamondMultiple ?? false,
+                                    onTap: () => Get.toNamed(
+                                      AppRoutes.productDetailsScreen,
+                                      arguments: {
+                                        "category": con.productsList[index].inventory?.subCategoryId ?? 'ring',
+                                        'inventoryId': con.productsList[index].inventory?.id ?? "",
+                                        'name': con.productsList[index].inventory?.name ?? "",
+                                      },
+                                    ),
+                                    isLike: true.obs,
+                                    diamondList: RxList(con.productsList[index].inventory?.diamonds ?? []),
+                                    diamonds: con.productsList[index].inventory?.diamonds ?? [],
+                                    imageUrl: con.productsList[index].inventory?.singleInvImage ?? "",
+                                    productName: con.productsList[index].inventory?.name ?? "",
+                                    productPrice: con.productsList[index].inventory?.inventoryTotalPrice.toString() ?? "",
+                                    productQuantity: con.productsList[index].inventory?.quantity,
+                                    likeOnChanged: (value) {},
+                                  ),
+                                  if (con.paginationLoader.value && index + 1 == con.productsList.length) productShimmer(context)
+                                ],
+                              ),
                             ),
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                : const EmptyElement(title: "Wishlist not available")
-            : ListView(
-                shrinkWrap: true,
-                padding: EdgeInsets.all(defaultPadding),
-                children: [
-                  Wrap(
-                    spacing: defaultPadding,
-                    runSpacing: defaultPadding,
-                    direction: Axis.horizontal,
-                    children: List.generate(
-                      6,
-                      (index) => ShimmerUtils.productsListShimmer(context),
-                    ),
-                  ),
-                ],
-              );
-      }),
+                          )
+                        : EmptyElement(
+                            title: "Wishlist not available",
+                            padding: EdgeInsets.symmetric(vertical: Get.width / 2.5),
+                          )
+                    : productShimmer(context, length: 6),
+              ],
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget productShimmer(BuildContext context, {int length = 2}) {
+    return Padding(
+      padding: EdgeInsets.all(defaultPadding / 2),
+      child: Wrap(
+        spacing: defaultPadding,
+        runSpacing: defaultPadding,
+        direction: Axis.horizontal,
+        children: List.generate(
+          length,
+          (index) => ShimmerUtils.productsListShimmer(context),
+        ),
+      ),
     );
   }
 }

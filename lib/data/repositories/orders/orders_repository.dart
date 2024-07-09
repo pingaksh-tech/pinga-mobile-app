@@ -1,8 +1,12 @@
 import 'package:get/get.dart';
 
 import '../../../exports.dart';
+import '../../../view/bottombar/bottombar_controller.dart';
+import '../../../view/cart/cart_controller.dart';
 import '../../../view/orders/orders_controller.dart';
 import '../../../view/orders/widgets/order_detail/order_detail_controller.dart';
+import '../../../view/orders/widgets/retailer_screen/retailer_controller.dart';
+import '../../model/cart/retailer_model.dart';
 import '../../model/order/order_list_model.dart';
 import '../../model/order/single_order_model.dart';
 import '../cart/cart_repository.dart';
@@ -37,8 +41,20 @@ class OrdersRepository {
         ).then(
           (response) async {
             if (response != null) {
-              getAllOrdersAPI(isPullToRefresh: true);
-              CartRepository.getCartApi(isPullToRefresh: true);
+              await getAllOrdersAPI(isPullToRefresh: true);
+              await CartRepository.getCartApi(isPullToRefresh: true);
+              if (isRegistered<CartController>()) {
+                final CartController con = Get.find<CartController>();
+                con.cartList.removeWhere((item) => con.selectedList.contains(item));
+                con.selectedList.clear();
+              }
+              do {
+                Get.back();
+              } while (Get.currentRoute != AppRoutes.bottomBarScreen);
+              if (isRegistered<BottomBarController>()) {
+                BottomBarController bottomCon = Get.find<BottomBarController>();
+                bottomCon.currentBottomIndex.value = 3;
+              }
               loader?.value = false;
             } else {
               loader?.value = false;
@@ -159,5 +175,60 @@ class OrdersRepository {
         printErrors(type: "getSingleOrderAPI", errText: e);
       }
     } else {}
+  }
+
+  /// ***********************************************************************************
+  ///                                 GET RETAILER API
+  /// ***********************************************************************************
+  static Future<dynamic> getRetailerApi({
+    bool isInitial = true,
+    RxBool? loader,
+    required String searchText,
+  }) async {
+    ///
+    if (await getConnectivityResult()) {
+      final RetailerController con = Get.find<RetailerController>();
+
+      try {
+        loader?.value = true;
+        if (isInitial) {
+          con.retailerList.clear();
+          con.page.value = 1;
+          con.nextPageAvailable.value = true;
+        }
+
+        /// API
+        await APIFunction.getApiCall(
+          apiUrl: ApiUrls.getRetailerApi,
+          params: {
+            "page": con.page.value,
+            "limit": con.itemLimit.value,
+            "search": searchText,
+          },
+          loader: loader,
+        ).then(
+          (response) async {
+            if (response != null) {
+              GetRetailerModel model = GetRetailerModel.fromJson(response);
+
+              if (model.data != null) {
+                con.retailerList.addAll(model.data?.retailers ?? []);
+                int currentPage = (model.data!.page ?? 1);
+                con.nextPageAvailable.value = currentPage < (model.data!.totalPages ?? 0);
+                con.page.value += currentPage;
+              }
+              loader?.value = false;
+            } else {
+              loader?.value = false;
+            }
+
+            return response;
+          },
+        );
+      } catch (e) {
+        loader?.value = false;
+        printErrors(type: "getRetailerList", errText: e);
+      }
+    }
   }
 }

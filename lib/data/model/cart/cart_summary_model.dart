@@ -82,7 +82,7 @@ class DiamondSummaryModel {
 
 class TotalDeliverySummary {
   final int? totalQty;
-  final int? totalAmount;
+  final num? totalAmount;
 
   TotalDeliverySummary({
     this.totalQty,

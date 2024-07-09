@@ -18,7 +18,9 @@ class VariantScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: MyAppBar(
         title: "Variants",
-        actions:  [CartIconButton()],
+        actions:  [CartIconButton(onPressed: () {
+          
+        },)],
       ),
       body: Obx(() {
         return ListView.builder(

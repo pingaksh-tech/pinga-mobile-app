@@ -12,10 +12,10 @@ import '../../watch_list/components/watchlist_tile.dart';
 import '../../watch_list/watch_list_controller.dart';
 import 'add_watchlist_controller.dart';
 
-class AddWatchlistScreen extends StatelessWidget {
-  AddWatchlistScreen({super.key});
+class AddWatchListScreen extends StatelessWidget {
+  AddWatchListScreen({super.key});
 
-  final AddWatchlistController con = Get.put(AddWatchlistController());
+  final AddWatchListController con = Get.put(AddWatchListController());
   final WatchListController watchlistCon = Get.find<WatchListController>();
 
   @override
@@ -26,7 +26,7 @@ class AddWatchlistScreen extends StatelessWidget {
       body: Obx(
         () {
           return PullToRefreshIndicator(
-            onRefresh: () => WatchlistRepository.getWatchlistAPI(isPullToRefresh: true),
+            onRefresh: () => WatchListRepository.getWatchListAPI(isPullToRefresh: true),
             child: ListView(
               padding: EdgeInsets.all(defaultPadding),
               children: [
@@ -120,14 +120,24 @@ class AddWatchlistScreen extends StatelessWidget {
                     //   WatchlistModel(id: con.watchList.length.toString(), name: con.nameCon.value.text.trim(), noOfItem: 45, createdBy: "Guest"),
                     // );
                     /// CREATE WATCHLIST
-                    WatchlistRepository.createWatchlistAPI(
+                    WatchListRepository.createWatchlistAPI(
                       productListType: ProductsListType.normal,
                       watchlistName: (con.watchlistId.value.id != null && con.watchlistId.value.id!.isNotEmpty) ? con.watchlistId.value.name ?? "" : con.nameCon.value.text.trim(),
                       inventoryId: con.inventoryId.value,
                       sizeId: con.sizeId.value,
                       metalId: con.metalId.value,
                       quantity: con.quantity.value,
-                      diamond: con.diamond.value,
+                      diamondClarity: con.diamondClarity.value,
+                      diamonds: List.generate(
+                        con.diamonds.length,
+                        (index) => {
+                          "diamond_clarity": con.diamonds[index].diamondClarity?.value ?? "",
+                          "diamond_shape": con.diamonds[index].diamondShape ?? "",
+                          "diamond_size": con.diamonds[index].diamondSize ?? "",
+                          "diamond_count": con.diamonds[index].diamondCount ?? 0,
+                          "_id": con.diamonds[index].id ?? "",
+                        },
+                      ),
                     );
                     con.nameCon.value.clear();
                     Get.back();

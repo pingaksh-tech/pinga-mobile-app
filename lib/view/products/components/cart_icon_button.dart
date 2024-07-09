@@ -7,7 +7,8 @@ import '../../../exports.dart';
 import '../../cart/cart_controller.dart';
 
 class CartIconButton extends StatelessWidget {
-  CartIconButton({super.key});
+  final void Function() onPressed;
+  CartIconButton({super.key, required this.onPressed});
 
   final CartController con = Get.find<CartController>();
 
@@ -21,9 +22,7 @@ class CartIconButton extends StatelessWidget {
                 AppAssets.cart,
                 colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
               ),
-              onPressed: () {
-                Get.toNamed(AppRoutes.cartScreen);
-              },
+              onPressed: onPressed,
             ),
             if (!isValEmpty(con.cartDetail.value.totalItems))
               Positioned(

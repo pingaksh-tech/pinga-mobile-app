@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+
 import '../../../data/repositories/cart/cart_repository.dart';
 import '../../../data/repositories/watchlist/watchlist_repository.dart';
 import '../../../exports.dart';
 import '../../../res/app_bar.dart';
 import '../../../res/app_dialog.dart';
+import '../../../res/empty_element.dart';
 import '../../../widgets/pull_to_refresh_indicator.dart';
 import 'components/watchlist_tile.dart';
 import 'watch_list_controller.dart';
-
-import '../../../res/empty_element.dart';
 
 class WatchListScreen extends StatelessWidget {
   WatchListScreen({super.key});
@@ -20,8 +20,9 @@ class WatchListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      return Scaffold(
+    return Obx(
+      () {
+        return Scaffold(
           backgroundColor: Theme.of(context).colorScheme.surface,
           appBar: MyAppBar(
               backgroundColor: Theme.of(context).colorScheme.surface,
@@ -62,17 +63,18 @@ class WatchListScreen extends StatelessWidget {
                           )
                         : null,
                     suffixOnTap: con.showCloseButton.isTrue
-                        ? () {
+                        ? () async {
                             FocusScope.of(context).unfocus();
                             con.showCloseButton.value = false;
                             con.searchCon.value.clear();
+                            await WatchListRepository.getWatchListAPI(searchText: con.searchCon.value.text.trim(), loader: con.loader);
                           }
                         : null,
                     onChanged: (_) {
                       if (con.searchCon.value.text.isNotEmpty) {
                         commonDebounce(
                           callback: () async {
-                            return WatchlistRepository.getWatchlistAPI(searchText: con.searchCon.value.text.trim());
+                            return WatchListRepository.getWatchListAPI(searchText: con.searchCon.value.text.trim(), loader: con.loader);
                           },
                         );
 
@@ -85,61 +87,91 @@ class WatchListScreen extends StatelessWidget {
                 ),
               )),
           body: PullToRefreshIndicator(
-            onRefresh: () => WatchlistRepository.getWatchlistAPI(isPullToRefresh: true),
-            child: con.watchList.isNotEmpty
-                ? ListView(
-                    padding: EdgeInsets.all(defaultPadding).copyWith(top: 10.h),
-                    // physics: const RangeMaintainingScrollPhysics(),
-                    children: [
-                      ListView.separated(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: con.watchList.length,
-                        separatorBuilder: (context, index) => SizedBox(
-                          height: defaultPadding,
+              onRefresh: () => WatchListRepository.getWatchListAPI(isPullToRefresh: true),
+              child: ListView(
+                controller: con.scrollController,
+                padding: EdgeInsets.all(defaultPadding).copyWith(top: 10.h),
+                physics: const AlwaysScrollableScrollPhysics(),
+                children: [
+                  con.loader.isFalse
+                      ? con.watchList.isNotEmpty
+                          ? ListView.separated(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: con.watchList.length,
+                              separatorBuilder: (context, index) => SizedBox(
+                                height: defaultPadding,
+                              ),
+                              itemBuilder: (context, index) => Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      Get.toNamed(
+                                        AppRoutes.productScreen,
+                                        arguments: {
+                                          "watchlistName": con.watchList[index].name,
+                                          "watchlistId": con.watchList[index].id?.value ?? "",
+                                          "type": ProductsListType.watchlist,
+                                          // 'catagory' :  con.watchList[index].?.value,
+                                        },
+                                      );
+                                    },
+                                    child: WatchlistTile(
+                                      name: con.watchList[index].name,
+                                      noOfItem: con.watchList[index].watchListItemCount ?? 0,
+                                      createdBy: "${LocalStorage.userModel.firstName ?? ""} ${LocalStorage.userModel.lastName ?? ""}",
+                                      downloadOnPressed: () async {},
+                                      cartOnPressed: () async {
+                                        /// ADD WATCHLIST TO CART
+                                        await CartRepository.addWatchlistToCartAPI(watchlistId: con.watchList[index].id?.value ?? "");
+                                      },
+                                      deleteOnPressed: () {
+                                        AppDialogs.cartDialog(
+                                          context,
+                                          buttonTitle: "NO",
+                                          contentText: "Are you sure?\nYou want to remove this watchlist?",
+                                          onPressed: () async {
+                                            /// DELETE WATCHLIST API
+                                            await WatchListRepository.deleteWatchlistAPI(watchlistId: con.watchList[index].id?.value ?? "");
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: (con.paginationLoader.value && index + 1 == con.watchList.length),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(bottom: 100),
+                                      child: watchListShimmer(),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : EmptyElement(
+                              title: "Watchlist is empty",
+                              imagePath: AppAssets.emptyData,
+                              padding: EdgeInsets.symmetric(vertical: Get.width / 2.5),
+                            )
+                      : ListView.separated(
+                          separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) => watchListShimmer(),
+                          itemCount: 10,
                         ),
-                        itemBuilder: (context, index) => GestureDetector(
-                          onTap: () {
-                            Get.toNamed(
-                              AppRoutes.productScreen,
-                              arguments: {
-                                "watchlistName": con.watchList[index].name,
-                                "watchlistId": con.watchList[index].id?.value ?? "",
-                                "type": ProductsListType.watchlist,
-                                // 'catagory' :  con.watchList[index].?.value,
-                              },
-                            );
-                          },
-                          child: WatchlistTile(
-                            name: con.watchList[index].name,
-                            noOfItem: con.watchList[index].watchListItemCount ?? 0,
-                            createdBy: "${LocalStorage.userModel.firstName ?? ""} ${LocalStorage.userModel.lastName ?? ""}",
-                            downloadOnPressed: () async {},
-                            cartOnPressed: () async {
-                              /// ADD WATCHLIST TO CART
-                              await CartRepository.addWatchlistToCartAPI(watchlistId: con.watchList[index].id?.value ?? "");
-                            },
-                            deleteOnPressed: () {
-                              AppDialogs.cartDialog(
-                                context,
-                                buttonTitle: "NO",
-                                contentText: "Are you sure?\nYou want to remove this watchlist?",
-                                onPressed: () async {
-                                  /// DELETE WATCHLIST API
-                                  await WatchlistRepository.deleteWatchlistAPI(watchlistId: con.watchList[index].id?.value ?? "");
-                                },
-                              );
-                            },
-                          ),
-                        ),
-                      )
-                    ],
-                  )
-                : const EmptyElement(
-                    title: "Watchlist is empty",
-                    imagePath: AppAssets.emptyData,
-                  ),
-          ));
-    });
+                ],
+              )),
+        );
+      },
+    );
+  }
+
+  Widget watchListShimmer() {
+    return ShimmerUtils.shimmer(
+      child: ShimmerUtils.shimmerContainer(
+        borderRadiusSize: defaultRadius,
+        height: Get.height * 0.16,
+      ),
+    );
   }
 }

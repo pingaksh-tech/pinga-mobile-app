@@ -41,7 +41,11 @@ class ProductDetailsScreen extends StatelessWidget {
           title: con.productName.value,
           backgroundColor: Colors.white,
           actions: [
-            CartIconButton(),
+            CartIconButton(
+              onPressed: () {
+                Get.toNamed(AppRoutes.cartScreen);
+              },
+            ),
           ],
         ),
         body: con.loader.isFalse
@@ -223,7 +227,8 @@ class ProductDetailsScreen extends StatelessWidget {
                                             'quantity': con.quantity.value,
                                             'sizeId': con.productDetailModel.value.sizeId,
                                             'metalId': con.productDetailModel.value.metalId,
-                                            'diamond': (con.productDetailModel.value.diamonds != null && con.productDetailModel.value.diamonds!.isNotEmpty) ? con.productDetailModel.value.diamonds?.first.diamondClarity?.value : "",
+                                            'diamondClarity': (con.productDetailModel.value.diamonds != null && con.productDetailModel.value.diamonds!.isNotEmpty) ? con.productDetailModel.value.diamonds?.first.diamondClarity?.value : "",
+                                            "diamond": con.productDetailModel.value.diamonds,
                                           },
                                         );
                                       },

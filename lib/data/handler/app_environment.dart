@@ -32,9 +32,9 @@ class AppEnvironment {
 
       case EnvironmentType.local:
         if (kDebugMode) {
-          return "http://192.168.1.120:3000/api/";
+          return "http://192.168.1.50:3000/api/";
         } else {
-          return "http://192.168.1.120:3000/api/";
+          return "http://192.168.1.50:3000/api/";
         }
 
       case EnvironmentType.custom:

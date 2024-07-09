@@ -14,7 +14,6 @@ import '../data/model/common/splash_model.dart';
 import '../data/model/product/products_model.dart';
 import '../data/repositories/home/catalogue_repository.dart';
 import '../exports.dart';
-import '../view/orders/widgets/retailer/retailer_screen.dart';
 import '../view/products/widgets/filter/filter_controller.dart';
 import '../widgets/custom_radio_button.dart';
 import '../widgets/download_selection_tile.dart';
@@ -2029,22 +2028,6 @@ class AppDialogs {
           ),
         ),
       ),
-    );
-  }
-
-  // Select Retailers dialog
-  static Future<dynamic>? retailerSelect(
-    BuildContext context, {
-    Function(String?)? onChanged,
-    required RxString selectedRetailer,
-  }) {
-    return showGeneralDialog(
-      context: context,
-      pageBuilder: (context, animation, secondaryAnimation) {
-        return RetailerDialog(
-          id: selectedRetailer,
-        );
-      },
     );
   }
 

@@ -111,10 +111,9 @@ class CartScreen extends StatelessWidget {
                                   selectSize: (con.cartList[index].sizeId ?? "").obs,
                                   deleteOnTap: () {
                                     //? CART DELETE API
-                                    CartRepository.deleteCartAPi(cartId: con.cartList[index].id ?? "", isLoader: con.cartLoader);
+                                    CartRepository.deleteCartAPi(cartId: con.cartList[index].id ?? "");
                                     con.calculateSelectedItemPrice();
                                     con.calculateSelectedQue();
-                                    con.selectedList.refresh();
                                     Get.back();
                                   },
                                   onChanged: (_) {
@@ -274,10 +273,10 @@ class CartScreen extends StatelessWidget {
 
                                                   //? Delete cart list api
                                                   if (con.cartList.length == con.selectedList.length) {
-                                                    await CartRepository.deleteCartAPi(isLoader: con.cartLoader);
+                                                    await CartRepository.deleteCartAPi();
                                                   } else {
                                                     List<String> selectedCartIds = con.selectedList.map((item) => item.id ?? "").toList();
-                                                    await CartRepository.multipleCartDelete(selectedCartIds: selectedCartIds, isLoader: con.cartLoader);
+                                                    await CartRepository.multipleCartDelete(selectedCartIds: selectedCartIds);
                                                   }
                                                 },
                                               );

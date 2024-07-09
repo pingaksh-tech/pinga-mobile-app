@@ -9,7 +9,6 @@ import '../../../../data/repositories/orders/orders_repository.dart';
 import '../../../../exports.dart';
 import '../../../../res/app_bar.dart';
 import '../../../../res/app_dialog.dart';
-import '../../../bottombar/bottombar_controller.dart';
 import 'checkout_controller.dart';
 
 class CheckoutScreen extends StatelessWidget {
@@ -43,10 +42,7 @@ class CheckoutScreen extends StatelessWidget {
               padding: EdgeInsets.only(bottom: defaultPadding, top: defaultPadding / 2),
               suffixIcon: SvgPicture.asset(AppAssets.downArrow, height: 10),
               onTap: () {
-                AppDialogs.retailerSelect(
-                  context,
-                  selectedRetailer: con.retailerId.obs,
-                )?.then(
+                Get.toNamed(AppRoutes.retailerScreen, arguments: {"id": con.retailerId})?.then(
                   (value) {
                     if (value != null && (value.runtimeType == RetailerModel)) {
                       final RetailerModel retailerModel = (value as RetailerModel);
@@ -159,21 +155,6 @@ class CheckoutScreen extends StatelessWidget {
                                     subTotal: con.totalPrice.value.toString(),
                                     cartItems: cartItems,
                                   );
-                                  if (Get.currentRoute != AppRoutes.cartScreen) {
-                                    Get.back();
-                                    Get.back();
-                                    if (isRegistered<BottomBarController>()) {
-                                      BottomBarController bottomCon = Get.find<BottomBarController>();
-                                      bottomCon.currentBottomIndex.value = 3;
-                                    }
-                                  } else {
-                                    Get.back();
-                                    Get.back();
-                                    if (isRegistered<BottomBarController>()) {
-                                      BottomBarController bottomCon = Get.find<BottomBarController>();
-                                      bottomCon.currentBottomIndex.value = 3;
-                                    }
-                                  }
                                 },
                               );
                             },

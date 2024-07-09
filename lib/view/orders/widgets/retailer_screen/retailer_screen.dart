@@ -3,73 +3,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-import '../../../../data/model/cart/retailer_model.dart';
-import '../../../../data/repositories/cart/cart_repository.dart';
+import '../../../../data/repositories/orders/orders_repository.dart';
 import '../../../../exports.dart';
 import '../../../../res/empty_element.dart';
 import '../../../../widgets/custom_radio_button.dart';
+import 'retailer_controller.dart';
 
-class RetailerDialog extends StatefulWidget {
-  final RxString id;
-  const RetailerDialog({super.key, required this.id});
-
-  @override
-  State<RetailerDialog> createState() => _RetailerDialogState();
-}
-
-class _RetailerDialogState extends State<RetailerDialog> {
-  RxList<RetailerModel> retailerList = <RetailerModel>[].obs;
-  Rx<RetailerModel> retailerModel = RetailerModel().obs;
-  Rx<TextEditingController> retailerCon = TextEditingController().obs;
-  TextEditingController controller = TextEditingController();
-  RxBool isLoading = true.obs;
-  ScrollController scrollController = ScrollController();
-  RxInt page = 1.obs;
-  RxInt itemLimit = 20.obs;
-  RxBool nextPageAvailable = true.obs;
-  RxBool paginationLoader = false.obs;
-  @override
-  void initState() {
-    super.initState();
-    CartRepository.getRetailerApi(
-      itemLimit: itemLimit,
-      nextPageAvailable: nextPageAvailable,
-      paginationLoader: paginationLoader,
-      page: page,
-      retailerList: retailerList,
-      loader: isLoading,
-    );
-    manageScrollController();
-  }
-
-  /// Pagination
-  void manageScrollController() async {
-    scrollController.addListener(
-      () {
-        if (scrollController.position.maxScrollExtent == scrollController.position.pixels) {
-          if (nextPageAvailable.value && paginationLoader.isFalse) {
-            /// PAGINATION CALL
-            /// GET Retailer API
-            CartRepository.getRetailerApi(
-              itemLimit: itemLimit,
-              nextPageAvailable: nextPageAvailable,
-              paginationLoader: paginationLoader,
-              page: page,
-              retailerList: retailerList,
-              loader: paginationLoader,
-              isInitial: false,
-            );
-          }
-        }
-      },
-    );
-  }
-
-  // int index = retailerList.indexWhere((element) => element.id == retailerId.obs);
-  //           if (index != -1) {
-  //             con.retailerModel.value = con.retailerList[index];
-  //           }
-  // isValEmpty(con.retailerId.obs) ? con.retailerId.obs : RxString(con.retailerList[0].id?.value ?? ""),
+class RetailerScreen extends StatelessWidget {
+  RetailerScreen({super.key});
+  final RetailerController con = Get.put(RetailerController());
 
   @override
   Widget build(BuildContext context) {
@@ -111,59 +53,76 @@ class _RetailerDialogState extends State<RetailerDialog> {
                   ),
                 ),
                 defaultPadding.verticalSpace,
-                if (retailerList.isNotEmpty)
-                  AppTextField(
-                    controller: controller,
-                    hintText: 'Search',
-                    textInputAction: TextInputAction.search,
-                    padding: EdgeInsets.symmetric(horizontal: defaultPadding),
-                    contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 4, horizontal: defaultPadding / 1.7),
-                    onChanged: (value) {},
-                    prefixIcon: Padding(
-                      padding: EdgeInsets.all(defaultPadding / 1.4),
-                      child: SvgPicture.asset(
-                        AppAssets.search,
-                        height: 22,
-                        width: 22,
-                        color: UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400, // ignore: deprecated_member_use
-                      ),
+                AppTextField(
+                  controller: con.searchCon.value,
+                  hintText: 'Search',
+                  textInputAction: TextInputAction.search,
+                  padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                  contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 4, horizontal: defaultPadding / 1.7),
+                  prefixIcon: Padding(
+                    padding: EdgeInsets.all(defaultPadding / 1.4),
+                    child: SvgPicture.asset(
+                      AppAssets.search,
+                      height: 22,
+                      width: 22,
+                      color: UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400, // ignore: deprecated_member_use
                     ),
-                    suffixIcon: controller.text.trim().isNotEmpty
-                        ? Center(
-                            child: SvgPicture.asset(
-                              AppAssets.crossIcon,
-                              color: Theme.of(context).primaryColor, // ignore: deprecated_member_use
-                            ),
-                          )
-                        : null,
-                    suffixOnTap: () {
-                      FocusScope.of(context).unfocus();
-                      controller.clear();
-                    },
                   ),
+                  onChanged: (value) {
+                    if (con.searchCon.value.text.isNotEmpty) {
+                      /// DEBOUNCE
+                      commonDebounce(
+                        callback: () async {
+                          return OrdersRepository.getRetailerApi(searchText: con.searchCon.value.text.trim(), loader: con.isLoading);
+                        },
+                      );
+                      con.showCloseButton.value = true;
+                    } else {
+                      con.showCloseButton.value = false;
+                    }
+                  },
+                  suffixIcon: con.showCloseButton.isTrue
+                      ? Center(
+                          child: SvgPicture.asset(
+                            AppAssets.crossIcon,
+                            color: Theme.of(context).primaryColor, // ignore: deprecated_member_use
+                          ),
+                        )
+                      : null,
+                  suffixOnTap: con.showCloseButton.isTrue
+                      ? () async {
+                          FocusScope.of(context).unfocus();
+                          con.showCloseButton.value = false;
+                          con.searchCon.value.clear();
+
+                          /// CLEAR SEARCH API
+                          OrdersRepository.getRetailerApi(searchText: con.searchCon.value.text.trim(), loader: con.isLoading);
+                        }
+                      : null,
+                ),
                 (defaultPadding / 1.4).verticalSpace,
 
                 /// Records
                 Expanded(
-                  child: isLoading.isFalse
-                      ? retailerList.isNotEmpty
+                  child: con.isLoading.isFalse
+                      ? con.retailerList.isNotEmpty
                           ? Column(
                               children: [
                                 ListView.separated(
                                   physics: const RangeMaintainingScrollPhysics(),
-                                  itemCount: retailerList.length,
+                                  itemCount: con.retailerList.length,
                                   shrinkWrap: true,
-                                  controller: scrollController,
+                                  controller: con.scrollController,
                                   itemBuilder: (context, index) => ListTile(
                                     title: Text(
-                                      retailerList[index].businessName ?? '',
+                                      con.retailerList[index].businessName ?? '',
                                       style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
                                     ),
                                     trailing: AppRadioButton(
-                                      isSelected: (retailerList[index].id?.value == widget.id.value).obs,
+                                      isSelected: (con.retailerList[index].id?.value == con.retailerId.value).obs,
                                     ),
                                     onTap: () {
-                                      Get.back(result: retailerList[index]);
+                                      Get.back(result: con.retailerList[index]);
                                     },
                                   ),
                                   separatorBuilder: (context, index) => Divider(height: 1.h),
@@ -171,7 +130,7 @@ class _RetailerDialogState extends State<RetailerDialog> {
 
                                 /// PAGINATION LOADER
                                 Visibility(
-                                  visible: paginationLoader.isTrue,
+                                  visible: con.paginationLoader.isTrue,
                                   child: retailerShimmer(),
                                 ),
                               ],

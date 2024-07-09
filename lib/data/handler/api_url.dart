@@ -39,7 +39,8 @@ class ApiUrls {
   static const String createAndGetWatchlistAPI = "mobile/watchlist";
   static const String cartToWatchlistPOST = "mobile/watchlist/cart-to-watchlist";
 
-  static String getAndDeleteSingleWatchlistAPI({required String watchlistId}) => "mobile/watchlist/find-inventories/$watchlistId";
+  static String getAndDeleteSingleWatchListAPI({required String watchlistId}) => "mobile/watchlist/$watchlistId";
+  static String getSingleWatchListAPI({required String watchListId}) => "mobile/watchlist/find-inventories/$watchListId";
 
   /// USER
   static const String deleteAccountDELETE = "";

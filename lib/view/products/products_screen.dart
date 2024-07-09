@@ -32,8 +32,15 @@ class ProductsScreen extends StatelessWidget {
           shadowColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.3),
           title: con.categoryName.isNotEmpty ? con.categoryName.value : con.subCategory.value.name,
 
-          actions:  [
-            CartIconButton(),
+          actions: [
+            CartIconButton(
+              onPressed: () {
+                Get.offAllNamed(
+                  AppRoutes.cartScreen,
+                  predicate: (route) => route.settings.name == AppRoutes.productScreen,
+                );
+              },
+            ),
           ],
 
           /// SORTING AND FILTERS
@@ -135,7 +142,7 @@ class ProductsScreen extends StatelessWidget {
                                   children: [
                                     ProductTile(
                                       category: RxString(con.inventoryProductList[index].subCategoryId ?? ""),
-                                      isFancy: con.isFancyDiamond.value,
+                                      isFancy: con.inventoryProductList[index].isDiamondMultiple ?? false,
                                       inventoryId: con.inventoryProductList[index].id,
                                       diamondList: RxList(con.inventoryProductList[index].diamonds ?? []),
                                       productTileType: con.isProductViewChange.isTrue ? ProductTileType.grid : ProductTileType.list,
@@ -144,7 +151,7 @@ class ProductsScreen extends StatelessWidget {
                                         arguments: {
                                           "category": con.inventoryProductList[index].subCategoryId ?? '',
                                           'isSize': con.isSizeAvailable.value,
-                                          'isFancy': con.isFancyDiamond.value,
+                                          'isFancy': con.inventoryProductList[index].isDiamondMultiple ?? false,
                                           'inventoryId': con.inventoryProductList[index].id,
                                           'name': con.inventoryProductList[index].name,
                                           'like': con.inventoryProductList[index].isWishlist,

@@ -1,5 +1,7 @@
 import 'dart:convert';
+
 import 'package:get/get.dart';
+
 import '../product/products_model.dart';
 
 GetWishlistModel getWishlistModelFromJson(String str) => GetWishlistModel.fromJson(json.decode(str));
@@ -115,6 +117,7 @@ class WishlistInventory {
   RxNum? inventoryTotalPrice;
   final String? singleInvImage;
   final RxInt? quantity;
+  final bool? isDiamondMultiple;
 
   WishlistInventory({
     this.id,
@@ -129,6 +132,7 @@ class WishlistInventory {
     this.inventoryTotalPrice,
     this.singleInvImage,
     this.quantity,
+    this.isDiamondMultiple,
   });
 
   factory WishlistInventory.fromJson(Map<String, dynamic> json) => WishlistInventory(
@@ -144,6 +148,7 @@ class WishlistInventory {
         inventoryTotalPrice: json["inventory_total_price"] == null ? null : RxNum(num.tryParse(json["inventory_total_price"].toString()) ?? 0),
         singleInvImage: json["single_inv_image"],
         quantity: 0.obs,
+        isDiamondMultiple: json["isDiamondMultiple"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -159,5 +164,6 @@ class WishlistInventory {
         "inventory_total_price": inventoryTotalPrice?.value,
         "single_inv_image": singleInvImage,
         "quantity": quantity?.value,
+        "isDiamondMultiple": isDiamondMultiple,
       };
 }

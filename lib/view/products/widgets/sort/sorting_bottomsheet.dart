@@ -187,7 +187,7 @@ class SortingBottomSheet extends StatelessWidget {
                         onPressed: () async {
                           if (con.sortList.isNotEmpty) {
                             await ProductRepository.getFilterProductsListAPI(
-                              watchlistId: watchlistId,
+                              watchListId: watchlistId,
                               productsListType: con.productListType.value,
                               categoryId: con.categoryId.value,
                               subCategoryId: con.subCategory.value.id ?? "",

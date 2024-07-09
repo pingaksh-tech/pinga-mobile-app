@@ -30,20 +30,21 @@ class WishlistRepository {
         ).then(
           (response) async {
             if (response != null) {
-              if (response['data'] != null) {
-                if (response['data']["is_wishlist"] == false) {
-                  if (productListType == ProductsListType.wishlist) {
-                    if (isRegistered<WishlistController>()) {
-                      final WishlistController wishlistCon = Get.find<WishlistController>();
+              await getWishlistAPI(isPullToRefresh: true);
+              // if (response['data'] != null) {
+              //   if (response['data']["is_wishlist"] == false) {
+              //     if (productListType == ProductsListType.wishlist) {
+              //       if (isRegistered<WishlistController>()) {
+              //         final WishlistController wishlistCon = Get.find<WishlistController>();
 
-                      int index = wishlistCon.productsList.indexWhere((element) => element.inventoryId == inventoryId);
-                      if (index != -1) {
-                        wishlistCon.productsList.removeAt(index);
-                      }
-                    }
-                  }
-                }
-              }
+              //         int index = wishlistCon.productsList.indexWhere((element) => element.inventoryId == inventoryId);
+              //         if (index != -1) {
+              //           wishlistCon.productsList.removeAt(index);
+              //         }
+              //       }
+              //     }
+              //   }
+              // }
 
               loader?.value = false;
             } else {
@@ -76,7 +77,7 @@ class WishlistRepository {
         loader?.value = true;
 
         if (isInitial) {
-          if (isPullToRefresh) {
+          if (!isPullToRefresh) {
             con.productsList.clear();
           }
           con.page.value = 1;
@@ -98,7 +99,7 @@ class WishlistRepository {
 
               if (model.data != null) {
                 if (isPullToRefresh) {
-                  con.productsList.addAll(model.data?.wishlists ?? []);
+                  con.productsList.value = model.data?.wishlists ?? [];
                 } else {
                   con.productsList.addAll(model.data?.wishlists ?? []);
                 }

@@ -19,7 +19,22 @@ class WishlistController extends GetxController {
   @override
   void onReady() async {
     super.onReady();
-
     await WishlistRepository.getWishlistAPI(loader: loader);
+    manageScrollController();
+  }
+
+  /// Pagination
+  void manageScrollController() async {
+    scrollController.addListener(
+      () {
+        if (scrollController.position.maxScrollExtent == scrollController.position.pixels) {
+          if (nextPageAvailable.value && paginationLoader.isFalse) {
+            /// PAGINATION CALL
+            /// GET CATEGORIES API
+            WishlistRepository.getWishlistAPI(loader: paginationLoader, isInitial: false);
+          }
+        }
+      },
+    );
   }
 }

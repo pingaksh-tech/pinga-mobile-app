@@ -130,8 +130,8 @@ enum SelectableItemType {
     colors: Color(0xFF221361),
     label: "Metal",
     slug: "metal",
-    icon: AppAssets.colorIcon,
-    selectedIcon: AppAssets.colorIcon,
+    icon: AppAssets.metalWeight,
+    selectedIcon: AppAssets.metalWeight,
   ),
   diamond(
     id: 2,

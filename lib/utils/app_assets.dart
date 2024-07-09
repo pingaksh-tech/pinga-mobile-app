@@ -62,7 +62,7 @@ class AppAssets {
   static const String watchlistFilled = '${svgPath}watchlist.svg';
   static const String jewelleryWearIcon = '${svgPath}jewellery_wear_icon.svg';
   static const String ringSizeIcon = '${svgPath}ring_size_icon.svg';
-  static const String colorIcon = '${svgPath}color_icon.svg';
+  // static const String colorIcon = '${svgPath}color_icon.svg';
   static const String diamondIcon = '${svgPath}diamond_icon.svg';
   static const String ringIcon = '${svgPath}ring_icon.svg';
   static const String plusIcon = '${svgPath}plus.svg';
