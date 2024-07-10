@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../../../exports.dart';
 import '../../../packages/cached_network_image/cached_network_image.dart';
+import '../../controller/predefine_value_controller.dart';
 import '../../data/repositories/auth/auth_repository.dart';
 import '../../packages/app_animated_cliprect.dart';
 import '../../res/app_dialog.dart';
@@ -17,6 +18,7 @@ class AppDrawer extends StatelessWidget {
   AppDrawer({super.key, this.homeOnPressed});
 
   final AppDrawerController con = Get.put(AppDrawerController());
+  final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
 
   @override
   Widget build(BuildContext context) {
@@ -27,15 +29,15 @@ class AppDrawer extends StatelessWidget {
           physics: const RangeMaintainingScrollPhysics(),
           children: [
             /// Drawer Header
-            const Stack(
+            Stack(
               children: [
                 DrawerHeader(
                   margin: EdgeInsets.zero,
                   padding: EdgeInsets.zero,
                   child: AppNetworkImage(
-                    borderRadius: BorderRadius.all(Radius.circular(0)),
+                    borderRadius: BorderRadius.circular(0),
                     fit: BoxFit.cover,
-                    imageUrl: /* preValueCon.profileBanner.value  */ 'https://media.designrush.com/tinymce_images/316674/conversions/Desiree-Qelaj-content.jpg',
+                    imageUrl: !isValEmpty(preValueCon.profileBanner.value) ? preValueCon.profileBanner.value : 'https://media.designrush.com/tinymce_images/316674/conversions/Desiree-Qelaj-content.jpg',
                   ),
                 ),
               ],

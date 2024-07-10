@@ -29,30 +29,50 @@ class CatalogueScreen extends StatelessWidget {
         return PullToRefreshIndicator(
           onRefresh: () => CatalogueRepository.getCatalogue(isPullToRefresh: true),
           child: ListView(
-            padding: EdgeInsets.zero,
+            controller: con.scrollController,
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: EdgeInsets.all(defaultPadding),
             children: [
               con.loader.isFalse
                   ? con.catalogueList.isNotEmpty
-                      ? ListView.separated(
-                          shrinkWrap: true,
-                          padding: EdgeInsets.all(defaultPadding),
-                          itemCount: con.catalogueList.length,
-                          separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
-                          itemBuilder: (context, index) => Obx(() {
-                            return catalogueTile(
-                              context,
-                              index: index,
-                              title: con.catalogueList[index].name,
-                              subtitle: con.catalogueList[index].name?.value,
-                              date: con.catalogueList[index].createdAt.toString(),
-                              onPressed: () {
-                                Get.toNamed(AppRoutes.pdfViewerScreen, arguments: {
-                                  "title": con.catalogueList[index].name?.value,
-                                  "catalogueId": con.catalogueList[index].id ?? "",
-                                });
-                              },
-                            );
-                          }),
+                      ? Column(
+                          children: [
+                            ListView.separated(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: con.catalogueList.length,
+                              separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
+                              itemBuilder: (context, index) => Obx(
+                                () {
+                                  return catalogueTile(
+                                    context,
+                                    index: index,
+                                    title: con.catalogueList[index].name,
+                                    subtitle: con.catalogueList[index].name?.value,
+                                    date: con.catalogueList[index].createdAt.toString(),
+                                    onPressed: () {
+                                      Get.toNamed(
+                                        AppRoutes.pdfViewerScreen,
+                                        arguments: {
+                                          "title": con.catalogueList[index].name?.value,
+                                          "catalogueId": con.catalogueList[index].id ?? "",
+                                        },
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+
+                            /// PAGINATION LOADER
+                            Visibility(
+                              visible: con.paginationLoader.isTrue,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding / 2).copyWith(top: 0),
+                                child: shimmerTile(),
+                              ),
+                            )
+                          ],
                         )
                       :
 
@@ -90,7 +110,6 @@ class CatalogueScreen extends StatelessWidget {
 
   Widget shimmerListView() {
     return ListView.builder(
-      padding: EdgeInsets.all(defaultPadding),
       shrinkWrap: true,
       itemBuilder: (context, index) => shimmerTile(),
       itemCount: 10,

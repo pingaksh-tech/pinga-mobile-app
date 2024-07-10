@@ -577,7 +577,7 @@ class _ProductTileState extends State<ProductTile> {
       defaultSearchDebounceDuration,
       () async {
         /// Add to cart api
-        await CartRepository.updateCartApi(
+        await CartRepository.addOrUpdateCartApi(
           cartId: widget.cartId,
           inventoryId: inventoryId ?? widget.inventoryId ?? "",
           quantity: quantity ?? widget.productQuantity?.value ?? 0,
@@ -874,9 +874,13 @@ class _ProductTileState extends State<ProductTile> {
                                   ),
                                 ],
                               )
-                            : SizedBox(
+                            : Container(
                                 width: Get.width * 0.25,
                                 height: Get.width * 0.25,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(defaultRadius),
+                                  color: AppColors.primary.withOpacity(0.1),
+                                ),
                               ),
                         if (widget.isCartSelected != null)
                           Positioned(

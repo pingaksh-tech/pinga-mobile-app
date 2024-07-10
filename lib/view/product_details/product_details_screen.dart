@@ -65,91 +65,102 @@ class ProductDetailsScreen extends StatelessWidget {
                               ///                                    IMAGE VIEW
                               /// ***********************************************************************************
 
-                              if (con.productDetailModel.value.inventoryImages != null && con.productDetailModel.value.inventoryImages!.isNotEmpty)
-                                AspectRatio(
-                                  aspectRatio: 1,
-                                  child: GestureDetector(
-                                    behavior: HitTestBehavior.translucent,
-                                    onTap: () {
-                                      Get.toNamed(
-                                        AppRoutes.imageViewScreen,
-                                        arguments: {'imageList': con.productDetailModel.value.inventoryImages, "name": con.productName.value},
-                                      );
-                                    },
-                                    child: Stack(
-                                      children: [
-                                        /// IMAGES
-                                        PageView.builder(
-                                          controller: con.imagesPageController.value,
-                                          itemCount: con.productDetailModel.value.inventoryImages?.length,
-                                          onPageChanged: (index) {
-                                            con.currentPage.value = index;
-                                          },
-                                          itemBuilder: (context, index) {
-                                            return AppNetworkImage(
-                                              imageUrl: con.productDetailModel.value.inventoryImages?[index] ?? "",
-                                              fit: BoxFit.cover,
-                                              borderRadius: BorderRadius.zero,
-                                            );
-                                          },
-                                        ),
-
-                                        /// PAGE INDEX INDICATOR
-                                        Positioned(
-                                          bottom: defaultPadding,
-                                          left: Get.width / 2.3,
-                                          child: Obx(() {
-                                            return Container(
-                                              decoration: BoxDecoration(
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: Theme.of(context).colorScheme.surface.withOpacity(.1),
-                                                    blurRadius: 20,
-                                                    spreadRadius: 5,
-                                                  )
-                                                ],
-                                              ),
-                                              child: AnimatedSmoothIndicator(
-                                                activeIndex: con.currentPage.value,
-                                                count: con.productDetailModel.value.inventoryImages != null ? con.productDetailModel.value.inventoryImages!.length : 0,
-                                                effect: ScrollingDotsEffect(
-                                                  dotHeight: 8.0,
-                                                  dotWidth: 8.0,
-                                                  spacing: 5.0,
-                                                  dotColor: Theme.of(context).primaryColor.withOpacity(0.15),
-                                                  activeDotColor: Theme.of(context).primaryColor,
-                                                ),
-                                              ),
-                                            );
-                                          }),
-                                        ),
-
-                                        /// LIKE
-                                        Positioned(
-                                          bottom: defaultPadding * 1,
-                                          right: defaultPadding * 1,
-                                          child: Obx(() {
-                                            return AppIconButton(
-                                              backgroundColor: Theme.of(context).cardColor.withOpacity(1),
-                                              icon: SvgPicture.asset(
-                                                con.isLike.value ? AppAssets.likeFill : AppAssets.like,
-                                                colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
-                                              ),
-                                              onPressed: () async {
-                                                con.isLike.value = !con.isLike.value;
-                                                con.isLike.refresh();
-
-                                                /// CREATE WISHLIST API
-                                                await WishlistRepository.createWishlistAPI(productListType: ProductsListType.normal, inventoryId: con.inventoryId.value, isWishlist: con.isLike.value);
+                              AspectRatio(
+                                aspectRatio: 1,
+                                child: GestureDetector(
+                                  behavior: HitTestBehavior.translucent,
+                                  onTap: () {
+                                    Get.toNamed(
+                                      AppRoutes.imageViewScreen,
+                                      arguments: {'imageList': con.productDetailModel.value.inventoryImages, "name": con.productName.value},
+                                    );
+                                  },
+                                  child: Stack(
+                                    children: [
+                                      /// IMAGES
+                                      (con.productDetailModel.value.inventoryImages != null && con.productDetailModel.value.inventoryImages!.isNotEmpty)
+                                          ? PageView.builder(
+                                              controller: con.imagesPageController.value,
+                                              itemCount: con.productDetailModel.value.inventoryImages?.length,
+                                              onPageChanged: (index) {
+                                                con.currentPage.value = index;
                                               },
-                                              shadowColor: Theme.of(context).colorScheme.surface.withOpacity(.1),
-                                            );
-                                          }),
-                                        ),
-                                      ],
-                                    ),
+                                              itemBuilder: (context, index) {
+                                                return AppNetworkImage(
+                                                  imageUrl: (con.productDetailModel.value.inventoryImages != null && con.productDetailModel.value.inventoryImages!.isNotEmpty) ? (con.productDetailModel.value.inventoryImages?[index] ?? "") : "Image Not found",
+                                                  fit: BoxFit.cover,
+                                                  height: Get.height * 0.5,
+                                                  borderRadius: BorderRadius.zero,
+                                                );
+                                              },
+                                            )
+                                          : Container(
+                                              color: AppColors.primary.withOpacity(0.1),
+                                              height: Get.height * 0.5,
+                                              width: Get.width,
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                "Image not found",
+                                                style: AppTextStyle.titleStyle(context).copyWith(fontSize: 14.sp, fontWeight: FontWeight.w400),
+                                              ),
+                                            ),
+
+                                      /// PAGE INDEX INDICATOR
+                                      Positioned(
+                                        bottom: defaultPadding,
+                                        left: Get.width / 2.3,
+                                        child: Obx(() {
+                                          return Container(
+                                            decoration: BoxDecoration(
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Theme.of(context).colorScheme.surface.withOpacity(.1),
+                                                  blurRadius: 20,
+                                                  spreadRadius: 5,
+                                                )
+                                              ],
+                                            ),
+                                            child: AnimatedSmoothIndicator(
+                                              activeIndex: con.currentPage.value,
+                                              count: con.productDetailModel.value.inventoryImages != null ? con.productDetailModel.value.inventoryImages!.length : 0,
+                                              effect: ScrollingDotsEffect(
+                                                dotHeight: 8.0,
+                                                dotWidth: 8.0,
+                                                spacing: 5.0,
+                                                dotColor: Theme.of(context).primaryColor.withOpacity(0.15),
+                                                activeDotColor: Theme.of(context).primaryColor,
+                                              ),
+                                            ),
+                                          );
+                                        }),
+                                      ),
+
+                                      /// LIKE
+                                      Positioned(
+                                        bottom: defaultPadding * 1,
+                                        right: defaultPadding * 1,
+                                        child: Obx(() {
+                                          return AppIconButton(
+                                            backgroundColor: Theme.of(context).cardColor.withOpacity(1),
+                                            icon: SvgPicture.asset(
+                                              con.isLike.value ? AppAssets.likeFill : AppAssets.like,
+                                              colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                                            ),
+                                            onPressed: () async {
+                                              con.isLike.value = !con.isLike.value;
+                                              con.isLike.refresh();
+
+                                              /// CREATE WISHLIST API
+                                              await WishlistRepository.createWishlistAPI(productListType: ProductsListType.normal, inventoryId: con.inventoryId.value, isWishlist: con.isLike.value);
+                                            },
+                                            shadowColor: Theme.of(context).colorScheme.surface.withOpacity(.1),
+                                          );
+                                        }),
+                                      ),
+                                    ],
                                   ),
                                 ),
+                              ),
 
                               /// ***********************************************************************************
                               ///                                  PRODUCT DETAILS
@@ -436,150 +447,158 @@ class ProductDetailsScreen extends StatelessWidget {
                 ],
               ),
         // bottom sheet
-        bottomNavigationBar: Container(
-          height: 60.h,
-          decoration: BoxDecoration(color: AppColors.background, boxShadow: [
-            BoxShadow(
-              color: Theme.of(context).iconTheme.color!.withOpacity(0.03),
-              blurRadius: 4,
-              spreadRadius: 7,
-            ),
-          ]),
-          padding: EdgeInsets.all(defaultPadding),
-          child: Row(
-            children: [
-              /// Size Selector
-              if (!isValEmpty(con.productDetailModel.value.sizeId))
-                horizontalSelectorButton(
-                  context,
-                  categoryId: con.productCategory.value,
-                  selectedSize: con.selectedSize,
-                  selectableItemType: SelectableItemType.size,
-                  sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
-                  axisDirection: Axis.vertical,
-                  sizeOnChanged: (value) async {
-                    /// Selected Size
-                    if ((value.runtimeType == DiamondModel)) {
-                      con.selectedSize.value = value;
-
-                      /// GET NEW PRODUCT PRICE
-                      con.priceChangeAPI();
-                    }
-                  },
+        bottomNavigationBar: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              decoration: BoxDecoration(color: AppColors.background, boxShadow: [
+                BoxShadow(
+                  color: Theme.of(context).iconTheme.color!.withOpacity(0.03),
+                  blurRadius: 4,
+                  spreadRadius: 7,
                 ),
-              (defaultPadding / 5).horizontalSpace,
+              ]),
+              padding: EdgeInsets.all(defaultPadding),
+              child: Row(
+                children: [
+                  /// Size Selector
+                  if (!isValEmpty(con.productDetailModel.value.sizeId))
+                    horizontalSelectorButton(
+                      context,
+                      categoryId: con.productCategory.value,
+                      selectedSize: con.selectedSize,
+                      selectableItemType: SelectableItemType.size,
+                      sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
+                      axisDirection: Axis.vertical,
+                      sizeOnChanged: (value) async {
+                        /// Selected Size
+                        if ((value.runtimeType == DiamondModel)) {
+                          con.selectedSize.value = value;
 
-              /// Metal Selector
-              horizontalSelectorButton(
-                context,
-                categoryId: con.selectedMetal.value.id?.value ?? "",
-                selectedMetal: con.selectedMetal,
-                selectableItemType: SelectableItemType.metal,
-                sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
-                axisDirection: Axis.vertical,
-                metalOnChanged: (value) async {
-                  printYellow(value.name);
-
-                  /// Selected Metal
-                  if ((value.runtimeType == MetalModel)) {
-                    con.selectedMetal.value = value;
-
-                    /// GET NEW PRODUCT PRICE
-                    con.priceChangeAPI();
-                  }
-                },
-              ),
-              (defaultPadding / 5).horizontalSpace,
-
-              /// Diamond Selector
-              horizontalSelectorButton(
-                context,
-                categoryId: con.selectedDiamond.value.id?.value ?? "",
-                selectedDiamond: con.selectedDiamond,
-                isFancy: con.isFancy.value,
-                diamondsList: RxList(con.productDetailModel.value.diamonds ?? []),
-                selectableItemType: SelectableItemType.diamond,
-                sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
-                axisDirection: Axis.vertical,
-                multiRubyOnChanged: (diamondList) async {
-                  /// Return List of Selected Diamond
-                  if ((diamondList.runtimeType == RxList<DiamondListModel>)) {
-                    con.diamondList.value = diamondList;
-
-                    /// GET NEW PRODUCT PRICE
-                    con.priceChangeAPI();
-                  }
-                },
-                rubyOnChanged: (value) {
-                  /// Selected Diamond
-                  if ((value.runtimeType == DiamondModel)) {
-                    con.selectedDiamond.value = value;
-
-                    /// GET NEW PRODUCT PRICE
-                    con.priceChangeAPI();
-                  }
-                },
-              ),
-              (defaultPadding / 5).horizontalSpace,
-
-              /// Add Remark
-              horizontalSelectorButton(
-                context,
-                remarkSelected: con.selectedRemark,
-                selectableItemType: SelectableItemType.remarks,
-                sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
-                axisDirection: Axis.vertical,
-                remarkOnChanged: (value) {
-                  con.selectedRemark.value = value;
-                },
-              ),
-              (defaultPadding / 5).horizontalSpace,
-              plusMinusTile(
-                context,
-                textValue: con.quantity,
-                onIncrement: (value) {
-                  CartRepository.updateCartApi(
-                    inventoryId: con.inventoryId.value,
-                    quantity: value,
-                    extraMetalWeight: con.extraMetalWt,
-                    metalId: con.selectedMetal.value.id?.value ?? "",
-                    sizeId: con.selectedSize.value.id?.value ?? "",
-                    diamondClarity: con.selectedDiamond.value.shortName ?? "",
-                    diamonds: List.generate(
-                      con.diamondList.length,
-                      (index) => {
-                        "diamond_clarity": con.diamondList[index].diamondClarity?.value ?? "",
-                        "diamond_shape": con.diamondList[index].diamondShape ?? "",
-                        "diamond_size": con.diamondList[index].diamondSize ?? "",
-                        "diamond_count": con.diamondList[index].diamondCount ?? 0,
-                        "_id": con.diamondList[index].id ?? "",
+                          /// GET NEW PRODUCT PRICE
+                          con.priceChangeAPI();
+                        }
                       },
                     ),
-                  );
-                },
-                onDecrement: (value) {
-                  CartRepository.updateCartApi(
-                    inventoryId: con.inventoryId.value,
-                    extraMetalWeight: con.extraMetalWt,
-                    quantity: value,
-                    metalId: con.selectedMetal.value.id?.value ?? "",
-                    sizeId: con.selectedSize.value.id?.value ?? "",
-                    diamondClarity: con.selectedDiamond.value.shortName ?? "",
-                    diamonds: List.generate(
-                      con.diamondList.length,
-                      (index) => {
-                        "diamond_clarity": con.diamondList[index].diamondClarity?.value ?? "",
-                        "diamond_shape": con.diamondList[index].diamondShape ?? "",
-                        "diamond_size": con.diamondList[index].diamondSize ?? "",
-                        "diamond_count": con.diamondList[index].diamondCount ?? 0,
-                        "_id": con.diamondList[index].id ?? "",
-                      },
-                    ),
-                  );
-                },
-              )
-            ],
-          ),
+                  (defaultPadding / 5).horizontalSpace,
+
+                  /// Metal Selector
+                  horizontalSelectorButton(
+                    context,
+                    categoryId: con.selectedMetal.value.id?.value ?? "",
+                    selectedMetal: con.selectedMetal,
+                    selectableItemType: SelectableItemType.metal,
+                    sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
+                    axisDirection: Axis.vertical,
+                    metalOnChanged: (value) async {
+                      printYellow(value.name);
+
+                      /// Selected Metal
+                      if ((value.runtimeType == MetalModel)) {
+                        con.selectedMetal.value = value;
+
+                        /// GET NEW PRODUCT PRICE
+                        con.priceChangeAPI();
+                      }
+                    },
+                  ),
+                  (defaultPadding / 5).horizontalSpace,
+
+                  /// Diamond Selector
+                  horizontalSelectorButton(
+                    context,
+                    categoryId: con.selectedDiamond.value.id?.value ?? "",
+                    selectedDiamond: con.selectedDiamond,
+                    isFancy: con.isFancy.value,
+                    diamondsList: RxList(con.productDetailModel.value.diamonds ?? []),
+                    selectableItemType: SelectableItemType.diamond,
+                    sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
+                    axisDirection: Axis.vertical,
+                    multiRubyOnChanged: (diamondList) async {
+                      /// Return List of Selected Diamond
+                      if ((diamondList.runtimeType == RxList<DiamondListModel>)) {
+                        con.diamondList.value = diamondList;
+
+                        /// GET NEW PRODUCT PRICE
+                        con.priceChangeAPI();
+                      }
+                    },
+                    rubyOnChanged: (value) {
+                      /// Selected Diamond
+                      if ((value.runtimeType == DiamondModel)) {
+                        con.selectedDiamond.value = value;
+
+                        /// GET NEW PRODUCT PRICE
+                        con.priceChangeAPI();
+                      }
+                    },
+                  ),
+                  (defaultPadding / 5).horizontalSpace,
+
+                  /// Add Remark
+                  horizontalSelectorButton(
+                    context,
+                    remarkSelected: con.selectedRemark,
+                    selectableItemType: SelectableItemType.remarks,
+                    sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
+                    axisDirection: Axis.vertical,
+                    remarkOnChanged: (value) {
+                      con.selectedRemark.value = value;
+                    },
+                  ),
+                  (defaultPadding / 5).horizontalSpace,
+                  plusMinusTile(
+                    context,
+                    textValue: con.quantity,
+                    onIncrement: (value) {
+                      CartRepository.addOrUpdateCartApi(
+                        inventoryId: con.inventoryId.value,
+                        quantity: value,
+                        extraMetalWeight: con.extraMetalWt != 0.0 ? con.extraMetalWt : null,
+                        metalId: con.selectedMetal.value.id?.value ?? "",
+                        sizeId: con.selectedSize.value.id?.value ?? "",
+                        diamondClarity: con.selectedDiamond.value.shortName ?? "",
+                        diamonds: con.isFancy.isTrue
+                            ? List.generate(
+                                con.productDetailModel.value.diamonds?.length ?? 0,
+                                (index) => {
+                                  "diamond_clarity": con.productDetailModel.value.diamonds?[index].diamondClarity?.value ?? "",
+                                  "diamond_shape": con.productDetailModel.value.diamonds?[index].diamondShape ?? "",
+                                  "diamond_size": con.productDetailModel.value.diamonds?[index].diamondSize ?? "",
+                                  "diamond_count": con.productDetailModel.value.diamonds?[index].diamondCount ?? 0,
+                                  "_id": con.productDetailModel.value.diamonds?[index].id ?? "",
+                                },
+                              )
+                            : null,
+                      );
+                    },
+                    onDecrement: (value) {
+                      CartRepository.addOrUpdateCartApi(
+                        inventoryId: con.inventoryId.value,
+                        extraMetalWeight: con.extraMetalWt,
+                        quantity: value,
+                        metalId: con.selectedMetal.value.id?.value ?? "",
+                        sizeId: con.selectedSize.value.id?.value ?? "",
+                        diamondClarity: con.selectedDiamond.value.shortName ?? "",
+                        diamonds: con.isFancy.isTrue
+                            ? List.generate(
+                                con.productDetailModel.value.diamonds?.length ?? 0,
+                                (index) => {
+                                  "diamond_clarity": con.productDetailModel.value.diamonds?[index].diamondClarity?.value ?? "",
+                                  "diamond_shape": con.productDetailModel.value.diamonds?[index].diamondShape ?? "",
+                                  "diamond_size": con.productDetailModel.value.diamonds?[index].diamondSize ?? "",
+                                  "diamond_count": con.productDetailModel.value.diamonds?[index].diamondCount ?? 0,
+                                  "_id": con.productDetailModel.value.diamonds?[index].id ?? "",
+                                },
+                              )
+                            : null,
+                      );
+                    },
+                  )
+                ],
+              ),
+            ),
+          ],
         ),
       );
     });

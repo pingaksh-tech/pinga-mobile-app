@@ -30,22 +30,19 @@ class WishlistRepository {
         ).then(
           (response) async {
             if (response != null) {
-              await getWishlistAPI(isPullToRefresh: true);
-              // if (response['data'] != null) {
-              //   if (response['data']["is_wishlist"] == false) {
-              //     if (productListType == ProductsListType.wishlist) {
-              //       if (isRegistered<WishlistController>()) {
-              //         final WishlistController wishlistCon = Get.find<WishlistController>();
+              if (isWishlist == false) {
+                if (productListType == ProductsListType.wishlist) {
+                  if (isRegistered<WishlistController>()) {
+                    final WishlistController wishlistCon = Get.find<WishlistController>();
 
-              //         int index = wishlistCon.productsList.indexWhere((element) => element.inventoryId == inventoryId);
-              //         if (index != -1) {
-              //           wishlistCon.productsList.removeAt(index);
-              //         }
-              //       }
-              //     }
-              //   }
-              // }
-
+                    int index = wishlistCon.productsList.indexWhere((element) => element.inventoryId == inventoryId);
+                    if (index != -1) {
+                      wishlistCon.productsList.removeAt(index);
+                    }
+                  }
+                }
+              }
+              UiUtils.toast(isWishlist == true ? "Product add successfully in wishlist" : "Product removed from wishlist successfully");
               loader?.value = false;
             } else {
               loader?.value = false;

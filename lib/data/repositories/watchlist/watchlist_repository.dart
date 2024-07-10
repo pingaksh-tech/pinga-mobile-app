@@ -59,7 +59,7 @@ class WatchListRepository {
                   }
                 }
               }
-
+              UiUtils.toast("Product add in watchlist Successfully");
               loader?.value = false;
             } else {
               loader?.value = false;
@@ -171,6 +171,7 @@ class WatchListRepository {
                   }
                 }
                 Get.back();
+                UiUtils.toast("Watchlist deleted successfully");
               }
 
               loader?.value = false;

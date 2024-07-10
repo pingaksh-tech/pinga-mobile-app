@@ -14,6 +14,7 @@ import '../../data/repositories/auth/auth_repository.dart';
 import '../../data/repositories/user/user_repository.dart';
 import '../../exports.dart';
 import '../../res/app_dialog.dart';
+import '../../res/app_network_image.dart';
 import 'profile_controller.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -40,15 +41,12 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 Stack(
                   children: [
-                    Container(
+                    AppNetworkImage(
+                      imageUrl: !isValEmpty(preValueCon.profileBanner.value) ? preValueCon.profileBanner.value : "https://media.designrush.com/tinymce_images/316674/conversions/Desiree-Qelaj-content.jpg",
                       height: Get.height * 0.2,
                       width: Get.width,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(/* preValueCon.profileBanner.value  */ "https://media.designrush.com/tinymce_images/316674/conversions/Desiree-Qelaj-content.jpg"),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                      borderRadius: BorderRadius.circular(0),
+                      fit: BoxFit.cover,
                     ),
                     Positioned.fill(
                       child: ClipRRect(

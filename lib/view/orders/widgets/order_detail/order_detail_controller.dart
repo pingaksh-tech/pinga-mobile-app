@@ -21,6 +21,6 @@ class OrderDetailController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    OrdersRepository.getSingleProductAPI(orderId: orderId.value, loader: isLoading);
+    OrdersRepository.getSingleOrderAPI(orderId: orderId.value, loader: isLoading);
   }
 }
