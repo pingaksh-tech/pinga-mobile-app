@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../../exports.dart';
@@ -249,6 +250,145 @@ class CatalogueRepository {
   ///                                     DOWNLOAD CATALOGUE API
   /// ***********************************************************************************
 
+  static var demoPdfCode = '''%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 44 >>
+stream
+BT /F1 24 Tf 100 700 Td (Hello, PDF World!) Tj ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f
+0000000010 00000 n
+0000000053 00000 n
+0000000102 00000 n
+0000000196 00000 n
+0000000281 00000 n
+trailer
+<< /Root 1 0 R /Size 6 >>
+startxref
+333
+%%EOF
+''';
+
+  static Future<void> downloadCatalogueAPI({
+    required String catalogueId,
+    required CatalogueType catalogueType,
+    RxBool? loader,
+  }) async {
+    if (await getConnectivityResult()) {
+      try {
+        loader?.value = true;
+        printYellow(catalogueId);
+
+        /// API
+        await APIFunction.getApiCall(
+          apiUrl: ApiUrls.downloadCatalogueGET(catalogueId: catalogueId, catalogueType: catalogueType.name),
+          options: Options(
+            headers: {
+              "Content-Type": "application/pdf",
+              "Authorization": "Bearer ${LocalStorage.accessToken}",
+            },
+            responseType: ResponseType.bytes, // Set the response type to bytes
+          ),
+          loader: loader,
+        ).then(
+          (response) async {
+            if (response != null) {
+              // Get the app's document directory
+              Directory appDocDir = await getTemporaryDirectory();
+              String appDocPath = appDocDir.path;
+              Directory catalogueDir = Directory("$appDocPath/catalogue");
+
+              if (!await catalogueDir.exists()) {
+                await catalogueDir.create();
+              }
+
+              // Create a file path
+              String filePath = '${catalogueDir.path}/fd.pdf';
+
+              // Write the response data to a file
+              File file = File(filePath);
+              await file.writeAsBytes(response); // Directly use response as it is Uint8List
+
+              printOkStatus('File saved at $filePath');
+              Get.back();
+
+              /// Open the PDF
+              await OpenFile.open(file.path).whenComplete(() {
+                // Get.back();
+              });
+
+              if (isRegistered<PdfController>()) {
+                final PdfController con = Get.find<PdfController>();
+                con.pdfFile = file;
+                printYellow(con.pdfFile);
+                printYellow(await con.pdfFile.exists());
+              }
+
+              loader?.value = false;
+            } else {
+              loader?.value = false;
+            }
+
+            return response;
+          },
+        );
+      } catch (e) {
+        loader?.value = false;
+        printErrors(type: "downloadCatalogueAPI", errText: e);
+      }
+    } else {}
+  }
+
+/*  // static var demoPdfCode = '''''';
+  static var demoPdfCode = '''%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 44 >>
+stream
+BT /F1 24 Tf 100 700 Td (Hello, PDF World!) Tj ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f
+0000000010 00000 n
+0000000053 00000 n
+0000000102 00000 n
+0000000196 00000 n
+0000000281 00000 n
+trailer
+<< /Root 1 0 R /Size 6 >>
+startxref
+333
+%%EOF
+''';
+
   static Future<void> downloadCatalogueAPI({
     required String catalogueId,
     required CatalogueType catalogueType,
@@ -271,7 +411,7 @@ class CatalogueRepository {
           (response) async {
             if (response != null) {
               // Get the app's document directory
-              Directory appDocDir = await getApplicationDocumentsDirectory();
+              Directory appDocDir = await getTemporaryDirectory();
 
               String appDocPath = appDocDir.path;
 
@@ -282,17 +422,23 @@ class CatalogueRepository {
               }
 
               // Create a file path
-              String filePath = '${catalogueDir.path}/fd.pdf';
+              String filePath = '${catalogueDir.path}/fds.pdf';
 
               // Write the response data to a file
               File file = File(filePath);
               await file.writeAsString(response);
+              // await file.writeAsString(demoPdfCode);
 
               printOkStatus('File saved at $filePath');
+
+              /// Open the PDF
+              // await OpenFile.open(file.path);
+
               if (isRegistered<PdfController>()) {
                 final PdfController con = Get.find<PdfController>();
                 con.pdfFile = file;
                 printYellow(con.pdfFile);
+                printYellow(await con.pdfFile.exists());
               }
 
               loader?.value = false;
@@ -308,7 +454,39 @@ class CatalogueRepository {
         printErrors(type: "downloadCatalogueAPI", errText: e);
       }
     } else {}
-  }
+  }*/
+
+  /*Future<void> _downloadAndOpenPDF() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      // Fetching the PDF from the API
+      final response = await Dio().get(
+        'https://example.com/api/your-pdf-endpoint',
+        options: Options(responseType: ResponseType.bytes),
+      );
+
+      // Saving the PDF locally
+      final documentDirectory = await getApplicationDocumentsDirectory();
+      final file = File('${documentDirectory.path}/example.pdf');
+      await file.writeAsBytes(response.data);
+
+      // Open the PDF
+      await OpenFile.open(file.path);
+
+      setState(() {
+        _filePath = file.path;
+      });
+    } catch (e) {
+      print('Error: $e');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }*/
 
   static String getRandomString(int length) {
     const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
