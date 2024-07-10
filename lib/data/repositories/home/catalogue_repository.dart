@@ -325,7 +325,10 @@ startxref
               await file.writeAsBytes(response); // Directly use response as it is Uint8List
 
               printOkStatus('File saved at $filePath');
-              Get.back();
+
+              if (Get.currentRoute == AppRoutes.pdfViewerScreen) {
+                Get.back();
+              }
 
               /// Open the PDF
               await OpenFile.open(file.path).whenComplete(() {

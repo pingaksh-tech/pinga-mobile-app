@@ -160,7 +160,7 @@ class CatalogueScreen extends StatelessWidget {
                 ),
               ),
               AppPopUpMenuButton(
-                menuList: const ["Download", "Rename", "Delete"],
+                menuList: const [/*"Download",*/ "Rename", "Delete"],
                 child: Icon(
                   shadows: const [Shadow(color: AppColors.background, blurRadius: 4)],
                   Icons.more_vert_rounded,
@@ -171,14 +171,14 @@ class CatalogueScreen extends StatelessWidget {
                     /*   case "show":
                       Get.toNamed(AppRoutes.pdfViewerScreen, arguments: {"title": title});
                       break;*/
-                    case "Download":
+                    /*  case "Download":
                       await CatalogueRepository.downloadCatalogueAPI(catalogueId: con.catalogueList[index].id ?? "", catalogueType: CatalogueType.grid).then(
                         (value) {
                           // FileDownloaderFlutter().;
                         },
                       );
                       // UiUtils.toast("Downloading...");
-                      break;
+                      break;*/
 
                     case "Rename":
                       AppDialogs.renameCatalogueDialog(
