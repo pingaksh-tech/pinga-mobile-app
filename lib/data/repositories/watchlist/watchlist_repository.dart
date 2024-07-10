@@ -44,6 +44,9 @@ class WatchListRepository {
         ).then(
           (response) async {
             if (response != null) {
+              /// Get watchList api
+              await getWatchListAPI();
+
               if (response['data'] != null) {
                 if (productListType == ProductsListType.wishlist) {
                   if (isRegistered<WishlistController>()) {

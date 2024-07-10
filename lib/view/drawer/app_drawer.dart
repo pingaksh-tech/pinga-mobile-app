@@ -35,7 +35,7 @@ class AppDrawer extends StatelessWidget {
                   child: AppNetworkImage(
                     borderRadius: BorderRadius.all(Radius.circular(0)),
                     fit: BoxFit.cover,
-                    imageUrl: 'https://media.designrush.com/tinymce_images/316674/conversions/Desiree-Qelaj-content.jpg',
+                    imageUrl: /* preValueCon.profileBanner.value  */ 'https://media.designrush.com/tinymce_images/316674/conversions/Desiree-Qelaj-content.jpg',
                   ),
                 ),
               ],

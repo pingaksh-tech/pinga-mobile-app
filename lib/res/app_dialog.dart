@@ -660,14 +660,14 @@ class AppDialogs {
                               AppAssets.search,
                               height: 22,
                               width: 22,
-                              color: UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400, // ignore: deprecated_member_use
+                              colorFilter: ColorFilter.mode(UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400, BlendMode.src),
                             ),
                           ),
                           suffixIcon: controller.value.text.trim().isNotEmpty
                               ? Center(
                                   child: SvgPicture.asset(
                                     AppAssets.crossIcon,
-                                    color: Theme.of(context).primaryColor, // ignore: deprecated_member_use
+                                    colorFilter: ColorFilter.mode(Theme.of(context).primaryColor, BlendMode.src),
                                   ),
                                 )
                               : null,
@@ -784,14 +784,14 @@ class AppDialogs {
                             AppAssets.search,
                             height: 22,
                             width: 22,
-                            color: UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400, // ignore: deprecated_member_use
+                            colorFilter: ColorFilter.mode(UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400, BlendMode.src),
                           ),
                         ),
                         suffixIcon: controller.text.trim().isNotEmpty
                             ? Center(
                                 child: SvgPicture.asset(
                                   AppAssets.crossIcon,
-                                  color: Theme.of(context).primaryColor, // ignore: deprecated_member_use
+                                  colorFilter: ColorFilter.mode(Theme.of(context).primaryColor, BlendMode.src),
                                 ),
                               )
                             : null,
@@ -825,7 +825,7 @@ class AppDialogs {
                             )
                           : Center(
                               child: Text(
-                                "Color not available",
+                                "Metal not available",
                                 style: AppTextStyle.titleStyle(context).copyWith(
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.w400,
@@ -904,14 +904,14 @@ class AppDialogs {
                           AppAssets.search,
                           height: 22,
                           width: 22,
-                          color: UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400, // ignore: deprecated_member_use
+                          colorFilter: ColorFilter.mode(UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400, BlendMode.src),
                         ),
                       ),
                       suffixIcon: controller.text.trim().isNotEmpty
                           ? Center(
                               child: SvgPicture.asset(
                                 AppAssets.crossIcon,
-                                color: Theme.of(context).primaryColor, // ignore: deprecated_member_use
+                                colorFilter: ColorFilter.mode(Theme.of(context).primaryColor, BlendMode.src),
                               ),
                             )
                           : null,
@@ -1028,14 +1028,14 @@ class AppDialogs {
                             AppAssets.search,
                             height: 22,
                             width: 22,
-                            color: UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400, // ignore: deprecated_member_use
+                            colorFilter: ColorFilter.mode(UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400, BlendMode.src),
                           ),
                         ),
                         suffixIcon: controller.text.trim().isNotEmpty
                             ? Center(
                                 child: SvgPicture.asset(
                                   AppAssets.crossIcon,
-                                  color: Theme.of(context).primaryColor, // ignore: deprecated_member_use
+                                  colorFilter: ColorFilter.mode(Theme.of(context).primaryColor, BlendMode.src),
                                 ),
                               )
                             : null,
@@ -1562,6 +1562,10 @@ class AppDialogs {
         backgroundColor: Theme.of(context).colorScheme.surface,
         titlePadding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding).copyWith(bottom: 0),
         contentPadding: EdgeInsets.all(defaultPadding * 1.2).copyWith(top: defaultPadding / 2),
+        actionsAlignment: MainAxisAlignment.spaceBetween,
+        actionsOverflowAlignment: OverflowBarAlignment.center,
+        actionsOverflowButtonSpacing: defaultPadding / 2,
+        actionsOverflowDirection: VerticalDirection.down,
         title: Text(
           "Alert",
           textAlign: TextAlign.center,
@@ -1984,21 +1988,21 @@ class AppDialogs {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Choose",
+                "Choose Profile",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w500,
                     ),
-              ).paddingSymmetric(vertical: defaultPadding),
+              ).paddingSymmetric(vertical: defaultPadding * 1.2),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   iconButton(
                     icon: Icons.camera_alt_rounded,
                     title: "Camera",
                     onTap: cameraOnTap,
                   ),
-                  5.horizontalSpace,
+                  70.horizontalSpace,
                   iconButton(
                     icon: Icons.photo_rounded,
                     title: "Gallery",

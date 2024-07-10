@@ -168,7 +168,7 @@ class ProfileScreen extends StatelessWidget {
                   profileTile(
                     context,
                     title: "Address",
-                    subTitle: con.userDetail.value.address ?? con.userDetail.value.address ?? "",
+                    subTitle: !isValEmpty(LocalStorage.userModel.address) ? LocalStorage.userModel.address ?? con.userDetail.value.address : "  -  ",
                     iconImage: AppAssets.addressIcon,
                     height: 30.h,
                   ),
@@ -176,7 +176,7 @@ class ProfileScreen extends StatelessWidget {
                   profileTile(
                     context,
                     title: "GST no.",
-                    subTitle: LocalStorage.userModel.gstNo ?? con.userDetail.value.gstNo ?? "",
+                    subTitle: !isValEmpty(LocalStorage.userModel.gstNo) ? LocalStorage.userModel.gstNo ?? con.userDetail.value.gstNo ?? "" : "  -  ",
                     iconImage: AppAssets.gstIcon,
                   ),
                   divider,

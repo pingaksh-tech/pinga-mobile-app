@@ -199,17 +199,17 @@ class CartScreen extends StatelessWidget {
                                   children: [
                                     cartSummaryItem(
                                       context,
-                                      title: "Cart items",
+                                      title: "Cart Items",
                                       price: "${con.selectedList.length}/${con.cartDetail.value.totalItems}",
                                     ),
                                     cartSummaryItem(
                                       context,
-                                      title: "Cart quantity",
+                                      title: "Cart Quantity",
                                       price: "${con.selectedQuantity.value}/${con.cartDetail.value.totalQuantity}",
                                     ),
                                     cartSummaryItem(
                                       context,
-                                      title: "Cart amount",
+                                      title: "Cart Amount",
                                       price: "${UiUtils.amountFormat(con.selectedPrice.value, decimalDigits: 0)} / ${UiUtils.amountFormat(con.cartDetail.value.totalPrice, decimalDigits: 0)}",
                                     ),
                                     (defaultPadding / 2).verticalSpace,

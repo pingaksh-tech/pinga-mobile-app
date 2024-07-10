@@ -23,7 +23,7 @@ class CartPopUpMenu extends StatelessWidget {
 
   bool validation() {
     if (nameCon.value.text.trim().isEmpty) {
-      nameError.value = "Please enter watchList name";
+      nameError.value = "Please enter watchlist name";
       nameValidation.value = false;
     } else {
       nameValidation.value = true;
@@ -56,14 +56,14 @@ class CartPopUpMenu extends StatelessWidget {
             AppDialogs.cartDialog(
               context,
               buttonTitle2: "ADD",
-              dialogTitle: "Add to watchList",
+              dialogTitle: "Add to watchlist",
               buttonTitle: "CANCEL",
               content: SizedBox(
                 width: Get.width,
                 child: Obx(
                   () => AppTextField(
                     controller: nameCon.value,
-                    title: "Add WatchList Name",
+                    title: "Add Watchlist Name",
                     validation: nameValidation.value,
                     errorMessage: nameError.value,
                     errorStyle: const TextStyle(color: Colors.red),
@@ -72,7 +72,7 @@ class CartPopUpMenu extends StatelessWidget {
                           color: Theme.of(context).colorScheme.primary,
                         ),
                     padding: EdgeInsets.only(top: defaultPadding / 2),
-                    hintText: "Enter new watchList Name",
+                    hintText: "Enter new watchlist name",
                     contentPadding: EdgeInsets.symmetric(
                       vertical: defaultPadding / 1.4,
                       horizontal: defaultPadding / 1.7,

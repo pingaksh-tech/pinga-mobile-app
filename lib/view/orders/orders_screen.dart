@@ -90,7 +90,7 @@ class OrdersScreen extends StatelessWidget {
                         ),
                         child: Column(
                           children: [
-                            orderSummaryItem(context, title: "Total items", subTitle: con.orderCounts.value.totalCount.toString()),
+                            orderSummaryItem(context, title: "Total Items", subTitle: con.orderCounts.value.totalCount.toString()),
                             // orderSummaryItem(context, title: "Total DP", subTitle: UiUtils.amountFormat("219850", decimalDigits: 0)),
                             orderSummaryItem(context, title: "Total Amount", subTitle: UiUtils.amountFormat(con.orderCounts.value.totalAmount.toString(), decimalDigits: 0)),
                           ],

@@ -106,10 +106,10 @@ class SummaryScreen extends StatelessWidget {
                                       ),
                                       child: Column(
                                         children: [
-                                          totalPriceTile(context, title: "Total quantity", subTitle: con.totalDiamond.value.totalQty.toString()),
+                                          totalPriceTile(context, title: "Total Quantity", subTitle: con.totalDiamond.value.totalQty.toString()),
                                           totalPriceTile(
                                             context,
-                                            title: "Total amount",
+                                            title: "Total Amount",
                                             subTitle: UiUtils.amountFormat(con.totalDiamond.value.totalAmount.toString(), decimalDigits: 2),
                                           ),
                                         ],
