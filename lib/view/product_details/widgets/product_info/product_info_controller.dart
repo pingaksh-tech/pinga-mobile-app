@@ -5,6 +5,6 @@ class ProductInfoController extends GetxController {
 
   @override
   void onReady() {
-    super.onReady();
+    // super.onReady();
   }
 }

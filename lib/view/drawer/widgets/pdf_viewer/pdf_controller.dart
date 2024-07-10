@@ -31,12 +31,5 @@ class PdfController extends GetxController {
     super.onReady();
 
     await CatalogueRepository.downloadCatalogueAPI(catalogueId: catalogueId.value, catalogueType: CatalogueType.grid);
-    // await CatalogueRepository.urlFileSaver(
-    //   url: ApiUrls.baseUrl + ApiUrls.downloadCatalogueGET(catalogueId: catalogueId.value, catalogueType: CatalogueType.grid.name),
-    // ).then(
-    //   (value) {
-    //     pdfFile = value;
-    //   },
-    // );
   }
 }
