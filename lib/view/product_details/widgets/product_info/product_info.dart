@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import '../../../../exports.dart';
-import '../../product_details_controller.dart';
-import 'product_info_controller.dart';
 
+import '../../../../exports.dart';
 import '../../../../packages/like_button/like_button.dart';
 import '../../../../res/app_network_image.dart';
+import '../../product_details_controller.dart';
+import 'product_info_controller.dart';
 
 class ProductInfoTab extends StatelessWidget {
   final List<MapEntry> infoList;

@@ -278,7 +278,7 @@ class ProductId {
   final dynamic remark;
   final bool? status;
   final List<DiamondElement>? diamonds;
-  final int? diamondTotalPrice;
+  final num? diamondTotalPrice;
   final int? manufacturingPrice;
   final String? gender;
   final List<String>? productTags;
@@ -472,7 +472,7 @@ class PriceBreaking {
   final Metal? metal;
   final PriceBreakingDiamond? diamond;
   final Other? other;
-  final int? total;
+  final num? total;
 
   PriceBreaking({
     this.metal,
@@ -498,7 +498,7 @@ class PriceBreaking {
 
 class PriceBreakingDiamond {
   final double? diamondWeight;
-  final int? diamondPrice;
+  final num? diamondPrice;
 
   PriceBreakingDiamond({
     this.diamondWeight,

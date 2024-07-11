@@ -166,8 +166,8 @@ class ProductDetailsController extends GetxController {
           }
         }
       }
+      quantity.value = productDetailModel.value.cartQuantity ?? 0;
       if (!isValEmpty(cartId)) {
-        quantity.value = productDetailModel.value.cartQuantity ?? 0;
         isLike.value = productDetailModel.value.isWishList ?? false;
         extraMetalWt = productDetailModel.value.extraMetalWeight ?? 0;
       }

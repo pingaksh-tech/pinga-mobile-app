@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
@@ -599,16 +601,19 @@ class AppDialogs {
   // Select size dialog
   static Future<dynamic>? sizeSelector(
     BuildContext context, {
-    Function(String?)? onChanged,
     required RxList<DiamondModel> sizeList,
     required RxString selectedSize,
   }) {
     Rx<TextEditingController> controller = TextEditingController().obs;
+    RxString searchText = "".obs;
+    RxBool isSizeSearch = false.obs;
 
     return showGeneralDialog(
-        context: context,
-        pageBuilder: (context, animation, secondaryAnimation) {
-          return Obx(() {
+      context: context,
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return Obx(
+          () {
+            List<DiamondModel> filteredSizeList = sizeList.where((size) => size.name!.toLowerCase().contains(searchText.value.toLowerCase())).toList();
             return Scaffold(
               backgroundColor: Theme.of(context).colorScheme.surface,
               body: SafeArea(
@@ -653,62 +658,187 @@ class AppDialogs {
                           textInputAction: TextInputAction.search,
                           padding: EdgeInsets.symmetric(horizontal: defaultPadding),
                           contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 4, horizontal: defaultPadding / 1.7),
-                          onChanged: onChanged,
                           prefixIcon: Padding(
                             padding: EdgeInsets.all(defaultPadding / 1.4),
                             child: SvgPicture.asset(
                               AppAssets.search,
                               height: 22,
                               width: 22,
-                              colorFilter: ColorFilter.mode(UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400, BlendMode.src),
+                              color: UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400,
                             ),
                           ),
+                          onChanged: (val) {
+                            searchText.value = val;
+                            isSizeSearch.value = val.isNotEmpty;
+                          },
                           suffixIcon: controller.value.text.trim().isNotEmpty
                               ? Center(
-                                  child: SvgPicture.asset(
-                                    AppAssets.crossIcon,
-                                    colorFilter: ColorFilter.mode(Theme.of(context).primaryColor, BlendMode.src),
-                                  ),
+                                  child: SvgPicture.asset(AppAssets.crossIcon, color: Theme.of(context).primaryColor),
                                 )
                               : null,
                           suffixOnTap: () {
                             FocusScope.of(context).unfocus();
                             controller.value.clear();
+                            searchText.value = "";
+                            isSizeSearch.value = false;
                           },
                         ),
                       (defaultPadding / 1.4).verticalSpace,
 
                       /// Records
                       Expanded(
-                        child: sizeList.isNotEmpty
+                        child: filteredSizeList.isNotEmpty
                             ? ListView.separated(
                                 physics: const RangeMaintainingScrollPhysics(),
-                                itemCount: sizeList.length,
+                                itemCount: filteredSizeList.length,
                                 shrinkWrap: true,
-                                itemBuilder: (context, index) => ListTile(
-                                  title: Text(
-                                    sizeList[index].name ?? '',
-                                    style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
-                                  ),
-                                  trailing: AppRadioButton(
-                                    isSelected: (sizeList[index].id?.value == selectedSize.value).obs,
-                                  ),
-                                  onTap: () {
-                                    Get.back(
-                                      result: sizeList[index],
+                                itemBuilder: (context, index) => Obx(
+                                  () {
+                                    return ListTile(
+                                      title: Text(
+                                        filteredSizeList[index].name ?? '',
+                                        style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
+                                      ),
+                                      trailing: AppRadioButton(
+                                        isSelected: (sizeList[index].id?.value == selectedSize.value).obs,
+                                      ),
+                                      onTap: () {
+                                        Get.back(
+                                          result: sizeList[index],
+                                        );
+                                      },
                                     );
                                   },
                                 ),
                                 separatorBuilder: (context, index) => Divider(height: 1.h),
                               )
-                            : Center(
-                                child: Text(
-                                  "Size not available",
-                                  style: AppTextStyle.titleStyle(context).copyWith(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Theme.of(context).colorScheme.primary,
+                            : const Center(
+                                child: EmptyElement(title: "Size not available"),
+                              ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  // Select metal dialog
+  static Future<dynamic>? metalSelector(
+    BuildContext context, {
+    required RxList<MetalModel> metalList,
+    required RxString selectedMetal,
+  }) {
+    Rx<TextEditingController> controller = TextEditingController().obs;
+    RxString searchText = "".obs;
+    RxBool isSearch = false.obs;
+
+    return showGeneralDialog(
+      context: context,
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return Obx(
+          () {
+            List<MetalModel> filteredMetalList = metalList.where((size) => size.name!.toLowerCase().contains(searchText.value.toLowerCase())).toList();
+
+            return Scaffold(
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              body: SafeArea(
+                child: Container(
+                  width: Get.width,
+                  padding: EdgeInsets.only(top: defaultPadding),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(defaultRadius / 2),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      /// Title
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Select Metal",
+                              style: AppTextStyle.titleStyle(context).copyWith(
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                            ),
+                            AppIconButton(
+                              size: 26.h,
+                              icon: SvgPicture.asset(AppAssets.crossIcon),
+                              onPressed: () {
+                                Get.back();
+                              },
+                            )
+                          ],
+                        ),
+                      ),
+                      defaultPadding.verticalSpace,
+                      if (metalList.isNotEmpty)
+                        AppTextField(
+                          controller: controller.value,
+                          hintText: 'Search',
+                          textInputAction: TextInputAction.search,
+                          padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                          contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 4, horizontal: defaultPadding / 1.7),
+                          prefixIcon: Padding(
+                            padding: EdgeInsets.all(defaultPadding / 1.4),
+                            child: SvgPicture.asset(
+                              AppAssets.search,
+                              height: 22,
+                              width: 22,
+                              color: UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400,
+                            ),
+                          ),
+                          onChanged: (val) {
+                            searchText.value = val;
+                            isSearch.value = val.isNotEmpty;
+                          },
+                          suffixIcon: controller.value.text.trim().isNotEmpty
+                              ? Center(
+                                  child: SvgPicture.asset(AppAssets.crossIcon, color: Theme.of(context).primaryColor),
+                                )
+                              : null,
+                          suffixOnTap: () {
+                            FocusScope.of(context).unfocus();
+                            controller.value.clear();
+                            searchText.value = "";
+                            isSearch.value = false;
+                          },
+                        ),
+                      (defaultPadding / 1.4).verticalSpace,
+
+                      /// Records
+                      Expanded(
+                        child: filteredMetalList.isNotEmpty
+                            ? ListView.separated(
+                                physics: const RangeMaintainingScrollPhysics(),
+                                itemCount: filteredMetalList.length,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) => ListTile(
+                                  title: Text(
+                                    filteredMetalList[index].name ?? '',
+                                    style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
                                   ),
+                                  trailing: AppRadioButton(
+                                    isSelected: (metalList[index].id?.value == selectedMetal.value).obs,
+                                  ),
+                                  onTap: () {
+                                    Get.back(result: metalList[index]);
+                                  },
+                                ),
+                                separatorBuilder: (context, index) => Divider(height: 1.h),
+                              )
+                            : const Center(
+                                child: EmptyElement(
+                                  title: "Metal not available",
                                 ),
                               ),
                       )
@@ -717,129 +847,10 @@ class AppDialogs {
                 ),
               ),
             );
-          });
-        });
-  }
-
-  // Select metal dialog
-  static Future<dynamic>? metalSelector(
-    BuildContext context, {
-    Function(String?)? onChanged,
-    required RxList<MetalModel> metalList,
-    required RxString selectedMetal,
-  }) {
-    TextEditingController controller = TextEditingController();
-
-    return showGeneralDialog(
-        context: context,
-        pageBuilder: (context, animation, secondaryAnimation) {
-          return Scaffold(
-            backgroundColor: Theme.of(context).colorScheme.surface,
-            body: SafeArea(
-              child: Container(
-                width: Get.width,
-                padding: EdgeInsets.only(top: defaultPadding),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(defaultRadius / 2),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    /// Title
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: defaultPadding),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Select Metal",
-                            style: AppTextStyle.titleStyle(context).copyWith(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
-                          AppIconButton(
-                            size: 26.h,
-                            icon: SvgPicture.asset(AppAssets.crossIcon),
-                            onPressed: () {
-                              Get.back();
-                            },
-                          )
-                        ],
-                      ),
-                    ),
-                    defaultPadding.verticalSpace,
-                    if (metalList.isNotEmpty)
-                      AppTextField(
-                        controller: controller,
-                        hintText: 'Search',
-                        textInputAction: TextInputAction.search,
-                        padding: EdgeInsets.symmetric(horizontal: defaultPadding),
-                        contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 4, horizontal: defaultPadding / 1.7),
-                        onChanged: onChanged,
-                        prefixIcon: Padding(
-                          padding: EdgeInsets.all(defaultPadding / 1.4),
-                          child: SvgPicture.asset(
-                            AppAssets.search,
-                            height: 22,
-                            width: 22,
-                            colorFilter: ColorFilter.mode(UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400, BlendMode.src),
-                          ),
-                        ),
-                        suffixIcon: controller.text.trim().isNotEmpty
-                            ? Center(
-                                child: SvgPicture.asset(
-                                  AppAssets.crossIcon,
-                                  colorFilter: ColorFilter.mode(Theme.of(context).primaryColor, BlendMode.src),
-                                ),
-                              )
-                            : null,
-                        suffixOnTap: () {
-                          FocusScope.of(context).unfocus();
-                          controller.clear();
-                        },
-                      ),
-                    (defaultPadding / 1.4).verticalSpace,
-
-                    /// Records
-                    Expanded(
-                      child: metalList.isNotEmpty
-                          ? ListView.separated(
-                              physics: const RangeMaintainingScrollPhysics(),
-                              itemCount: metalList.length,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) => ListTile(
-                                title: Text(
-                                  metalList[index].name ?? '',
-                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
-                                ),
-                                trailing: AppRadioButton(
-                                  isSelected: (metalList[index].id?.value == selectedMetal.value).obs,
-                                ),
-                                onTap: () {
-                                  Get.back(result: metalList[index]);
-                                },
-                              ),
-                              separatorBuilder: (context, index) => Divider(height: 1.h),
-                            )
-                          : Center(
-                              child: Text(
-                                "Metal not available",
-                                style: AppTextStyle.titleStyle(context).copyWith(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
-                              ),
-                            ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-          );
-        });
+          },
+        );
+      },
+    );
   }
 
   // Select Diamond Dialog
@@ -849,115 +860,120 @@ class AppDialogs {
     required RxList<DiamondModel> diamondList,
     required RxString selectedDiamond,
   }) {
-    TextEditingController controller = TextEditingController();
+    Rx<TextEditingController> controller = TextEditingController().obs;
+    RxString searchText = "".obs;
+    RxBool isSearch = false.obs;
+
     return showGeneralDialog(
       context: context,
       pageBuilder: (context, animation, secondaryAnimation) {
-        return Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          body: SafeArea(
-            child: Container(
-              width: Get.width,
-              padding: EdgeInsets.only(top: defaultPadding),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(defaultRadius / 2),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  /// Title
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: defaultPadding),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Select Diamond",
-                          style: AppTextStyle.titleStyle(context).copyWith(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                        ),
-                        AppIconButton(
-                          size: 26.h,
-                          icon: SvgPicture.asset(AppAssets.crossIcon),
-                          onPressed: () {
-                            Get.back();
-                          },
-                        )
-                      ],
-                    ),
+        return Obx(
+          () {
+            List<DiamondModel> filteredDiamondList = diamondList.where((size) => size.name!.toLowerCase().contains(searchText.value.toLowerCase())).toList();
+            return Scaffold(
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              body: SafeArea(
+                child: Container(
+                  width: Get.width,
+                  padding: EdgeInsets.only(top: defaultPadding),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(defaultRadius / 2),
                   ),
-                  defaultPadding.verticalSpace,
-                  if (diamondList.isNotEmpty)
-                    AppTextField(
-                      controller: controller,
-                      hintText: 'Search',
-                      textInputAction: TextInputAction.search,
-                      padding: EdgeInsets.symmetric(horizontal: defaultPadding),
-                      contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 4, horizontal: defaultPadding / 1.7),
-                      onChanged: onChanged,
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.all(defaultPadding / 1.4),
-                        child: SvgPicture.asset(
-                          AppAssets.search,
-                          height: 22,
-                          width: 22,
-                          colorFilter: ColorFilter.mode(UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400, BlendMode.src),
-                        ),
-                      ),
-                      suffixIcon: controller.text.trim().isNotEmpty
-                          ? Center(
-                              child: SvgPicture.asset(
-                                AppAssets.crossIcon,
-                                colorFilter: ColorFilter.mode(Theme.of(context).primaryColor, BlendMode.src),
-                              ),
-                            )
-                          : null,
-                      suffixOnTap: () {
-                        FocusScope.of(context).unfocus();
-                        controller.clear();
-                      },
-                    ),
-                  (defaultPadding / 1.4).verticalSpace,
-
-                  /// Records
-                  Expanded(
-                    child: diamondList.isNotEmpty
-                        ? ListView.separated(
-                            physics: const RangeMaintainingScrollPhysics(),
-                            itemCount: diamondList.length,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) => ListTile(
-                              title: Text(
-                                diamondList[index].name ?? '',
-                                style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
-                              ),
-                              trailing: AppRadioButton(
-                                isSelected: (diamondList[index].shortName == selectedDiamond.value).obs,
-                              ),
-                              onTap: () {
-                                Get.back(result: diamondList[index]);
-                              },
-                            ),
-                            separatorBuilder: (context, index) => Divider(height: 1.h),
-                          )
-                        : Center(
-                            child: Text(
-                              "Diamonds not available",
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      /// Title
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Select Diamond",
                               style: AppTextStyle.titleStyle(context).copyWith(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w400,
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.w500,
                                 color: Theme.of(context).colorScheme.primary,
                               ),
                             ),
+                            AppIconButton(
+                              size: 26.h,
+                              icon: SvgPicture.asset(AppAssets.crossIcon),
+                              onPressed: () {
+                                Get.back();
+                              },
+                            )
+                          ],
+                        ),
+                      ),
+                      defaultPadding.verticalSpace,
+                      if (diamondList.isNotEmpty)
+                        AppTextField(
+                          controller: controller.value,
+                          hintText: 'Search',
+                          textInputAction: TextInputAction.search,
+                          padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                          contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 4, horizontal: defaultPadding / 1.7),
+                          prefixIcon: Padding(
+                            padding: EdgeInsets.all(defaultPadding / 1.4),
+                            child: SvgPicture.asset(
+                              AppAssets.search,
+                              height: 22,
+                              width: 22,
+                              color: UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400,
+                            ),
                           ),
-                  )
-                ],
+                          onChanged: (val) {
+                            searchText.value = val;
+                            isSearch.value = val.isNotEmpty;
+                          },
+                          suffixIcon: controller.value.text.trim().isNotEmpty
+                              ? Center(
+                                  child: SvgPicture.asset(AppAssets.crossIcon, color: Theme.of(context).primaryColor),
+                                )
+                              : null,
+                          suffixOnTap: () {
+                            FocusScope.of(context).unfocus();
+                            controller.value.clear();
+                            searchText.value = "";
+                            isSearch.value = false;
+                          },
+                        ),
+                      (defaultPadding / 1.4).verticalSpace,
+
+                      /// Records
+                      Expanded(
+                        child: filteredDiamondList.isNotEmpty
+                            ? ListView.separated(
+                                physics: const RangeMaintainingScrollPhysics(),
+                                itemCount: filteredDiamondList.length,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) => ListTile(
+                                  title: Text(
+                                    filteredDiamondList[index].name ?? '',
+                                    style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
+                                  ),
+                                  trailing: AppRadioButton(
+                                    isSelected: (diamondList[index].shortName == selectedDiamond.value).obs,
+                                  ),
+                                  onTap: () {
+                                    Get.back(result: diamondList[index]);
+                                  },
+                                ),
+                                separatorBuilder: (context, index) => Divider(height: 1.h),
+                              )
+                            : const Center(
+                                child: EmptyElement(
+                                  title: "Diamonds not available",
+                                ),
+                              ),
+                      )
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ),
+            );
+          },
         );
       },
     );
@@ -969,176 +985,181 @@ class AppDialogs {
     Function(String?)? onChanged,
     required RxList<DiamondListModel>? diamondList,
   }) {
-    TextEditingController controller = TextEditingController();
+    Rx<TextEditingController> controller = TextEditingController().obs;
     RxList<String> diamonds = List.generate(
       diamondList != null ? diamondList.length : 0,
       (index) => diamondList?[index].diamondClarity?.value ?? "",
     ).obs;
+    RxString searchText = "".obs;
+    RxBool isSearch = false.obs;
     return showGeneralDialog(
-        context: context,
-        pageBuilder: (context, animation, secondaryAnimation) {
-          return Scaffold(
-            backgroundColor: Theme.of(context).colorScheme.surface,
-            body: SafeArea(
-              child: Container(
-                width: Get.width,
-                padding: EdgeInsets.only(top: defaultPadding),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(defaultRadius / 2),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    /// Title
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: defaultPadding),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Select Diamond",
-                            style: AppTextStyle.titleStyle(context).copyWith(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
-                          AppIconButton(
-                            size: 26.h,
-                            icon: SvgPicture.asset(AppAssets.crossIcon),
-                            onPressed: () {
-                              Get.back();
-                            },
-                          )
-                        ],
-                      ),
-                    ),
-                    defaultPadding.verticalSpace,
-                    if (diamondList != null && diamondList.isNotEmpty)
-                      AppTextField(
-                        controller: controller,
-                        hintText: 'Search',
-                        textInputAction: TextInputAction.search,
+      context: context,
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return Obx(
+          () {
+            List<DiamondListModel> filteredDiamondList = diamondList!.where((diamond) => diamond.diamondClarity!.toLowerCase().contains(searchText.value.toLowerCase())).toList();
+            return Scaffold(
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              body: SafeArea(
+                child: Container(
+                  width: Get.width,
+                  padding: EdgeInsets.only(top: defaultPadding),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(defaultRadius / 2),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      /// Title
+                      Padding(
                         padding: EdgeInsets.symmetric(horizontal: defaultPadding),
-                        contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 4, horizontal: defaultPadding / 1.7),
-                        onChanged: onChanged,
-                        prefixIcon: Padding(
-                          padding: EdgeInsets.all(defaultPadding / 1.4),
-                          child: SvgPicture.asset(
-                            AppAssets.search,
-                            height: 22,
-                            width: 22,
-                            colorFilter: ColorFilter.mode(UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400, BlendMode.src),
-                          ),
-                        ),
-                        suffixIcon: controller.text.trim().isNotEmpty
-                            ? Center(
-                                child: SvgPicture.asset(
-                                  AppAssets.crossIcon,
-                                  colorFilter: ColorFilter.mode(Theme.of(context).primaryColor, BlendMode.src),
-                                ),
-                              )
-                            : null,
-                        suffixOnTap: () {
-                          FocusScope.of(context).unfocus();
-                          controller.clear();
-                        },
-                      ),
-                    (defaultPadding / 1.4).verticalSpace,
-
-                    /// Records
-                    Expanded(
-                      child: (diamondList != null && diamondList.isNotEmpty)
-                          ? ListView.separated(
-                              physics: const RangeMaintainingScrollPhysics(),
-                              itemCount: diamondList.length,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) => Card(
-                                  margin: EdgeInsets.symmetric(horizontal: defaultPadding),
-                                  elevation: 3,
-                                  borderOnForeground: true,
-                                  child: Obx(() {
-                                    return Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: defaultPadding / 1.5, vertical: defaultPadding / 2),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () {
-                                              final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
-                                              RxList<DiamondModel> singleDiamondList = preValueCon.diamondsList;
-
-                                              AppDialogs.diamondSelector(context, diamondList: singleDiamondList, selectedDiamond: (diamonds[index]).obs)?.then(
-                                                (value) {
-                                                  if (value != null && (value.runtimeType == DiamondModel)) {
-                                                    final DiamondModel diamondModel = (value as DiamondModel);
-                                                    // diamondList[index].diamondClarity?.value = diamondModel.name ?? "";
-                                                    diamonds[index] = diamondModel.name ?? "";
-                                                  }
-                                                },
-                                              );
-                                            },
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(defaultRadius),
-                                                color: Theme.of(context).primaryColor.withOpacity(.06),
-                                              ),
-                                              padding: EdgeInsets.symmetric(horizontal: defaultPadding / 1.5, vertical: defaultPadding / 2.4),
-                                              child: Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  Text(
-                                                    diamonds[index],
-                                                    style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Theme.of(context).primaryColor),
-                                                  ),
-                                                  (defaultPadding / 2).horizontalSpace,
-                                                  SvgPicture.asset(AppAssets.downArrow)
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          Text(
-                                            "Quantity : ${diamondList[index].diamondCount ?? 0}",
-                                            style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font.withOpacity(.8), fontSize: 12.sp),
-                                          ).paddingOnly(left: defaultPadding / 4),
-                                          Text(
-                                            "Shape : ${diamondList[index].diamondShape ?? ''}",
-                                            style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font.withOpacity(.8), fontSize: 12.sp),
-                                          ).paddingOnly(left: defaultPadding / 4)
-                                        ],
-                                      ),
-                                    );
-                                  })),
-                              separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
-                            )
-                          : Center(
-                              child: Text(
-                                "Diamonds not available",
-                                style: AppTextStyle.titleStyle(context).copyWith(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Select Diamond",
+                              style: AppTextStyle.titleStyle(context).copyWith(
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Theme.of(context).colorScheme.primary,
                               ),
                             ),
-                    ),
+                            AppIconButton(
+                              size: 26.h,
+                              icon: SvgPicture.asset(AppAssets.crossIcon),
+                              onPressed: () {
+                                Get.back();
+                              },
+                            )
+                          ],
+                        ),
+                      ),
+                      defaultPadding.verticalSpace,
+                      if (diamondList.isNotEmpty)
+                        AppTextField(
+                          controller: controller.value,
+                          hintText: 'Search',
+                          textInputAction: TextInputAction.search,
+                          padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                          contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 4, horizontal: defaultPadding / 1.7),
+                          prefixIcon: Padding(
+                            padding: EdgeInsets.all(defaultPadding / 1.4),
+                            child: SvgPicture.asset(
+                              AppAssets.search,
+                              height: 22,
+                              width: 22,
+                              color: UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400,
+                            ),
+                          ),
+                          onChanged: (val) {
+                            searchText.value = val;
+                            isSearch.value = val.isNotEmpty;
+                          },
+                          suffixIcon: controller.value.text.trim().isNotEmpty
+                              ? Center(
+                                  child: SvgPicture.asset(AppAssets.crossIcon, color: Theme.of(context).primaryColor),
+                                )
+                              : null,
+                          suffixOnTap: () {
+                            FocusScope.of(context).unfocus();
+                            controller.value.clear();
+                            searchText.value = "";
+                            isSearch.value = false;
+                          },
+                        ),
+                      (defaultPadding / 1.4).verticalSpace,
 
-                    AppButton(
-                      padding: EdgeInsets.all(defaultPadding),
-                      title: "Apply Changes",
-                      onPressed: () {
-                        for (int i = 0; i < diamonds.length; i++) {
-                          diamondList?[i].diamondClarity?.value = diamonds[i];
-                        }
-                        Get.back();
-                      },
-                    )
-                  ],
+                      /// Records
+                      Expanded(
+                        child: (filteredDiamondList.isNotEmpty)
+                            ? ListView.separated(
+                                physics: const RangeMaintainingScrollPhysics(),
+                                itemCount: filteredDiamondList.length,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) => Card(
+                                    margin: EdgeInsets.symmetric(horizontal: defaultPadding),
+                                    elevation: 3,
+                                    borderOnForeground: true,
+                                    child: Obx(() {
+                                      return Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: defaultPadding / 1.5, vertical: defaultPadding / 2),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () {
+                                                final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
+                                                RxList<DiamondModel> singleDiamondList = preValueCon.diamondsList;
+
+                                                AppDialogs.diamondSelector(context, diamondList: singleDiamondList, selectedDiamond: (diamonds[index]).obs)?.then(
+                                                  (value) {
+                                                    if (value != null && (value.runtimeType == DiamondModel)) {
+                                                      final DiamondModel diamondModel = (value as DiamondModel);
+                                                      // diamondList[index].diamondClarity?.value = diamondModel.name ?? "";
+                                                      diamonds[index] = diamondModel.name ?? "";
+                                                    }
+                                                  },
+                                                );
+                                              },
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(defaultRadius),
+                                                  color: Theme.of(context).primaryColor.withOpacity(.06),
+                                                ),
+                                                padding: EdgeInsets.symmetric(horizontal: defaultPadding / 1.5, vertical: defaultPadding / 2.4),
+                                                child: Row(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: [
+                                                    Text(
+                                                      diamonds[index],
+                                                      style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Theme.of(context).primaryColor),
+                                                    ),
+                                                    (defaultPadding / 2).horizontalSpace,
+                                                    SvgPicture.asset(AppAssets.downArrow)
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              "Quantity : ${diamondList[index].diamondCount ?? 0}",
+                                              style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font.withOpacity(.8), fontSize: 12.sp),
+                                            ).paddingOnly(left: defaultPadding / 4),
+                                            Text(
+                                              "Shape : ${diamondList[index].diamondShape ?? ''}",
+                                              style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font.withOpacity(.8), fontSize: 12.sp),
+                                            ).paddingOnly(left: defaultPadding / 4)
+                                          ],
+                                        ),
+                                      );
+                                    })),
+                                separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
+                              )
+                            : const Center(
+                                child: EmptyElement(
+                                  title: "Diamonds not available",
+                                ),
+                              ),
+                      ),
+
+                      AppButton(
+                        padding: EdgeInsets.all(defaultPadding),
+                        title: "Apply Changes",
+                        onPressed: () {
+                          for (int i = 0; i < diamonds.length; i++) {
+                            diamondList[i].diamondClarity?.value = diamonds[i];
+                          }
+                          Get.back();
+                        },
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        });
+            );
+          },
+        );
+      },
+    );
   }
 
   // ADD QUANTITY DIALOG
@@ -2097,14 +2118,14 @@ class AppDialogs {
                           AppAssets.search,
                           height: 22,
                           width: 22,
-                          color: UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400, // ignore: deprecated_member_use
+                          color: UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400,
                         ),
                       ),
                       suffixIcon: controller.text.trim().isNotEmpty
                           ? Center(
                               child: SvgPicture.asset(
                                 AppAssets.crossIcon,
-                                color: Theme.of(context).primaryColor, // ignore: deprecated_member_use
+                                color: Theme.of(context).primaryColor,
                               ),
                             )
                           : null,

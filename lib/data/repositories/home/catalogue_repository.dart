@@ -73,6 +73,7 @@ class CatalogueRepository {
         ).then(
           (response) async {
             if (response != null) {
+              UiUtils.toast("Catalogue Created Successfully");
               loader?.value = false;
             } else {
               loader?.value = false;
@@ -180,7 +181,7 @@ class CatalogueRepository {
                   }
                 }
               }
-
+              UiUtils.toast("Pdf deleted successfully");
               loader?.value = false;
             } else {
               loader?.value = false;
@@ -229,6 +230,7 @@ class CatalogueRepository {
                   }
                 }
                 Get.back();
+                UiUtils.toast("Catalogue name change successfully");
               }
 
               loader?.value = false;

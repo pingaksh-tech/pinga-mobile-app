@@ -145,6 +145,7 @@ class CartRepository {
                   con.selectedList.clear();
                 }
               }
+              UiUtils.toast("Cart Deleted Successfully");
               isLoader?.value = false;
             }
             isLoader?.value = false;
@@ -175,8 +176,8 @@ class CartRepository {
           (response) async {
             if (response != null) {
               /// Get cart api
-
               await getCartApi(isPullToRefresh: true);
+
               if (isRegistered<CartController>()) {
                 final CartController con = Get.find<CartController>();
                 con.cartList.removeWhere((item) => con.selectedList.contains(item));
@@ -185,6 +186,7 @@ class CartRepository {
                 con.calculateSelectedItemPrice();
               }
             }
+            UiUtils.toast("Cart Deleted Successfully");
             isLoader?.value = false;
             return response;
           },
@@ -238,7 +240,7 @@ class CartRepository {
   /// ***********************************************************************************
   ///                                UPDATE CART API
   /// ***********************************************************************************
-  static Future<dynamic> updateCartApi({
+  static Future<dynamic> addOrUpdateCartApi({
     RxBool? isLoader,
     String? cartId,
     required String inventoryId,
@@ -269,6 +271,7 @@ class CartRepository {
             if (response != null) {
               /// Get cart api
               await getCartApi(isPullToRefresh: true);
+              UiUtils.toast("Cart Updated Successfully");
             }
             isLoader?.value = false;
             return response;

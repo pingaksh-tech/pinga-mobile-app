@@ -41,8 +41,12 @@ class OrdersRepository {
         ).then(
           (response) async {
             if (response != null) {
+              /// All Order api
               await getAllOrdersAPI(isPullToRefresh: true);
+
+              /// Get cart api
               await CartRepository.getCartApi(isPullToRefresh: true);
+
               if (isRegistered<CartController>()) {
                 final CartController con = Get.find<CartController>();
                 con.cartList.removeWhere((item) => con.selectedList.contains(item));
@@ -55,6 +59,7 @@ class OrdersRepository {
                 BottomBarController bottomCon = Get.find<BottomBarController>();
                 bottomCon.currentBottomIndex.value = 3;
               }
+              UiUtils.toast("Order Created Successfully");
               loader?.value = false;
             } else {
               loader?.value = false;
@@ -143,7 +148,7 @@ class OrdersRepository {
   ///                                 GET ORDER DETAIL
   /// ***********************************************************************************
 
-  static Future<dynamic> getSingleProductAPI({RxBool? loader, required String orderId}) async {
+  static Future<dynamic> getSingleOrderAPI({RxBool? loader, required String orderId}) async {
     ///
     if (await getConnectivityResult() && isRegistered<OrderDetailController>()) {
       final OrderDetailController con = Get.find<OrderDetailController>();

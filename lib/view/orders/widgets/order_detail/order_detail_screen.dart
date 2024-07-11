@@ -42,27 +42,27 @@ class OrderDetailScreen extends StatelessWidget {
                       ),
                       child: Column(
                         children: [
-                          orderDetailsKeyValuePairWidget1(
+                          orderDetailsKeyValuePairWidget(
                             context,
                             title: "Order No.",
                             subtitleText: con.orderDetailModel.value.order?.orderNo ?? "",
                           ),
-                          orderDetailsKeyValuePairWidget1(
+                          orderDetailsKeyValuePairWidget(
                             context,
                             title: "Order Date",
                             subtitleText: DateFormat('MM/dd/yyyy HH:mm:ss').format(con.orderDetailModel.value.order?.createdAt ?? DateTime.now()),
                           ),
-                          orderDetailsKeyValuePairWidget1(
+                          orderDetailsKeyValuePairWidget(
                             context,
                             title: "Retailer Name",
                             subtitleText: con.orderDetailModel.value.order?.retailerId?.businessName ?? "",
                           ),
-                          orderDetailsKeyValuePairWidget1(
+                          orderDetailsKeyValuePairWidget(
                             context,
                             title: "Order Type",
                             subtitleText: con.orderDetailModel.value.order?.orderType ?? "",
                           ),
-                          orderDetailsKeyValuePairWidget1(
+                          orderDetailsKeyValuePairWidget(
                             context,
                             title: "Approx. Delivery",
                             subtitleText: con.orderDetailModel.value.orderItems?.first.productId?.delivery ?? "",
@@ -85,28 +85,37 @@ class OrderDetailScreen extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              AppNetworkImage(
-                                height: Get.width * 0.18,
-                                width: Get.width * 0.18,
-                                fit: BoxFit.cover,
-                                borderRadius: BorderRadius.circular(defaultRadius),
-                                imageUrl: con.orderDetailModel.value.orderItems?.first.productId?.inventoryImages?.first ?? "",
-                              ),
+                              (con.orderDetailModel.value.orderItems?.first.productId?.inventoryImages != null && !isValEmpty(con.orderDetailModel.value.orderItems?.first.productId?.inventoryImages))
+                                  ? AppNetworkImage(
+                                      height: Get.width * 0.18,
+                                      width: Get.width * 0.18,
+                                      fit: BoxFit.cover,
+                                      borderRadius: BorderRadius.circular(defaultRadius),
+                                      imageUrl: (con.orderDetailModel.value.orderItems?.first.productId?.inventoryImages != null && !isValEmpty(con.orderDetailModel.value.orderItems?.first.productId?.inventoryImages)) ? con.orderDetailModel.value.orderItems?.first.productId?.inventoryImages?.first ?? "" : "",
+                                    )
+                                  : Container(
+                                      height: Get.width * 0.18,
+                                      width: Get.width * 0.18,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(defaultRadius),
+                                        color: AppColors.primary.withOpacity(0.1),
+                                      ),
+                                    ),
                               (defaultPadding / 2).horizontalSpace,
                               Expanded(
                                 child: Column(
                                   children: [
-                                    orderDetailsKeyValuePairWidget1(
+                                    orderDetailsKeyValuePairWidget(
                                       context,
                                       title: "Name",
                                       subtitleText: con.orderDetailModel.value.orderItems?.first.productId?.name ?? "",
                                     ),
-                                    orderDetailsKeyValuePairWidget1(
+                                    orderDetailsKeyValuePairWidget(
                                       context,
                                       title: "Metal",
                                       subtitleText: "${con.orderDetailModel.value.productItems?.first.productInfo?.metal} - ${con.orderDetailModel.value.productItems?.first.productInfo?.karatage}",
                                     ),
-                                    orderDetailsKeyValuePairWidget1(
+                                    orderDetailsKeyValuePairWidget(
                                       context,
                                       title: "Diamond",
                                       subtitleText: con.orderDetailModel.value.productItems?.first.diamonds?.first.diamondClarity ?? "",
@@ -120,7 +129,7 @@ class OrderDetailScreen extends StatelessWidget {
                           Row(
                             children: [
                               Expanded(
-                                child: orderDetailsKeyValuePairWidget1(
+                                child: orderDetailsKeyValuePairWidget(
                                   context,
                                   title: "Quantity",
                                   titleFlex: 4,
@@ -128,7 +137,7 @@ class OrderDetailScreen extends StatelessWidget {
                                 ),
                               ),
                               Expanded(
-                                child: orderDetailsKeyValuePairWidget1(
+                                child: orderDetailsKeyValuePairWidget(
                                   context,
                                   title: "MRP",
                                   subtitleText: UiUtils.amountFormat(
@@ -150,7 +159,7 @@ class OrderDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget orderDetailsKeyValuePairWidget1(
+  Widget orderDetailsKeyValuePairWidget(
     BuildContext context, {
     required String title,
     required String subtitleText,

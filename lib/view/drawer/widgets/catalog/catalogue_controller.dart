@@ -10,7 +10,7 @@ class CatalogueController extends GetxController {
   RxBool loader = true.obs;
   ScrollController scrollController = ScrollController();
   RxInt page = 1.obs;
-  RxInt itemLimit = 10.obs;
+  RxInt itemLimit = 20.obs;
   RxBool nextPageAvailable = true.obs;
   RxBool paginationLoader = false.obs;
 
@@ -18,5 +18,21 @@ class CatalogueController extends GetxController {
   void onReady() {
     super.onReady();
     CatalogueRepository.getCatalogue(loader: loader);
+    manageScrollController();
+  }
+
+  /// Pagination
+  void manageScrollController() async {
+    scrollController.addListener(
+      () {
+        if (scrollController.position.maxScrollExtent == scrollController.position.pixels) {
+          if (nextPageAvailable.value && paginationLoader.isFalse) {
+            /// PAGINATION CALL
+            /// GET CATALOGUE API
+            CatalogueRepository.getCatalogue(loader: paginationLoader, isInitial: false);
+          }
+        }
+      },
+    );
   }
 }

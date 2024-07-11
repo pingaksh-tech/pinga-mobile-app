@@ -119,7 +119,7 @@ class CartController extends GetxController {
   }
 
   void updateCart({required int index, String? metalId, String? sizeId, String? diamondClarity, int? quantity}) {
-    CartRepository.updateCartApi(
+    CartRepository.addOrUpdateCartApi(
       cartId: cartList[index].id ?? "",
       inventoryId: cartList[index].inventoryId ?? "",
       quantity: quantity ?? cartList[index].quantity ?? 0,
