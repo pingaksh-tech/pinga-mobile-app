@@ -24,6 +24,10 @@ class AppStrings {
   static String contactMobileNumber = "";
   static String contactEmailID = "";
 
+  /// SLUGS
+  static String productIdPrefixSlug = "P-";
+  static String cartIdPrefixSlug = "C-";
+
   static const String variants = "Variants";
   static const String addToWatchlist = "Add to Watchlist";
 

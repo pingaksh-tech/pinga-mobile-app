@@ -12,6 +12,12 @@ class BaseBinding implements Bindings {
 }
 
 class BaseController extends GetxController {
+  /// DUPLICATE ROUTE CONTROLLER ISSUE RESOLVER
+  RxList<String> globalProductIds = <String>[].obs;
+
+  String get lastProductId => globalProductIds.isNotEmpty ? globalProductIds.last : "";
+
+  ///
   late PackageInfo packageInfo;
 
   @override

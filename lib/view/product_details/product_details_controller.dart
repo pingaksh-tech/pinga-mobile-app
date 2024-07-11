@@ -10,6 +10,10 @@ import '../../data/repositories/product/product_repository.dart';
 import '../../exports.dart';
 
 class ProductDetailsController extends GetxController {
+  /// DUPLICATE CONTROLLER RESOLVER
+  var productIdStack = <String>[].obs;
+
+  ///
   Rx<ScrollController> scrollController = ScrollController().obs;
 
   RxInt currentPage = 0.obs;
@@ -64,18 +68,25 @@ class ProductDetailsController extends GetxController {
     }
   }
 
+  /// prefix values
+  /// from inventory to product details
+  // P-
+  /// from cart to product details
+  // C-
+
   @override
   void onReady() {
     super.onReady();
+
     if (isValEmpty(cartId)) {
-      ProductRepository.getSingleProductAPI(inventoryId: inventoryId.value, loader: loader).then(
+      ProductRepository.getSingleProductAPI(inventoryId: inventoryId.value/*.substring(2)*/, loader: loader).then(
         (value) {
           predefinedValue();
           // priceChangeAPI();
         },
       );
     } else {
-      CartRepository.getSingleCartItemAPI(cartId: cartId.value, loader: loader).then(
+      CartRepository.getSingleCartItemAPI(cartId: cartId.value/*.substring(2)*/, loader: loader).then(
         (value) {
           predefinedValue();
           // priceChangeAPI();
@@ -83,6 +94,10 @@ class ProductDetailsController extends GetxController {
       );
     }
   }
+
+
+
+
 
   /// Product Pricing API
   Future<void> priceChangeAPI() async {

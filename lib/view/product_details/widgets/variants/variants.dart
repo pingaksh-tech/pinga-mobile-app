@@ -21,7 +21,7 @@ class VariantsTab extends StatelessWidget {
       itemBuilder: (context, index) => ProductTile(
         onTap: () => Get.toNamed(AppRoutes.productDetailsScreen,
             arguments: {
-              "category": productCategory,
+              "category": /* AppStrings.cartIdPrefixSlug +*/ productCategory,
               'isSize': isSize,
             },
             preventDuplicates: false),

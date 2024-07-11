@@ -338,3 +338,35 @@ enum FeedbackType {
     return FeedbackType.values.firstWhere((e) => e.slug == slug);
   }
 }
+
+///* GLOBAL PRODUCT PREFIX TYPE
+enum GlobalProductPrefixType {
+  productDetails(
+    prefix: "P-",
+    slug: "productDetails",
+    label: "productDetails",
+  ),
+  cart(
+    prefix: "C-",
+    slug: "cart",
+    label: "cart",
+  );
+
+  final String prefix;
+  final String label;
+  final String slug;
+
+  const GlobalProductPrefixType({
+    required this.prefix,
+    required this.label,
+    required this.slug,
+  });
+
+  static GlobalProductPrefixType fromId(String id) {
+    return GlobalProductPrefixType.values.firstWhere((e) => e.prefix == id);
+  }
+
+  static GlobalProductPrefixType fromSlug(String slug) {
+    return GlobalProductPrefixType.values.firstWhere((e) => e.slug == slug);
+  }
+}

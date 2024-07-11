@@ -18,9 +18,11 @@ class VariantScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: MyAppBar(
         title: "Variants",
-        actions:  [CartIconButton(onPressed: () {
-          
-        },)],
+        actions: [
+          CartIconButton(
+            onPressed: () {},
+          )
+        ],
       ),
       body: Obx(() {
         return ListView.builder(
@@ -28,7 +30,7 @@ class VariantScreen extends StatelessWidget {
           itemCount: con.variantList.length,
           itemBuilder: (context, index) => ProductTile(
             onTap: () => Get.toNamed(AppRoutes.productDetailsScreen, arguments: {
-              "category": con.category.value,
+              "category": /*AppStrings.cartIdPrefixSlug +*/ con.category.value,
               'isSize': con.isSize.value,
             }),
             // subCategoryId: con.category.value,

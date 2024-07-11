@@ -34,13 +34,8 @@ class AppPages {
   AppPages._();
 
   /// Function to define a GetPage route
-  static GetPage<dynamic> _getPage({required String name, required GetPageBuilder page, Bindings? binding, List<GetPage<dynamic>>? children}) {
-    return GetPage(
-      name: name,
-      page: page,
-      binding: binding,
-      children: children ?? [],
-    );
+  static GetPage<dynamic> _getPage({required String name, required GetPageBuilder page, Bindings? binding, List<GetPage<dynamic>>? children, bool preventDuplicates = true}) {
+    return GetPage(name: name, page: page, binding: binding, children: children ?? [], preventDuplicates: preventDuplicates);
   }
 
   static final List<GetPage<dynamic>> pages = <GetPage<dynamic>>[
@@ -53,7 +48,7 @@ class AppPages {
     _getPage(name: AppRoutes.productScreen, page: () => ProductsScreen()),
     _getPage(name: AppRoutes.profileScreen, page: () => ProfileScreen()),
     _getPage(name: AppRoutes.cartScreen, page: () => CartScreen()),
-    _getPage(name: AppRoutes.productDetailsScreen, page: () => ProductDetailsScreen()),
+    _getPage(name: AppRoutes.productDetailsScreen, page: () => ProductDetailsScreen(), preventDuplicates: false),
     _getPage(name: AppRoutes.filterScreen, page: () => FilterScreen()),
     _getPage(name: AppRoutes.watchListScreen, page: () => WatchListScreen()),
     _getPage(name: AppRoutes.addWatchListScreen, page: () => AddWatchListScreen()),

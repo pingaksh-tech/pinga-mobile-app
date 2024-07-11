@@ -43,7 +43,7 @@ class ProductDetailsScreen extends StatelessWidget {
           actions: [
             CartIconButton(
               onPressed: () {
-                Get.toNamed(AppRoutes.cartScreen);
+                navigateToCartScreen();
               },
             ),
           ],

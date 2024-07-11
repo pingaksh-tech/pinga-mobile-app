@@ -30,7 +30,14 @@ class FamilyProductTab extends StatelessWidget {
                     selectSize: (productList[index].sizeId ?? "").obs,
                     inventoryId: productList[index].id ?? "",
                     productTileType: ProductTileType.grid,
-                    onTap: () {},
+                    onTap: () {
+                      navigateToProductDetailsScreen(
+                          productId: productList[index].id ?? "",
+                          type: GlobalProductPrefixType.productDetails,
+                          whenComplete: () {
+                            // removeLastProductIdFromGlobalList();
+                          });
+                    },
                     isLike: false.obs,
                     imageUrl: productList[index].singleInvImage ?? "",
                     productName: productList[index].name ?? "",

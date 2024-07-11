@@ -24,9 +24,11 @@ class BottomBarScreen extends StatelessWidget {
   final PreDefinedValueController dialogCon = Get.find<PreDefinedValueController>();
   final OrderFilterController orderCon = Get.find<OrderFilterController>();
   final CartController cartCon = Get.find<CartController>();
+  final BaseController baseCon = Get.find<BaseController>();
 
   @override
   Widget build(BuildContext context) {
+    printYellow("${baseCon.globalProductIds}");
     return WillPopScope(
       onWillPop: () async {
         if (con.currentBottomIndex.value != 0) {

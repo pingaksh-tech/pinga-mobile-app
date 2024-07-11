@@ -15,7 +15,10 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../data/repositories/cart/cart_repository.dart';
+import '../data/repositories/product/product_repository.dart';
 import '../exports.dart';
+import '../view/product_details/product_details_controller.dart';
 
 /// Set the preferred screen orientation to portrait
 void screenPortrait() {
@@ -162,6 +165,120 @@ bool isRegistered<S>() {
     } */
     return false;
   }
+}
+
+void deleteGetXController<S>() {
+  if (Get.isRegistered<S>()) {
+    Get.delete<S>();
+  }
+}
+
+/// ***********************************************************************************
+///                                DUPLICATE ROUTE ISSUE RESOLVER
+/// ***********************************************************************************
+
+String addProductIdToGlobalList(String productId, {required GlobalProductPrefixType type}) {
+  if (isRegistered<BaseController>() && productId.length > 10) {
+    BaseController con = Get.find<BaseController>();
+
+    String pId = productId.contains("-") ? productId : type.prefix + productId;
+    printOkStatus("==< $pId");
+    con.globalProductIds.add(pId);
+    return pId;
+  } else {
+    return "";
+  }
+}
+
+String removeLastProductIdFromGlobalList() {
+  if (isRegistered<BaseController>()) {
+    BaseController con = Get.find<BaseController>();
+    con.globalProductIds.removeLast();
+    return con.lastProductId;
+  } else {
+    return "";
+  }
+}
+
+void navigateToProductDetailsScreen({Map? arguments, required String productId, required GlobalProductPrefixType type, Function()? whenComplete}) {
+  void apiCall({required String productId}) {
+    /// API CALL
+    try {
+      String pId = addProductIdToGlobalList(productId, type: type);
+
+      if (isRegistered<ProductDetailsController>()) {
+        ProductDetailsController con = Get.find<ProductDetailsController>();
+
+        if (type == GlobalProductPrefixType.productDetails) {
+          ProductRepository.getSingleProductAPI(inventoryId: pId.substring(2), loader: con.loader).then(
+            (value) {
+              con.predefinedValue();
+              // priceChangeAPI();
+            },
+          );
+        } else {
+          CartRepository.getSingleCartItemAPI(cartId: pId.substring(2), loader: con.loader).then(
+            (value) {
+              con.predefinedValue();
+              // priceChangeAPI();
+            },
+          );
+        }
+      }
+    } catch (e) {
+      printErrors(type: "navigateToProductDetailsScreen", errText: "PROD: $productId $e");
+    }
+  }
+
+  apiCall(productId: productId);
+
+  Get.toNamed(AppRoutes.productDetailsScreen, arguments: arguments, preventDuplicates: false)?.whenComplete(() {
+    if (whenComplete != null) {
+      whenComplete();
+    }
+    if (Get.currentRoute == AppRoutes.productDetailsScreen) {
+      apiCall(productId: removeLastProductIdFromGlobalList());
+    }
+  });
+}
+
+void navigateToCartScreen({Map? arguments, Function()? whenComplete}) {
+  Get.toNamed(
+    AppRoutes.cartScreen,
+    arguments: arguments,
+  )?.whenComplete(() {
+    if (whenComplete != null) {
+      whenComplete();
+    }
+    {
+      /// API CALL
+      // String pId = addProductIdToGlobalList(productId, type: type);
+
+      if (isRegistered<ProductDetailsController>() && isRegistered<BaseController>()) {
+        ProductDetailsController con = Get.find<ProductDetailsController>();
+        BaseController baseCon = Get.find<BaseController>();
+        // baseCon.globalProductIds.removeLast();
+        String pId = baseCon.lastProductId;
+
+        GlobalProductPrefixType type = pId.substring(0, 2) == AppStrings.productIdPrefixSlug ? GlobalProductPrefixType.productDetails : GlobalProductPrefixType.cart;
+        if (type == GlobalProductPrefixType.productDetails) {
+          ProductRepository.getSingleProductAPI(inventoryId: pId.substring(2), loader: con.loader).then(
+            (value) {
+              con.predefinedValue();
+              // priceChangeAPI();
+            },
+          );
+        } else {
+          CartRepository.getSingleCartItemAPI(cartId: pId.substring(2), loader: con.loader).then(
+            (value) {
+              con.predefinedValue();
+              // priceChangeAPI();
+            },
+          );
+        }
+      }
+    }
+  });
 }
 
 /// ***********************************************************************************

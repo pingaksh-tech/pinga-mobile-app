@@ -208,7 +208,7 @@ Widget horizontalSelectorButton(
                   SvgPicture.asset(
                     remarkSelected?.isNotEmpty ?? false ? selectableItemType.selectedIcon ?? '' : selectableItemType.icon,
                     height: switch (sizeColorSelectorButtonType) {
-                      SizeMetalSelectorButtonType.small => 12.h,
+                      SizeMetalSelectorButtonType.small => 11.h,
                       SizeMetalSelectorButtonType.medium => 14.h,
                       SizeMetalSelectorButtonType.large => 16.h,
                     },

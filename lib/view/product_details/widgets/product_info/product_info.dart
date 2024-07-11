@@ -107,7 +107,7 @@ class ProductInfoTab extends StatelessWidget {
               printOkStatus("---");
               Get.toNamed(
                 AppRoutes.productDetailsScreen,
-                preventDuplicates: false,
+                // preventDuplicates: false,
                 arguments: {
                   // "brandName": con.brandList[index]["brandName"],
                 },

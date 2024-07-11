@@ -148,17 +148,30 @@ class ProductsScreen extends StatelessWidget {
                                       inventoryId: con.inventoryProductList[index].id,
                                       diamondList: RxList(con.inventoryProductList[index].diamonds ?? []),
                                       productTileType: con.isProductViewChange.isTrue ? ProductTileType.grid : ProductTileType.list,
-                                      onTap: () => Get.toNamed(
-                                        AppRoutes.productDetailsScreen,
-                                        arguments: {
-                                          "category": con.inventoryProductList[index].subCategoryId ?? '',
-                                          'isSize': con.isSizeAvailable.value,
-                                          'isFancy': con.inventoryProductList[index].isDiamondMultiple ?? false,
-                                          'inventoryId': con.inventoryProductList[index].id,
-                                          'name': con.inventoryProductList[index].name,
-                                          'like': con.inventoryProductList[index].isWishlist,
-                                        },
-                                      ),
+                                      onTap: () {
+                                        // addProductIdToGlobalList((con.inventoryProductList[index].id ?? ""), type: GlobalProductPrefixType.productDetails);
+
+
+
+                                        navigateToProductDetailsScreen(
+                                          productId: (con.inventoryProductList[index].id ?? ""),
+                                          type: GlobalProductPrefixType.productDetails,
+                                          arguments: {
+                                            "category": /*AppStrings.cartIdPrefixSlug +*/ (con.inventoryProductList[index].subCategoryId ?? ''),
+                                            'isSize': con.isSizeAvailable.value,
+                                            'isFancy': con.inventoryProductList[index].isDiamondMultiple ?? false,
+                                            'inventoryId': /*AppStrings.productIdPrefixSlug +*/ (con.inventoryProductList[index].id ?? ""),
+                                            'name': con.inventoryProductList[index].name,
+                                            'like': con.inventoryProductList[index].isWishlist,
+                                          },
+                                          whenComplete: (){
+                                            if (isRegistered<BaseController>()) {
+                                              BaseController baseCon = Get.find<BaseController>();
+                                              if (baseCon.globalProductIds.isNotEmpty) baseCon.globalProductIds.removeLast();
+                                            }
+                                          }
+                                        );
+                                      },
                                       isLike: con.inventoryProductList[index].isWishlist,
                                       imageUrl: (con.inventoryProductList[index].inventoryImages != null && con.inventoryProductList[index].inventoryImages!.isNotEmpty) ? con.inventoryProductList[index].inventoryImages![0] : "",
                                       productName: con.inventoryProductList[index].name ?? "",

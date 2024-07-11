@@ -23,9 +23,11 @@ class WishlistScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: MyAppBar(
           title: "My Wishlist",
-          actions: [CartIconButton(onPressed: () {
-            
-          },)],
+          actions: [
+            CartIconButton(
+              onPressed: () {},
+            )
+          ],
         ),
         body: Obx(
           () {
@@ -50,8 +52,8 @@ class WishlistScreen extends StatelessWidget {
                                     onTap: () => Get.toNamed(
                                       AppRoutes.productDetailsScreen,
                                       arguments: {
-                                        "category": con.productsList[index].inventory?.subCategoryId ?? 'ring',
-                                        'inventoryId': con.productsList[index].inventory?.id ?? "",
+                                        "category": /*AppStrings.cartIdPrefixSlug +*/ (con.productsList[index].inventory?.subCategoryId ?? ''),
+                                        'inventoryId': /*AppStrings.productIdPrefixSlug +*/ (con.productsList[index].inventory?.id ?? ""),
                                         'name': con.productsList[index].inventory?.name ?? "",
                                       },
                                     ),
