@@ -264,7 +264,7 @@ class _ProductTileState extends State<ProductTile> {
               child: Row(
                 children: [
                   /// Size
-                  if (widget.isSizeAvailable) sizeSelector(category: widget.category?.value),
+                  if (!isValEmpty(widget.selectSize?.value)) sizeSelector(category: widget.category?.value),
                   (defaultPadding / 4).horizontalSpace,
 
                   /// Diamond
@@ -705,10 +705,12 @@ class _ProductTileState extends State<ProductTile> {
     bool isFlexible = false,
     Axis direction = Axis.horizontal,
     String? selectDiamondCart,
+    double? width,
   }) =>
       horizontalSelectorButton(
         context,
         isFlexible: isFlexible,
+        verticalAxisWidth: width,
         categoryId: diamondModel.id?.value ?? "",
         selectedDiamond: diamondModel.obs,
         diamondsList: RxList(widget.diamonds ?? []),
@@ -1041,6 +1043,7 @@ class _ProductTileState extends State<ProductTile> {
                     diamondSelector(
                       direction: Axis.vertical,
                       isFlexible: true,
+                      width: widget.isFancy ? 30.w : null,
                       selectDiamondCart: widget.selectDiamondCart?.value,
                     ),
                     (defaultPadding / 4).horizontalSpace,

@@ -33,6 +33,7 @@ Widget horizontalSelectorButton(
   RxString? selectedSizeCart,
   RxString? selectMetalCart,
   RxString? selectDiamondCart,
+  double? verticalAxisWidth,
 }) {
   return Expanded(
     flex: isFlexible ? 0 : 1,
@@ -184,7 +185,11 @@ Widget horizontalSelectorButton(
                       switch (selectableItemType) {
                         SelectableItemType.size => ("Size ${isValEmpty(selectedSize?.value.shortName) ? "(0)" : "(${selectedSize?.value.shortName})"}"),
                         SelectableItemType.metal => ("Metal ${isValEmpty(selectedMetal?.value.shortName) ? "(-)" : "(${selectedMetal?.value.shortName})"}"),
-                        SelectableItemType.diamond => isValEmpty(selectedDiamond?.value.shortName) ? "-" : selectedDiamond?.value.shortName ?? '',
+                        SelectableItemType.diamond => isFancy
+                            ? "(${diamondsList?.length})"
+                            : isValEmpty(selectedDiamond?.value.shortName)
+                                ? "-"
+                                : selectedDiamond?.value.shortName ?? '',
                         SelectableItemType.remarks => "Remark",
                         SelectableItemType.stock => "Stock",
                       },
@@ -202,38 +207,45 @@ Widget horizontalSelectorButton(
               ),
 
             /// Vertical Selector
-            Axis.vertical => Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SvgPicture.asset(
-                    remarkSelected?.isNotEmpty ?? false ? selectableItemType.selectedIcon ?? '' : selectableItemType.icon,
-                    height: switch (sizeColorSelectorButtonType) {
-                      SizeMetalSelectorButtonType.small => 11.h,
-                      SizeMetalSelectorButtonType.medium => 14.h,
-                      SizeMetalSelectorButtonType.large => 16.h,
-                    },
-                    colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
-                  ),
-                  MarqueeWidget(
-                    child: Text(
-                      switch (selectableItemType) {
-                        SelectableItemType.size => ("Size ${isValEmpty(selectedSize?.value.shortName) ? "(0)" : "(${selectedSize?.value.shortName})"}"),
-                        SelectableItemType.metal => ("Metal ${isValEmpty(selectedMetal?.value.shortName) ? "(-)" : "(${selectedMetal?.value.shortName?.split(" ").first})"}"),
-                        SelectableItemType.diamond => isValEmpty(selectedDiamond?.value.shortName) ? "-" : selectedDiamond?.value.shortName ?? '',
-                        SelectableItemType.remarks => "Remark",
-                        SelectableItemType.stock => "Stock",
+            Axis.vertical => SizedBox(
+                width: verticalAxisWidth,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      remarkSelected?.isNotEmpty ?? false ? selectableItemType.selectedIcon ?? '' : selectableItemType.icon,
+                      height: switch (sizeColorSelectorButtonType) {
+                        SizeMetalSelectorButtonType.small => 11.h,
+                        SizeMetalSelectorButtonType.medium => 14.h,
+                        SizeMetalSelectorButtonType.large => 16.h,
                       },
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontSize: switch (sizeColorSelectorButtonType) {
-                            SizeMetalSelectorButtonType.small => 8.h,
-                            SizeMetalSelectorButtonType.medium => 10.h,
-                            SizeMetalSelectorButtonType.large => 14.h,
-                          },
-                          color: AppColors.primary),
+                      colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
                     ),
-                  )
-                ],
+                    MarqueeWidget(
+                      child: Text(
+                        switch (selectableItemType) {
+                          SelectableItemType.size => ("Size ${isValEmpty(selectedSize?.value.shortName) ? "(0)" : "(${selectedSize?.value.shortName})"}"),
+                          SelectableItemType.metal => ("Metal ${isValEmpty(selectedMetal?.value.shortName) ? "(-)" : "(${selectedMetal?.value.shortName?.split(" ").first})"}"),
+                          SelectableItemType.diamond => isFancy
+                              ? "(${diamondsList?.length})"
+                              : isValEmpty(selectedDiamond?.value.shortName)
+                                  ? "-"
+                                  : selectedDiamond?.value.shortName ?? '',
+                          SelectableItemType.remarks => "Remark",
+                          SelectableItemType.stock => "Stock",
+                        },
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontSize: switch (sizeColorSelectorButtonType) {
+                              SizeMetalSelectorButtonType.small => 8.h,
+                              SizeMetalSelectorButtonType.medium => 10.h,
+                              SizeMetalSelectorButtonType.large => 14.h,
+                            },
+                            color: AppColors.primary),
+                      ),
+                    )
+                  ],
+                ),
               ),
           },
         ),

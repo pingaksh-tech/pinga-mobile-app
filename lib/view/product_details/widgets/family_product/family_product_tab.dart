@@ -32,6 +32,7 @@ class FamilyProductTab extends StatelessWidget {
                       inventoryId: productList[index].id ?? "",
                       productTileType: ProductTileType.grid,
                       onTap: () {
+                        printYellow(productList[index].id);
                         navigateToProductDetailsScreen(
                           productId: productList[index].id ?? "",
                           type: GlobalProductPrefixType.productDetails,

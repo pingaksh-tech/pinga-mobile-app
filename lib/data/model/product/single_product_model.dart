@@ -30,6 +30,7 @@ class GetSingleProductModel {
 
 class SingleProductModel {
   final String? subCategoryId;
+  final String? inventoryId;
   final String? sizeId;
   final String? metalId;
   final int? cartQuantity;
@@ -55,9 +56,11 @@ class SingleProductModel {
     this.extraMetalWeight,
     this.isWishList,
     this.isDiamondMultiple,
+    this.inventoryId,
   });
 
   factory SingleProductModel.fromJson(Map<String, dynamic> json) => SingleProductModel(
+        inventoryId: json["_id"],
         subCategoryId: json["sub_category_id"],
         sizeId: json["size_id"],
         metalId: json["metal_id"],
@@ -74,6 +77,7 @@ class SingleProductModel {
 
   Map<String, dynamic> toJson() => {
         "sub_category_id": subCategoryId,
+        "_id": inventoryId,
         "size_id": sizeId,
         "metal_id": metalId,
         "cartQty": cartQuantity,

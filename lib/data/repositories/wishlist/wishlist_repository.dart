@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 
 import '../../../exports.dart';
 import '../../../view/drawer/widgets/wishlist/wishlist_controller.dart';
+import '../../../view/products/products_controller.dart';
 import '../../model/wishlist/wishlist_model.dart';
 
 class WishlistRepository {
@@ -41,7 +42,23 @@ class WishlistRepository {
                     }
                   }
                 }
+                if (Get.isRegistered<ProductsController>()) {
+                  final ProductsController productsCon = Get.find<ProductsController>();
+                  int index = productsCon.inventoryProductList.indexWhere((element) => element.id == inventoryId);
+                  if (index != -1) {
+                    productsCon.inventoryProductList[index].isWishlist?.value = false;
+                  }
+                }
+              } else if (isWishlist == true) {
+                if (Get.isRegistered<ProductsController>()) {
+                  final ProductsController productsCon = Get.find<ProductsController>();
+                  int index = productsCon.inventoryProductList.indexWhere((element) => element.id == inventoryId);
+                  if (index != -1) {
+                    productsCon.inventoryProductList[index].isWishlist?.value = true;
+                  }
+                }
               }
+
               UiUtils.toast(isWishlist == true ? "Product add successfully in wishlist" : "Product removed from wishlist successfully");
               loader?.value = false;
             } else {

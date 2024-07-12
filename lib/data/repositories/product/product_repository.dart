@@ -272,8 +272,10 @@ class ProductRepository {
               if (model.data != null) {
                 con.productDetailModel.value = model.data!;
                 // con.isSizeAvailable.value = con.productDetailModel.value.sizeId != null;
-                // con.inventoryId.value=con.productDetailModel.value.productInfo.
+                con.inventoryId.value = con.productDetailModel.value.inventoryId ?? "";
                 // con.isFancy=con.productDetailModel.value.productInfo.
+
+                // productsController.inventoryProductList.value
               }
               loader?.value = false;
             } else {
