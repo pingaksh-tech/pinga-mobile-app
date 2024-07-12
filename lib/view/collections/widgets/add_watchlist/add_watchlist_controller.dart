@@ -22,6 +22,7 @@ class AddWatchListController extends GetxController {
   RxInt quantity = 0.obs;
   RxString diamondClarity = "".obs;
   List<DiamondListModel> diamonds = [];
+
   @override
   void onInit() {
     super.onInit();

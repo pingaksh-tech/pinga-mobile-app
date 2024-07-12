@@ -875,8 +875,8 @@ class _ProductTileState extends State<ProductTile> {
                                 ],
                               )
                             : Container(
-                                width: Get.width * 0.25,
-                                height: Get.width * 0.25,
+                                width: Get.width * 0.2,
+                                height: Get.width * 0.2,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(defaultRadius),
                                   color: AppColors.primary.withOpacity(0.1),

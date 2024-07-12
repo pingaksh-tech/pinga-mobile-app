@@ -98,6 +98,9 @@ class CartPopUpMenu extends StatelessWidget {
                       },
                       noOnPressed: () async {
                         await WatchListRepository.addCartToWatchlistAPI(watchlistName: nameCon.value.text.trim(), cartIds: cardIds);
+                        con.selectedList.clear();
+                        con.calculateSelectedItemPrice();
+                        con.calculateSelectedQue();
                       },
                     );
                   } else {

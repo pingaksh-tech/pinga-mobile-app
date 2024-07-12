@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:get/get.dart';
+
 import 'products_model.dart';
 
 GetSingleProductModel getSignleProductModelFromJson(String str) => GetSingleProductModel.fromJson(json.decode(str));
@@ -90,7 +92,7 @@ class PriceBreaking {
   final Metal? metal;
   final PriceBreakingDiamond? diamond;
   final Other? other;
-  num? total;
+  RxNum? total;
 
   PriceBreaking({
     this.metal,
@@ -103,20 +105,20 @@ class PriceBreaking {
         metal: json["metal"] == null ? null : Metal.fromJson(json["metal"]),
         diamond: json["diamond"] == null ? null : PriceBreakingDiamond.fromJson(json["diamond"]),
         other: json["other"] == null ? null : Other.fromJson(json["other"]),
-        total: json["total"],
+        total: json["total"] == null ? null : RxNum(num.tryParse(json["total"].toString()) ?? 0),
       );
 
   Map<String, dynamic> toJson() => {
         "metal": metal?.toJson(),
         "diamond": diamond?.toJson(),
         "other": other?.toJson(),
-        "total": total,
+        "total": total?.value,
       };
 }
 
 class PriceBreakingDiamond {
-  final double? diamondWeight;
-  final num? diamondPrice;
+  double? diamondWeight;
+  num? diamondPrice;
 
   PriceBreakingDiamond({
     this.diamondWeight,
@@ -135,9 +137,9 @@ class PriceBreakingDiamond {
 }
 
 class Metal {
-  final num? metalWeight;
-  final num? pricePerGram;
-  final num? metalPrice;
+  num? metalWeight;
+  num? pricePerGram;
+  num? metalPrice;
 
   Metal({
     this.metalWeight,
@@ -159,7 +161,7 @@ class Metal {
 }
 
 class Other {
-  final num? manufacturingPrice;
+  num? manufacturingPrice;
 
   Other({
     this.manufacturingPrice,

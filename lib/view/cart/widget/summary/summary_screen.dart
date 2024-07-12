@@ -21,182 +21,183 @@ class SummaryScreen extends StatelessWidget {
       () => DefaultTabController(
         length: 2,
         child: Scaffold(
-            backgroundColor: Theme.of(context).colorScheme.surface,
-            appBar: MyAppBar(
-              title: "Summary/Weight",
-              centerTitle: false,
-            ),
-            body: con.isLoading.isFalse
-                ? con.diamondSummaryList.isNotEmpty
-                    ? Column(
-                        children: [
-                          (defaultPadding / 2).verticalSpace,
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: defaultPadding),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: AppColors.textFiledBorder,
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          appBar: MyAppBar(
+            title: "Summary/Weight",
+            centerTitle: false,
+          ),
+          body: con.isLoading.isFalse
+              ? con.diamondSummaryList.isNotEmpty
+                  ? Column(
+                      children: [
+                        (defaultPadding / 2).verticalSpace,
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: defaultPadding),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: AppColors.textFiledBorder,
+                            ),
+                            borderRadius: BorderRadius.circular(defaultRadius - 3),
+                          ),
+                          child: const MyTabBar(
+                            tabs: [
+                              Text(
+                                "Summary",
                               ),
-                              borderRadius: BorderRadius.circular(defaultRadius - 3),
-                            ),
-                            child: const MyTabBar(
-                              tabs: [
-                                Text(
-                                  "Summary",
-                                ),
-                                Text(
-                                  "Weight",
-                                ),
-                              ],
-                            ),
+                              Text(
+                                "Weight",
+                              ),
+                            ],
                           ),
-                          Expanded(
-                            child: TabBarView(
-                              children: [
-                                Column(
-                                  children: [
-                                    Expanded(
-                                      child: ListView.builder(
-                                        physics: const RangeMaintainingScrollPhysics(),
-                                        padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding),
-                                        shrinkWrap: true,
-                                        itemCount: con.diamondSummaryList.length,
-                                        itemBuilder: (context, index) => Column(
-                                          children: [
-                                            summaryTile(
-                                              context,
-                                              image: AppAssets.deliveryIcon,
-                                              titleText: "Delivery",
-                                              subtitleText: con.diamondSummaryList[index].id ?? "",
-                                            ),
-                                            (defaultPadding / 4).verticalSpace,
-                                            summaryTile(
-                                              context,
-                                              image: AppAssets.quantityIcon,
-                                              titleText: "Quantity",
-                                              subtitleText: con.diamondSummaryList[index].totalQuantity.toString(),
-                                            ),
-                                            (defaultPadding / 4).verticalSpace,
-                                            summaryTile(
-                                              context,
-                                              image: AppAssets.mrpSVG,
-                                              titleText: "MRP",
-                                              subtitleText: UiUtils.amountFormat(con.diamondSummaryList[index].totalAmount, decimalDigits: 2),
-                                              subTitleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Theme.of(context).primaryColor,
-                                                  ),
-                                            ),
-                                            Divider(
-                                              color: AppColors.lightGrey.withOpacity(0.5),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      width: Get.width,
-                                      margin: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(bottom: MediaQuery.of(context).padding.bottom + defaultPadding),
-                                      padding: EdgeInsets.all(defaultPadding / 1.5),
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context).primaryColor.withAlpha(10),
-                                        borderRadius: BorderRadius.circular(
-                                          defaultRadius,
-                                        ),
-                                      ),
-                                      child: Column(
+                        ),
+                        Expanded(
+                          child: TabBarView(
+                            children: [
+                              Column(
+                                children: [
+                                  Expanded(
+                                    child: ListView.builder(
+                                      physics: const RangeMaintainingScrollPhysics(),
+                                      padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding),
+                                      shrinkWrap: true,
+                                      itemCount: con.diamondSummaryList.length,
+                                      itemBuilder: (context, index) => Column(
                                         children: [
-                                          totalPriceTile(context, title: "Total Quantity", subTitle: con.totalDiamond.value.totalQty.toString()),
-                                          totalPriceTile(
+                                          summaryTile(
                                             context,
-                                            title: "Total Amount",
-                                            subTitle: UiUtils.amountFormat(con.totalDiamond.value.totalAmount.toString(), decimalDigits: 2),
+                                            image: AppAssets.deliveryIcon,
+                                            titleText: "Delivery",
+                                            subtitleText: con.diamondSummaryList[index].id ?? "",
+                                          ),
+                                          (defaultPadding / 4).verticalSpace,
+                                          summaryTile(
+                                            context,
+                                            image: AppAssets.quantityIcon,
+                                            titleText: "Quantity",
+                                            subtitleText: con.diamondSummaryList[index].totalQuantity.toString(),
+                                          ),
+                                          (defaultPadding / 4).verticalSpace,
+                                          summaryTile(
+                                            context,
+                                            image: AppAssets.mrpSVG,
+                                            titleText: "MRP",
+                                            subtitleText: UiUtils.amountFormat(con.diamondSummaryList[index].totalAmount, decimalDigits: 2),
+                                            subTitleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Theme.of(context).primaryColor,
+                                                ),
+                                          ),
+                                          Divider(
+                                            color: AppColors.lightGrey.withOpacity(0.5),
                                           ),
                                         ],
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                  Container(
+                                    width: Get.width,
+                                    margin: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(bottom: MediaQuery.of(context).padding.bottom + defaultPadding),
+                                    padding: EdgeInsets.all(defaultPadding / 1.5),
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).primaryColor.withAlpha(10),
+                                      borderRadius: BorderRadius.circular(
+                                        defaultRadius,
+                                      ),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        totalPriceTile(context, title: "Total Quantity", subTitle: con.totalDiamond.value.totalQty.toString()),
+                                        totalPriceTile(
+                                          context,
+                                          title: "Total Amount",
+                                          subTitle: UiUtils.amountFormat(con.totalDiamond.value.totalAmount.toString(), decimalDigits: 2),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
 
-                                //? Weight TabBar View
-                                Column(
-                                  children: [
-                                    Expanded(
-                                      child: ListView.builder(
-                                        physics: const RangeMaintainingScrollPhysics(),
-                                        padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding),
-                                        shrinkWrap: true,
-                                        itemCount: con.weightSummaryList.length,
-                                        itemBuilder: (context, index) => Column(
-                                          children: [
-                                            summaryTile(
-                                              context,
-                                              image: AppAssets.diamondIcon,
-                                              titleText: "Diamond",
-                                              subtitleText: con.weightSummaryList[index].id ?? "",
-                                            ),
-                                            (defaultPadding / 4).verticalSpace,
-                                            summaryTile(
-                                              context,
-                                              image: AppAssets.metalWeight,
-                                              titleText: "Metal Wt",
-                                              subtitleText: con.weightSummaryList[index].metalWeight.toString(),
-                                            ),
-                                            (defaultPadding / 4).verticalSpace,
-                                            summaryTile(
-                                              context,
-                                              image: AppAssets.diamondWeight,
-                                              titleText: "Diamond Wt",
-                                              subtitleText: con.weightSummaryList[index].diamondWeight.toString(),
-                                              subTitleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Theme.of(context).primaryColor,
-                                                  ),
-                                            ),
-                                            Divider(color: AppColors.lightGrey.withOpacity(0.5)),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      width: Get.width,
-                                      margin: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(bottom: MediaQuery.of(context).padding.bottom + defaultPadding),
-                                      padding: EdgeInsets.all(defaultPadding / 1.5),
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context).primaryColor.withAlpha(10),
-                                        borderRadius: BorderRadius.circular(
-                                          defaultRadius,
-                                        ),
-                                      ),
-                                      child: Column(
+                              //? Weight TabBar View
+                              Column(
+                                children: [
+                                  Expanded(
+                                    child: ListView.builder(
+                                      physics: const RangeMaintainingScrollPhysics(),
+                                      padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding),
+                                      shrinkWrap: true,
+                                      itemCount: con.weightSummaryList.length,
+                                      itemBuilder: (context, index) => Column(
                                         children: [
-                                          totalPriceTile(
+                                          summaryTile(
                                             context,
-                                            title: "Total metal wt",
-                                            subTitle: con.totalWeight.value.totalMetalWeight.toString(),
+                                            image: AppAssets.diamondIcon,
+                                            titleText: "Diamond",
+                                            subtitleText: con.weightSummaryList[index].id ?? "",
                                           ),
-                                          totalPriceTile(
+                                          (defaultPadding / 4).verticalSpace,
+                                          summaryTile(
                                             context,
-                                            title: "Total diamond wt",
-                                            subTitle: con.totalWeight.value.totalDiamondWeight.toString(),
+                                            image: AppAssets.metalWeight,
+                                            titleText: "Metal Wt",
+                                            subtitleText: con.weightSummaryList[index].metalWeight.toString(),
                                           ),
+                                          (defaultPadding / 4).verticalSpace,
+                                          summaryTile(
+                                            context,
+                                            image: AppAssets.diamondWeight,
+                                            titleText: "Diamond Wt",
+                                            subtitleText: con.weightSummaryList[index].diamondWeight?.toStringAsFixed(3) ?? "",
+                                            subTitleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Theme.of(context).primaryColor,
+                                                ),
+                                          ),
+                                          Divider(color: AppColors.lightGrey.withOpacity(0.5)),
                                         ],
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                  ),
+                                  Container(
+                                    width: Get.width,
+                                    margin: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(bottom: MediaQuery.of(context).padding.bottom + defaultPadding),
+                                    padding: EdgeInsets.all(defaultPadding / 1.5),
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).primaryColor.withAlpha(10),
+                                      borderRadius: BorderRadius.circular(
+                                        defaultRadius,
+                                      ),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        totalPriceTile(
+                                          context,
+                                          title: "Total metal wt",
+                                          subTitle: con.totalWeight.value.totalMetalWeight.toString(),
+                                        ),
+                                        totalPriceTile(
+                                          context,
+                                          title: "Total diamond wt",
+                                          subTitle: con.totalWeight.value.totalDiamondWeight?.toStringAsFixed(3) ?? "",
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                        ],
-                      )
-                    : const EmptyElement(title: "Cart Summary not found!")
-                : ListView.separated(
-                    padding: EdgeInsets.all(defaultPadding),
-                    separatorBuilder: (context, index) => defaultPadding.verticalSpace,
-                    itemBuilder: (context, index) => const CartSummarySimmer(),
-                    itemCount: 5,
-                  )),
+                        ),
+                      ],
+                    )
+                  : const EmptyElement(title: "Cart Summary not found!")
+              : ListView.separated(
+                  padding: EdgeInsets.all(defaultPadding),
+                  separatorBuilder: (context, index) => defaultPadding.verticalSpace,
+                  itemBuilder: (context, index) => const CartSummarySimmer(),
+                  itemCount: 7,
+                ),
+        ),
       ),
     );
   }

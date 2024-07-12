@@ -151,8 +151,6 @@ class ProductsScreen extends StatelessWidget {
                                       onTap: () {
                                         // addProductIdToGlobalList((con.inventoryProductList[index].id ?? ""), type: GlobalProductPrefixType.productDetails);
 
-
-
                                         navigateToProductDetailsScreen(
                                           productId: (con.inventoryProductList[index].id ?? ""),
                                           type: GlobalProductPrefixType.productDetails,
@@ -162,14 +160,14 @@ class ProductsScreen extends StatelessWidget {
                                             'isFancy': con.inventoryProductList[index].isDiamondMultiple ?? false,
                                             'inventoryId': /*AppStrings.productIdPrefixSlug +*/ (con.inventoryProductList[index].id ?? ""),
                                             'name': con.inventoryProductList[index].name,
-                                            'like': con.inventoryProductList[index].isWishlist,
+                                            // 'like': con.inventoryProductList[index].isWishlist,
                                           },
-                                          whenComplete: (){
+                                          whenComplete: () {
                                             if (isRegistered<BaseController>()) {
                                               BaseController baseCon = Get.find<BaseController>();
                                               if (baseCon.globalProductIds.isNotEmpty) baseCon.globalProductIds.removeLast();
                                             }
-                                          }
+                                          },
                                         );
                                       },
                                       isLike: con.inventoryProductList[index].isWishlist,

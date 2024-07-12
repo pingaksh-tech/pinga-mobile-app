@@ -71,7 +71,7 @@ class ProductRepository {
             con.inventoryProductList.clear();
           }
           con.page.value = 1;
-          con.nextPageAvailable.value = true;
+          con.nextPageAvailable.value;
         }
 
         /// API
@@ -210,6 +210,25 @@ class ProductRepository {
                     break;
                   default:
                     break;
+                }
+
+                /// Price Breaking value store in product detail
+                if (Get.isRegistered<ProductDetailsController>()) {
+                  final ProductDetailsController con = Get.find<ProductDetailsController>();
+                  con.productDetailModel.value.priceBreaking?.total?.value = model.data?.inventoryTotalPrice?.value ?? 0;
+                  con.productDetailModel.value.priceBreaking?.metal?.metalPrice = model.data?.priceBreaking?.metal?.metalPrice ?? 0;
+                  con.productDetailModel.value.priceBreaking?.metal?.pricePerGram = model.data?.priceBreaking?.metal?.pricePerGram ?? 0;
+                  con.productDetailModel.value.priceBreaking?.metal?.metalWeight = model.data?.priceBreaking?.metal?.metalWeight ?? 0;
+                  con.productDetailModel.value.priceBreaking?.diamond?.diamondWeight = model.data?.priceBreaking?.diamond?.diamondWeight ?? 0;
+                  con.productDetailModel.value.priceBreaking?.diamond?.diamondPrice = model.data?.priceBreaking?.diamond?.diamondPrice ?? 0;
+                  con.productDetailModel.value.priceBreaking?.other?.manufacturingPrice = model.data?.priceBreaking?.other?.manufacturingPrice ?? 0;
+                  if (con.productDetailModel.value.familyProducts != null) {
+                    int index = con.productDetailModel.value.familyProducts!.indexWhere((element) => element.id == inventoryId);
+                    if (index != -1) {
+                      con.productDetailModel.value.familyProducts![index].inventoryTotalPrice?.value = model.data?.inventoryTotalPrice?.value ?? 0;
+                      con.productDetailModel.value.familyProducts![index].quantity?.value = model.data?.cartQty?.quantity ?? 0;
+                    }
+                  }
                 }
               }
 

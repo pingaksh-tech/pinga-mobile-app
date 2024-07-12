@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -63,8 +65,8 @@ class ProductDetailsController extends GetxController {
       }
       if (Get.arguments['name'].runtimeType == String) {
         productName.value = Get.arguments['name'];
-        isLike = Get.arguments['like'] ?? false.obs;
       }
+      // isLike = Get.arguments['like'] ?? false.obs;
     }
   }
 
@@ -106,16 +108,16 @@ class ProductDetailsController extends GetxController {
           ? List.generate(
               productDetailModel.value.diamonds != null ? productDetailModel.value.diamonds!.length : 0,
               (index) => {
-                "diamond_clarity": diamondList[index].diamondClarity?.value ?? "",
-                "diamond_shape": diamondList[index].diamondShape ?? "",
-                "diamond_size": diamondList[index].diamondSize ?? "",
-                "diamond_count": diamondList[index].diamondCount ?? 0,
-                "_id": diamondList[index].id ?? "",
+                "diamond_clarity": productDetailModel.value.diamonds?[index].diamondClarity?.value ?? "",
+                "diamond_shape": productDetailModel.value.diamonds?[index].diamondShape ?? "",
+                "diamond_size": productDetailModel.value.diamonds?[index].diamondSize ?? "",
+                "diamond_count": productDetailModel.value.diamonds?[index].diamondCount ?? 0,
+                "_id": productDetailModel.value.diamonds?[index].id ?? "",
               },
             )
           : [],
     ).then((value) {
-      productDetailModel.value.priceBreaking?.total = value?.data?.inventoryTotalPrice?.value ?? 0;
+      productDetailModel.value.priceBreaking?.total = value?.data?.inventoryTotalPrice;
       quantity.value = value?.data?.cartQty?.quantity ?? 0;
     });
   }
@@ -163,10 +165,38 @@ class ProductDetailsController extends GetxController {
         }
       }
       quantity.value = productDetailModel.value.cartQuantity ?? 0;
+      isLike.value = productDetailModel.value.isWishList ?? false;
       if (!isValEmpty(cartId)) {
-        isLike.value = productDetailModel.value.isWishList ?? false;
         extraMetalWt = productDetailModel.value.extraMetalWeight ?? 0;
       }
     }
+  }
+
+  Timer? cartDebounce;
+  void addToCartApi({required int quantity}) {
+    if (cartDebounce?.isActive ?? false) cartDebounce?.cancel();
+    cartDebounce = Timer(defaultSearchDebounceDuration, () async {
+      // Add to cart api
+      await CartRepository.addOrUpdateCartApi(
+        inventoryId: inventoryId.value,
+        quantity: quantity,
+        extraMetalWeight: extraMetalWt != 0.0 ? extraMetalWt : null,
+        metalId: selectedMetal.value.id?.value ?? "",
+        sizeId: selectedSize.value.id?.value ?? "",
+        diamondClarity: isMultipleDiamondSelection.isFalse ? selectedDiamond.value.shortName ?? "" : "",
+        diamonds: isMultipleDiamondSelection.isTrue
+            ? List.generate(
+                productDetailModel.value.diamonds?.length ?? 0,
+                (index) => {
+                  "diamond_clarity": productDetailModel.value.diamonds?[index].diamondClarity?.value ?? "",
+                  "diamond_shape": productDetailModel.value.diamonds?[index].diamondShape ?? "",
+                  "diamond_size": productDetailModel.value.diamonds?[index].diamondSize ?? "",
+                  "diamond_count": productDetailModel.value.diamonds?[index].diamondCount ?? 0,
+                  "_id": productDetailModel.value.diamonds?[index].id ?? "",
+                },
+              )
+            : null,
+      );
+    });
   }
 }

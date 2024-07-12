@@ -7,7 +7,6 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../data/model/common/splash_model.dart';
 import '../../data/model/product/products_model.dart';
 import '../../data/model/product/single_product_model.dart';
-import '../../data/repositories/cart/cart_repository.dart';
 import '../../data/repositories/wishlist/wishlist_repository.dart';
 import '../../exports.dart';
 import '../../res/app_bar.dart';
@@ -100,7 +99,7 @@ class ProductDetailsScreen extends StatelessWidget {
                                               width: Get.width,
                                               alignment: Alignment.center,
                                               child: Text(
-                                                "Image not found",
+                                                "Empty Image",
                                                 style: AppTextStyle.titleStyle(context).copyWith(fontSize: 14.sp, fontWeight: FontWeight.w400),
                                               ),
                                             ),
@@ -181,13 +180,13 @@ class ProductDetailsScreen extends StatelessWidget {
                                 padding: bodyPadding,
                                 child: Row(
                                   children: [
-                                    Text(
-                                      UiUtils.amountFormat(con.productDetailModel.value.priceBreaking?.total ?? 0),
-                                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                            fontWeight: FontWeight.w800,
-                                            color: Theme.of(context).primaryColor,
-                                          ),
-                                    ),
+                                    Obx(() => Text(
+                                          UiUtils.amountFormat(con.productDetailModel.value.priceBreaking?.total?.value ?? 0),
+                                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                                fontWeight: FontWeight.w800,
+                                                color: Theme.of(context).primaryColor,
+                                              ),
+                                        )),
                                     defaultPadding.horizontalSpace,
 
                                     /// PRICE BREAKUP
@@ -215,7 +214,7 @@ class ProductDetailsScreen extends StatelessWidget {
                               Padding(
                                 padding: bodyPadding,
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     /// Wear
                                     // CustomProductWatchButton(
@@ -244,6 +243,7 @@ class ProductDetailsScreen extends StatelessWidget {
                                         );
                                       },
                                     ),
+                                    defaultPadding.horizontalSpace,
 
                                     /// Add Metal
                                     CustomProductWatchButton(
@@ -491,8 +491,6 @@ class ProductDetailsScreen extends StatelessWidget {
                     sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
                     axisDirection: Axis.vertical,
                     metalOnChanged: (value) async {
-                      printYellow(value.name);
-
                       /// Selected Metal
                       if ((value.runtimeType == MetalModel)) {
                         con.selectedMetal.value = value;
@@ -550,49 +548,14 @@ class ProductDetailsScreen extends StatelessWidget {
                   plusMinusTile(
                     context,
                     textValue: con.quantity,
+                    onTap: (value) {
+                      con.addToCartApi(quantity: value);
+                    },
                     onIncrement: (value) {
-                      CartRepository.addOrUpdateCartApi(
-                        inventoryId: con.inventoryId.value,
-                        quantity: value,
-                        extraMetalWeight: con.extraMetalWt != 0.0 ? con.extraMetalWt : null,
-                        metalId: con.selectedMetal.value.id?.value ?? "",
-                        sizeId: con.selectedSize.value.id?.value ?? "",
-                        diamondClarity: con.selectedDiamond.value.shortName ?? "",
-                        diamonds: con.isMultipleDiamondSelection.isTrue
-                            ? List.generate(
-                                con.productDetailModel.value.diamonds?.length ?? 0,
-                                (index) => {
-                                  "diamond_clarity": con.productDetailModel.value.diamonds?[index].diamondClarity?.value ?? "",
-                                  "diamond_shape": con.productDetailModel.value.diamonds?[index].diamondShape ?? "",
-                                  "diamond_size": con.productDetailModel.value.diamonds?[index].diamondSize ?? "",
-                                  "diamond_count": con.productDetailModel.value.diamonds?[index].diamondCount ?? 0,
-                                  "_id": con.productDetailModel.value.diamonds?[index].id ?? "",
-                                },
-                              )
-                            : null,
-                      );
+                      con.addToCartApi(quantity: value);
                     },
                     onDecrement: (value) {
-                      CartRepository.addOrUpdateCartApi(
-                        inventoryId: con.inventoryId.value,
-                        extraMetalWeight: con.extraMetalWt,
-                        quantity: value,
-                        metalId: con.selectedMetal.value.id?.value ?? "",
-                        sizeId: con.selectedSize.value.id?.value ?? "",
-                        diamondClarity: con.selectedDiamond.value.shortName ?? "",
-                        diamonds: con.isMultipleDiamondSelection.isTrue
-                            ? List.generate(
-                                con.productDetailModel.value.diamonds?.length ?? 0,
-                                (index) => {
-                                  "diamond_clarity": con.productDetailModel.value.diamonds?[index].diamondClarity?.value ?? "",
-                                  "diamond_shape": con.productDetailModel.value.diamonds?[index].diamondShape ?? "",
-                                  "diamond_size": con.productDetailModel.value.diamonds?[index].diamondSize ?? "",
-                                  "diamond_count": con.productDetailModel.value.diamonds?[index].diamondCount ?? 0,
-                                  "_id": con.productDetailModel.value.diamonds?[index].id ?? "",
-                                },
-                              )
-                            : null,
-                      );
+                      con.addToCartApi(quantity: value);
                     },
                   )
                 ],

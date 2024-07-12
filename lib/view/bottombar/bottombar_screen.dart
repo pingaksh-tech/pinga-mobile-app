@@ -28,7 +28,6 @@ class BottomBarScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    printYellow("${baseCon.globalProductIds}");
     return WillPopScope(
       onWillPop: () async {
         if (con.currentBottomIndex.value != 0) {

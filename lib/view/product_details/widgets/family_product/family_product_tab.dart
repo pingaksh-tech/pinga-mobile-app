@@ -25,29 +25,34 @@ class FamilyProductTab extends StatelessWidget {
               Wrap(
                 children: List.generate(
                   productList.length,
-                  (index) => ProductTile(
-                    category: (productList[index].subCategoryId ?? "").obs,
-                    selectSize: (productList[index].sizeId ?? "").obs,
-                    inventoryId: productList[index].id ?? "",
-                    productTileType: ProductTileType.grid,
-                    onTap: () {
-                      navigateToProductDetailsScreen(
+                  (index) => Obx(
+                    () => ProductTile(
+                      category: (productList[index].subCategoryId ?? "").obs,
+                      selectSize: (productList[index].sizeId ?? "").obs,
+                      inventoryId: productList[index].id ?? "",
+                      productTileType: ProductTileType.grid,
+                      onTap: () {
+                        navigateToProductDetailsScreen(
                           productId: productList[index].id ?? "",
                           type: GlobalProductPrefixType.productDetails,
                           whenComplete: () {
                             // removeLastProductIdFromGlobalList();
-                          });
-                    },
-                    isLike: false.obs,
-                    imageUrl: productList[index].singleInvImage ?? "",
-                    productName: productList[index].name ?? "",
-                    productPrice: productList[index].inventoryTotalPrice.toString(),
-                    productQuantity: productList[index].quantity,
+                          },
+                        );
+                      },
+                      isLike: productList[index].isWishlist,
+                      imageUrl: productList[index].singleInvImage ?? "",
+                      productName: productList[index].name ?? "",
+                      productPrice: productList[index].inventoryTotalPrice.toString(),
+                      productQuantity: productList[index].quantity,
+                    ),
                   ),
                 ),
               ),
             ],
           )
-        : const Center(child: EmptyElement(title: "Family product not available"));
+        : const Center(
+            child: EmptyElement(title: "Family product not available"),
+          );
   }
 }

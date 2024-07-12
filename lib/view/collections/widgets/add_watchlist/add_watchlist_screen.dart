@@ -30,48 +30,63 @@ class AddWatchListScreen extends StatelessWidget {
             child: ListView(
               padding: EdgeInsets.all(defaultPadding),
               children: [
-                ListView.separated(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.only(bottom: 136.h),
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: watchlistCon.watchList.length,
-                  separatorBuilder: (context, index) => SizedBox(
-                    height: defaultPadding / 1.5,
-                  ),
-                  itemBuilder: (context, index) => Obx(() {
-                    return WatchlistTile(
-                      name: watchlistCon.watchList[index].name,
-                      noOfItem: watchlistCon.watchList[index].watchListItemCount ?? 0,
-                      createdBy: LocalStorage.userModel.firstName,
-                      isShowButtons: false,
-                      selected: (con.watchlistId.value.id?.value == watchlistCon.watchList[index].id?.value).obs,
-                      onPressed: () {
-                        if (con.watchlistId.value.id?.value == watchlistCon.watchList[index].id?.value) {
-                          con.watchlistId.value = WatchList();
-                        } else {
-                          con.watchlistId.value = watchlistCon.watchList[index];
-                        }
+                con.loader.isFalse
+                    ? watchlistCon.watchList.isNotEmpty
+                        ? ListView.separated(
+                            shrinkWrap: true,
+                            padding: EdgeInsets.only(bottom: 136.h),
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: watchlistCon.watchList.length,
+                            separatorBuilder: (context, index) => SizedBox(
+                              height: defaultPadding / 1.5,
+                            ),
+                            itemBuilder: (context, index) => Obx(() {
+                              return WatchlistTile(
+                                name: watchlistCon.watchList[index].name,
+                                noOfItem: watchlistCon.watchList[index].watchListItemCount ?? 0,
+                                createdBy: LocalStorage.userModel.firstName,
+                                isShowButtons: false,
+                                selected: (con.watchlistId.value.id?.value == watchlistCon.watchList[index].id?.value).obs,
+                                onPressed: () {
+                                  if (con.watchlistId.value.id?.value == watchlistCon.watchList[index].id?.value) {
+                                    con.watchlistId.value = WatchList();
+                                  } else {
+                                    con.watchlistId.value = watchlistCon.watchList[index];
+                                  }
 
-                        con.checkDisableButton();
-                      },
-                      onChanged: (_) {
-                        if (con.watchlistId.value.id == watchlistCon.watchList[index].id) {
-                          con.watchlistId.value = WatchList();
-                        } else {
-                          con.watchlistId.value = watchlistCon.watchList[index];
-                        }
+                                  con.checkDisableButton();
+                                },
+                                onChanged: (_) {
+                                  if (con.watchlistId.value.id == watchlistCon.watchList[index].id) {
+                                    con.watchlistId.value = WatchList();
+                                  } else {
+                                    con.watchlistId.value = watchlistCon.watchList[index];
+                                  }
 
-                        con.checkDisableButton();
-                      },
-                    );
-                  }),
-                ),
-                if (watchlistCon.watchList.isEmpty)
-                  const Center(
-                    child: EmptyElement(
-                      title: "Watchlist not available",
-                    ),
-                  )
+                                  con.checkDisableButton();
+                                },
+                              );
+                            }),
+                          )
+                        : Center(
+                            child: EmptyElement(
+                              title: "Watchlist not available",
+                              padding: EdgeInsets.symmetric(vertical: Get.width / 2.5),
+                            ),
+                          )
+                    : ListView.separated(
+                        shrinkWrap: true,
+                        itemCount: 10,
+                        separatorBuilder: (context, index) => SizedBox(
+                          height: defaultPadding / 1.5,
+                        ),
+                        itemBuilder: (context, index) => ShimmerUtils.shimmer(
+                          child: ShimmerUtils.shimmerContainer(
+                            borderRadiusSize: defaultRadius,
+                            height: Get.height * 0.11,
+                          ),
+                        ),
+                      ),
               ],
             ),
           );
