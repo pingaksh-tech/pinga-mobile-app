@@ -20,8 +20,8 @@ class ProductDetailsController extends GetxController {
   Rx<PageController> imagesPageController = PageController().obs;
 
   RxBool isLike = false.obs;
-  RxBool isSize = true.obs;
-  RxBool isFancy = false.obs;
+  // RxBool isSizeAvailable = true.obs;
+  RxBool isMultipleDiamondSelection = false.obs;
 
   Rx<DiamondModel> selectedSize = DiamondModel().obs;
   Rx<MetalModel> selectedMetal = MetalModel().obs;
@@ -47,12 +47,12 @@ class ProductDetailsController extends GetxController {
       if (Get.arguments['category'].runtimeType == String) {
         productCategory.value = Get.arguments['category'];
       }
-      if (Get.arguments['isSize'].runtimeType == bool) {
-        isSize.value = Get.arguments['isSize'];
-      }
+      // if (Get.arguments['isSize'].runtimeType == bool) {
+      //   isSizeAvailable.value = Get.arguments['isSize'];
+      // }
 
       if (Get.arguments['isFancy'].runtimeType == bool) {
-        isFancy.value = Get.arguments['isFancy'];
+        isMultipleDiamondSelection.value = Get.arguments['isFancy'];
       }
 
       if (Get.arguments['inventoryId'].runtimeType == String) {
@@ -79,14 +79,14 @@ class ProductDetailsController extends GetxController {
     super.onReady();
 
     if (isValEmpty(cartId)) {
-      ProductRepository.getSingleProductAPI(inventoryId: inventoryId.value/*.substring(2)*/, loader: loader).then(
+      ProductRepository.getSingleProductAPI(inventoryId: inventoryId.value /*.substring(2)*/, loader: loader).then(
         (value) {
           predefinedValue();
           // priceChangeAPI();
         },
       );
     } else {
-      CartRepository.getSingleCartItemAPI(cartId: cartId.value/*.substring(2)*/, loader: loader).then(
+      CartRepository.getSingleCartItemAPI(cartId: cartId.value /*.substring(2)*/, loader: loader).then(
         (value) {
           predefinedValue();
           // priceChangeAPI();
@@ -95,18 +95,14 @@ class ProductDetailsController extends GetxController {
     }
   }
 
-
-
-
-
   /// Product Pricing API
   Future<void> priceChangeAPI() async {
     await ProductRepository.getProductPriceAPI(
       inventoryId: inventoryId.value,
       sizeId: selectedSize.value.id?.value ?? "",
       metalId: selectedMetal.value.id?.value ?? "",
-      diamondClarity: isFancy.isFalse ? selectedDiamond.value.name ?? "" : "",
-      diamonds: isFancy.isTrue
+      diamondClarity: isMultipleDiamondSelection.isFalse ? selectedDiamond.value.name ?? "" : "",
+      diamonds: isMultipleDiamondSelection.isTrue
           ? List.generate(
               productDetailModel.value.diamonds != null ? productDetailModel.value.diamonds!.length : 0,
               (index) => {

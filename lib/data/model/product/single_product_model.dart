@@ -27,11 +27,13 @@ class GetSingleProductModel {
 }
 
 class SingleProductModel {
+  final String? subCategoryId;
   final String? sizeId;
   final String? metalId;
   final int? cartQuantity;
   final num? extraMetalWeight;
   final bool? isWishList;
+  final bool? isDiamondMultiple;
   final List<String>? inventoryImages;
   final PriceBreaking? priceBreaking;
   final ProductInfo? productInfo;
@@ -39,6 +41,7 @@ class SingleProductModel {
   final List<InventoryModel>? familyProducts;
 
   SingleProductModel({
+    this.subCategoryId,
     this.inventoryImages,
     this.priceBreaking,
     this.productInfo,
@@ -49,14 +52,17 @@ class SingleProductModel {
     this.cartQuantity,
     this.extraMetalWeight,
     this.isWishList,
+    this.isDiamondMultiple,
   });
 
   factory SingleProductModel.fromJson(Map<String, dynamic> json) => SingleProductModel(
+        subCategoryId: json["sub_category_id"],
         sizeId: json["size_id"],
         metalId: json["metal_id"],
         cartQuantity: json["cartQty"],
         extraMetalWeight: json["extra_metal_weight"],
         isWishList: json["isWishList"],
+        isDiamondMultiple: json["isDiamondMultiple"],
         inventoryImages: json["inventory_images"] == null ? [] : List<String>.from(json["inventory_images"]!.map((x) => x)),
         priceBreaking: json["price_breaking"] == null ? null : PriceBreaking.fromJson(json["price_breaking"]),
         productInfo: json["product_info"] == null ? null : ProductInfo.fromJson(json["product_info"]),
@@ -65,10 +71,12 @@ class SingleProductModel {
       );
 
   Map<String, dynamic> toJson() => {
+        "sub_category_id": subCategoryId,
         "size_id": sizeId,
         "metal_id": metalId,
         "cartQty": cartQuantity,
         "isWishList": isWishList,
+        "isDiamondMultiple": isDiamondMultiple,
         "extra_metal_weight": extraMetalWeight,
         "inventory_images": inventoryImages == null ? [] : List<dynamic>.from(inventoryImages!.map((x) => x)),
         "price_breaking": priceBreaking?.toJson(),

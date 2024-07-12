@@ -509,7 +509,7 @@ class ProductDetailsScreen extends StatelessWidget {
                     context,
                     categoryId: con.selectedDiamond.value.id?.value ?? "",
                     selectedDiamond: con.selectedDiamond,
-                    isFancy: con.isFancy.value,
+                    isFancy: con.isMultipleDiamondSelection.value,
                     diamondsList: RxList(con.productDetailModel.value.diamonds ?? []),
                     selectableItemType: SelectableItemType.diamond,
                     sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
@@ -558,7 +558,7 @@ class ProductDetailsScreen extends StatelessWidget {
                         metalId: con.selectedMetal.value.id?.value ?? "",
                         sizeId: con.selectedSize.value.id?.value ?? "",
                         diamondClarity: con.selectedDiamond.value.shortName ?? "",
-                        diamonds: con.isFancy.isTrue
+                        diamonds: con.isMultipleDiamondSelection.isTrue
                             ? List.generate(
                                 con.productDetailModel.value.diamonds?.length ?? 0,
                                 (index) => {
@@ -580,7 +580,7 @@ class ProductDetailsScreen extends StatelessWidget {
                         metalId: con.selectedMetal.value.id?.value ?? "",
                         sizeId: con.selectedSize.value.id?.value ?? "",
                         diamondClarity: con.selectedDiamond.value.shortName ?? "",
-                        diamonds: con.isFancy.isTrue
+                        diamonds: con.isMultipleDiamondSelection.isTrue
                             ? List.generate(
                                 con.productDetailModel.value.diamonds?.length ?? 0,
                                 (index) => {

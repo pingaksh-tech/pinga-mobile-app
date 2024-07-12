@@ -66,7 +66,7 @@ class HttpUtil {
           requestHeader: false,
           requestBody: true,
           responseHeader: false,
-          responseBody: false,
+          responseBody: true,
           error: true,
           compact: true,
         ),

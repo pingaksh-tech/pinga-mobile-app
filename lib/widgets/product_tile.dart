@@ -611,7 +611,7 @@ class _ProductTileState extends State<ProductTile> {
   }) async {
     if (cartDebounce?.isActive ?? false) cartDebounce?.cancel();
     cartDebounce = Timer(
-      defaultSearchDebounceDuration,
+      const Duration(milliseconds: 800),
       () async {
         /// Get Product Price api
         await ProductRepository.getProductPriceAPI(
