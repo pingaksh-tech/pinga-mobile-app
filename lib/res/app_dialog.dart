@@ -1330,6 +1330,7 @@ class AppDialogs {
     Rx<TextEditingController> controller = TextEditingController(text: metalWeight != 0 ? (metalWeight).toString() : "").obs;
     printOkStatus(metalPrice);
     num totalPrice = 1;
+    totalPrice = (num.tryParse(metalWeight.toString()) ?? 1) * metalPrice;
     return Get.dialog(
       AlertDialog(
         backgroundColor: AppColors.background,

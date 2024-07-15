@@ -139,7 +139,7 @@ class OrdersRepository {
         );
       } catch (e) {
         loader?.value = false;
-        printErrors(type: "getCartList", errText: e);
+        printErrors(type: "getOrderList", errText: e);
       }
     }
   }
@@ -153,32 +153,32 @@ class OrdersRepository {
     if (await getConnectivityResult() && isRegistered<OrderDetailController>()) {
       final OrderDetailController con = Get.find<OrderDetailController>();
 
-      try {
-        loader?.value = true;
+      // try {
+      loader?.value = true;
 
-        /// API
-        await APIFunction.getApiCall(
-          apiUrl: ApiUrls.getSingleOrderDetailGET(orderId: orderId),
-          loader: loader,
-        ).then(
-          (response) async {
-            if (response != null) {
-              GetSingleOrderDetailModel model = GetSingleOrderDetailModel.fromJson(response);
+      /// API
+      await APIFunction.getApiCall(
+        apiUrl: ApiUrls.getSingleOrderDetailGET(orderId: orderId),
+        loader: loader,
+      ).then(
+        (response) async {
+          if (response != null) {
+            GetSingleOrderDetailModel model = GetSingleOrderDetailModel.fromJson(response);
 
-              if (model.data != null) {
-                con.orderDetailModel.value = model.data!;
-              }
-              loader?.value = false;
-            } else {
-              loader?.value = false;
+            if (model.data != null) {
+              con.orderDetailModel.value = model.data!;
             }
-            return response;
-          },
-        );
-      } catch (e) {
-        loader?.value = false;
-        printErrors(type: "getSingleOrderAPI", errText: e);
-      }
+            loader?.value = false;
+          } else {
+            loader?.value = false;
+          }
+          return response;
+        },
+      );
+      // } catch (e) {
+      //   loader?.value = false;
+      //   printErrors(type: "getSingleOrderAPI", errText: e);
+      // }
     } else {}
   }
 

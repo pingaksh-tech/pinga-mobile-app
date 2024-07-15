@@ -172,12 +172,12 @@ class SummaryScreen extends StatelessWidget {
                                       children: [
                                         totalPriceTile(
                                           context,
-                                          title: "Total metal wt",
+                                          title: "Total Metal Wt",
                                           subTitle: con.totalWeight.value.totalMetalWeight.toString(),
                                         ),
                                         totalPriceTile(
                                           context,
-                                          title: "Total diamond wt",
+                                          title: "Total Diamond Wt",
                                           subTitle: con.totalWeight.value.totalDiamondWeight?.toStringAsFixed(3) ?? "",
                                         ),
                                       ],

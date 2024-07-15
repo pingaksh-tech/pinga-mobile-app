@@ -79,6 +79,14 @@ class FilterController extends GetxController {
     await FilterRepository.stockAvailableList();
   }
 
+  void onSilderChangeCount() {
+    if (minMetalWt >= 0.01 && maxMetalWt <= 200.0 && minDiamondWt >= 0.01 && maxDiamondWt <= 20.0) {
+      if (count == 0) {
+        count++;
+      }
+    }
+  }
+
 //? Clear All Filter
   void clearAllFilters() {
     minMetalWt.value = 0.01;
@@ -101,7 +109,7 @@ class FilterController extends GetxController {
     applyFilterCounts.value = (List.generate(filterOptions.length, (index) => 0));
   }
 
-  void rangeCount() {
+  /* void rangeCount() {
     int range = 0;
     if (minMetalWt.value >= 0.01 && maxMetalWt.value < 200.0) {
       printOkStatus("dn");
@@ -117,7 +125,7 @@ class FilterController extends GetxController {
         printOkStatus(count);
       }
     }
-  }
+  } */
 
 // void getCount() {
 //   rangeCount();

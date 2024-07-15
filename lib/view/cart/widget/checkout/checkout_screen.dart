@@ -106,7 +106,7 @@ class CheckoutScreen extends StatelessWidget {
                           cartSummaryItem(
                             context,
                             title: "Total Items",
-                            price: "1",
+                            price: con.totalItems.value.toString(),
                           ),
                           cartSummaryItem(
                             context,

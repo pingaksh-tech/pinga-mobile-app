@@ -57,10 +57,10 @@ class OrderModel {
   final String? orderNo;
   final String? orderType;
   final RetailerId? retailerId;
-  final int? qty;
-  final int? subTotal;
-  final int? discount;
-  final int? grandTotal;
+  final num? qty;
+  final num? subTotal;
+  final num? discount;
+  final num? grandTotal;
   final String? createdBy;
   final dynamic updatedBy;
   final dynamic deletedAt;
@@ -204,10 +204,10 @@ class OrderListModel {
   final String? id;
   final String? orderId;
   final ProductId? productId;
-  final int? qty;
-  final int? itemTotal;
-  final int? discount;
-  final int? grandTotal;
+  final num? qty;
+  final num? itemTotal;
+  final num? discount;
+  final num? grandTotal;
   final String? createdBy;
   final dynamic updatedBy;
   final dynamic deletedAt;
@@ -274,12 +274,12 @@ class ProductId {
   final String? subCategoryId;
   final String? sizeId;
   final String? metalId;
-  final int? metalWeight;
+  final num? metalWeight;
   final dynamic remark;
   final bool? status;
   final List<DiamondElement>? diamonds;
   final num? diamondTotalPrice;
-  final int? manufacturingPrice;
+  final num? manufacturingPrice;
   final String? gender;
   final List<String>? productTags;
   final String? createdBy;
@@ -497,7 +497,7 @@ class PriceBreaking {
 }
 
 class PriceBreakingDiamond {
-  final double? diamondWeight;
+  final num? diamondWeight;
   final num? diamondPrice;
 
   PriceBreakingDiamond({
@@ -517,9 +517,9 @@ class PriceBreakingDiamond {
 }
 
 class Metal {
-  final int? metalWeight;
-  final int? pricePerGram;
-  final int? metalPrice;
+  final num? metalWeight;
+  final num? pricePerGram;
+  final num? metalPrice;
 
   Metal({
     this.metalWeight,
@@ -541,7 +541,7 @@ class Metal {
 }
 
 class Other {
-  final int? manufacturingPrice;
+  final num? manufacturingPrice;
 
   Other({
     this.manufacturingPrice,
@@ -559,7 +559,7 @@ class Other {
 class ProductInfo {
   final String? metal;
   final String? karatage;
-  final int? metalWt;
+  final num? metalWt;
   final String? category;
   final List<dynamic>? collection;
   final String? approxDelivery;

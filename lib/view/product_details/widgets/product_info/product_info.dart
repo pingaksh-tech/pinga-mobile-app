@@ -50,7 +50,7 @@ class ProductInfoTab extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.all(defaultPadding / 3),
                     child: Text(
-                      "${(infoList[index]).key}",
+                      con.formatKey((infoList[index]).key),
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 12.sp),
                     ),
                   ),

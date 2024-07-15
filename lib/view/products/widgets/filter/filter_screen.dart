@@ -100,7 +100,7 @@ class FilterScreen extends StatelessWidget {
                             onChanged: (value) {
                               con.minMetalWt.value = value.start;
                               con.maxMetalWt.value = value.end;
-
+                              con.onSilderChangeCount();
                               if (con.applyFilterCounts.isNotEmpty) {
                                 con.applyFilterCounts[0] = 1;
                               }
@@ -130,6 +130,7 @@ class FilterScreen extends StatelessWidget {
                             onChanged: (value) {
                               con.minDiamondWt.value = value.start;
                               con.maxDiamondWt.value = value.end;
+                              con.onSilderChangeCount();
 
                               if (con.applyFilterCounts.isNotEmpty) {
                                 con.applyFilterCounts[0] = 1;

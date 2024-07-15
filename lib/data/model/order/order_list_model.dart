@@ -61,9 +61,9 @@ class GetOrderDataModel {
 }
 
 class OrderCounts {
-  final dynamic id;
-  final int? totalCount;
-  final int? totalAmount;
+  final String? id;
+  final num? totalCount;
+  final num? totalAmount;
 
   OrderCounts({
     this.id,
@@ -89,10 +89,10 @@ class OrderModel {
   final String? orderNo;
   final String? orderType;
   final String? retailerId;
-  final int? qty;
-  final int? subTotal;
-  final int? discount;
-  final int? grandTotal;
+  final num? qty;
+  final num? subTotal;
+  final num? discount;
+  final num? grandTotal;
   final String? createdBy;
   final dynamic updatedBy;
   final dynamic deletedAt;

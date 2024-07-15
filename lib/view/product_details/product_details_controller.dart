@@ -124,6 +124,7 @@ class ProductDetailsController extends GetxController {
 
   /// Set Default Select Value Of Product
   Future<void> predefinedValue() async {
+    inventoryId.value = productDetailModel.value.inventoryId ?? "";
     int index = 0;
     if (isRegistered<PreDefinedValueController>()) {
       final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();

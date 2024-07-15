@@ -41,47 +41,47 @@ class CatalogueRepository {
   }) async {
     if (await getConnectivityResult()) {
       try {
-        loader?.value = true;
+      loader?.value = true;
 
-        /// API
-        await APIFunction.postApiCall(
-          apiUrl: ApiUrls.createAndGetCatalogueAPI,
-          body: {
-            "view_type": catalogueType.name,
-            "catalogue_name": catalogueName,
-            if (!isValEmpty(categoryId)) "category_id": categoryId,
-            if (!isValEmpty(subCategoryId)) "sub_category_id": subCategoryId,
-            if (!isValEmpty(sortBy)) "sortBy": sortBy,
-            if ((!isValEmpty(minMetal) && !isValEmpty(maxMetal)))
-              "range": {
-                if ((!isValEmpty(minMetal) && !isValEmpty(maxMetal))) "metal_wt": {"min": minMetal, "max": maxMetal},
-                if ((!isValEmpty(minDiamond) && !isValEmpty(maxDiamond))) "diamond_wt": {"min": minDiamond, "max": maxDiamond}
-              },
-            if ((!isValEmpty(minMrp) && !isValEmpty(maxMrp))) "mrp": {"min": minMrp, "max": maxMrp},
-            if (inStock != null)
-              "available": {
-                "in_stock": inStock,
-              },
-            if (genderList != null && genderList.isNotEmpty) "gender": genderList,
-            if (diamondList != null && diamondList.isNotEmpty) "diamond": diamondList,
-            if (ktList != null && ktList.isNotEmpty) "metal_ids": ktList,
-            if (deliveryList != null && deliveryList.isNotEmpty) "delivery": deliveryList,
-            if (productionNameList != null && productionNameList.isNotEmpty) "production_name": productionNameList,
-            if (collectionList != null && collectionList.isNotEmpty) "collection": collectionList,
-          },
-          loader: loader,
-        ).then(
-          (response) async {
-            if (response != null) {
-              UiUtils.toast("Catalogue Created Successfully");
-              loader?.value = false;
-            } else {
-              loader?.value = false;
-            }
+      /// API
+      await APIFunction.postApiCall(
+        apiUrl: ApiUrls.createAndGetCatalogueAPI,
+        body: {
+          "view_type": catalogueType.name,
+          "catalogue_name": catalogueName,
+          if (!isValEmpty(categoryId)) "category_id": categoryId,
+          if (!isValEmpty(subCategoryId)) "sub_category_id": subCategoryId,
+          if (!isValEmpty(sortBy)) "sortBy": sortBy,
+          if ((!isValEmpty(minMetal) && !isValEmpty(maxMetal)))
+            "range": {
+              if ((!isValEmpty(minMetal) && !isValEmpty(maxMetal))) "metal_wt": {"min": minMetal, "max": maxMetal},
+              if ((!isValEmpty(minDiamond) && !isValEmpty(maxDiamond))) "diamond_wt": {"min": minDiamond, "max": maxDiamond}
+            },
+          if ((!isValEmpty(minMrp) && !isValEmpty(maxMrp))) "mrp": {"min": minMrp, "max": maxMrp},
+          if (inStock != null)
+            "available": {
+              "in_stock": inStock,
+            },
+          if (genderList != null && genderList.isNotEmpty) "gender": genderList,
+          if (diamondList != null && diamondList.isNotEmpty) "diamond": diamondList,
+          if (ktList != null && ktList.isNotEmpty) "metal_ids": ktList,
+          if (deliveryList != null && deliveryList.isNotEmpty) "delivery": deliveryList,
+          if (productionNameList != null && productionNameList.isNotEmpty) "production_name": productionNameList,
+          if (collectionList != null && collectionList.isNotEmpty) "collection": collectionList,
+        },
+        loader: loader,
+      ).then(
+        (response) async {
+          if (response != null) {
+            UiUtils.toast("Catalogue Created Successfully");
+            loader?.value = false;
+          } else {
+            loader?.value = false;
+          }
 
-            return response;
-          },
-        );
+          return response;
+        },
+      );
       } catch (e) {
         loader?.value = false;
         printErrors(type: "createCatalogueAPI", errText: e);
@@ -292,70 +292,70 @@ startxref
     RxBool? loader,
   }) async {
     if (await getConnectivityResult()) {
-      try {
-        loader?.value = true;
-        printYellow(catalogueId);
+      // try {
+      loader?.value = true;
+      printYellow(catalogueId);
 
-        /// API
-        await APIFunction.getApiCall(
-          apiUrl: ApiUrls.downloadCatalogueGET(catalogueId: catalogueId, catalogueType: catalogueType.name),
-          options: Options(
-            headers: {
-              "Content-Type": "application/pdf",
-              "Authorization": "Bearer ${LocalStorage.accessToken}",
-            },
-            responseType: ResponseType.bytes, // Set the response type to bytes
-          ),
-          loader: loader,
-        ).then(
-          (response) async {
-            if (response != null) {
-              // Get the app's document directory
-              Directory appDocDir = await getTemporaryDirectory();
-              String appDocPath = appDocDir.path;
-              Directory catalogueDir = Directory("$appDocPath/catalogue");
+      /// API
+      await APIFunction.getApiCall(
+        apiUrl: ApiUrls.downloadCatalogueGET(catalogueId: catalogueId, catalogueType: catalogueType.name),
+        options: Options(
+          headers: {
+            "Content-Type": "application/pdf",
+            "Authorization": "Bearer ${LocalStorage.accessToken}",
+          },
+          responseType: ResponseType.bytes, // Set the response type to bytes
+        ),
+        loader: loader,
+      ).then(
+        (response) async {
+          if (response != null) {
+            // Get the app's document directory
+            Directory appDocDir = await getTemporaryDirectory();
+            String appDocPath = appDocDir.path;
+            Directory catalogueDir = Directory("$appDocPath/catalogue");
 
-              if (!await catalogueDir.exists()) {
-                await catalogueDir.create();
-              }
-
-              // Create a file path
-              String filePath = '${catalogueDir.path}/fd.pdf';
-
-              // Write the response data to a file
-              File file = File(filePath);
-              await file.writeAsBytes(response); // Directly use response as it is Uint8List
-
-              printOkStatus('File saved at $filePath');
-
-              if (Get.currentRoute == AppRoutes.pdfViewerScreen) {
-                Get.back();
-              }
-
-              /// Open the PDF
-              await OpenFile.open(file.path).whenComplete(() {
-                // Get.back();
-              });
-
-              if (isRegistered<PdfController>()) {
-                final PdfController con = Get.find<PdfController>();
-                con.pdfFile = file;
-                printYellow(con.pdfFile);
-                printYellow(await con.pdfFile.exists());
-              }
-
-              loader?.value = false;
-            } else {
-              loader?.value = false;
+            if (!await catalogueDir.exists()) {
+              await catalogueDir.create();
             }
 
-            return response;
-          },
-        );
-      } catch (e) {
-        loader?.value = false;
-        printErrors(type: "downloadCatalogueAPI", errText: e);
-      }
+            // Create a file path
+            String filePath = '${catalogueDir.path}/fd.pdf';
+
+            // Write the response data to a file
+            File file = File(filePath);
+            await file.writeAsBytes(response); // Directly use response as it is Uint8List
+
+            printOkStatus('File saved at $filePath');
+
+            if (Get.currentRoute == AppRoutes.pdfViewerScreen) {
+              Get.back();
+            }
+
+            /// Open the PDF
+            await OpenFile.open(file.path).whenComplete(() {
+              // Get.back();
+            });
+
+            if (isRegistered<PdfController>()) {
+              final PdfController con = Get.find<PdfController>();
+              con.pdfFile = file;
+              printYellow(con.pdfFile);
+              printYellow(await con.pdfFile.exists());
+            }
+
+            loader?.value = false;
+          } else {
+            loader?.value = false;
+          }
+
+          return response;
+        },
+      );
+      // } catch (e) {
+      //   loader?.value = false;
+      //   printErrors(type: "downloadCatalogueAPI", errText: e);
+      // }
     } else {}
   }
 

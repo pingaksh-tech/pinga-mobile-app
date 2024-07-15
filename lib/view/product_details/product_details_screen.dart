@@ -184,13 +184,15 @@ class ProductDetailsScreen extends StatelessWidget {
                                 padding: bodyPadding,
                                 child: Row(
                                   children: [
-                                    Obx(() => Text(
-                                          UiUtils.amountFormat(con.productDetailModel.value.priceBreaking?.total?.value ?? 0),
-                                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                                fontWeight: FontWeight.w800,
-                                                color: Theme.of(context).primaryColor,
-                                              ),
-                                        )),
+                                    Obx(
+                                      () => Text(
+                                        UiUtils.amountFormat(con.productDetailModel.value.priceBreaking?.total?.value ?? 0),
+                                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                              fontWeight: FontWeight.w800,
+                                              color: Theme.of(context).primaryColor,
+                                            ),
+                                      ),
+                                    ),
                                     defaultPadding.horizontalSpace,
 
                                     /// PRICE BREAKUP
@@ -243,6 +245,7 @@ class ProductDetailsScreen extends StatelessWidget {
                                             'metalId': con.productDetailModel.value.metalId,
                                             'diamondClarity': (con.productDetailModel.value.diamonds != null && con.productDetailModel.value.diamonds!.isNotEmpty) ? con.productDetailModel.value.diamonds?.first.diamondClarity?.value : "",
                                             "diamond": con.productDetailModel.value.diamonds,
+                                            "isMultiDiamond": con.isMultipleDiamondSelection.value,
                                           },
                                         );
                                       },

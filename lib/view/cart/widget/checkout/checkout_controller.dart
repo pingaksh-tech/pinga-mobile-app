@@ -8,6 +8,7 @@ class CheckoutController extends GetxController {
   RxBool disableButton = true.obs;
 
   RxInt quantity = 0.obs;
+  RxInt totalItems = 0.obs;
   RxDouble totalPrice = 0.0.obs;
   String retailerId = "";
   RxList<CartModel> cartList = <CartModel>[].obs;
@@ -26,6 +27,9 @@ class CheckoutController extends GetxController {
     if (Get.arguments != null) {
       if (Get.arguments["subQuantity"].runtimeType == int) {
         quantity.value = Get.arguments["subQuantity"];
+      }
+      if (Get.arguments["totalItems"].runtimeType == int) {
+        totalItems.value = Get.arguments["totalItems"];
       }
       if (Get.arguments["subTotal"].runtimeType == double) {
         totalPrice.value = Get.arguments["subTotal"];

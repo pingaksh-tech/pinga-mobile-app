@@ -217,14 +217,18 @@ class _ProductTileState extends State<ProductTile> {
                           });
                           break;
                         case AppStrings.addToWatchlist:
-                          Get.toNamed(AppRoutes.addWatchListScreen, arguments: {
-                            'inventoryId': widget.inventoryId,
-                            'quantity': widget.productQuantity?.value ?? 0,
-                            'sizeId': sizeModel.value.id?.value ?? "",
-                            'metalId': metalModel.id?.value ?? "",
-                            'diamondClarity': (widget.diamondList != null && widget.diamondList!.isNotEmpty) ? widget.diamondList?.first.diamondClarity?.value : "",
-                            "diamond": widget.diamonds,
-                          });
+                          Get.toNamed(
+                            AppRoutes.addWatchListScreen,
+                            arguments: {
+                              'inventoryId': widget.inventoryId,
+                              'quantity': widget.productQuantity?.value ?? 0,
+                              'sizeId': sizeModel.value.id?.value ?? "",
+                              'metalId': metalModel.id?.value ?? "",
+                              'diamondClarity': (widget.diamondList != null && widget.diamondList!.isNotEmpty) ? widget.diamondList?.first.diamondClarity?.value : "",
+                              "diamond": widget.diamonds,
+                              "isMultiDiamond": widget.isFancy,
+                            },
+                          );
                           break;
                       }
                     },
@@ -246,7 +250,7 @@ class _ProductTileState extends State<ProductTile> {
                     width: Get.width,
                     child: Text(
                       widget.productName,
-                      maxLines: 2,
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w400, fontSize: 12.sp),
                     ),

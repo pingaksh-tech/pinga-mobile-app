@@ -19,6 +19,7 @@ class AppTextField extends StatefulWidget {
   /// Filed widget
   final TextFieldType? textFieldType;
   final DateTime? selectedDate;
+  final DateTime? firstDate;
 
   final TextStyle? style;
   final TextEditingController? controller;
@@ -135,6 +136,7 @@ class AppTextField extends StatefulWidget {
     this.disabledBorder,
     this.errorBorder,
     this.defaultMaxLengthView,
+    this.firstDate,
 
     /// Error widget
     this.errorMessage,
@@ -407,7 +409,7 @@ class _AppTextFieldState extends State<AppTextField> {
             final DateTime? picked = await showDatePicker(
               context: context,
               initialDate: selectedDate,
-              firstDate: DateTime(1880),
+              firstDate: widget.firstDate ?? DateTime(1880),
               lastDate: DateTime.now(),
             );
             if (picked != null && picked != selectedDate) {

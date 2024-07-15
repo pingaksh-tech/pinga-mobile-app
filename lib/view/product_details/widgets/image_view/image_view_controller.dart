@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 class ImageViewController extends GetxController {
   RxInt currentPage = 0.obs;
   Rx<PageController> imagesPageController = PageController().obs;
-  RxList<String> imageList = <String>[].obs;
+  List<String> imageList = <String>[];
   RxString productName = "".obs;
 
   @override
@@ -12,7 +12,7 @@ class ImageViewController extends GetxController {
     super.onInit();
 
     if (Get.arguments != null) {
-      if (Get.arguments['imageList'].runtimeType == RxList<String>) {
+      if (Get.arguments['imageList'].runtimeType == List<String>) {
         imageList = Get.arguments['imageList'];
       }
       if (Get.arguments['name'].runtimeType == String) {

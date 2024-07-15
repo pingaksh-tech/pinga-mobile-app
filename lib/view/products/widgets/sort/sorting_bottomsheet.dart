@@ -63,7 +63,6 @@ class SortingBottomSheet extends StatelessWidget {
                   onTap: () {
                     con.selectPrice.value = con.sortWithPriceList[index];
                     con.updateSortingList();
-                    con.isDisableButton.value = false;
                   },
                   onChanged: (value) {
                     con.selectPrice.value = con.sortWithPriceList[index];
@@ -85,7 +84,6 @@ class SortingBottomSheet extends StatelessWidget {
                   onTap: () {
                     con.selectNewestOrOldest.value = con.sortWithTimeList[index];
                     con.updateSortingList();
-                    con.isDisableButton.value = false;
                   },
                   onChanged: (value) {
                     con.selectNewestOrOldest.value = con.sortWithTimeList[index];
@@ -93,9 +91,11 @@ class SortingBottomSheet extends StatelessWidget {
                   },
                 ),
               ),
-            ),
-            const Divider(height: 0),
-            CheckBoxWithTitleTile(
+            ).paddingOnly(bottom: defaultPadding / 3),
+
+            //? Most order sorting
+            // const Divider(height: 0),
+            /*   CheckBoxWithTitleTile(
               title: "Most Ordered",
               isCheck: con.isMostOrder,
               isMultiSelection: false,
@@ -107,7 +107,7 @@ class SortingBottomSheet extends StatelessWidget {
                 con.isMostOrder.value = !con.isMostOrder.value;
                 con.updateSortingList();
               },
-            ).paddingOnly(bottom: defaultPadding / 3),
+            ).paddingOnly(bottom: defaultPadding / 3), */
             Wrap(
               runSpacing: defaultPadding / 2,
               spacing: defaultPadding / 2,
@@ -141,10 +141,6 @@ class SortingBottomSheet extends StatelessWidget {
                             con.selectPrice.value = '';
                           } else if (removedSorting == 'Most Ordered') {
                             con.isMostOrder.value = false;
-                          }
-
-                          if (con.sortList.isEmpty) {
-                            con.isDisableButton.value = true;
                           }
                         },
                         icon: SvgPicture.asset(
@@ -180,7 +176,7 @@ class SortingBottomSheet extends StatelessWidget {
                   defaultPadding.horizontalSpace,
                   Expanded(
                     child: AppButton(
-                        disableButton: con.isDisableButton.value,
+                        disableButton: (con.selectPrice.value.isEmpty && con.selectNewestOrOldest.value.isEmpty /*  && con.isMostOrder.isFalse */),
                         loader: con.isLoader.value,
                         height: 30.h,
                         title: "Apply",
@@ -193,8 +189,8 @@ class SortingBottomSheet extends StatelessWidget {
                               subCategoryId: con.subCategory.value.id ?? "",
                               loader: con.loader,
                               sortBy: [
-                                if (con.selectPrice.value.isNotEmpty) "manufacturing_price:${con.selectPrice.value.split("/").last}",
-                                if (con.selectNewestOrOldest.value.isNotEmpty) "createdAt:${con.selectNewestOrOldest.value.split("/").last}",
+                                if (con.selectPrice.value.isNotEmpty) "inventory_total_price:${con.selectPrice.value.split("/").last}",
+                                if (!isValEmpty(con.selectNewestOrOldest.value)) "createdAt:${con.selectNewestOrOldest.value.split("/").last}",
                               ],
                             );
 

@@ -142,17 +142,19 @@ class AddWatchListScreen extends StatelessWidget {
                       sizeId: con.sizeId.value,
                       metalId: con.metalId.value,
                       quantity: con.quantity.value,
-                      diamondClarity: con.diamondClarity.value,
-                      diamonds: List.generate(
-                        con.diamonds.length,
-                        (index) => {
-                          "diamond_clarity": con.diamonds[index].diamondClarity?.value ?? "",
-                          "diamond_shape": con.diamonds[index].diamondShape ?? "",
-                          "diamond_size": con.diamonds[index].diamondSize ?? "",
-                          "diamond_count": con.diamonds[index].diamondCount ?? 0,
-                          "_id": con.diamonds[index].id ?? "",
-                        },
-                      ),
+                      diamondClarity: con.isMultiDiamond.isFalse ? con.diamondClarity.value : "",
+                      diamonds: con.isMultiDiamond.isTrue
+                          ? List.generate(
+                              con.diamonds.length,
+                              (index) => {
+                                "diamond_clarity": con.diamonds[index].diamondClarity?.value ?? "",
+                                "diamond_shape": con.diamonds[index].diamondShape ?? "",
+                                "diamond_size": con.diamonds[index].diamondSize ?? "",
+                                "diamond_count": con.diamonds[index].diamondCount ?? 0,
+                                "_id": con.diamonds[index].id ?? "",
+                              },
+                            )
+                          : [],
                     );
                     con.nameCon.value.clear();
                     Get.back();

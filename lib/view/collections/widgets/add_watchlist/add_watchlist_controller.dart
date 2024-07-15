@@ -21,6 +21,7 @@ class AddWatchListController extends GetxController {
   RxString metalId = "".obs;
   RxInt quantity = 0.obs;
   RxString diamondClarity = "".obs;
+  RxBool isMultiDiamond = false.obs;
   List<DiamondListModel> diamonds = [];
 
   @override
@@ -45,6 +46,9 @@ class AddWatchListController extends GetxController {
       }
       if (Get.arguments['diamond'].runtimeType == List<DiamondListModel>) {
         diamonds = Get.arguments['diamond'];
+      }
+      if (Get.arguments['isMultiDiamond'].runtimeType == bool) {
+        isMultiDiamond.value = Get.arguments['isMultiDiamond'];
       }
     }
   }

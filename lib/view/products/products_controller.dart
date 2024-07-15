@@ -25,7 +25,6 @@ class ProductsController extends GetxController {
   RxString selectPrice = "".obs;
   RxString selectNewestOrOldest = "".obs;
   RxBool isMostOrder = false.obs;
-  RxBool isDisableButton = true.obs;
 
   RxList<String> sortList = <String>[].obs;
   RxList<InventoryModel> inventoryProductList = <InventoryModel>[].obs;
@@ -122,9 +121,9 @@ class ProductsController extends GetxController {
       sortList.add(selectPrice.value);
     }
 
-    if (isMostOrder.value) {
+    /*  if (isMostOrder.value) {
       sortList.add("Most Ordered");
-    }
+    } */
   }
 
   Future<void> preValueAvailable() async {

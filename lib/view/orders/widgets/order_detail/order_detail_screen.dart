@@ -45,27 +45,27 @@ class OrderDetailScreen extends StatelessWidget {
                           orderDetailsKeyValuePairWidget(
                             context,
                             title: "Order No.",
-                            subtitleText: con.orderDetailModel.value.order?.orderNo ?? "",
+                            subtitleText: !isValEmpty(con.orderDetailModel.value.order?.orderNo) ? con.orderDetailModel.value.order?.orderNo ?? "" : "",
                           ),
                           orderDetailsKeyValuePairWidget(
                             context,
                             title: "Order Date",
-                            subtitleText: DateFormat('MM/dd/yyyy HH:mm:ss').format(con.orderDetailModel.value.order?.createdAt ?? DateTime.now()),
+                            subtitleText: !isValEmpty(con.orderDetailModel.value.order?.createdAt) ? DateFormat('MM/dd/yyyy HH:mm:ss').format(con.orderDetailModel.value.order?.createdAt ?? DateTime.now()) : "",
                           ),
                           orderDetailsKeyValuePairWidget(
                             context,
                             title: "Retailer Name",
-                            subtitleText: con.orderDetailModel.value.order?.retailerId?.businessName ?? "",
+                            subtitleText: !isValEmpty(con.orderDetailModel.value.order?.retailerId?.businessName) ? con.orderDetailModel.value.order?.retailerId?.businessName ?? "" : "",
                           ),
                           orderDetailsKeyValuePairWidget(
                             context,
                             title: "Order Type",
-                            subtitleText: con.orderDetailModel.value.order?.orderType ?? "",
+                            subtitleText: !isValEmpty(con.orderDetailModel.value.order?.orderType) ? con.orderDetailModel.value.order?.orderType ?? "" : "",
                           ),
                           orderDetailsKeyValuePairWidget(
                             context,
                             title: "Approx. Delivery",
-                            subtitleText: con.orderDetailModel.value.orderItems?.first.productId?.delivery ?? "",
+                            subtitleText: !isValEmpty(con.orderDetailModel.value.orderItems) ? con.orderDetailModel.value.orderItems?.first.productId?.delivery ?? "" : "gfdgfg",
                           ),
                         ],
                       ),
@@ -74,81 +74,88 @@ class OrderDetailScreen extends StatelessWidget {
                       "Product Detail",
                       style: AppTextStyle.titleStyle(context).copyWith(fontSize: 16.sp, fontWeight: FontWeight.w500),
                     ).paddingOnly(top: defaultPadding * 2, bottom: defaultPadding / 2),
-                    Container(
-                      padding: EdgeInsets.all(defaultPadding / 1.5),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surface,
-                        borderRadius: BorderRadius.circular(defaultRadius),
-                        boxShadow: defaultShadowAllSide,
-                      ),
-                      child: Column(
-                        children: [
-                          Row(
+                    Expanded(
+                      child: ListView.builder(
+                        // shrinkWrap: true,
+                        itemBuilder: (context, index) => Container(
+                          padding: EdgeInsets.all(defaultPadding / 1.5),
+                          margin: EdgeInsets.only(bottom: defaultPadding / 1.5),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.surface,
+                            borderRadius: BorderRadius.circular(defaultRadius),
+                            boxShadow: defaultShadowAllSide,
+                          ),
+                          child: Column(
                             children: [
-                              (con.orderDetailModel.value.orderItems?.first.productId?.inventoryImages != null && !isValEmpty(con.orderDetailModel.value.orderItems?.first.productId?.inventoryImages))
-                                  ? AppNetworkImage(
-                                      height: Get.width * 0.18,
-                                      width: Get.width * 0.18,
-                                      fit: BoxFit.cover,
-                                      borderRadius: BorderRadius.circular(defaultRadius),
-                                      imageUrl: (con.orderDetailModel.value.orderItems?.first.productId?.inventoryImages != null && !isValEmpty(con.orderDetailModel.value.orderItems?.first.productId?.inventoryImages)) ? con.orderDetailModel.value.orderItems?.first.productId?.inventoryImages?.first ?? "" : "",
-                                    )
-                                  : Container(
-                                      height: Get.width * 0.18,
-                                      width: Get.width * 0.18,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(defaultRadius),
-                                        color: AppColors.primary.withOpacity(0.1),
+                              Row(
+                                children: [
+                                  (con.orderDetailModel.value.productItems?[index].inventoryImages != null && !isValEmpty(con.orderDetailModel.value.productItems?[index].inventoryImages))
+                                      ? AppNetworkImage(
+                                          height: Get.width * 0.18,
+                                          width: Get.width * 0.18,
+                                          fit: BoxFit.cover,
+                                          borderRadius: BorderRadius.circular(defaultRadius),
+                                          imageUrl: (con.orderDetailModel.value.productItems?[index].inventoryImages?.first != null && !isValEmpty(con.orderDetailModel.value.productItems?[index].inventoryImages?.first)) ? con.orderDetailModel.value.productItems![index].inventoryImages?.first ?? "" : "",
+                                        )
+                                      : Container(
+                                          height: Get.width * 0.18,
+                                          width: Get.width * 0.18,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(defaultRadius),
+                                            color: AppColors.primary.withOpacity(0.1),
+                                          ),
+                                        ),
+                                  (defaultPadding / 2).horizontalSpace,
+                                  Expanded(
+                                    child: Column(
+                                      children: [
+                                        orderDetailsKeyValuePairWidget(
+                                          context,
+                                          title: "Name",
+                                          subtitleText: con.orderDetailModel.value.orderItems?[index].productId?.name ?? "",
+                                        ),
+                                        orderDetailsKeyValuePairWidget(
+                                          context,
+                                          title: "Metal",
+                                          subtitleText: "${con.orderDetailModel.value.productItems?[index].productInfo?.metal} - ${con.orderDetailModel.value.productItems?[index].productInfo?.karatage}",
+                                        ),
+                                        orderDetailsKeyValuePairWidget(
+                                          context,
+                                          title: "Diamond",
+                                          subtitleText: !isValEmpty(con.orderDetailModel.value.productItems?[index].diamonds) ? (con.orderDetailModel.value.productItems?[index].diamonds?.first.diamondClarity ?? "") : "",
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              (defaultPadding / 5).verticalSpace,
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: orderDetailsKeyValuePairWidget(
+                                      context,
+                                      title: "Quantity",
+                                      titleFlex: 4,
+                                      subtitleText: con.orderDetailModel.value.orderItems?[index].qty.toString() ?? "",
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: orderDetailsKeyValuePairWidget(
+                                      context,
+                                      title: "MRP",
+                                      subtitleText: UiUtils.amountFormat(
+                                        con.orderDetailModel.value.orderItems?[index].grandTotal.toString() ?? "",
+                                        decimalDigits: 2,
                                       ),
                                     ),
-                              (defaultPadding / 2).horizontalSpace,
-                              Expanded(
-                                child: Column(
-                                  children: [
-                                    orderDetailsKeyValuePairWidget(
-                                      context,
-                                      title: "Name",
-                                      subtitleText: con.orderDetailModel.value.orderItems?.first.productId?.name ?? "",
-                                    ),
-                                    orderDetailsKeyValuePairWidget(
-                                      context,
-                                      title: "Metal",
-                                      subtitleText: "${con.orderDetailModel.value.productItems?.first.productInfo?.metal} - ${con.orderDetailModel.value.productItems?.first.productInfo?.karatage}",
-                                    ),
-                                    orderDetailsKeyValuePairWidget(
-                                      context,
-                                      title: "Diamond",
-                                      subtitleText: con.orderDetailModel.value.productItems?.first.diamonds?.first.diamondClarity ?? "",
-                                    ),
-                                  ],
-                                ),
+                                  )
+                                ],
                               ),
                             ],
                           ),
-                          (defaultPadding / 5).verticalSpace,
-                          Row(
-                            children: [
-                              Expanded(
-                                child: orderDetailsKeyValuePairWidget(
-                                  context,
-                                  title: "Quantity",
-                                  titleFlex: 4,
-                                  subtitleText: con.orderDetailModel.value.order?.qty.toString() ?? "",
-                                ),
-                              ),
-                              Expanded(
-                                child: orderDetailsKeyValuePairWidget(
-                                  context,
-                                  title: "MRP",
-                                  subtitleText: UiUtils.amountFormat(
-                                    con.orderDetailModel.value.order?.subTotal,
-                                    decimalDigits: 2,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
+                        ),
+                        itemCount: con.orderDetailModel.value.productItems?.length,
                       ),
                     ),
                   ],

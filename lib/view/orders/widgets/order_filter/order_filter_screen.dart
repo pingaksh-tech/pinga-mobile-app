@@ -208,6 +208,7 @@ class OrderFilterScreen extends StatelessWidget {
                           hintText: "Select end date",
                           selectedDate: con.endDate.value,
                           validation: con.endDateValidation.value,
+                          firstDate: con.startDate.value,
                           errorMessage: con.dateError.value,
                           suffixIconSize: 20.w,
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 14.sp, fontWeight: FontWeight.w500),

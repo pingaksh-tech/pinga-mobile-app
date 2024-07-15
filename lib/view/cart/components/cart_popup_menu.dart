@@ -93,8 +93,12 @@ class CartPopUpMenu extends StatelessWidget {
                       context,
                       isCancelButtonShow: true,
                       contentText: "Do you want to empty cart after items are added in watchList",
-                      yesOnPressed: () {
-                        CartRepository.deleteCartAPi();
+                      yesOnPressed: () async {
+                        await WatchListRepository.addCartToWatchlistAPI(watchlistName: nameCon.value.text.trim(), cartIds: cardIds);
+                        await CartRepository.multipleCartDelete(selectedCartIds: cardIds);
+                        con.selectedList.clear();
+                        con.calculateSelectedItemPrice();
+                        con.calculateSelectedQue();
                       },
                       noOnPressed: () async {
                         await WatchListRepository.addCartToWatchlistAPI(watchlistName: nameCon.value.text.trim(), cartIds: cardIds);

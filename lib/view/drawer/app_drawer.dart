@@ -32,7 +32,7 @@ class AppDrawer extends StatelessWidget {
             Stack(
               children: [
                 DrawerHeader(
-                  margin: EdgeInsets.zero,
+                  margin: EdgeInsets.only(top: defaultPadding / 2),
                   padding: EdgeInsets.zero,
                   child: AppNetworkImage(
                     borderRadius: BorderRadius.circular(0),
@@ -80,7 +80,7 @@ class AppDrawer extends StatelessWidget {
                 colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
               ),
               title: Text(
-                "My Catalog",
+                "My Catalogue",
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               onTap: () {

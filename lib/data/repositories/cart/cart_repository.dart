@@ -300,6 +300,7 @@ class CartRepository {
           (response) async {
             if (response != null && response['data'] == true) {
               await getCartApi(isPullToRefresh: true);
+              UiUtils.toast("Product add to cart successfully");
             }
             isLoader?.value = false;
             return response;
