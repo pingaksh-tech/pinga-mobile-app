@@ -12,7 +12,7 @@ import 'widgets/filter/filter_controller.dart';
 
 class ProductsController extends GetxController {
   RxBool isLoader = false.obs;
-  RxBool isSizeAvailable = false.obs;
+  // RxBool isSizeAvailable = false.obs;
   RxString categoryId = "".obs;
 
   Rx<CategoryModel> currentCategory = CategoryModel().obs;
@@ -133,13 +133,13 @@ class ProductsController extends GetxController {
       for (var element in preValueCon.categoryWiseSizesList) {
         if (productListType.value == ProductsListType.normal) {
           if (element.id?.value == subCategory.value.id) {
-            isSizeAvailable.value = true;
+            // isSizeAvailable.value = true;
             break;
           }
         } else {
           for (var e in inventoryProductList) {
             if (element.id?.value == e.subCategoryId) {
-              isSizeAvailable.value = true;
+              // isSizeAvailable.value = true;
               break;
             }
           }

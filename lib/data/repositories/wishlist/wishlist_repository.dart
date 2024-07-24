@@ -59,7 +59,7 @@ class WishlistRepository {
                 }
               }
 
-              UiUtils.toast(isWishlist == true ? "Product add successfully in wishlist" : "Product removed from wishlist successfully");
+              // UiUtils.toast(isWishlist == true ? "Product add successfully in wishlist" : "Product removed from wishlist successfully");
               loader?.value = false;
             } else {
               loader?.value = false;

@@ -27,17 +27,18 @@ class CartScreen extends StatelessWidget {
       child: Obx(
         () => Scaffold(
           backgroundColor: Theme.of(context).colorScheme.surface,
-          appBar: Get.currentRoute == AppRoutes.cartScreen
+          appBar: Get.currentRoute != AppRoutes.bottomBarScreen
               ? MyAppBar(
                   title: "My Cart",
                   actions: [
-                    CartPopUpMenu(
-                      cardIds: (con.selectedList
-                          .map(
-                            (element) => element.id ?? "",
-                          )
-                          .toList()),
-                    ),
+                    if (con.cartList.isNotEmpty)
+                      CartPopUpMenu(
+                        cardIds: (con.selectedList
+                            .map(
+                              (element) => element.id ?? "",
+                            )
+                            .toList()),
+                      ),
                   ],
                 )
               : null,
@@ -95,7 +96,7 @@ class CartScreen extends StatelessWidget {
                                   selectDiamondCart: (con.cartList[index].diamondClarity ?? "").obs,
                                   item: con.cartList[index],
                                   category: RxString(con.cartList[index].subCategoryId ?? ""),
-                                  isSizeAvailable: true,
+                                  isSizeAvailable: !isValEmpty(con.cartList[index].sizeId),
                                   productTileType: ProductTileType.cartTile,
                                   diamondList: RxList(con.cartList[index].diamonds ?? []),
                                   isCartSelected: RxBool(

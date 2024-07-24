@@ -41,47 +41,47 @@ class CatalogueRepository {
   }) async {
     if (await getConnectivityResult()) {
       try {
-      loader?.value = true;
+        loader?.value = true;
 
-      /// API
-      await APIFunction.postApiCall(
-        apiUrl: ApiUrls.createAndGetCatalogueAPI,
-        body: {
-          "view_type": catalogueType.name,
-          "catalogue_name": catalogueName,
-          if (!isValEmpty(categoryId)) "category_id": categoryId,
-          if (!isValEmpty(subCategoryId)) "sub_category_id": subCategoryId,
-          if (!isValEmpty(sortBy)) "sortBy": sortBy,
-          if ((!isValEmpty(minMetal) && !isValEmpty(maxMetal)))
-            "range": {
-              if ((!isValEmpty(minMetal) && !isValEmpty(maxMetal))) "metal_wt": {"min": minMetal, "max": maxMetal},
-              if ((!isValEmpty(minDiamond) && !isValEmpty(maxDiamond))) "diamond_wt": {"min": minDiamond, "max": maxDiamond}
-            },
-          if ((!isValEmpty(minMrp) && !isValEmpty(maxMrp))) "mrp": {"min": minMrp, "max": maxMrp},
-          if (inStock != null)
-            "available": {
-              "in_stock": inStock,
-            },
-          if (genderList != null && genderList.isNotEmpty) "gender": genderList,
-          if (diamondList != null && diamondList.isNotEmpty) "diamond": diamondList,
-          if (ktList != null && ktList.isNotEmpty) "metal_ids": ktList,
-          if (deliveryList != null && deliveryList.isNotEmpty) "delivery": deliveryList,
-          if (productionNameList != null && productionNameList.isNotEmpty) "production_name": productionNameList,
-          if (collectionList != null && collectionList.isNotEmpty) "collection": collectionList,
-        },
-        loader: loader,
-      ).then(
-        (response) async {
-          if (response != null) {
-            UiUtils.toast("Catalogue Created Successfully");
-            loader?.value = false;
-          } else {
-            loader?.value = false;
-          }
+        /// API
+        await APIFunction.postApiCall(
+          apiUrl: ApiUrls.createAndGetCatalogueAPI,
+          body: {
+            "view_type": catalogueType.name,
+            "catalogue_name": catalogueName,
+            if (!isValEmpty(categoryId)) "category_id": categoryId,
+            if (!isValEmpty(subCategoryId)) "sub_category_id": subCategoryId,
+            if (!isValEmpty(sortBy)) "sortBy": sortBy,
+            if ((!isValEmpty(minMetal) && !isValEmpty(maxMetal)))
+              "range": {
+                if ((!isValEmpty(minMetal) && !isValEmpty(maxMetal))) "metal_wt": {"min": minMetal, "max": maxMetal},
+                if ((!isValEmpty(minDiamond) && !isValEmpty(maxDiamond))) "diamond_wt": {"min": minDiamond, "max": maxDiamond}
+              },
+            if ((!isValEmpty(minMrp) && !isValEmpty(maxMrp))) "mrp": {"min": minMrp, "max": maxMrp},
+            if (inStock != null)
+              "available": {
+                "in_stock": inStock,
+              },
+            if (genderList != null && genderList.isNotEmpty) "gender": genderList,
+            if (diamondList != null && diamondList.isNotEmpty) "diamond": diamondList,
+            if (ktList != null && ktList.isNotEmpty) "metal_ids": ktList,
+            if (deliveryList != null && deliveryList.isNotEmpty) "delivery": deliveryList,
+            if (productionNameList != null && productionNameList.isNotEmpty) "production_name": productionNameList,
+            if (collectionList != null && collectionList.isNotEmpty) "collection": collectionList,
+          },
+          loader: loader,
+        ).then(
+          (response) async {
+            if (response != null) {
+              UiUtils.toast("Catalogue Created Successfully");
+              loader?.value = false;
+            } else {
+              loader?.value = false;
+            }
 
-          return response;
-        },
-      );
+            return response;
+          },
+        );
       } catch (e) {
         loader?.value = false;
         printErrors(type: "createCatalogueAPI", errText: e);
@@ -134,7 +134,7 @@ class CatalogueRepository {
 
                 int currentPage = (model.data!.page ?? 1);
                 con.nextPageAvailable.value = currentPage < (model.data!.totalPages ?? 0);
-                con.page.value += currentPage;
+                con.page.value = currentPage + 1;
               }
 
               loader?.value = false;
@@ -287,6 +287,7 @@ startxref
 ''';
 
   static Future<void> downloadCatalogueAPI({
+    required String title,
     required String catalogueId,
     required CatalogueType catalogueType,
     RxBool? loader,
@@ -320,7 +321,7 @@ startxref
             }
 
             // Create a file path
-            String filePath = '${catalogueDir.path}/fd.pdf';
+            String filePath = '${catalogueDir.path}/$title.pdf';
 
             // Write the response data to a file
             File file = File(filePath);

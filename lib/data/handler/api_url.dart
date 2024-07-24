@@ -19,6 +19,7 @@ class ApiUrls {
   static const String getAllBannersGET = "banner";
 
   /// CATEGORY
+  ///
   static const String getAllCategoriesGET = "category";
 
   /// SUB-CATEGORY

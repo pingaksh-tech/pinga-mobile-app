@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -128,6 +129,14 @@ class ProductsScreen extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.subText),
                 textAlign: TextAlign.center,
               ).paddingOnly(top: defaultPadding / 3),
+
+              /// DEBUG-MODE
+              if (kDebugMode && con.inventoryProductList.isNotEmpty)
+                Text(
+                  "Multi-Diamond - ${con.inventoryProductList[0].isDiamondMultiple} | Size? - ${con.inventoryProductList[0].sizeId != null}",
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.subText),
+                  textAlign: TextAlign.center,
+                ).paddingOnly(top: defaultPadding / 3),
               ListView(
                 padding: EdgeInsets.zero,
                 physics: const NeverScrollableScrollPhysics(),
@@ -156,7 +165,7 @@ class ProductsScreen extends StatelessWidget {
                                           type: GlobalProductPrefixType.productDetails,
                                           arguments: {
                                             "category": /*AppStrings.cartIdPrefixSlug +*/ (con.inventoryProductList[index].subCategoryId ?? ''),
-                                            'isSize': con.isSizeAvailable.value,
+                                            'isSize': !isValEmpty(con.inventoryProductList[index].sizeId),
                                             'isFancy': con.inventoryProductList[index].isDiamondMultiple ?? false,
                                             'inventoryId': /*AppStrings.productIdPrefixSlug +*/ (con.inventoryProductList[index].id ?? ""),
                                             'name': con.inventoryProductList[index].name,
@@ -175,7 +184,7 @@ class ProductsScreen extends StatelessWidget {
                                       productName: con.inventoryProductList[index].name ?? "",
                                       productPrice: con.inventoryProductList[index].inventoryTotalPrice.toString(),
                                       productQuantity: con.inventoryProductList[index].quantity,
-                                      isSizeAvailable: con.isSizeAvailable.value,
+                                      isSizeAvailable: !isValEmpty(con.inventoryProductList[index].sizeId),
                                       selectSize: (con.inventoryProductList[index].sizeId ?? "").obs,
                                       selectMetalCart: (con.inventoryProductList[index].metalId ?? "").obs,
                                       selectDiamondCart: (con.inventoryProductList[index].diamonds != null && con.inventoryProductList[index].diamonds!.isNotEmpty) ? (con.inventoryProductList[index].diamonds?.first.diamondClarity?.value ?? "").obs : "".obs,
@@ -210,7 +219,7 @@ class ProductsScreen extends StatelessWidget {
             ),
           ),
           onPressed: () {
-            AppDialogs.productDownloadDialog(context, isDownloadFileNameChange: true);
+            AppDialogs.productDownloadDialog(context, isDownloadFileNameChange: true, showOnlyDownloadedCatalogues: con.inventoryProductList.isEmpty);
           },
         ),
       ),

@@ -1635,7 +1635,7 @@ class AppDialogs {
   }
 
   // Product Download Dialog
-  static Future<void> productDownloadDialog(BuildContext context, {bool isDownloadFileNameChange = false}) {
+  static Future<void> productDownloadDialog(BuildContext context, {bool isDownloadFileNameChange = false,bool showOnlyDownloadedCatalogues = false}) {
     return Get.dialog(
       Dialog(
         insetPadding: EdgeInsets.all(defaultPadding * 1.2),
@@ -1664,8 +1664,9 @@ class AppDialogs {
                   ),
                 ],
               ).paddingSymmetric(vertical: defaultPadding / 2),
-              DownloadSelectionTile(
-                title: "Catalogue (digital)",
+             if(!showOnlyDownloadedCatalogues)
+              ...[ DownloadSelectionTile(
+                title: "Catalogue",
                 image: AppAssets.catalogueIcon,
                 onTap: () {
                   Get.back();
@@ -1687,7 +1688,7 @@ class AppDialogs {
                           context,
                         );
                 },
-              ),
+              ),],
               DownloadSelectionTile(
                 image: AppAssets.downloadListIcon,
                 title: "Downloaded list",

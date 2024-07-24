@@ -30,6 +30,6 @@ class PdfController extends GetxController {
   void onReady() async {
     super.onReady();
 
-    await CatalogueRepository.downloadCatalogueAPI(catalogueId: catalogueId.value, catalogueType: CatalogueType.grid);
+    await CatalogueRepository.downloadCatalogueAPI(catalogueId: catalogueId.value, title: pdfTitle.value, catalogueType: CatalogueType.grid);
   }
 }

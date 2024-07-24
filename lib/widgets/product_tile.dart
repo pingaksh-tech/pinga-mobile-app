@@ -107,7 +107,7 @@ class _ProductTileState extends State<ProductTile> {
       if (index != -1) {
         metalModel = metalList[index];
       } else {
-        metalModel = metalList[0];
+        // metalModel = metalList[0];
       }
       //? Size Value Select in default
       if (allSizeList.isNotEmpty) {
@@ -120,7 +120,7 @@ class _ProductTileState extends State<ProductTile> {
             if (index != -1) {
               sizeModel.value = sizeList[index];
             } else {
-              sizeModel.value = sizeList[0];
+              // sizeModel.value = sizeList[0];
             }
           }
         }
@@ -130,7 +130,7 @@ class _ProductTileState extends State<ProductTile> {
       if (diamondIndex != -1) {
         diamondModel = diamondList[diamondIndex];
       } else {
-        diamondModel = diamondList[0];
+        // diamondModel = diamondList[0];
       }
     }
   }
@@ -139,6 +139,7 @@ class _ProductTileState extends State<ProductTile> {
   void initState() {
     super.initState();
     predefinedValue();
+    printOkStatus(widget.selectSize?.value);
   }
 
   @override

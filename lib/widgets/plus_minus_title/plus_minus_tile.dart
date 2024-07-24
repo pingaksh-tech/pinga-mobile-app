@@ -71,11 +71,14 @@ Widget plusMinusTile(
             },
             child: SizedBox(
               width: 32.w,
-              child: Text(
-                "${textValue.value}",
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.titleMedium,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  "${textValue.value}",
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
               ),
             ),
           ),
