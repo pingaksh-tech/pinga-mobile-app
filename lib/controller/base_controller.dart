@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:no_screenshot/no_screenshot.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
+import '../data/handler/app_environment.dart';
 import '../exports.dart';
 
 class BaseBinding implements Bindings {
@@ -37,6 +38,9 @@ class BaseController extends GetxController {
     });
 
     /// No Screenshot
-    await NoScreenshot.instance.screenshotOff();
+    /// TODO
+    if (AppEnvironment.environmentType == EnvironmentType.production) {
+      await NoScreenshot.instance.screenshotOff();
+    }
   }
 }
