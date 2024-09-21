@@ -11,9 +11,9 @@ class AppEnvironment {
     switch (environmentType) {
       case EnvironmentType.production:
         if (kDebugMode) {
-          return "";
+          return "https://api.pingaksh.co/api/";
         } else {
-          return "";
+          return "https://api.pingaksh.co/api/";
         }
 
       case EnvironmentType.staging:
