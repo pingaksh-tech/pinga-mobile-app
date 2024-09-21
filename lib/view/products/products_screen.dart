@@ -1,0 +1,487 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+
+import '../../data/repositories/product/product_repository.dart';
+import '../../data/repositories/watchlist/watchlist_repository.dart';
+import '../../exports.dart';
+import '../../res/app_bar.dart';
+import '../../res/app_dialog.dart';
+import '../../res/empty_element.dart';
+import '../../widgets/product_tile.dart';
+import '../../widgets/pull_to_refresh_indicator.dart';
+import 'components/cart_icon_button.dart';
+import 'components/sort_filter_button.dart';
+import 'products_controller.dart';
+import 'widgets/filter/filter_controller.dart';
+import 'widgets/sort/sorting_bottomsheet.dart';
+
+class ProductsScreen extends StatelessWidget {
+  ProductsScreen({super.key});
+
+  final ProductsController con = Get.put(ProductsController());
+  final FilterController filterCon = Get.find<FilterController>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () => Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        appBar: MyAppBar(
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          shadowColor:
+              Theme.of(context).scaffoldBackgroundColor.withOpacity(0.3),
+          title: con.categoryName.isNotEmpty
+              ? con.categoryName.value
+              : con.subCategory.value.name,
+
+          actions: [
+            CartIconButton(
+              onPressed: () {
+                Get.offAllNamed(
+                  AppRoutes.cartScreen,
+                  predicate: (route) =>
+                      route.settings.name == AppRoutes.productScreen,
+                );
+              },
+            ),
+          ],
+
+          /// SORTING AND FILTERS
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(30.h),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+              child: Row(
+                children: [
+                  SortAndFilterButton(
+                    title: "Sort",
+                    isFilterButton: false,
+                    image: AppAssets.sortIcon,
+                    iconSize: 16.5.sp,
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) => SortingBottomSheet(
+                          watchlistId: con.watchlistId.value,
+                          productsListType: con.productListType.value,
+                        ),
+                      );
+                    },
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                    child: const VerticalDivider(
+                      thickness: 1.5,
+                    ),
+                  ),
+                  SortAndFilterButton(
+                    title:
+                        "Filter ${filterCon.count != 0 ? "(${filterCon.count})" : ""}",
+                    image: AppAssets.filter,
+                    onTap: () =>
+                        Get.toNamed(AppRoutes.filterScreen, arguments: {
+                      "subCategoryId": con.subCategory.value.id,
+                      "categoryId": con.categoryId.value,
+                      "watchlistId": con.watchlistId.value,
+                      "productListType": con.productListType.value,
+                    }),
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                    child: const VerticalDivider(
+                      thickness: 1.5,
+                    ),
+                  ),
+                  AppIconButton(
+                    icon: SvgPicture.asset(
+                      con.isProductViewChange.isFalse
+                          ? AppAssets.appIcon
+                          : AppAssets.listIcon,
+                      color: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.color
+                          ?.withOpacity(.55), // ignore: deprecated_member_use
+                      height: 18.sp,
+                    ),
+                    onPressed: () {
+                      con.isProductViewChange.value =
+                          !con.isProductViewChange.value;
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        body: con.loader.isFalse
+            ? con.inventoryProductList.isNotEmpty
+                ? PullToRefreshIndicator(
+                    onRefresh: () async {
+                      filterCon.clearAllFilters();
+
+                      /// GET ALL PRODUCTS
+                      return await ProductRepository.getFilterProductsListAPI(
+                        isPullToRefresh: true,
+                        categoryId: con.categoryId.value,
+                        productsListType: con.productListType.value,
+                        watchListId: con.watchlistId.value,
+                        subCategoryId: con.subCategory.value.id ?? "",
+                      );
+                    },
+                    child: ListView(
+                      padding: EdgeInsets.symmetric(
+                              horizontal: defaultPadding / 2,
+                              vertical: defaultPadding)
+                          .copyWith(top: 0, bottom: defaultPadding * 5),
+                      controller: con.scrollController,
+                      children: [
+                        Divider(
+                          height: 2.h,
+                          thickness: 1.5,
+                          indent: defaultPadding / 2,
+                          endIndent: defaultPadding / 2,
+                        ),
+                        Text(
+                          "Total Products ${con.inventoryProductList.length}",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(color: AppColors.subText),
+                          textAlign: TextAlign.center,
+                        ).paddingOnly(top: defaultPadding / 3),
+
+                        /// DEBUG-MODE
+                        if (kDebugMode && con.inventoryProductList.isNotEmpty)
+                          Text(
+                            "Multi-Diamond - ${con.inventoryProductList[0].isDiamondMultiple} | Size? - ${con.inventoryProductList[0].sizeId != null}",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(color: AppColors.subText),
+                            textAlign: TextAlign.center,
+                          ).paddingOnly(top: defaultPadding / 3),
+
+                        ListView(
+                          padding: EdgeInsets.zero,
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          children: [
+                            /// PRODUCTS
+                            Wrap(children: [
+                              ...List.generate(
+                                con.inventoryProductList.length,
+                                (index) => Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ProductTile(
+                                      category: RxString(con
+                                              .inventoryProductList[index]
+                                              .subCategoryId ??
+                                          ""),
+                                      isFancy: con.inventoryProductList[index]
+                                              .isDiamondMultiple ??
+                                          false,
+                                      inventoryId:
+                                          con.inventoryProductList[index].id,
+                                      diamondList: RxList(con
+                                              .inventoryProductList[index]
+                                              .diamonds ??
+                                          []),
+                                      productTileType:
+                                          con.isProductViewChange.isTrue
+                                              ? ProductTileType.grid
+                                              : ProductTileType.list,
+                                      onTap: () {
+                                        // addProductIdToGlobalList((con.inventoryProductList[index].id ?? ""), type: GlobalProductPrefixType.productDetails);
+
+                                        navigateToProductDetailsScreen(
+                                          productId: (con
+                                                  .inventoryProductList[index]
+                                                  .id ??
+                                              ""),
+                                          diamondClarity:
+                                              (con.inventoryProductList[index]
+                                                              .diamonds !=
+                                                          null &&
+                                                      con
+                                                          .inventoryProductList[
+                                                              index]
+                                                          .diamonds!
+                                                          .isNotEmpty)
+                                                  ? con
+                                                          .inventoryProductList[
+                                                              index]
+                                                          .diamonds
+                                                          ?.first
+                                                          .diamondClarity
+                                                          ?.value ??
+                                                      ""
+                                                  : "",
+                                          metalId: con
+                                              .inventoryProductList[index]
+                                              .metalId!
+                                              .value,
+                                          sizeId: con
+                                              .inventoryProductList[index]
+                                              .sizeId!
+                                              .value,
+                                          type: GlobalProductPrefixType
+                                              .productDetails,
+                                          arguments: {
+                                            "category": /*AppStrings.cartIdPrefixSlug +*/
+                                                (con.inventoryProductList[index]
+                                                        .subCategoryId ??
+                                                    ''),
+                                            'isSize': !isValEmpty(con
+                                                .inventoryProductList[index]
+                                                .sizeId),
+                                            'isFancy': con
+                                                    .inventoryProductList[index]
+                                                    .isDiamondMultiple ??
+                                                false,
+                                            'inventoryId': /*AppStrings.productIdPrefixSlug +*/
+                                                (con.inventoryProductList[index]
+                                                        .id ??
+                                                    ""),
+                                            'name': con
+                                                .inventoryProductList[index]
+                                                .name,
+                                            "productsListTypeType":
+                                                ProductsListType.normal,
+                                            // 'like': con.inventoryProductList[index].isWishlist,
+                                            "sizeId": con
+                                                .inventoryProductList[index]
+                                                .sizeId!
+                                                .value,
+                                            "remark": con
+                                                .inventoryProductList[index]
+                                                .remark!
+                                                .value,
+                                            "quantity": con
+                                                .inventoryProductList[index]
+                                                .quantity!
+                                                .value,
+
+                                            "diamondClarity": (con
+                                                            .inventoryProductList[
+                                                                index]
+                                                            .diamonds !=
+                                                        null &&
+                                                    con
+                                                        .inventoryProductList[
+                                                            index]
+                                                        .diamonds!
+                                                        .isNotEmpty)
+                                                ? con
+                                                        .inventoryProductList[
+                                                            index]
+                                                        .diamonds
+                                                        ?.first
+                                                        .diamondClarity
+                                                        ?.value ??
+                                                    ""
+                                                : "",
+
+                                            "metalId": con
+                                                .inventoryProductList[index]
+                                                .metalId!
+                                                .value
+                                          },
+                                          whenComplete: () {
+                                            if (isRegistered<
+                                                BaseController>()) {
+                                              BaseController baseCon =
+                                                  Get.find<BaseController>();
+                                              if (baseCon.globalProductIds
+                                                  .isNotEmpty) {
+                                                baseCon.globalProductIds
+                                                    .removeLast();
+                                              }
+                                              if (baseCon
+                                                  .globalSizeId.isNotEmpty) {
+                                                baseCon.globalSizeId
+                                                    .removeLast();
+                                              }
+                                              if (baseCon
+                                                  .globalMetalId.isNotEmpty) {
+                                                baseCon.globalMetalId
+                                                    .removeLast();
+                                              }
+                                              if (baseCon.globalDiamondClarity
+                                                  .isNotEmpty) {
+                                                baseCon.globalDiamondClarity
+                                                    .removeLast();
+                                              }
+                                            }
+                                          },
+                                        );
+                                      },
+                                      diamondOnChanged: (value) {
+                                        con
+                                            .inventoryProductList[index]
+                                            .diamonds
+                                            ?.first
+                                            .diamondClarity
+                                            ?.value = value;
+                                      },
+                                      sizeOnChanged: (value) {
+                                        con.inventoryProductList[index].sizeId!
+                                            .value = value;
+                                      },
+                                      metalOnChanged: (value) {
+                                        con.inventoryProductList[index].metalId!
+                                            .value = value;
+                                      },
+                                      remarkOnChanged: (value) {
+                                        con.inventoryProductList[index].remark!
+                                            .value = value;
+                                      },
+                                      isLike: con.inventoryProductList[index]
+                                          .isWishlist,
+                                      imageUrl: (con.inventoryProductList[index]
+                                                      .inventoryImages !=
+                                                  null &&
+                                              con.inventoryProductList[index]
+                                                  .inventoryImages!.isNotEmpty)
+                                          ? con.inventoryProductList[index]
+                                              .inventoryImages![0]
+                                          : "",
+                                      productName: con
+                                              .inventoryProductList[index]
+                                              .name ??
+                                          "",
+                                      productPrice: con
+                                          .inventoryProductList[index]
+                                          .inventoryTotalPrice
+                                          .toString(),
+                                      productQuantity: con
+                                          .inventoryProductList[index].quantity,
+                                      isSizeAvailable: !isValEmpty(con
+                                          .inventoryProductList[index].sizeId),
+                                      selectSize: con
+                                          .inventoryProductList[index]
+                                          .sizeId!
+                                          .value
+                                          .obs,
+                                      selectMetalCart: con
+                                          .inventoryProductList[index]
+                                          .metalId!
+                                          .value
+                                          .obs,
+                                      selectDiamondCart: (con
+                                                      .inventoryProductList[
+                                                          index]
+                                                      .diamonds !=
+                                                  null &&
+                                              con.inventoryProductList[index]
+                                                  .diamonds!.isNotEmpty)
+                                          ? (con
+                                                      .inventoryProductList[
+                                                          index]
+                                                      .diamonds
+                                                      ?.first
+                                                      .diamondClarity
+                                                      ?.value ??
+                                                  "")
+                                              .obs
+                                          : "".obs,
+                                      diamonds: con
+                                          .inventoryProductList[index].diamonds,
+                                    ),
+                                    // if (con.paginationLoader.value &&
+                                    //     index + 1 ==
+                                    //         con.inventoryProductList.length)
+                                    //   productShimmer(context)
+                                  ],
+                                ),
+                              ),
+                            ]),
+                            if (con.paginationLoader.value)
+                              con.isProductViewChange.isTrue
+                                  ? productGridShimmer(context)
+                                  : productListShimmer(context)
+                          ],
+                        )
+                      ],
+                    ),
+                  )
+                :
+
+                /// EMPTY DATA VIEW
+                EmptyElement(
+                    title:
+                        "${con.subCategory.value.name ?? "Products"} Not Found!",
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(vertical: Get.width / 2.5),
+                  )
+            : con.isProductViewChange.isTrue
+                ? productGridShimmer(context, length: 8)
+                : productListShimmer(context, length: 8),
+        floatingActionButton: FloatingActionButton(
+          child: SvgPicture.asset(
+            AppAssets.productDownload,
+            height: 22.h,
+            colorFilter: ColorFilter.mode(
+              Theme.of(context).colorScheme.surface,
+              BlendMode.srcIn,
+            ),
+          ),
+          onPressed: () {
+            if (con.productListType.value == ProductsListType.watchlist) {
+              WatchListRepository.resetDownloadRequest();
+              Get.toNamed(
+                AppRoutes.watchpdfViewerScreen,
+                arguments: {
+                  "title": con.categoryName.isNotEmpty
+                      ? con.categoryName.value
+                      : con.subCategory.value.name,
+                  "watchId": con.watchlistId.value,
+                },
+              );
+            } else {
+              AppDialogs.productDownloadDialog(context,
+                  isDownloadFileNameChange: true,
+                  showOnlyDownloadedCatalogues:
+                      con.inventoryProductList.isEmpty);
+            }
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget productGridShimmer(BuildContext context, {int length = 2}) {
+    return Padding(
+      padding: EdgeInsets.all(defaultPadding / 2),
+      child: Wrap(
+        spacing: defaultPadding,
+        runSpacing: defaultPadding,
+        direction: Axis.horizontal,
+        children: List.generate(
+          length,
+          (index) => ShimmerUtils.productGridShimmer(context),
+        ),
+      ),
+    );
+  }
+
+  Widget productListShimmer(BuildContext context, {int length = 2}) {
+    return Padding(
+      padding: EdgeInsets.all(defaultPadding / 2),
+      child: Wrap(
+        spacing: defaultPadding,
+        runSpacing: defaultPadding,
+        direction: Axis.horizontal,
+        children: List.generate(
+          length,
+          (index) => ShimmerUtils.productsListShimmer(context),
+        ),
+      ),
+    );
+  }
+}

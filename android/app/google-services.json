@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "994330455273",
+    "project_id": "pingaksh-ab275",
+    "storage_bucket": "pingaksh-ab275.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:994330455273:android:7c5b4c77e4de5829ef9478",
+        "android_client_info": {
+          "package_name": "com.micrasol.pingaksh"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrLVdIu2WmAbCbus97Xye1J8KbewyLuKE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

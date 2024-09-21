@@ -1,0 +1,247 @@
+// ignore_for_file: deprecated_member_use
+
+import 'package:animations/animations.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+
+import '../../controller/predefine_value_controller.dart';
+import '../../exports.dart';
+import '../../packages/app_animated_cliprect.dart';
+import '../../res/app_bar.dart';
+import '../cart/cart_controller.dart';
+import '../cart/components/cart_popup_menu.dart';
+import '../drawer/app_drawer.dart';
+import '../orders/widgets/order_filter/order_filter_controller.dart';
+import 'bottombar_controller.dart';
+
+class BottomBarScreen extends StatelessWidget {
+  BottomBarScreen({super.key});
+
+  final BottomBarController con = Get.put(BottomBarController());
+  final PreDefinedValueController dialogCon = Get.find<PreDefinedValueController>();
+  final OrderFilterController orderCon = Get.find<OrderFilterController>();
+  final CartController cartCon = Get.find<CartController>();
+  final BaseController baseCon = Get.find<BaseController>();
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async {
+        if (con.currentBottomIndex.value != 0) {
+          con.isLoggedIn.value = false;
+          con.currentBottomIndex.value = 0;
+        } else {
+          // AppDialogs.backOperation(context);
+        }
+        return false;
+      },
+      child: Obx(
+        () => AnnotatedRegion<SystemUiOverlayStyle>(
+          value: UiUtils.systemUiOverlayStyle(systemNavigationBarColor: Theme.of(context).colorScheme.surface),
+          child: Scaffold(
+            drawer: AppDrawer(
+              homeOnPressed: () {
+                con.currentBottomIndex.value = 0;
+                Get.back();
+              },
+            ),
+            appBar: MyAppBar(
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              showBackIcon: false,
+              title: con.bottomBarDataList[con.currentBottomIndex.value].screenName,
+              leading: Builder(
+                builder: (context) => IconButton(
+                  icon: SvgPicture.asset(
+                    AppAssets.menuIcon,
+                    colorFilter: ColorFilter.mode(
+                      Theme.of(context).primaryColor,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                ),
+              ),
+              actions: [
+                con.currentBottomIndex.value == 2
+                    ? CartPopUpMenu(
+                        cardIds: (cartCon.selectedList
+                            .map(
+                              (element) => element.id ?? "",
+                            )
+                            .toList()),
+                      )
+                    : con.currentBottomIndex.value == 0
+                        ? /*AppIconButton(
+                            onPressed: () => Get.toNamed(AppRoutes.settingsScreen),
+                            icon: SvgPicture.asset(
+                              AppAssets.settingIcon,
+                              colorFilter: ColorFilter.mode(
+                                Theme.of(context).primaryColor,
+                                BlendMode.srcIn,
+                              ),
+                            ),
+                          )*/
+                        const SizedBox()
+                        : con.currentBottomIndex.value == 3
+                            ? Stack(
+                                alignment: Alignment.topRight,
+                                children: [
+                                  AppIconButton(
+                                    icon: SvgPicture.asset(
+                                      AppAssets.filter,
+                                      colorFilter: ColorFilter.mode(
+                                        Theme.of(context).primaryColor,
+                                        BlendMode.srcIn,
+                                      ),
+                                    ),
+                                    onPressed: () => Get.toNamed(AppRoutes.orderFilterScreen),
+                                  ),
+                                  if (orderCon.filterCount.value != 0)
+                                    Positioned(
+                                      top: 2.h,
+                                      right: defaultPadding / 2,
+                                      child: Container(
+                                        padding: EdgeInsets.all(4.h).copyWith(top: 5.h),
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Theme.of(context).colorScheme.primary,
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          orderCon.filterCount.value.toString(),
+                                          textAlign: TextAlign.center,
+                                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                                fontSize: 10.sp,
+                                                fontWeight: FontWeight.w600,
+                                                color: AppColors.background,
+                                              ),
+                                        ),
+                                      ),
+                                    )
+                                ],
+                              )
+                            : const SizedBox(),
+              ],
+            ),
+            body: con.isLoading.value
+                ? Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: ListView.separated(
+                      itemCount: 15,
+                      separatorBuilder: (context, index) {
+                        return const SizedBox(height: 16);
+                      },
+                      itemBuilder: (context, index) {
+                        return ShimmerUtils.shimmer(
+                          child: ShimmerUtils.shimmerContainer(
+                            height: 70,
+                            width: Get.width,
+                            borderRadius: BorderRadius.circular(defaultRadius),
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                : PageTransitionSwitcher(
+                    reverse: con.isLoggedIn.value,
+                    transitionBuilder: (
+                      Widget child,
+                      Animation<double> animation,
+                      Animation<double> secondaryAnimation,
+                    ) {
+                      return SharedAxisTransition(
+                        animation: animation,
+                        secondaryAnimation: secondaryAnimation,
+                        transitionType: con.transitionType!,
+                        fillColor: const Color(0x00FFFFFF),
+                        child: child,
+                      );
+                    },
+                    child: con.bottomBarDataList.isNotEmpty ? con.bottomBarDataList[con.currentBottomIndex.value].screenWidget! : const SizedBox(),
+                  ),
+            bottomNavigationBar: IntrinsicHeight(
+              child: BottomAppBar(
+                notchMargin: 6,
+                elevation: 30,
+                shadowColor: Theme.of(context).colorScheme.primary,
+                color: Theme.of(context).colorScheme.surface,
+                padding: EdgeInsets.symmetric(vertical: defaultPadding / 1.2, horizontal: defaultPadding / 2),
+                shape: const CircularNotchedRectangle(),
+                child: Obx(
+                  () => Row(
+                    children: List.generate(
+                      con.bottomBarDataList.length,
+                      (index) => Expanded(
+                        child: InkWell(
+                          overlayColor: MaterialStateProperty.all(Colors.transparent),
+                          onTap: () {
+                            con.onBottomBarTap(index, hapticFeedback: true);
+                          },
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                AnimatedContainer(
+                                  duration: const Duration(milliseconds: 250),
+                                  padding: EdgeInsets.all(defaultPadding / 1.5),
+                                  decoration: BoxDecoration(
+                                    color: con.currentBottomIndex.value == index ? Theme.of(context).primaryColor : null,
+                                    border: Border.all(color: con.currentBottomIndex.value == index ? Theme.of(context).primaryColor : Theme.of(context).colorScheme.surface, strokeAlign: 5),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: con.currentBottomIndex.value == index
+                                      ? (isValEmpty(con.bottomBarDataList[index].bottomItem?.selectedImage)
+                                          ? Icon(
+                                              con.bottomBarDataList[index].bottomItem?.selectedIcon,
+                                              size: con.bottomBarDataList[index].bottomItem?.selectedSize,
+                                              color: AppColors.lightSecondary,
+                                            )
+                                          : SvgPicture.asset(
+                                              con.bottomBarDataList[index].bottomItem?.selectedImage ?? "",
+                                              height: con.bottomBarDataList[index].bottomItem?.selectedSize ?? 21,
+                                              color: AppColors.lightSecondary,
+                                            ))
+                                      : isValEmpty(con.bottomBarDataList[index].bottomItem?.selectedImage)
+                                          ? Icon(
+                                              con.bottomBarDataList[index].bottomItem?.unselectIcon ?? con.bottomBarDataList[index].bottomItem?.selectedIcon,
+                                              size: con.bottomBarDataList[index].bottomItem?.unselectSize,
+                                              color: Theme.of(context).primaryColor.withOpacity(.9),
+                                            )
+                                          : SvgPicture.asset(
+                                              con.bottomBarDataList[index].bottomItem?.unselectImage ?? con.bottomBarDataList[index].bottomItem?.selectedImage ?? "",
+                                              height: con.bottomBarDataList[index].bottomItem?.unselectSize ?? 21,
+                                              color: Theme.of(context).primaryColor.withOpacity(.9),
+                                            ),
+                                ),
+                                AnimatedClipRect(
+                                  open: con.currentBottomIndex.value != index,
+                                  child: Text(
+                                    con.bottomBarDataList[index].screenName ?? "",
+                                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                          color: Theme.of(context).primaryColor.withOpacity(.9),
+                                          fontSize: 9.sp,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
