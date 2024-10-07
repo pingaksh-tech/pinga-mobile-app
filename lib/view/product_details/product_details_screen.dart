@@ -650,9 +650,7 @@ class ProductDetailsScreen extends StatelessWidget {
                         /// Selected Size
                         if ((value.runtimeType == DiamondModel)) {
                           con.selectedSize.value = value;
-                          printData(
-                              key: 'selectedSize',
-                              value: con.selectedSize.value.id?.value);
+                          con.sizeId.value = value.id.toString();
 
                           /// GET NEW PRODUCT PRICE
                           con.priceChangeAPI();
@@ -674,9 +672,6 @@ class ProductDetailsScreen extends StatelessWidget {
                       /// Selected Metal
                       if ((value.runtimeType == MetalModel)) {
                         con.selectedMetal.value = value;
-                        printData(
-                            key: 'selectedMetal',
-                            value: con.selectedMetal.value.id?.value);
 
                         /// GET NEW PRODUCT PRICE
                         con.priceChangeAPI();
@@ -702,11 +697,6 @@ class ProductDetailsScreen extends StatelessWidget {
                       if ((diamondList.runtimeType ==
                           RxList<DiamondListModel>)) {
                         con.diamondList.value = diamondList;
-                        printData(
-                            key: 'diamondList',
-                            value: con.isMultipleDiamondSelection.isFalse
-                                ? con.selectedDiamond.value.name ?? ""
-                                : "");
 
                         /// GET NEW PRODUCT PRICE
                         con.priceChangeAPI();

@@ -164,6 +164,16 @@ class CartRepository {
               /// Get cart api
               await getCartApi(isPullToRefresh: true);
 
+              // if (isRegistered<BaseController>()) {
+              //   BaseController con = Get.find<BaseController>();
+              //   if (!isValEmpty(cartId)) {
+              //     int index = con.globalProductDetails
+              //         .indexWhere((e) => e["productId"] == cartId);
+              //     if (index != -1) {
+              //       con.globalProductDetails.removeAt(index);
+              //     }
+              //   }
+              // }
               if (isRegistered<CartController>()) {
                 final CartController con = Get.find<CartController>();
                 if (!isValEmpty(cartId)) {
@@ -213,13 +223,18 @@ class CartRepository {
               /// Get cart api
               await getCartApi(isPullToRefresh: true);
 
-              if (isRegistered<CartController>()) {
-                final CartController con = Get.find<CartController>();
-                con.cartList
-                    .removeWhere((item) => con.selectedList.contains(item));
-                con.selectedList.clear();
-                con.calculateSelectedQue();
-                con.calculateSelectedItemPrice();
+              // if (isRegistered<CartController>()) {
+              //   final CartController con = Get.find<CartController>();
+              //   con.cartList
+              //       .removeWhere((item) => con.selectedList.contains(item));
+              //   con.selectedList.clear();
+              //   con.calculateSelectedQue();
+              //   con.calculateSelectedItemPrice();
+              // }
+              if (isRegistered<BaseController>()) {
+                BaseController con = Get.find<BaseController>();
+                con.globalProductDetails.removeWhere(
+                    (item) => selectedCartIds!.contains(item["productId"]));
               }
             }
             UiUtils.toast("Cart Deleted Successfully");

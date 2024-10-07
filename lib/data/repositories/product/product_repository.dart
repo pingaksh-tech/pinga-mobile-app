@@ -447,7 +447,7 @@ class ProductRepository {
     String? sizeId,
     String? metalId,
     String? diamondClarity,
-    List<DiamondListModel>? diamondList,
+    List? diamondList,
   }) async {
     if (await getConnectivityResult() &&
         isRegistered<ProductDetailsController>()) {
@@ -491,6 +491,24 @@ class ProductRepository {
                     con.productDetailModel.value.inventoryId ?? "";
                 con.isMultipleDiamondSelection.value =
                     con.productDetailModel.value.isDiamondMultiple ?? false;
+                con.sizeId.value = con.productDetailModel.value.sizeId ?? "";
+                con.productCategory.value =
+                    con.productDetailModel.value.subCategoryId ?? "";
+                con.metalId.value = con.productDetailModel.value.metalId ?? "";
+                con.diamondClarity.value =
+                    con.productDetailModel.value.isDiamondMultiple == true
+                        ? ""
+                        : (con.productDetailModel.value.diamonds != null &&
+                                con.productDetailModel.value.diamonds!
+                                    .isNotEmpty)
+                            ? con.productDetailModel.value.diamonds?.first
+                                    .diamondClarity?.value ??
+                                ""
+                            : "";
+                con.diamondList.value =
+                    con.productDetailModel.value.isDiamondMultiple == true
+                        ? con.productDetailModel.value.diamonds!
+                        : [];
 
                 // productsController.inventoryProductList.value
               }

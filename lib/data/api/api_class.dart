@@ -23,13 +23,14 @@ class HttpUtil {
         useRefreshToken: true,
       ).then(
         (response) async {
-          if (response != null) {
+          if (response != null && response['data'] != null) {
             LocalStorage.accessToken = response['data']['access_token'] ?? "";
             LocalStorage.refreshToken = response['data']['refresh_token'] ?? "";
           }
         },
       );
     } catch (e) {
+      await ApiUtils.logoutAndCleanAllUserData();
       printErrors(type: "_refreshTokens", errText: "$e");
     } finally {}
   }

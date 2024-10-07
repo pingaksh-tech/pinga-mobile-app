@@ -30,6 +30,25 @@ class CartScreen extends StatelessWidget {
           appBar: Get.currentRoute != AppRoutes.bottomBarScreen
               ? MyAppBar(
                   title: "My Cart",
+                  // showBackIcon: false,
+                  // leading: IconButton(
+                  //   onPressed: () {
+                  //     if (isRegistered<BaseController>()) {
+                  //       BaseController con = Get.find<BaseController>();
+                  //       printData(value: con.globalProductDetails);
+                  //       if (con.globalProductDetails.isEmpty) {
+                  //         Get.offAllNamed(AppRoutes.bottomBarScreen);
+                  //       } else {
+                  //         Get.back();
+                  //       }
+                  //     }
+                  //   },
+                  //   icon: SvgPicture.asset(
+                  //     height: 30,
+                  //     AppAssets.backArrowIcon,
+                  //     color: AppColors.primary, // ignore: deprecated_member_use
+                  //   ),
+                  // ),
                   actions: [
                     if (con.cartList.isNotEmpty)
                       CartPopUpMenu(
@@ -177,8 +196,7 @@ class CartScreen extends StatelessWidget {
                                     navigateToProductDetailsScreen(
                                       productDetails: {
                                         "productId":
-                                            (con.cartList[index].inventoryId ??
-                                                ""),
+                                            (con.cartList[index].id ?? ""),
                                         "diamondClarity":
                                             (con.cartList[index].diamonds !=
                                                         null &&
@@ -201,11 +219,9 @@ class CartScreen extends StatelessWidget {
                                                 true
                                             ? con.cartList[index].diamonds!
                                             : [],
-                                        "type": GlobalProductPrefixType
-                                            .productDetails,
+                                        "type": GlobalProductPrefixType.cart,
                                       },
-                                      type: GlobalProductPrefixType
-                                          .productDetails,
+                                      type: GlobalProductPrefixType.cart,
                                       arguments: {
                                         "category":
                                             con.cartList[index].subCategoryId ??

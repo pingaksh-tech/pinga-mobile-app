@@ -362,8 +362,8 @@ class DiamondListModel {
         diamondClarity: RxString(json["diamond_clarity"].toString()),
         diamondShape: json["diamond_shape"],
         diamondSize: json["diamond_size"],
-        diamondCount: json["diamond_count"],
-        totalPrice: json["total_price"],
+        diamondCount: num.tryParse(json["diamond_count"].toString()) ?? 0,
+        totalPrice: num.tryParse(json["total_price"].toString()) ?? 0,
         id: json["_id"],
       );
 
@@ -383,7 +383,7 @@ class MetalListModel {
   final String? sortName;
   final String? metalCarat;
   final String? metalColor;
-  final int? pricePerGram;
+  final num? pricePerGram;
   final String? createdBy;
   final String? updatedBy;
   final dynamic deletedAt;
@@ -412,7 +412,7 @@ class MetalListModel {
         sortName: json["sort_name"],
         metalCarat: json["metal_carat"],
         metalColor: json["metal_color"],
-        pricePerGram: json["price_per_gram"],
+        pricePerGram: num.tryParse(json["price_per_gram"].toString()) ?? 0,
         createdBy: json["created_by"],
         updatedBy: json["updated_by"],
         deletedAt: json["deleted_at"],

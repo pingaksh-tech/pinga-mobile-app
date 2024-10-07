@@ -71,7 +71,8 @@ class SingleProductModel {
         sizeId: json["size_id"],
         metalId: json["metal_id"],
         cartQuantity: json["cartQty"].runtimeType == int ? json["cartQty"] : 0,
-        extraMetalWeight: json["extra_metal_weight"],
+        extraMetalWeight:
+            num.tryParse(json["extra_metal_weight"].toString()) ?? 0,
         isWishList: json["isWishList"],
         isDiamondMultiple: json["isDiamondMultiple"],
         inventoryImages: json["inventory_images"] == null
@@ -149,7 +150,7 @@ class PriceBreaking {
 }
 
 class PriceBreakingDiamond {
-  double? diamondWeight;
+  num? diamondWeight;
   num? diamondPrice;
 
   PriceBreakingDiamond({
@@ -159,8 +160,8 @@ class PriceBreakingDiamond {
 
   factory PriceBreakingDiamond.fromJson(Map<String, dynamic> json) =>
       PriceBreakingDiamond(
-        diamondWeight: json["diamond_weight"]?.toDouble(),
-        diamondPrice: json["diamond_price"],
+        diamondWeight: num.tryParse(json["diamond_weight"].toString()) ?? 0,
+        diamondPrice: num.tryParse(json["diamond_price"].toString()) ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -181,9 +182,9 @@ class Metal {
   });
 
   factory Metal.fromJson(Map<String, dynamic> json) => Metal(
-        metalWeight: json["metal_weight"],
-        pricePerGram: json["price_per_gram"],
-        metalPrice: json["metal_price"],
+        metalWeight: num.tryParse(json["metal_weight"].toString()) ?? 0,
+        pricePerGram: num.tryParse(json["price_per_gram"].toString()) ?? 0,
+        metalPrice: num.tryParse(json["metal_price"].toString()) ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -201,7 +202,8 @@ class Other {
   });
 
   factory Other.fromJson(Map<String, dynamic> json) => Other(
-        manufacturingPrice: json["manufacturing_price"],
+        manufacturingPrice:
+            num.tryParse(json["manufacturing_price"].toString()) ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -229,7 +231,7 @@ class ProductInfo {
   factory ProductInfo.fromJson(Map<String, dynamic> json) => ProductInfo(
         metal: json["Metal"],
         karatage: json["Karatage"],
-        metalWt: json["Metal Wt"],
+        metalWt: num.tryParse(json["Metal Wt"].toString()) ?? 0,
         category: json["Category"],
         collection: json["Collection"] == null
             ? []

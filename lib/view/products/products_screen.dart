@@ -247,10 +247,11 @@ class ProductsScreen extends StatelessWidget {
                                                 .inventoryProductList[index]
                                                 .sizeId!
                                                 .value,
-                                            "type":
-                                                GlobalProductPrefixType.cart,
+                                            "type": GlobalProductPrefixType
+                                                .productDetails,
                                           },
-                                          type: GlobalProductPrefixType.cart,
+                                          type: GlobalProductPrefixType
+                                              .productDetails,
                                           arguments: {
                                             "category": /*AppStrings.cartIdPrefixSlug +*/
                                                 (con.inventoryProductList[index]

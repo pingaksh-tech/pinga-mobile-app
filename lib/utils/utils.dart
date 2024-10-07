@@ -232,7 +232,7 @@ void navigateToProductDetailsScreen(
             sizeId: productDetailsId["sizeId"] ?? '',
             metalId: productDetailsId["metalId"] ?? "",
             diamondClarity: productDetailsId["diamondClarity"] ?? "",
-            // diamondList: productDetailsId["diamonds"],
+            diamondList: productDetailsId["diamonds"] ?? [],
           ).then(
             (value) {
               con.predefinedValue();
@@ -260,7 +260,6 @@ void navigateToProductDetailsScreen(
   apiCall(
     productDetails: productDetails,
   );
-
   Get.toNamed(AppRoutes.productDetailsScreen,
           arguments: arguments, preventDuplicates: false)
       ?.whenComplete(() {
@@ -299,6 +298,7 @@ void navigateToCartScreen({Map? arguments, Function()? whenComplete}) {
             sizeId: baseCon.lastProductDetails["sizeId"],
             metalId: baseCon.lastProductDetails["metalId"] ?? "",
             diamondClarity: baseCon.lastProductDetails["diamondClarity"] ?? "",
+            diamondList: baseCon.lastProductDetails["diamonds"] ?? [],
           ).then(
             (value) {
               con.predefinedValue();
