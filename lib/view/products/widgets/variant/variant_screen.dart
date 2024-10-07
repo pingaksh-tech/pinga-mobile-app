@@ -26,10 +26,13 @@ class VariantScreen extends StatelessWidget {
       ),
       body: Obx(() {
         return ListView.builder(
-          padding: EdgeInsets.symmetric(vertical: defaultPadding).copyWith(top: 0),
+          padding:
+              EdgeInsets.symmetric(vertical: defaultPadding).copyWith(top: 0),
           itemCount: con.variantList.length,
           itemBuilder: (context, index) => ProductTile(
-            onTap: () => Get.toNamed(AppRoutes.productDetailsScreen, arguments: {
+            screenType: "isVariantScreen",
+            onTap: () =>
+                Get.toNamed(AppRoutes.productDetailsScreen, arguments: {
               "category": /*AppStrings.cartIdPrefixSlug +*/ con.category.value,
               'isSize': con.isSize.value,
             }),

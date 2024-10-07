@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 import '../../../controller/predefine_value_controller.dart';
@@ -247,6 +246,7 @@ class ProductRepository {
     String? sizeId,
     String? diamondClarity,
     List<Map<String, dynamic>>? diamonds,
+    String? screenType,
     RxBool? loader,
   }) async {
     if (await getConnectivityResult()) {
@@ -314,26 +314,29 @@ class ProductRepository {
                 if (Get.isRegistered<ProductDetailsController>()) {
                   final ProductDetailsController con =
                       Get.find<ProductDetailsController>();
-                  con.productDetailModel.value.priceBreaking?.total?.value =
-                      model.data?.inventoryTotalPrice?.value ?? 0;
-                  con.productDetailModel.value.priceBreaking?.metal
-                          ?.metalPrice =
-                      model.data?.priceBreaking?.metal?.metalPrice ?? 0;
-                  con.productDetailModel.value.priceBreaking?.metal
-                          ?.pricePerGram =
-                      model.data?.priceBreaking?.metal?.pricePerGram ?? 0;
-                  con.productDetailModel.value.priceBreaking?.metal
-                          ?.metalWeight =
-                      model.data?.priceBreaking?.metal?.metalWeight ?? 0;
-                  con.productDetailModel.value.priceBreaking?.diamond
-                          ?.diamondWeight =
-                      model.data?.priceBreaking?.diamond?.diamondWeight ?? 0;
-                  con.productDetailModel.value.priceBreaking?.diamond
-                          ?.diamondPrice =
-                      model.data?.priceBreaking?.diamond?.diamondPrice ?? 0;
-                  con.productDetailModel.value.priceBreaking?.other
-                          ?.manufacturingPrice =
-                      model.data?.priceBreaking?.other?.manufacturingPrice ?? 0;
+                  if (screenType != 'isFamilyProduct') {
+                    con.productDetailModel.value.priceBreaking?.total?.value =
+                        model.data?.inventoryTotalPrice?.value ?? 0;
+                    con.productDetailModel.value.priceBreaking?.metal
+                            ?.metalPrice =
+                        model.data?.priceBreaking?.metal?.metalPrice ?? 0;
+                    con.productDetailModel.value.priceBreaking?.metal
+                            ?.pricePerGram =
+                        model.data?.priceBreaking?.metal?.pricePerGram ?? 0;
+                    con.productDetailModel.value.priceBreaking?.metal
+                            ?.metalWeight =
+                        model.data?.priceBreaking?.metal?.metalWeight ?? 0;
+                    con.productDetailModel.value.priceBreaking?.diamond
+                            ?.diamondWeight =
+                        model.data?.priceBreaking?.diamond?.diamondWeight ?? 0;
+                    con.productDetailModel.value.priceBreaking?.diamond
+                            ?.diamondPrice =
+                        model.data?.priceBreaking?.diamond?.diamondPrice ?? 0;
+                    con.productDetailModel.value.priceBreaking?.other
+                            ?.manufacturingPrice =
+                        model.data?.priceBreaking?.other?.manufacturingPrice ??
+                            0;
+                  }
                   if (con.productDetailModel.value.familyProducts != null) {
                     int index = con.productDetailModel.value.familyProducts!
                         .indexWhere((element) => element.id == inventoryId);
@@ -371,91 +374,56 @@ class ProductRepository {
   ///                                 GET PRODUCT DETAIL
   /// ***********************************************************************************
 
-  static Future<dynamic> getSingleProductAPI(
-      {RxBool? loader,
-      required String inventoryId,
-      required String sizeId,
-      required String metalId,
-      required String diamondClarity}) async {
-    ///
-    if (await getConnectivityResult() &&
-        isRegistered<ProductDetailsController>()) {
-      final ProductDetailsController con = Get.find<ProductDetailsController>();
-
-      try {
-        loader?.value = true;
-        if (kDebugMode) {
-          print(
-            {
-              "inventory_id": inventoryId,
-              "metal_id": metalId, // Platinum Metal
-              "diamond_clarity": diamondClarity,
-              "size_id": sizeId
-            },
-          );
-        }
-
-        /// API
-        await APIFunction.postApiCall(
-          apiUrl: ApiUrls.getSingleProductDetailPOST,
-          body: {
-            "inventory_id": inventoryId,
-            "metal_id": metalId, // Platinum Metal
-            "diamond_clarity": diamondClarity,
-            "size_id": sizeId
-          },
-          loader: loader,
-        ).then(
-          (response) async {
-            if (response != null) {
-              GetSingleProductModel model =
-                  GetSingleProductModel.fromJson(response);
-
-              if (model.data != null) {
-                con.productDetailModel.value = model.data!;
-                // con.isSizeAvailable.value = con.productDetailModel.value.sizeId != null;
-                con.inventoryId.value =
-                    con.productDetailModel.value.inventoryId ?? "";
-
-                con.productDetailModel.value.cartQuantity = con.quantity.value;
-                // con.isFancy=con.productDetailModel.value.productInfo.
-
-                // productsController.inventoryProductList.value
-              }
-              loader?.value = false;
-            } else {
-              loader?.value = false;
-            }
-            return response;
-          },
-        );
-      } catch (e) {
-        loader?.value = false;
-        printErrors(type: "getSingleProductAPI", errText: e);
-      }
-    } else {}
-  }
-  // static Future<dynamic> getSingleProductAPI({RxBool? loader, required String inventoryId}) async {
+  // static Future<dynamic> getSingleProductAPI({
+  //   RxBool? loader,
+  //   required String inventoryId,
+  //   required String sizeId,
+  //   required String metalId,
+  //   required String diamondClarity,
+  //   List<DiamondListModel>? diamondList,
+  // }) async {
   //   ///
-  //   if (await getConnectivityResult() && isRegistered<ProductDetailsController>()) {
+  //   if (await getConnectivityResult() &&
+  //       isRegistered<ProductDetailsController>()) {
   //     final ProductDetailsController con = Get.find<ProductDetailsController>();
 
   //     try {
   //       loader?.value = true;
+  //       List diamonds = [];
+  //       for (int i = 0; i < diamondList!.length; i++) {
+  //         diamonds.add({
+  //           "diamond_clarity": diamondList[i].diamondClarity?.value ?? "",
+  //           "diamond_shape": diamondList[i].diamondShape ?? "",
+  //           "diamond_size": diamondList[i].diamondSize ?? "",
+  //           "diamond_count": diamondList[i].diamondCount ?? 0,
+  //           "_id": diamondList[i].id ?? "",
+  //         });
+  //       }
 
   //       /// API
-  //       await APIFunction.getApiCall(
-  //         apiUrl: ApiUrls.getSingleProductDetailGET(inventoryId: inventoryId),
+  //       await APIFunction.postApiCall(
+  //         apiUrl: ApiUrls.getSingleProductDetailPOST,
+  //         body: {
+  //           "inventory_id": inventoryId,
+  //           if (!isValEmpty(metalId)) "metal_id": metalId,
+  //           if (!isValEmpty(sizeId)) "size_id": sizeId,
+  //           if (!isValEmpty(diamondClarity)) "diamond_clarity": diamondClarity,
+  //           if (diamonds.isNotEmpty) "diamonds": diamonds,
+  //         },
   //         loader: loader,
   //       ).then(
   //         (response) async {
   //           if (response != null) {
-  //             GetSingleProductModel model = GetSingleProductModel.fromJson(response);
+  //             GetSingleProductModel model =
+  //                 GetSingleProductModel.fromJson(response);
 
   //             if (model.data != null) {
   //               con.productDetailModel.value = model.data!;
   //               // con.isSizeAvailable.value = con.productDetailModel.value.sizeId != null;
-  //               con.inventoryId.value = con.productDetailModel.value.inventoryId ?? "";
+  //               con.inventoryId.value =
+  //                   con.productDetailModel.value.inventoryId ?? "";
+
+  //               con.productDetailModel.value.cartQuantity = con.quantity.value;
   //               // con.isFancy=con.productDetailModel.value.productInfo.
 
   //               // productsController.inventoryProductList.value
@@ -473,6 +441,72 @@ class ProductRepository {
   //     }
   //   } else {}
   // }
+  static Future<dynamic> getSingleProductAPI({
+    RxBool? loader,
+    required String inventoryId,
+    String? sizeId,
+    String? metalId,
+    String? diamondClarity,
+    List<DiamondListModel>? diamondList,
+  }) async {
+    if (await getConnectivityResult() &&
+        isRegistered<ProductDetailsController>()) {
+      final ProductDetailsController con = Get.find<ProductDetailsController>();
+
+      try {
+        loader?.value = true;
+        List diamonds = [];
+        if (diamondList != null) {
+          for (int i = 0; i < diamondList.length; i++) {
+            diamonds.add({
+              "diamond_clarity": diamondList[i].diamondClarity?.value ?? "",
+              "diamond_shape": diamondList[i].diamondShape ?? "",
+              "diamond_size": diamondList[i].diamondSize ?? "",
+              "diamond_count": diamondList[i].diamondCount ?? 0,
+              "_id": diamondList[i].id ?? "",
+            });
+          }
+        }
+
+        /// API
+        await APIFunction.postApiCall(
+          apiUrl: '${ApiUrls.getSingleProductDetailGET}$inventoryId',
+          body: {
+            if (!isValEmpty(metalId)) "metal_id": metalId,
+            if (!isValEmpty(sizeId)) "size_id": sizeId,
+            if (!isValEmpty(diamondClarity)) "diamond_clarity": diamondClarity,
+            if (diamonds.isNotEmpty) "diamonds": diamonds,
+          },
+          loader: loader,
+        ).then(
+          (response) async {
+            if (response != null) {
+              GetSingleProductModel model =
+                  GetSingleProductModel.fromJson(response);
+
+              if (model.data != null) {
+                con.productDetailModel.value = model.data!;
+                // con.isSizeAvailable.value = con.productDetailModel.value.sizeId != null;
+                con.inventoryId.value =
+                    con.productDetailModel.value.inventoryId ?? "";
+                con.isMultipleDiamondSelection.value =
+                    con.productDetailModel.value.isDiamondMultiple ?? false;
+
+                // productsController.inventoryProductList.value
+              }
+              loader?.value = false;
+            } else {
+              loader?.value = false;
+            }
+            return response;
+          },
+        );
+      } catch (e) {
+        loader?.value = false;
+        printErrors(type: "getSingleProductAPI", errText: e);
+      }
+    } else {}
+  }
 
   /// ***********************************************************************************
   ///                                       GET PRODUCT VARIANT

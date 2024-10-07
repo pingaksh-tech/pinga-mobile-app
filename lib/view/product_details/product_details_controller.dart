@@ -41,11 +41,13 @@ class ProductDetailsController extends GetxController {
   RxString metalId = "".obs;
   RxString cartId = "".obs;
   RxString productName = "".obs;
+  RxString selectDiamondCart = "".obs;
   num extraMetalPrice = 0;
   num extraMetalWt = 0.0;
   ProductsListType productsListTypeType = ProductsListType.normal;
 
   RxBool loader = true.obs;
+  // RxMap<String, String> diamonds = <String, String>{}.obs;
 
   @override
   void onInit() {
@@ -83,9 +85,7 @@ class ProductDetailsController extends GetxController {
       if (Get.arguments['sizeId'].runtimeType == String) {
         sizeId.value = Get.arguments['sizeId'];
       }
-      if (Get.arguments['inventoryId'].runtimeType == String) {
-        inventoryId.value = Get.arguments['inventoryId'];
-      }
+
       if (Get.arguments['diamondClarity'].runtimeType == String) {
         diamondClarity.value = Get.arguments['diamondClarity'];
       }
@@ -95,15 +95,11 @@ class ProductDetailsController extends GetxController {
       if (Get.arguments['quantity'].runtimeType == int) {
         quantity.value = Get.arguments['quantity'];
       }
-    }
 
-    printData(key: "inventoryId", value: inventoryId.value);
-    printData(key: "sizeId", value: sizeId.value);
-    printData(key: "metalId", value: metalId.value);
-    printData(key: "isFancy", value: isMultipleDiamondSelection.value);
-    printData(key: "diamondClarity", value: diamondClarity.value);
-    printData(key: "remark", value: selectedRemark.value);
-    printData(key: "quantity", value: quantity.value);
+      if (Get.arguments['diamonds'].runtimeType == List<DiamondListModel>) {
+        diamondList.value = Get.arguments['diamonds'];
+      }
+    }
   }
 
   /// prefix values
@@ -122,6 +118,7 @@ class ProductDetailsController extends GetxController {
               sizeId: sizeId.value,
               metalId: metalId.value,
               diamondClarity: diamondClarity.value,
+              diamondList: diamondList,
               loader: loader)
           .then(
         (value) {
@@ -147,28 +144,32 @@ class ProductDetailsController extends GetxController {
       inventoryId: inventoryId.value,
       sizeId: selectedSize.value.id?.value ?? "",
       metalId: selectedMetal.value.id?.value ?? "",
-      diamondClarity: isMultipleDiamondSelection.isFalse
+      diamondClarity: isMultipleDiamondSelection.value == false
           ? selectedDiamond.value.name ?? ""
           : "",
-      diamonds: isMultipleDiamondSelection.isTrue
-          ? List.generate(
-              productDetailModel.value.diamonds != null
-                  ? productDetailModel.value.diamonds!.length
-                  : 0,
-              (index) => {
-                "diamond_clarity": productDetailModel
-                        .value.diamonds?[index].diamondClarity?.value ??
-                    "",
-                "diamond_shape":
-                    productDetailModel.value.diamonds?[index].diamondShape ??
+      diamonds: isMultipleDiamondSelection.value == true
+          ? productDetailModel.value.diamonds!.isEmpty
+              ? []
+              : List.generate(
+                  productDetailModel.value.diamonds != null
+                      ? productDetailModel.value.diamonds!.length
+                      : 0,
+                  (index) => {
+                    "diamond_clarity": productDetailModel
+                            .value.diamonds?[index].diamondClarity?.value ??
                         "",
-                "diamond_size":
-                    productDetailModel.value.diamonds?[index].diamondSize ?? "",
-                "diamond_count":
-                    productDetailModel.value.diamonds?[index].diamondCount ?? 0,
-                "_id": productDetailModel.value.diamonds?[index].id ?? "",
-              },
-            )
+                    "diamond_shape": productDetailModel
+                            .value.diamonds?[index].diamondShape ??
+                        "",
+                    "diamond_size":
+                        productDetailModel.value.diamonds?[index].diamondSize ??
+                            "",
+                    "diamond_count": productDetailModel
+                            .value.diamonds?[index].diamondCount ??
+                        0,
+                    "_id": productDetailModel.value.diamonds?[index].id ?? "",
+                  },
+                )
           : [],
     ).then((value) {
       productDetailModel.value.priceBreaking?.total =

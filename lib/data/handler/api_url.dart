@@ -34,8 +34,7 @@ class ApiUrls {
   static const String getProductPricePOST = "inventory/changing-price";
   static String getSingleProductDetailPOST =
       "inventory/inventory-details-changing-price";
-  // static String getSingleProductDetailGET({required String inventoryId}) =>
-  //     "inventory/$inventoryId";
+  static String getSingleProductDetailGET = "inventory/findOne/";
 
   /// WISHLIST
   static const String createAndGetWishlistAPI = "mobile/wishlist";

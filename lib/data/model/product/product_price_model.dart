@@ -4,9 +4,11 @@ import 'package:get/get.dart';
 
 import 'products_model.dart';
 
-GetProductPriceModel getProductPriceModelFromJson(String str) => GetProductPriceModel.fromJson(json.decode(str));
+GetProductPriceModel getProductPriceModelFromJson(String str) =>
+    GetProductPriceModel.fromJson(json.decode(str));
 
-String getProductPriceModelToJson(GetProductPriceModel data) => json.encode(data.toJson());
+String getProductPriceModelToJson(GetProductPriceModel data) =>
+    json.encode(data.toJson());
 
 class GetProductPriceModel {
   final String? message;
@@ -17,9 +19,12 @@ class GetProductPriceModel {
     this.data,
   });
 
-  factory GetProductPriceModel.fromJson(Map<String, dynamic> json) => GetProductPriceModel(
+  factory GetProductPriceModel.fromJson(Map<String, dynamic> json) =>
+      GetProductPriceModel(
         message: json["message"],
-        data: json["data"] == null ? null : ProductPriceModel.fromJson(json["data"]),
+        data: json["data"] == null
+            ? null
+            : ProductPriceModel.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -39,10 +44,14 @@ class ProductPriceModel {
     this.priceBreaking,
   });
 
-  factory ProductPriceModel.fromJson(Map<String, dynamic> json) => ProductPriceModel(
+  factory ProductPriceModel.fromJson(Map<String, dynamic> json) =>
+      ProductPriceModel(
         inventoryTotalPrice: RxNum(json["inventory_total_price"] ?? 0),
-        cartQty: json["cartQty"] == null ? null : CartQty.fromJson(json["cartQty"]),
-        priceBreaking: json["price_breaking"] == null ? null : PriceBreaking.fromJson(json["price_breaking"]),
+        cartQty:
+            json["cartQty"] == null ? null : CartQty.fromJson(json["cartQty"]),
+        priceBreaking: json["price_breaking"] == null
+            ? null
+            : PriceBreaking.fromJson(json["price_breaking"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -67,9 +76,13 @@ class PriceBreaking {
 
   factory PriceBreaking.fromJson(Map<String, dynamic> json) => PriceBreaking(
         metal: json["metal"] == null ? null : Metal.fromJson(json["metal"]),
-        diamond: json["diamond"] == null ? null : PriceBreakingDiamond.fromJson(json["diamond"]),
+        diamond: json["diamond"] == null
+            ? null
+            : PriceBreakingDiamond.fromJson(json["diamond"]),
         other: json["other"] == null ? null : Other.fromJson(json["other"]),
-        total: json["total"] == null ? null : RxNum(num.tryParse(json["total"].toString()) ?? 0),
+        total: json["total"] == null
+            ? null
+            : RxNum(num.tryParse(json["total"].toString()) ?? 0),
       );
 
   Map<String, dynamic> toJson() => {
@@ -89,7 +102,8 @@ class PriceBreakingDiamond {
     this.diamondPrice,
   });
 
-  factory PriceBreakingDiamond.fromJson(Map<String, dynamic> json) => PriceBreakingDiamond(
+  factory PriceBreakingDiamond.fromJson(Map<String, dynamic> json) =>
+      PriceBreakingDiamond(
         diamondWeight: json["diamond_weight"]?.toDouble(),
         diamondPrice: json["diamond_price"],
       );
@@ -178,16 +192,23 @@ class CartQty {
         id: json["_id"],
         sizeId: json["size_id"],
         userId: json["user_id"],
-        diamonds: json["diamonds"] == null ? [] : List<DiamondListModel>.from(json["diamonds"]!.map((x) => DiamondListModel.fromJson(x))),
+        diamonds: json["diamonds"] == null
+            ? []
+            : List<DiamondListModel>.from(
+                json["diamonds"]!.map((x) => DiamondListModel.fromJson(x))),
         diamondClarity: json["diamond_clarity"],
         metalId: json["metal_id"],
         inventoryId: json["inventory_id"],
         v: json["__v"],
-        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+        createdAt: json["createdAt"] == null
+            ? null
+            : DateTime.parse(json["createdAt"]),
         diamondTotalPrice: json["diamond_total_price"],
         quantity: json["quantity"],
         remark: json["remark"],
-        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+        updatedAt: json["updatedAt"] == null
+            ? null
+            : DateTime.parse(json["updatedAt"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -195,7 +216,9 @@ class CartQty {
         "_id": id,
         "size_id": sizeId,
         "user_id": userId,
-        "diamonds": diamonds == null ? [] : List<dynamic>.from(diamonds!.map((x) => x.toJson())),
+        "diamonds": diamonds == null
+            ? []
+            : List<dynamic>.from(diamonds!.map((x) => x.toJson())),
         "diamond_clarity": diamondClarity,
         "metal_id": metalId,
         "inventory_id": inventoryId,

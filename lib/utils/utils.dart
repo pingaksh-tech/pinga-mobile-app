@@ -185,112 +185,25 @@ void deleteGetXController<S>() {
 ///                                DUPLICATE ROUTE ISSUE RESOLVER
 /// ***********************************************************************************
 
-String addProductIdToGlobalList(String productId,
+addProductDetailsToGlobalList(Map productDetails,
     {required GlobalProductPrefixType type}) {
-  if (isRegistered<BaseController>() && productId.length > 10) {
+  if (isRegistered<BaseController>() &&
+      productDetails["productId"].length > 10) {
     BaseController con = Get.find<BaseController>();
 
-    String pId = productId.contains("-") ? productId : type.prefix + productId;
-    printOkStatus("==< $pId");
-    con.globalProductIds.add(pId);
-    return pId;
+    con.globalProductDetails.add(productDetails);
+
+    return productDetails;
   } else {
     return "";
   }
 }
 
-/// ***********************************************************************************
-///                                DUPLICATE ROUTE ISSUE RESOLVER
-/// ***********************************************************************************
-
-String addSizeIdToGlobalList(String sizeId,
-    {required GlobalProductPrefixType type}) {
-  if (isRegistered<BaseController>() && sizeId.length > 10) {
-    BaseController con = Get.find<BaseController>();
-
-    String sId = sizeId.contains("-") ? sizeId : type.prefix + sizeId;
-    printOkStatus("==< $sId");
-    con.globalSizeId.add(sId);
-    return sId;
-  } else {
-    return "";
-  }
-}
-
-/// ***********************************************************************************
-///                                DUPLICATE ROUTE ISSUE RESOLVER
-/// ***********************************************************************************
-
-String adddiamondClarityToGlobalList(String diamondClarity,
-    {required GlobalProductPrefixType type}) {
-  if (isRegistered<BaseController>() && diamondClarity.isNotEmpty) {
-    BaseController con = Get.find<BaseController>();
-
-    String dClarity = diamondClarity.contains("-")
-        ? diamondClarity
-        : type.prefix + diamondClarity;
-    printOkStatus("==< $dClarity");
-    printOkStatus(dClarity);
-    con.globalDiamondClarity.add(dClarity);
-    return dClarity;
-  } else {
-    return "";
-  }
-}
-
-/// ***********************************************************************************
-///                                DUPLICATE ROUTE ISSUE RESOLVER
-/// ***********************************************************************************
-
-String addMetalIdToGlobalList(String metalId,
-    {required GlobalProductPrefixType type}) {
-  if (isRegistered<BaseController>() && metalId.length > 10) {
-    BaseController con = Get.find<BaseController>();
-
-    String mId = metalId.contains("-") ? metalId : type.prefix + metalId;
-    printOkStatus("==< $mId");
-    con.globalMetalId.add(mId);
-    return mId;
-  } else {
-    return "";
-  }
-}
-
-String removeLastProductIdFromGlobalList() {
+removeProductDetailsToGlobalList() {
   if (isRegistered<BaseController>()) {
     BaseController con = Get.find<BaseController>();
-    con.globalProductIds.removeLast();
-    return con.lastProductId;
-  } else {
-    return "";
-  }
-}
-
-String removeLasttMetalIdFromGlobalList() {
-  if (isRegistered<BaseController>()) {
-    BaseController con = Get.find<BaseController>();
-    con.globalMetalId.removeLast();
-    return con.lastMetalId;
-  } else {
-    return "";
-  }
-}
-
-String removeLastSizeIdFromGlobalList() {
-  if (isRegistered<BaseController>()) {
-    BaseController con = Get.find<BaseController>();
-    con.globalSizeId.removeLast();
-    return con.lastSizeId;
-  } else {
-    return "";
-  }
-}
-
-String removeLastDiamondClarityFromGlobalList() {
-  if (isRegistered<BaseController>()) {
-    BaseController con = Get.find<BaseController>();
-    con.globalDiamondClarity.removeLast();
-    return con.lastDiamondClarity;
+    con.globalProductDetails.removeLast();
+    return con.lastProductDetails;
   } else {
     return "";
   }
@@ -298,36 +211,28 @@ String removeLastDiamondClarityFromGlobalList() {
 
 void navigateToProductDetailsScreen(
     {Map? arguments,
-    required String productId,
+    required Map productDetails,
     required GlobalProductPrefixType type,
-    required String sizeId,
-    required String metalId,
-    required String diamondClarity,
     Function()? whenComplete}) {
   void apiCall({
-    required String productId,
-    required String sizeId,
-    required String metalId,
-    required String diamondClarity,
+    required Map productDetails,
   }) {
     /// API CALL
     try {
-      String pId = addProductIdToGlobalList(productId, type: type);
-      String sId = addSizeIdToGlobalList(sizeId, type: type);
-      String mId = addMetalIdToGlobalList(metalId, type: type);
-      String dClarity =
-          adddiamondClarityToGlobalList(diamondClarity, type: type);
-
+      var productDetailsId =
+          addProductDetailsToGlobalList(productDetails, type: type);
+      printBlue(productDetailsId);
       if (isRegistered<ProductDetailsController>()) {
         ProductDetailsController con = Get.find<ProductDetailsController>();
 
         if (type == GlobalProductPrefixType.productDetails) {
           ProductRepository.getSingleProductAPI(
-            inventoryId: pId.substring(2),
+            inventoryId: productDetailsId["productId"],
             loader: con.loader,
-            sizeId: sId.substring(2),
-            metalId: mId.substring(2),
-            diamondClarity: dClarity,
+            sizeId: productDetailsId["sizeId"] ?? '',
+            metalId: productDetailsId["metalId"] ?? "",
+            diamondClarity: productDetailsId["diamondClarity"] ?? "",
+            // diamondList: productDetailsId["diamonds"],
           ).then(
             (value) {
               con.predefinedValue();
@@ -336,7 +241,7 @@ void navigateToProductDetailsScreen(
           );
         } else {
           CartRepository.getSingleCartItemAPI(
-                  cartId: pId.substring(2), loader: con.loader)
+                  cartId: productDetailsId["productId"], loader: con.loader)
               .then(
             (value) {
               con.predefinedValue();
@@ -348,15 +253,12 @@ void navigateToProductDetailsScreen(
     } catch (e) {
       printErrors(
           type: "navigateToProductDetailsScreen",
-          errText: "PROD: $productId $e");
+          errText: "PROD: ${productDetails["productId"]} $e");
     }
   }
 
   apiCall(
-    productId: productId,
-    sizeId: sizeId,
-    metalId: metalId,
-    diamondClarity: diamondClarity,
+    productDetails: productDetails,
   );
 
   Get.toNamed(AppRoutes.productDetailsScreen,
@@ -366,11 +268,7 @@ void navigateToProductDetailsScreen(
       whenComplete();
     }
     if (Get.currentRoute == AppRoutes.productDetailsScreen) {
-      apiCall(
-          productId: removeLastProductIdFromGlobalList(),
-          diamondClarity: removeLastDiamondClarityFromGlobalList(),
-          metalId: removeLasttMetalIdFromGlobalList(),
-          sizeId: removeLastSizeIdFromGlobalList());
+      apiCall(productDetails: removeProductDetailsToGlobalList());
     }
   });
 }
@@ -392,23 +290,15 @@ void navigateToCartScreen({Map? arguments, Function()? whenComplete}) {
           isRegistered<BaseController>()) {
         ProductDetailsController con = Get.find<ProductDetailsController>();
         BaseController baseCon = Get.find<BaseController>();
-        // baseCon.globalProductIds.removeLast();
-        String pId = baseCon.lastProductId;
-        String sizeId = baseCon.lastSizeId;
-        String metalId = baseCon.lastMetalId;
-        String diamondClarity = baseCon.lastDiamondClarity;
 
-        GlobalProductPrefixType type =
-            pId.substring(0, 2) == AppStrings.productIdPrefixSlug
-                ? GlobalProductPrefixType.productDetails
-                : GlobalProductPrefixType.cart;
-        if (type == GlobalProductPrefixType.productDetails) {
+        if (baseCon.lastProductDetails["type"] ==
+            GlobalProductPrefixType.productDetails) {
           ProductRepository.getSingleProductAPI(
-            inventoryId: pId.substring(2),
+            inventoryId: baseCon.lastProductDetails["productId"],
             loader: con.loader,
-            sizeId: sizeId,
-            metalId: metalId,
-            diamondClarity: diamondClarity,
+            sizeId: baseCon.lastProductDetails["sizeId"],
+            metalId: baseCon.lastProductDetails["metalId"] ?? "",
+            diamondClarity: baseCon.lastProductDetails["diamondClarity"] ?? "",
           ).then(
             (value) {
               con.predefinedValue();
@@ -417,7 +307,8 @@ void navigateToCartScreen({Map? arguments, Function()? whenComplete}) {
           );
         } else {
           CartRepository.getSingleCartItemAPI(
-                  cartId: pId.substring(2), loader: con.loader)
+                  cartId: baseCon.lastProductDetails["productId"],
+                  loader: con.loader)
               .then(
             (value) {
               con.predefinedValue();

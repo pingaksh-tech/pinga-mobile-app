@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:get/get.dart';
+
 import '../product/products_model.dart';
 
 GetCartModel getCartModelFromJson(String str) =>
@@ -75,14 +77,14 @@ class GetCartDataModel {
 
 class CartModel {
   final String? id;
-  final String? metalId;
+  final RxString? metalId;
   final String? diamondClarity;
-  final String? sizeId;
+  final RxString? sizeId;
   final String? userId;
   final String? categoryId;
   final List<DiamondListModel>? diamonds;
   final int? quantity;
-  final String? remark;
+  final RxString? remark;
   final String? inventoryId;
   final String? subCategoryId;
   final String? inventoryName;
@@ -110,9 +112,9 @@ class CartModel {
 
   factory CartModel.fromJson(Map<String, dynamic> json) => CartModel(
         id: json["_id"],
-        metalId: json["metal_id"],
+        metalId: RxString(json["metal_id"].toString()),
         diamondClarity: json["diamond_clarity"],
-        sizeId: json["size_id"],
+        sizeId: RxString(json["size_id"].toString()),
         userId: json["user_id"],
         categoryId: json["category_id"],
         diamonds: json["diamonds"] == null
@@ -120,7 +122,7 @@ class CartModel {
             : List<DiamondListModel>.from(
                 json["diamonds"]!.map((x) => DiamondListModel.fromJson(x))),
         quantity: json["quantity"],
-        remark: json["remark"] ?? '',
+        remark: RxString(json["remark"].toString()),
         inventoryId: json["inventory_id"],
         subCategoryId: json["sub_category_id"],
         inventoryName: json["inventory_name"],
@@ -133,16 +135,16 @@ class CartModel {
 
   Map<String, dynamic> toJson() => {
         "_id": id,
-        "metal_id": metalId,
+        "metal_id": metalId.obs,
         "diamond_clarity": diamondClarity,
-        "size_id": sizeId,
+        "size_id": sizeId.obs,
         "user_id": userId,
         "category_id": categoryId,
         "diamonds": diamonds == null
             ? []
             : List<dynamic>.from(diamonds!.map((x) => x.toJson())),
         "quantity": quantity,
-        "remark": remark,
+        "remark": remark.obs,
         "inventory_id": inventoryId,
         "sub_category_id": subCategoryId,
         "inventory_name": inventoryName,

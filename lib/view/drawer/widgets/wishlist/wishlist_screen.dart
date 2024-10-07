@@ -44,6 +44,7 @@ class WishlistScreen extends StatelessWidget {
                               (index) => Column(
                                 children: [
                                   ProductTile(
+                                    screenType: "isWishlistScreen",
                                     category: RxString(con.productsList[index]
                                             .inventory?.subCategoryId ??
                                         ""),

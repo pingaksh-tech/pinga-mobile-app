@@ -344,8 +344,8 @@ class DiamondListModel {
   RxString? diamondClarity;
   final String? diamondShape;
   final String? diamondSize;
-  final int? diamondCount;
-  final double? totalPrice;
+  final num? diamondCount;
+  final num? totalPrice;
   final String? id;
 
   DiamondListModel({
@@ -363,7 +363,7 @@ class DiamondListModel {
         diamondShape: json["diamond_shape"],
         diamondSize: json["diamond_size"],
         diamondCount: json["diamond_count"],
-        totalPrice: json["total_price"]?.toDouble(),
+        totalPrice: json["total_price"],
         id: json["_id"],
       );
 

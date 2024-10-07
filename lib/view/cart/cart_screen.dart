@@ -96,6 +96,7 @@ class CartScreen extends StatelessWidget {
                                   SizedBox(height: defaultPadding),
                               itemBuilder: (context, index) {
                                 return ProductTile(
+                                  screenType: "isCartScreen",
                                   isFancy:
                                       con.cartList[index].isDiamondMultiple ??
                                           false,
@@ -104,15 +105,15 @@ class CartScreen extends StatelessWidget {
                                   inventoryId: con.cartList[index].inventoryId,
                                   productsListTypeType: ProductsListType.cart,
                                   selectMetalCart:
-                                      (con.cartList[index].metalId ?? "").obs,
+                                      (con.cartList[index].metalId!.value).obs,
                                   selectDiamondCart:
                                       (con.cartList[index].diamondClarity ?? "")
                                           .obs,
                                   item: con.cartList[index],
                                   category: RxString(
                                       con.cartList[index].subCategoryId ?? ""),
-                                  isSizeAvailable:
-                                      !isValEmpty(con.cartList[index].sizeId),
+                                  isSizeAvailable: !isValEmpty(
+                                      con.cartList[index].sizeId!.value),
                                   productTileType: ProductTileType.cartTile,
                                   diamondList: RxList(
                                       con.cartList[index].diamonds ?? []),
@@ -122,7 +123,7 @@ class CartScreen extends StatelessWidget {
                                     ),
                                   ),
                                   remark: RxString(
-                                      con.cartList[index].remark ?? ""),
+                                      con.cartList[index].remark!.value),
                                   imageUrl: (con.cartList[index]
                                                   .inventoryImage !=
                                               null &&
@@ -141,11 +142,11 @@ class CartScreen extends StatelessWidget {
                                   productQuantity:
                                       RxInt(con.cartList[index].quantity ?? 0),
                                   selectSize:
-                                      (con.cartList[index].sizeId ?? "").obs,
+                                      (con.cartList[index].sizeId!.value).obs,
                                   deleteOnTap: () {
                                     //? CART DELETE API
                                     CartRepository.deleteCartAPi(
-                                        cartId: con.cartList[index].id ?? "");
+                                        cartId: con.cartList[index].id);
                                     con.calculateSelectedItemPrice();
                                     con.calculateSelectedQue();
                                     Get.back();
@@ -162,29 +163,47 @@ class CartScreen extends StatelessWidget {
                                     con.calculateSelectedItemPrice();
                                     con.calculateSelectedQue();
                                   },
+                                  metalOnChanged: (value) {
+                                    con.cartList[index].metalId!.value = value;
+                                  },
+                                  remarkOnChanged: (value) {
+                                    con.cartList[index].remark!.value = value;
+                                  },
+                                  sizeOnChanged: (value) {
+                                    con.cartList[index].sizeId!.value = value;
+                                  },
                                   onTap: () {
                                     // addProductIdToGlobalList((con.cartList[index].id ?? ""), type: GlobalProductPrefixType.cart);
-
                                     navigateToProductDetailsScreen(
-                                      productId:
-                                          (con.cartList[index].inventoryId ??
-                                              ""),
-                                      diamondClarity:
-                                          (con.cartList[index].diamonds !=
-                                                      null &&
-                                                  con.cartList[index].diamonds!
-                                                      .isNotEmpty)
-                                              ? con
-                                                      .cartList[index]
-                                                      .diamonds
-                                                      ?.first
-                                                      .diamondClarity
-                                                      ?.value ??
-                                                  ""
-                                              : "",
-                                      metalId:
-                                          con.cartList[index].metalId ?? "",
-                                      sizeId: con.cartList[index].sizeId ?? "",
+                                      productDetails: {
+                                        "productId":
+                                            (con.cartList[index].inventoryId ??
+                                                ""),
+                                        "diamondClarity":
+                                            (con.cartList[index].diamonds !=
+                                                        null &&
+                                                    con.cartList[index]
+                                                        .diamonds!.isNotEmpty)
+                                                ? con
+                                                        .cartList[index]
+                                                        .diamonds
+                                                        ?.first
+                                                        .diamondClarity
+                                                        ?.value ??
+                                                    ""
+                                                : "",
+                                        "metalId":
+                                            con.cartList[index].metalId!.value,
+                                        "sizeId":
+                                            con.cartList[index].sizeId!.value,
+                                        "diamonds": con.cartList[index]
+                                                    .isDiamondMultiple ==
+                                                true
+                                            ? con.cartList[index].diamonds!
+                                            : [],
+                                        "type": GlobalProductPrefixType
+                                            .productDetails,
+                                      },
                                       type: GlobalProductPrefixType
                                           .productDetails,
                                       arguments: {

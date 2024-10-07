@@ -135,11 +135,11 @@ class CartController extends GetxController {
       int? quantity}) {
     CartRepository.addOrUpdateCartApi(
       cartId: cartList[index].id ?? "",
-      remark: cartList[index].remark ?? "",
+      remark: cartList[index].remark!.value,
       inventoryId: cartList[index].inventoryId ?? "",
       quantity: quantity ?? cartList[index].quantity ?? 0,
-      metalId: metalId ?? cartList[index].metalId ?? "",
-      sizeId: sizeId ?? cartList[index].sizeId ?? "",
+      metalId: metalId ?? cartList[index].metalId!.value,
+      sizeId: sizeId ?? cartList[index].sizeId!.value,
       diamondClarity: diamondClarity ?? cartList[index].diamondClarity ?? "",
     );
   }

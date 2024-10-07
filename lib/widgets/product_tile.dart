@@ -41,6 +41,7 @@ class ProductTile extends StatefulWidget {
   final Function(bool)? likeOnChanged;
   final VoidCallback? deleteOnTap;
   final Function(String)? diamondOnChanged;
+  final Function(List<DiamondListModel>?)? multiDiamondOnChanged;
   final Function(String)? sizeOnChanged;
   final Function(String)? metalOnChanged;
   final Function(String)? remarkOnChanged;
@@ -54,6 +55,7 @@ class ProductTile extends StatefulWidget {
   RxString? selectDiamondCart;
   String? cartId;
   RxString? remark;
+  String screenType;
 
   ProductTile({
     super.key,
@@ -78,12 +80,14 @@ class ProductTile extends StatefulWidget {
     this.inventoryId,
     this.diamondList,
     this.diamonds,
+    required this.screenType,
     this.productsListTypeType = ProductsListType.normal,
     this.selectMetalCart,
     this.selectDiamondCart,
     this.cartId,
     this.remark,
     this.diamondOnChanged,
+    this.multiDiamondOnChanged,
     this.sizeOnChanged,
     this.remarkOnChanged,
     this.metalOnChanged,
@@ -699,31 +703,34 @@ class _ProductTileState extends State<ProductTile> {
         duration: defaultSearchDebounceDuration,
         callback: () async {
           await ProductRepository.getProductPriceAPI(
-            productListType: widget.productsListTypeType,
-            inventoryId: inventoryId ?? widget.inventoryId ?? "",
-            metalId: metalId ?? metalModel.id?.value ?? "",
-            sizeId: sizeId ?? sizeModel.value.id?.value ?? "",
-            diamondClarity: widget.isFancy == false
-                ? diamondClarity ?? diamondClarity ?? (diamondModel.name ?? "")
-                : "",
-            diamonds: widget.isFancy == true
-                ? diamonds ??
-                    List.generate(
-                      widget.diamonds!.length,
-                      (index) => {
-                        "diamond_clarity":
-                            widget.diamonds?[index].diamondClarity?.value ?? "",
-                        "diamond_shape":
-                            widget.diamonds?[index].diamondShape ?? "",
-                        "diamond_size":
-                            widget.diamonds?[index].diamondSize ?? "",
-                        "diamond_count":
-                            widget.diamonds?[index].diamondCount ?? 0,
-                        "_id": widget.diamonds?[index].id ?? "",
-                      },
-                    )
-                : null,
-          );
+              productListType: widget.productsListTypeType,
+              inventoryId: inventoryId ?? widget.inventoryId ?? "",
+              metalId: metalId ?? metalModel.id?.value ?? "",
+              sizeId: sizeId ?? sizeModel.value.id?.value ?? "",
+              diamondClarity: widget.isFancy == false
+                  ? diamondClarity ??
+                      diamondClarity ??
+                      (diamondModel.name ?? "")
+                  : "",
+              diamonds: widget.isFancy == true
+                  ? diamonds ??
+                      List.generate(
+                        widget.diamonds!.length,
+                        (index) => {
+                          "diamond_clarity":
+                              widget.diamonds?[index].diamondClarity?.value ??
+                                  "",
+                          "diamond_shape":
+                              widget.diamonds?[index].diamondShape ?? "",
+                          "diamond_size":
+                              widget.diamonds?[index].diamondSize ?? "",
+                          "diamond_count":
+                              widget.diamonds?[index].diamondCount ?? 0,
+                          "_id": widget.diamonds?[index].id ?? "",
+                        },
+                      )
+                  : null,
+              screenType: widget.screenType);
         });
   }
 
@@ -779,7 +786,7 @@ class _ProductTileState extends State<ProductTile> {
         if ((value.runtimeType == MetalModel)) {
           widget.selectMetalCart = value.id;
           metalModel = value;
-          widget.metalOnChanged!(value.id?.value ?? "");
+          widget.metalOnChanged!(value.id!.value);
           if (!isValEmpty(widget.cartId)) {
             await addOrUpdateCart(metalId: value.id?.value ?? "");
           }
@@ -811,6 +818,7 @@ class _ProductTileState extends State<ProductTile> {
         axisDirection: direction,
         multiRubyOnChanged: (diamondList) async {
           /// Return List of Selected Diamond
+          // widget.multiDiamondOnChanged!(widget.diamonds);
           if ((diamondList.runtimeType == RxList<DiamondListModel>)) {
             diamondList = diamondList;
             if (!isValEmpty(widget.cartId)) {

@@ -32,6 +32,7 @@ class VariantsTab extends StatelessWidget {
         productName: con.variantList[index].name ?? "",
         productPrice: con.variantList[index].price.toString(),
         productQuantity: con.variantList[index].quantity,
+        screenType: "isVariantsTab",
       ),
     );
   }

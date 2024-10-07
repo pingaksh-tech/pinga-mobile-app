@@ -179,6 +179,7 @@ class ProductsScreen extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     ProductTile(
+                                      screenType: "isProductsScreen",
                                       category: RxString(con
                                               .inventoryProductList[index]
                                               .subCategoryId ??
@@ -198,40 +199,58 @@ class ProductsScreen extends StatelessWidget {
                                               : ProductTileType.list,
                                       onTap: () {
                                         // addProductIdToGlobalList((con.inventoryProductList[index].id ?? ""), type: GlobalProductPrefixType.productDetails);
-
                                         navigateToProductDetailsScreen(
-                                          productId: (con
-                                                  .inventoryProductList[index]
-                                                  .id ??
-                                              ""),
-                                          diamondClarity:
-                                              (con.inventoryProductList[index]
-                                                              .diamonds !=
-                                                          null &&
-                                                      con
-                                                          .inventoryProductList[
-                                                              index]
-                                                          .diamonds!
-                                                          .isNotEmpty)
-                                                  ? con
-                                                          .inventoryProductList[
-                                                              index]
-                                                          .diamonds
-                                                          ?.first
-                                                          .diamondClarity
-                                                          ?.value ??
-                                                      ""
-                                                  : "",
-                                          metalId: con
-                                              .inventoryProductList[index]
-                                              .metalId!
-                                              .value,
-                                          sizeId: con
-                                              .inventoryProductList[index]
-                                              .sizeId!
-                                              .value,
-                                          type: GlobalProductPrefixType
-                                              .productDetails,
+                                          productDetails: {
+                                            "productId": (con
+                                                    .inventoryProductList[index]
+                                                    .id ??
+                                                ""),
+                                            "diamondClarity": con
+                                                        .inventoryProductList[
+                                                            index]
+                                                        .isDiamondMultiple ==
+                                                    true
+                                                ? ""
+                                                : (con
+                                                                .inventoryProductList[
+                                                                    index]
+                                                                .diamonds !=
+                                                            null &&
+                                                        con
+                                                            .inventoryProductList[
+                                                                index]
+                                                            .diamonds!
+                                                            .isNotEmpty)
+                                                    ? con
+                                                            .inventoryProductList[
+                                                                index]
+                                                            .diamonds
+                                                            ?.first
+                                                            .diamondClarity
+                                                            ?.value ??
+                                                        ""
+                                                    : "",
+                                            "diamonds": con
+                                                        .inventoryProductList[
+                                                            index]
+                                                        .isDiamondMultiple ==
+                                                    true
+                                                ? con
+                                                    .inventoryProductList[index]
+                                                    .diamonds!
+                                                : [],
+                                            "metalId": con
+                                                .inventoryProductList[index]
+                                                .metalId!
+                                                .value,
+                                            "sizeId": con
+                                                .inventoryProductList[index]
+                                                .sizeId!
+                                                .value,
+                                            "type":
+                                                GlobalProductPrefixType.cart,
+                                          },
+                                          type: GlobalProductPrefixType.cart,
                                           arguments: {
                                             "category": /*AppStrings.cartIdPrefixSlug +*/
                                                 (con.inventoryProductList[index]
@@ -290,31 +309,26 @@ class ProductsScreen extends StatelessWidget {
                                             "metalId": con
                                                 .inventoryProductList[index]
                                                 .metalId!
-                                                .value
+                                                .value,
+
+                                            "diamonds": con
+                                                        .inventoryProductList[
+                                                            index]
+                                                        .isDiamondMultiple ==
+                                                    true
+                                                ? con
+                                                    .inventoryProductList[index]
+                                                    .diamonds
+                                                : [],
                                           },
                                           whenComplete: () {
                                             if (isRegistered<
                                                 BaseController>()) {
                                               BaseController baseCon =
                                                   Get.find<BaseController>();
-                                              if (baseCon.globalProductIds
+                                              if (baseCon.globalProductDetails
                                                   .isNotEmpty) {
-                                                baseCon.globalProductIds
-                                                    .removeLast();
-                                              }
-                                              if (baseCon
-                                                  .globalSizeId.isNotEmpty) {
-                                                baseCon.globalSizeId
-                                                    .removeLast();
-                                              }
-                                              if (baseCon
-                                                  .globalMetalId.isNotEmpty) {
-                                                baseCon.globalMetalId
-                                                    .removeLast();
-                                              }
-                                              if (baseCon.globalDiamondClarity
-                                                  .isNotEmpty) {
-                                                baseCon.globalDiamondClarity
+                                                baseCon.globalProductDetails
                                                     .removeLast();
                                               }
                                             }
@@ -390,8 +404,8 @@ class ProductsScreen extends StatelessWidget {
                                                   "")
                                               .obs
                                           : "".obs,
-                                      diamonds: con
-                                          .inventoryProductList[index].diamonds,
+                                      diamonds: con.inventoryProductList[index]
+                                          .diamonds!,
                                     ),
                                     // if (con.paginationLoader.value &&
                                     //     index + 1 ==

@@ -14,20 +14,17 @@ class BaseBinding implements Bindings {
 
 class BaseController extends GetxController {
   /// DUPLICATE ROUTE CONTROLLER ISSUE RESOLVER
-  RxList<String> globalProductIds = <String>[].obs;
-  RxList<String> globalSizeId = <String>[].obs;
-  RxList<String> globalMetalId = <String>[].obs;
-  RxList<String> globalDiamondClarity = <String>[].obs;
+  // RxList<String> globalProductIds = <String>[].obs;
 
-  String get lastProductId =>
-      globalProductIds.isNotEmpty ? globalProductIds.last : "";
-  String get lastSizeId => globalSizeId.isNotEmpty ? globalSizeId.last : "";
-  String get lastMetalId => globalMetalId.isNotEmpty ? globalMetalId.last : "";
-  String get lastDiamondClarity =>
-      globalDiamondClarity.isNotEmpty ? globalDiamondClarity.last : "";
+  // String get lastProductId =>
+  //     globalProductIds.isNotEmpty ? globalProductIds.last : "";
 
   ///
   late PackageInfo packageInfo;
+
+  List<Map> globalProductDetails = <Map>[].obs;
+  get lastProductDetails =>
+      globalProductDetails.isNotEmpty ? globalProductDetails.last : "";
 
   @override
   void onInit() {
