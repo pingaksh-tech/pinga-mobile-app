@@ -6,9 +6,11 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 
-GetRetailerModel getRetailerModelFromJson(String str) => GetRetailerModel.fromJson(json.decode(str));
+GetRetailerModel getRetailerModelFromJson(String str) =>
+    GetRetailerModel.fromJson(json.decode(str));
 
-String getRetailerModelToJson(GetRetailerModel data) => json.encode(data.toJson());
+String getRetailerModelToJson(GetRetailerModel data) =>
+    json.encode(data.toJson());
 
 class GetRetailerModel {
   final String? message;
@@ -19,9 +21,12 @@ class GetRetailerModel {
     this.data,
   });
 
-  factory GetRetailerModel.fromJson(Map<String, dynamic> json) => GetRetailerModel(
+  factory GetRetailerModel.fromJson(Map<String, dynamic> json) =>
+      GetRetailerModel(
         message: json["message"],
-        data: json["data"] == null ? null : GetRetailerDataModel.fromJson(json["data"]),
+        data: json["data"] == null
+            ? null
+            : GetRetailerDataModel.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -45,12 +50,16 @@ class GetRetailerDataModel {
     this.retailers,
   });
 
-  factory GetRetailerDataModel.fromJson(Map<String, dynamic> json) => GetRetailerDataModel(
+  factory GetRetailerDataModel.fromJson(Map<String, dynamic> json) =>
+      GetRetailerDataModel(
         filteredCount: json["filteredCount"],
         totalCount: json["totalCount"],
         page: json["page"],
         totalPages: json["totalPages"],
-        retailers: json["retailers"] == null ? [] : List<RetailerModel>.from(json["retailers"]!.map((x) => RetailerModel.fromJson(x))),
+        retailers: json["retailers"] == null
+            ? []
+            : List<RetailerModel>.from(
+                json["retailers"]!.map((x) => RetailerModel.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -58,7 +67,9 @@ class GetRetailerDataModel {
         "totalCount": totalCount,
         "page": page,
         "totalPages": totalPages,
-        "retailers": retailers == null ? [] : List<dynamic>.from(retailers!.map((x) => x.toJson())),
+        "retailers": retailers == null
+            ? []
+            : List<dynamic>.from(retailers!.map((x) => x.toJson())),
       };
 }
 
@@ -116,8 +127,12 @@ class RetailerModel {
         createdBy: json["created_by"],
         updatedBy: json["updated_by"],
         deletedAt: json["deleted_at"],
-        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+        createdAt: json["createdAt"] == null
+            ? null
+            : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null
+            ? null
+            : DateTime.parse(json["updatedAt"]),
         v: json["__v"],
       );
 

@@ -45,6 +45,12 @@ class ProductsScreen extends StatelessWidget {
                   predicate: (route) =>
                       route.settings.name == AppRoutes.productScreen,
                 );
+                // Get.back();
+                // if (isRegistered<BottomBarController>()) {
+                //   BottomBarController bottomCon =
+                //       Get.find<BottomBarController>();
+                //   bottomCon.currentBottomIndex.value = 2;
+                // }
               },
             ),
           ],

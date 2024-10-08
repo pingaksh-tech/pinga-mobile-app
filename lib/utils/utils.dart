@@ -18,7 +18,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../data/repositories/cart/cart_repository.dart';
 import '../data/repositories/product/product_repository.dart';
 import '../exports.dart';
-import '../view/cart/cart_controller.dart';
+// import '../view/cart/cart_controller.dart';
 import '../view/product_details/product_details_controller.dart';
 
 /// Set the preferred screen orientation to portrait
@@ -240,14 +240,16 @@ void navigateToProductDetailsScreen(
             },
           );
         } else {
-          CartRepository.getSingleCartItemAPI(
-                  cartId: productDetailsId["productId"], loader: con.loader)
-              .then(
-            (value) {
-              con.predefinedValue();
-              // priceChangeAPI();
-            },
-          );
+          if (productDetailsId.isNotEmpty) {
+            CartRepository.getSingleCartItemAPI(
+                    cartId: productDetailsId["productId"], loader: con.loader)
+                .then(
+              (value) {
+                con.predefinedValue();
+                // priceChangeAPI();
+              },
+            );
+          }
         }
       }
     } catch (e) {
@@ -273,7 +275,8 @@ void navigateToProductDetailsScreen(
 }
 
 void navigateToCartScreen({Map? arguments, Function()? whenComplete}) {
-  Get.delete<CartController>();
+  // Get.delete<CartController>();
+
   Get.toNamed(
     AppRoutes.cartScreen,
     arguments: arguments,
@@ -281,6 +284,7 @@ void navigateToCartScreen({Map? arguments, Function()? whenComplete}) {
     if (whenComplete != null) {
       whenComplete();
     }
+
     {
       /// API CALL
       // String pId = addProductIdToGlobalList(productId, type: type);
@@ -306,15 +310,17 @@ void navigateToCartScreen({Map? arguments, Function()? whenComplete}) {
             },
           );
         } else {
-          CartRepository.getSingleCartItemAPI(
-                  cartId: baseCon.lastProductDetails["productId"],
-                  loader: con.loader)
-              .then(
-            (value) {
-              con.predefinedValue();
-              // priceChangeAPI();
-            },
-          );
+          if (baseCon.lastProductDetails.isNotEmpty) {
+            CartRepository.getSingleCartItemAPI(
+                    cartId: baseCon.lastProductDetails["productId"],
+                    loader: con.loader)
+                .then(
+              (value) {
+                con.predefinedValue();
+                // priceChangeAPI();
+              },
+            );
+          }
         }
       }
     }

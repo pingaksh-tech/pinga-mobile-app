@@ -283,17 +283,19 @@ class PriceBreakupDialog {
         ),
       ),
       children: [
-        Container(
-          height: 22.h,
-          padding: (value3 != null && value3.isNotEmpty)
-              ? null
-              : EdgeInsets.only(left: defaultPadding * 2),
-          alignment: (value3 != null && value3.isNotEmpty)
-              ? Alignment.center
-              : Alignment.centerLeft,
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4),
+          // height: 22.h,
+          // padding: (value3 != null && value3.isNotEmpty)
+          //     ? null
+          //     : EdgeInsets.only(left: defaultPadding * 2),
+          // alignment: (value3 != null && value3.isNotEmpty)
+          //     ? Alignment.center
+          //     : Alignment.centerLeft,
           child: Text(
             value1,
-            textAlign: TextAlign.center,
+            maxLines: 1,
+            textAlign: TextAlign.start,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontSize: 12.sp,
                 color: isSubtitle ? AppColors.subText : AppColors.font),

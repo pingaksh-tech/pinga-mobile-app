@@ -14,6 +14,7 @@ import 'firebase_options.dart';
 import 'utils/custom_route_observer.dart';
 import 'utils/global_context.dart';
 import 'view/cart/cart_controller.dart';
+import 'view/home/home_controller.dart';
 import 'view/orders/widgets/order_filter/order_filter_controller.dart';
 import 'view/products/widgets/filter/filter_controller.dart';
 import 'widgets/stretch_scroll_behavior.dart';
@@ -73,6 +74,8 @@ class BaseBinding implements Bindings {
     Get.put(PreDefinedValueController(), permanent: true);
     Get.put(FilterController(), permanent: true);
     Get.put(OrderFilterController(), permanent: true);
-    Get.lazyPut(() => CartController(), fenix: true);
+    Get.put(HomeController(), permanent: true);
+    Get.put(CartController(), permanent: true);
+    // Get.lazyPut(() => CartController(), fenix: true);
   }
 }

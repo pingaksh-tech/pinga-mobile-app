@@ -15,7 +15,8 @@ class OrdersScreen extends StatelessWidget {
   OrdersScreen({super.key});
 
   final OrdersController con = Get.put(OrdersController());
-  final OrderFilterController filterController = Get.put(OrderFilterController());
+  final OrderFilterController filterController =
+      Get.put(OrderFilterController());
 
   @override
   Widget build(BuildContext context) {
@@ -37,18 +38,26 @@ class OrdersScreen extends StatelessWidget {
                             physics: const AlwaysScrollableScrollPhysics(),
                             padding: EdgeInsets.all(defaultPadding / 1.5),
                             itemCount: con.orderList.length,
-                            separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
+                            separatorBuilder: (context, index) =>
+                                SizedBox(height: defaultPadding),
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: () {
-                                  Get.toNamed(AppRoutes.orderDetailScreen, arguments: {"orderId": con.orderList[index].id});
+                                  Get.toNamed(AppRoutes.orderDetailScreen,
+                                      arguments: {
+                                        "orderId": con.orderList[index].id
+                                      });
                                 },
                                 child: OrderTile(
                                   orderId: con.orderList[index].orderNo ?? "",
-                                  dateTime: con.orderList[index].createdAt ?? DateTime.now(),
-                                  customerName: con.orderList[index].retailer?.businessName ?? "",
+                                  dateTime: con.orderList[index].createdAt ??
+                                      DateTime.now(),
+                                  customerName: con.orderList[index].retailer
+                                          ?.businessName ??
+                                      "",
                                   quantity: con.orderList[index].qty.toString(),
-                                  mrpPrice: con.orderList[index].grandTotal.toString(),
+                                  mrpPrice: con.orderList[index].grandTotal
+                                      .toString(),
                                 ),
                               );
                             },
@@ -66,7 +75,8 @@ class OrdersScreen extends StatelessWidget {
                       children: [
                         EmptyElement(
                           title: "No orders found",
-                          padding: EdgeInsets.symmetric(vertical: Get.width / 2.5),
+                          padding:
+                              EdgeInsets.symmetric(vertical: Get.width / 2.5),
                         ),
                       ],
                     ))
@@ -74,14 +84,17 @@ class OrdersScreen extends StatelessWidget {
                   itemCount: 20,
                   padding: EdgeInsets.all(defaultPadding),
                   physics: const NeverScrollableScrollPhysics(),
-                  separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
+                  separatorBuilder: (context, index) =>
+                      SizedBox(height: defaultPadding),
                   itemBuilder: (context, index) => const OrderShimmerTile(),
                 ),
           bottomNavigationBar: con.isLoading.isFalse
               ? con.orderList.isNotEmpty
                   ? IntrinsicHeight(
                       child: Container(
-                        padding: EdgeInsets.all(defaultPadding).copyWith(bottom: MediaQuery.of(context).padding.bottom + defaultPadding),
+                        padding: EdgeInsets.all(defaultPadding).copyWith(
+                            bottom: MediaQuery.of(context).padding.bottom +
+                                defaultPadding),
                         decoration: BoxDecoration(
                           color: Theme.of(context).primaryColor.withAlpha(20),
                           borderRadius: BorderRadius.vertical(
@@ -90,9 +103,17 @@ class OrdersScreen extends StatelessWidget {
                         ),
                         child: Column(
                           children: [
-                            orderSummaryItem(context, title: "Total Items", subTitle: con.orderCounts.value.totalCount.toString()),
+                            orderSummaryItem(context,
+                                title: "Total Items",
+                                subTitle: con.orderCounts.value.totalCount
+                                    .toString()),
                             // orderSummaryItem(context, title: "Total DP", subTitle: UiUtils.amountFormat("219850", decimalDigits: 0)),
-                            orderSummaryItem(context, title: "Total Amount", subTitle: UiUtils.amountFormat(con.orderCounts.value.totalAmount.toString(), decimalDigits: 0)),
+                            orderSummaryItem(context,
+                                title: "Total Amount",
+                                subTitle: UiUtils.amountFormat(
+                                    con.orderCounts.value.totalAmount
+                                        .toString(),
+                                    decimalDigits: 0)),
                           ],
                         ),
                       ),
@@ -104,7 +125,8 @@ class OrdersScreen extends StatelessWidget {
     );
   }
 
-  Widget orderSummaryItem(BuildContext context, {required String title, required String subTitle}) {
+  Widget orderSummaryItem(BuildContext context,
+      {required String title, required String subTitle}) {
     return Row(
       children: [
         Expanded(

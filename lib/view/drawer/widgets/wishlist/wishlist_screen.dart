@@ -25,7 +25,19 @@ class WishlistScreen extends StatelessWidget {
           title: "My Wishlist",
           actions: [
             CartIconButton(
-              onPressed: () {},
+              onPressed: () {
+                // Get.back();
+                // if (isRegistered<BottomBarController>()) {
+                //   BottomBarController bottomCon =
+                //       Get.find<BottomBarController>();
+                //   bottomCon.currentBottomIndex.value = 2;
+                // }
+                Get.offAllNamed(
+                  AppRoutes.cartScreen,
+                  predicate: (route) =>
+                      route.settings.name == AppRoutes.wishlistScreen,
+                );
+              },
             )
           ],
         ),

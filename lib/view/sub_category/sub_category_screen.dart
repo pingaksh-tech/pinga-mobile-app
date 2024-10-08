@@ -9,6 +9,7 @@ import '../../data/repositories/sub_category/sub_category_repository.dart';
 import '../../exports.dart';
 import '../../res/app_bar.dart';
 import '../../res/tab_bar.dart';
+
 import '../products/components/cart_icon_button.dart';
 import 'Widgets/latest_products_tab/latest_products_tab_view.dart';
 import 'Widgets/sub_categories_tab/sub_categories_tab_view.dart';
@@ -32,7 +33,8 @@ class SubCategoryScreen extends StatelessWidget {
             backgroundColor: Theme.of(context).colorScheme.surface,
             appBar: MyAppBar(
               backgroundColor: Theme.of(context).colorScheme.surface,
-              shadowColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.3),
+              shadowColor:
+                  Theme.of(context).scaffoldBackgroundColor.withOpacity(0.3),
               title: con.categoryName.value,
               actions: [
                 /* AppIconButton(
@@ -47,9 +49,16 @@ class SubCategoryScreen extends StatelessWidget {
                 ),*/
                 CartIconButton(
                   onPressed: () {
+                    // Get.back();
+                    // if (isRegistered<BottomBarController>()) {
+                    //   BottomBarController bottomCon =
+                    //       Get.find<BottomBarController>();
+                    //   bottomCon.currentBottomIndex.value = 2;
+                    // }
                     Get.offAllNamed(
                       AppRoutes.cartScreen,
-                      predicate: (route) => route.settings.name == AppRoutes.categoryScreen,
+                      predicate: (route) =>
+                          route.settings.name == AppRoutes.categoryScreen,
                     );
                   },
                 )
@@ -61,14 +70,20 @@ class SubCategoryScreen extends StatelessWidget {
                     Container(
                       decoration: BoxDecoration(
                         boxShadow: [
-                          BoxShadow(color: Theme.of(context).primaryColor.withOpacity(0.02), blurRadius: 4, spreadRadius: 3),
+                          BoxShadow(
+                              color: Theme.of(context)
+                                  .primaryColor
+                                  .withOpacity(0.02),
+                              blurRadius: 4,
+                              spreadRadius: 3),
                         ],
                       ),
                       child: AppTextField(
                         hintText: "Search",
                         controller: con.searchTEC.value,
                         focusNode: con.searchFocusNode.value,
-                        padding: EdgeInsets.only(left: defaultPadding, right: defaultPadding),
+                        padding: EdgeInsets.only(
+                            left: defaultPadding, right: defaultPadding),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(
                             Radius.circular(defaultRadius),
@@ -76,7 +91,9 @@ class SubCategoryScreen extends StatelessWidget {
                           borderSide: BorderSide.none,
                         ),
                         textInputAction: TextInputAction.search,
-                        contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.3, horizontal: defaultPadding),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: defaultPadding / 1.3,
+                            horizontal: defaultPadding),
                         onTap: () {
                           con.tabController.animateTo(0);
                         },
@@ -84,7 +101,8 @@ class SubCategoryScreen extends StatelessWidget {
                             ? Center(
                                 child: SvgPicture.asset(
                                   AppAssets.crossIcon,
-                                  color: Theme.of(context).primaryColor, // ignore: deprecated_member_use
+                                  color: Theme.of(context)
+                                      .primaryColor, // ignore: deprecated_member_use
                                 ),
                               )
                             : null,
@@ -95,7 +113,9 @@ class SubCategoryScreen extends StatelessWidget {
                                 con.searchTEC.value.clear();
 
                                 /// CLEAR SEARCH API
-                                await SubCategoryRepository.getSubCategoriesAPI(loader: con.loaderSubCategory, searchText: con.getSearchText);
+                                await SubCategoryRepository.getSubCategoriesAPI(
+                                    loader: con.loaderSubCategory,
+                                    searchText: con.getSearchText);
                               }
                             : null,
                         onChanged: (value) {
@@ -106,12 +126,16 @@ class SubCategoryScreen extends StatelessWidget {
                           }
 
                           /// DEBOUNCE
-                          if (con.searchDebounce?.isActive ?? false) con.searchDebounce?.cancel();
+                          if (con.searchDebounce?.isActive ?? false) {
+                            con.searchDebounce?.cancel();
+                          }
                           con.searchDebounce = Timer(
                             defaultSearchDebounceDuration,
                             () async {
                               /// Search API
-                              await SubCategoryRepository.getSubCategoriesAPI(loader: con.loaderSubCategory, searchText: con.getSearchText);
+                              await SubCategoryRepository.getSubCategoriesAPI(
+                                  loader: con.loaderSubCategory,
+                                  searchText: con.getSearchText);
                             },
                           );
                         },

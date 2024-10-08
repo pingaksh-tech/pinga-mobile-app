@@ -58,11 +58,8 @@ class OrderDetailScreen extends StatelessWidget {
                             subtitleText: !isValEmpty(
                                     con.orderDetailModel.value.order?.createdAt)
                                 ? DateFormat('MM/dd/yyyy HH:mm:ss').format(con
-                                        .orderDetailModel
-                                        .value
-                                        .order
-                                        ?.createdAt ??
-                                    DateTime.now())
+                                    .orderDetailModel.value.order!.createdAt!
+                                    .toLocal())
                                 : "",
                           ),
                           orderDetailsKeyValuePairWidget(

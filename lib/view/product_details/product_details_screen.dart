@@ -140,49 +140,55 @@ class ProductDetailsScreen extends StatelessWidget {
                                             ),
 
                                       /// PAGE INDEX INDICATOR
-                                      Positioned(
-                                        bottom: defaultPadding,
-                                        left: Get.width / 2.3,
-                                        child: Obx(() {
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .surface
-                                                      .withOpacity(.1),
-                                                  blurRadius: 20,
-                                                  spreadRadius: 5,
-                                                )
-                                              ],
-                                            ),
-                                            child: AnimatedSmoothIndicator(
-                                              activeIndex:
-                                                  con.currentPage.value,
-                                              count: con
-                                                          .productDetailModel
-                                                          .value
-                                                          .inventoryImages !=
-                                                      null
-                                                  ? con.productDetailModel.value
-                                                      .inventoryImages!.length
-                                                  : 0,
-                                              effect: ScrollingDotsEffect(
-                                                dotHeight: 8.0,
-                                                dotWidth: 8.0,
-                                                spacing: 5.0,
-                                                dotColor: Theme.of(context)
-                                                    .primaryColor
-                                                    .withOpacity(0.15),
-                                                activeDotColor:
-                                                    Theme.of(context)
-                                                        .primaryColor,
+                                      if (con.productDetailModel.value
+                                              .inventoryImages!.length >
+                                          1)
+                                        Positioned(
+                                          bottom: defaultPadding,
+                                          left: Get.width / 2.3,
+                                          child: Obx(() {
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .surface
+                                                        .withOpacity(.1),
+                                                    blurRadius: 20,
+                                                    spreadRadius: 5,
+                                                  )
+                                                ],
                                               ),
-                                            ),
-                                          );
-                                        }),
-                                      ),
+                                              child: AnimatedSmoothIndicator(
+                                                activeIndex:
+                                                    con.currentPage.value,
+                                                count: con
+                                                            .productDetailModel
+                                                            .value
+                                                            .inventoryImages !=
+                                                        null
+                                                    ? con
+                                                        .productDetailModel
+                                                        .value
+                                                        .inventoryImages!
+                                                        .length
+                                                    : 0,
+                                                effect: ScrollingDotsEffect(
+                                                  dotHeight: 8.0,
+                                                  dotWidth: 8.0,
+                                                  spacing: 5.0,
+                                                  dotColor: Theme.of(context)
+                                                      .primaryColor
+                                                      .withOpacity(0.15),
+                                                  activeDotColor:
+                                                      Theme.of(context)
+                                                          .primaryColor,
+                                                ),
+                                              ),
+                                            );
+                                          }),
+                                        ),
 
                                       /// LIKE
                                       Positioned(

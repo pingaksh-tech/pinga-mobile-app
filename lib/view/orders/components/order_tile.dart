@@ -46,7 +46,8 @@ class OrderTile extends StatelessWidget {
               children: [
                 SvgPicture.asset(
                   AppAssets.openBox,
-                  colorFilter: ColorFilter.mode(Theme.of(context).primaryColor, BlendMode.srcIn),
+                  colorFilter: ColorFilter.mode(
+                      Theme.of(context).primaryColor, BlendMode.srcIn),
                   height: 27.sp,
                 ),
                 (defaultPadding / 2).horizontalSpace,
@@ -55,11 +56,16 @@ class OrderTile extends StatelessWidget {
                   children: [
                     Text(
                       orderId,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 13.sp, fontWeight: FontWeight.w400, height: 0),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontSize: 13.sp,
+                          fontWeight: FontWeight.w400,
+                          height: 0),
                     ),
                     Text(
-                      DateFormat('MM/dd/yyyy HH:mm:ss').format(dateTime.toLocal()),
-                      style: AppTextStyle.subtitleStyle(context).copyWith(fontSize: 11.5.sp),
+                      DateFormat('MM/dd/yyyy HH:mm:ss')
+                          .format(dateTime.toLocal()),
+                      style: AppTextStyle.subtitleStyle(context)
+                          .copyWith(fontSize: 11.5.sp),
                     )
                   ],
                 )
@@ -152,7 +158,11 @@ class OrderTile extends StatelessWidget {
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w600,
-                color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(.7),
+                color: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.color
+                    ?.withOpacity(.7),
               ),
         ).paddingOnly(right: defaultPadding / 2),
         Expanded(
@@ -161,7 +171,10 @@ class OrderTile extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: Text(
               subtitleText,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.font),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium
+                  ?.copyWith(fontSize: 12.sp, color: AppColors.font),
             ),
           ),
         ),

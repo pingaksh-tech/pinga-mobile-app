@@ -30,25 +30,26 @@ class CartScreen extends StatelessWidget {
           appBar: Get.currentRoute != AppRoutes.bottomBarScreen
               ? MyAppBar(
                   title: "My Cart",
-                  // showBackIcon: false,
-                  // leading: IconButton(
-                  //   onPressed: () {
-                  //     if (isRegistered<BaseController>()) {
-                  //       BaseController con = Get.find<BaseController>();
-                  //       printData(value: con.globalProductDetails);
-                  //       if (con.globalProductDetails.isEmpty) {
-                  //         Get.offAllNamed(AppRoutes.bottomBarScreen);
-                  //       } else {
-                  //         Get.back();
-                  //       }
-                  //     }
-                  //   },
-                  //   icon: SvgPicture.asset(
-                  //     height: 30,
-                  //     AppAssets.backArrowIcon,
-                  //     color: AppColors.primary, // ignore: deprecated_member_use
-                  //   ),
-                  // ),
+                  showBackIcon: false,
+                  leading: IconButton(
+                    onPressed: () {
+                      if (isRegistered<BaseController>()) {
+                        BaseController baseCon = Get.find<BaseController>();
+                        printData(value: baseCon.globalProductDetails);
+
+                        int.parse(baseCon.globalProductDetails.length
+                                    .toString()) >=
+                                1
+                            ? Get.offAllNamed(AppRoutes.bottomBarScreen)
+                            : Get.back();
+                      }
+                    },
+                    icon: SvgPicture.asset(
+                      height: 30,
+                      AppAssets.backArrowIcon,
+                      color: AppColors.primary, // ignore: deprecated_member_use
+                    ),
+                  ),
                   actions: [
                     if (con.cartList.isNotEmpty)
                       CartPopUpMenu(
@@ -413,33 +414,32 @@ class CartScreen extends StatelessWidget {
                                                       .surface,
                                             ),
                                             onPressed: () {
-                                              AppDialogs.cartDialog(
-                                                context,
-                                                contentText:
-                                                    "Are you sure?\nYou want to remove this item from the cart?",
-                                                buttonTitle: "NO",
-                                                onPressed: () async {
-                                                  Get.back();
+                                              AppDialogs.cartDialog(context,
+                                                  contentText:
+                                                      "Are you sure?\nYou want to remove this item from the cart?",
+                                                  buttonTitle: "NO",
+                                                  onPressed: () async {
+                                                Get.back();
 
-                                                  //? Delete cart list api
-                                                  if (con.cartList.length ==
-                                                      con.selectedList.length) {
-                                                    await CartRepository
-                                                        .deleteCartAPi();
-                                                  } else {
-                                                    List<String>
-                                                        selectedCartIds = con
-                                                            .selectedList
-                                                            .map((item) =>
-                                                                item.id ?? "")
-                                                            .toList();
-                                                    await CartRepository
-                                                        .multipleCartDelete(
-                                                            selectedCartIds:
-                                                                selectedCartIds);
-                                                  }
-                                                },
-                                              );
+                                                //? Delete cart list api
+                                                // if (con.cartList.length ==
+                                                //     con.selectedList.length) {
+                                                // await CartRepository
+                                                //     .deleteCartAPi();
+                                                // } else {
+                                                List<String> selectedCartIds =
+                                                    con.selectedList
+                                                        .map((item) =>
+                                                            item.id ?? "")
+                                                        .toList();
+
+                                                await CartRepository
+                                                    .multipleCartDelete(
+                                                        selectedCartIds:
+                                                            selectedCartIds);
+                                              }
+                                                  // },
+                                                  );
                                               con.calculateSelectedItemPrice();
                                               con.calculateSelectedQue();
                                               con.selectedList.refresh();

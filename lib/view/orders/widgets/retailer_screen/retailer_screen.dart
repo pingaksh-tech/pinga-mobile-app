@@ -58,14 +58,19 @@ class RetailerScreen extends StatelessWidget {
                   hintText: 'Search',
                   textInputAction: TextInputAction.search,
                   padding: EdgeInsets.symmetric(horizontal: defaultPadding),
-                  contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 4, horizontal: defaultPadding / 1.7),
+                  contentPadding: EdgeInsets.symmetric(
+                      vertical: defaultPadding / 4,
+                      horizontal: defaultPadding / 1.7),
                   prefixIcon: Padding(
                     padding: EdgeInsets.all(defaultPadding / 1.4),
                     child: SvgPicture.asset(
                       AppAssets.search,
                       height: 22,
                       width: 22,
-                      color: UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400, // ignore: deprecated_member_use
+                      color: UiUtils.keyboardIsOpen.isTrue
+                          ? Theme.of(context).primaryColor
+                          : Colors
+                              .grey.shade400, // ignore: deprecated_member_use
                     ),
                   ),
                   onChanged: (value) {
@@ -73,7 +78,9 @@ class RetailerScreen extends StatelessWidget {
                       /// DEBOUNCE
                       commonDebounce(
                         callback: () async {
-                          return OrdersRepository.getRetailerApi(searchText: con.searchCon.value.text.trim(), loader: con.isLoading);
+                          return OrdersRepository.getRetailerApi(
+                              searchText: con.searchCon.value.text.trim(),
+                              loader: con.isLoading);
                         },
                       );
                       con.showCloseButton.value = true;
@@ -85,7 +92,8 @@ class RetailerScreen extends StatelessWidget {
                       ? Center(
                           child: SvgPicture.asset(
                             AppAssets.crossIcon,
-                            color: Theme.of(context).primaryColor, // ignore: deprecated_member_use
+                            color: Theme.of(context)
+                                .primaryColor, // ignore: deprecated_member_use
                           ),
                         )
                       : null,
@@ -96,7 +104,9 @@ class RetailerScreen extends StatelessWidget {
                           con.searchCon.value.clear();
 
                           /// CLEAR SEARCH API
-                          OrdersRepository.getRetailerApi(searchText: con.searchCon.value.text.trim(), loader: con.isLoading);
+                          OrdersRepository.getRetailerApi(
+                              searchText: con.searchCon.value.text.trim(),
+                              loader: con.isLoading);
                         }
                       : null,
                 ),
@@ -109,23 +119,32 @@ class RetailerScreen extends StatelessWidget {
                           ? Column(
                               children: [
                                 ListView.separated(
-                                  physics: const RangeMaintainingScrollPhysics(),
+                                  physics:
+                                      const RangeMaintainingScrollPhysics(),
                                   itemCount: con.retailerList.length,
                                   shrinkWrap: true,
                                   controller: con.scrollController,
                                   itemBuilder: (context, index) => ListTile(
                                     title: Text(
-                                      con.retailerList[index].businessName ?? '',
-                                      style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
+                                      "${con.retailerList[index].firstName ?? ''} ${con.retailerList[index].lastName ?? ''}",
+                                      // con.retailerList[index].businessName ?? '',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium
+                                          ?.copyWith(color: AppColors.font),
                                     ),
                                     trailing: AppRadioButton(
-                                      isSelected: (con.retailerList[index].id?.value == con.retailerId.value).obs,
+                                      isSelected:
+                                          (con.retailerList[index].id?.value ==
+                                                  con.retailerId.value)
+                                              .obs,
                                     ),
                                     onTap: () {
                                       Get.back(result: con.retailerList[index]);
                                     },
                                   ),
-                                  separatorBuilder: (context, index) => Divider(height: 1.h),
+                                  separatorBuilder: (context, index) =>
+                                      Divider(height: 1.h),
                                 ),
 
                                 /// PAGINATION LOADER
@@ -136,11 +155,13 @@ class RetailerScreen extends StatelessWidget {
                               ],
                             )
                           : const Center(
-                              child: EmptyElement(title: "Retailers not available"),
+                              child: EmptyElement(
+                                  title: "Retailers not available"),
                             )
                       : ListView.separated(
                           padding: EdgeInsets.all(defaultPadding),
-                          separatorBuilder: (context, index) => (defaultPadding).verticalSpace,
+                          separatorBuilder: (context, index) =>
+                              (defaultPadding).verticalSpace,
                           itemBuilder: (context, index) => retailerShimmer(),
                           itemCount: 20,
                         ),
