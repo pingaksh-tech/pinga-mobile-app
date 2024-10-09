@@ -121,14 +121,31 @@ class CartScreen extends StatelessWidget {
                                       con.cartList[index].isDiamondMultiple ??
                                           false,
                                   cartId: con.cartList[index].id,
-                                  diamonds: con.cartList[index].diamonds,
                                   inventoryId: con.cartList[index].inventoryId,
                                   productsListTypeType: ProductsListType.cart,
                                   selectMetalCart:
                                       (con.cartList[index].metalId!.value).obs,
+                                  diamonds: con.cartList[index].diamonds,
                                   selectDiamondCart:
-                                      (con.cartList[index].diamondClarity ?? "")
-                                          .obs,
+                                      (con.cartList[index].diamonds != null &&
+                                              con.cartList[index].diamonds!
+                                                  .isNotEmpty)
+                                          ? (con.cartList[index].diamonds?.first
+                                                      .diamondClarity?.value ??
+                                                  "")
+                                              .obs
+                                          : "".obs,
+                                  diamondOnChanged: (value) {
+                                    //   printBlue(value);
+                                    //   if (value!.isNotEmpty) {
+                                    //     con
+                                    //         .cartList[index]
+                                    //         .diamonds
+                                    //         ?.first
+                                    //         .diamondClarity
+                                    //         ?.value = value.toString();
+                                    //   }
+                                  },
                                   item: con.cartList[index],
                                   category: RxString(
                                       con.cartList[index].subCategoryId ?? ""),
@@ -198,8 +215,10 @@ class CartScreen extends StatelessWidget {
                                       productDetails: {
                                         "productId":
                                             (con.cartList[index].id ?? ""),
-                                        "diamondClarity":
-                                            (con.cartList[index].diamonds !=
+                                        "diamondClarity": con.cartList[index]
+                                                    .isDiamondMultiple ==
+                                                false
+                                            ? (con.cartList[index].diamonds !=
                                                         null &&
                                                     con.cartList[index]
                                                         .diamonds!.isNotEmpty)
@@ -210,7 +229,8 @@ class CartScreen extends StatelessWidget {
                                                         .diamondClarity
                                                         ?.value ??
                                                     ""
-                                                : "",
+                                                : ""
+                                            : "",
                                         "metalId":
                                             con.cartList[index].metalId!.value,
                                         "sizeId":
@@ -220,9 +240,11 @@ class CartScreen extends StatelessWidget {
                                                 true
                                             ? con.cartList[index].diamonds!
                                             : [],
-                                        "type": GlobalProductPrefixType.cart,
+                                        "type": GlobalProductPrefixType
+                                            .productDetails,
                                       },
-                                      type: GlobalProductPrefixType.cart,
+                                      type: GlobalProductPrefixType
+                                          .productDetails,
                                       arguments: {
                                         "category":
                                             con.cartList[index].subCategoryId ??

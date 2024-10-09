@@ -40,7 +40,7 @@ class ProductTile extends StatefulWidget {
   final ProductsListType productsListTypeType;
   final Function(bool)? likeOnChanged;
   final VoidCallback? deleteOnTap;
-  final Function(String)? diamondOnChanged;
+  final Function(String?)? diamondOnChanged;
   final Function(List<DiamondListModel>?)? multiDiamondOnChanged;
   final Function(String)? sizeOnChanged;
   final Function(String)? metalOnChanged;
@@ -819,6 +819,9 @@ class _ProductTileState extends State<ProductTile> {
         multiRubyOnChanged: (diamondList) async {
           /// Return List of Selected Diamond
           // widget.multiDiamondOnChanged!(widget.diamonds);
+          // if (diamondList.isNotEmpty) {
+          //   widget.multiDiamondOnChanged!(widget.diamonds);
+          // }
           if ((diamondList.runtimeType == RxList<DiamondListModel>)) {
             diamondList = diamondList;
             if (!isValEmpty(widget.cartId)) {
@@ -869,7 +872,9 @@ class _ProductTileState extends State<ProductTile> {
           if ((value.runtimeType == DiamondModel)) {
             diamondModel = value;
             widget.selectDiamondCart?.value = value.shortName ?? "";
-            widget.diamondOnChanged!(value.shortName.toString());
+            // if (value.shortName!.isNotEmpty) {
+            widget.diamondOnChanged!(value.shortName ?? '');
+            // }
 
             /// GET NEW PRODUCT PRICE
             await getProductPriceAPI(

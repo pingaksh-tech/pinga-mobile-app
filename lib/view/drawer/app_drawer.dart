@@ -18,7 +18,8 @@ class AppDrawer extends StatelessWidget {
   AppDrawer({super.key, this.homeOnPressed});
 
   final AppDrawerController con = Get.put(AppDrawerController());
-  final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
+  final PreDefinedValueController preValueCon =
+      Get.find<PreDefinedValueController>();
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +38,9 @@ class AppDrawer extends StatelessWidget {
                   child: AppNetworkImage(
                     borderRadius: BorderRadius.circular(0),
                     fit: BoxFit.cover,
-                    imageUrl: !isValEmpty(preValueCon.profileBanner.value) ? preValueCon.profileBanner.value : 'https://media.designrush.com/tinymce_images/316674/conversions/Desiree-Qelaj-content.jpg',
+                    imageUrl: !isValEmpty(preValueCon.profileBanner.value)
+                        ? preValueCon.profileBanner.value
+                        : 'https://media.designrush.com/tinymce_images/316674/conversions/Desiree-Qelaj-content.jpg',
                   ),
                 ),
               ],
@@ -47,7 +50,8 @@ class AppDrawer extends StatelessWidget {
               leading: SvgPicture.asset(
                 AppAssets.homeOutlinedSVG,
                 height: 16.h,
-                colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                colorFilter:
+                    ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
               ),
               title: Text(
                 "Home",
@@ -60,7 +64,8 @@ class AppDrawer extends StatelessWidget {
                 leading: SvgPicture.asset(
                   AppAssets.like,
                   height: 16.h,
-                  colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                  colorFilter:
+                      ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
                 ),
                 title: Text(
                   "Wishlist",
@@ -77,7 +82,8 @@ class AppDrawer extends StatelessWidget {
               leading: SvgPicture.asset(
                 AppAssets.catalogIcon,
                 height: 16.h,
-                colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                colorFilter:
+                    ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
               ),
               title: Text(
                 "My Catalogue",
@@ -112,7 +118,8 @@ class AppDrawer extends StatelessWidget {
               leading: SvgPicture.asset(
                 AppAssets.customerCareIcon,
                 height: 16.h,
-                colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                colorFilter:
+                    ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
               ),
               title: Text(
                 "Customer Care",
@@ -140,7 +147,10 @@ class AppDrawer extends StatelessWidget {
                         40.horizontalSpace,
                         Text(
                           "Contact us On",
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 13.sp),
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(fontSize: 13.sp),
                         ),
                         const Spacer(),
                         AppIconButton(
@@ -155,7 +165,8 @@ class AppDrawer extends StatelessWidget {
                             }),
                         AppIconButton(
                           size: 40,
-                          onPressed: () => sendEmail(LocalStorage.contactEmailID),
+                          onPressed: () =>
+                              sendEmail(LocalStorage.contactEmailID),
                           icon: Icon(
                             Icons.email_rounded,
                             color: Theme.of(context).colorScheme.primary,
@@ -175,14 +186,17 @@ class AppDrawer extends StatelessWidget {
               leading: SvgPicture.asset(
                 AppAssets.policiesIcon,
                 height: 16.h,
-                colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                colorFilter:
+                    ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
               ),
               title: Text(
                 "Policies",
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               trailing: SvgPicture.asset(
-                con.isShowPolicies.isTrue ? AppAssets.upArrow : AppAssets.downArrow,
+                con.isShowPolicies.isTrue
+                    ? AppAssets.upArrow
+                    : AppAssets.downArrow,
                 height: 8,
               ),
               onTap: () {
@@ -199,17 +213,25 @@ class AppDrawer extends StatelessWidget {
                   const Divider(height: 1),
 
                   /// Privacy Policy
-                  subOptionTile(context, icon: AppAssets.productDetailSVG, title: "Privacy Policy", onPressed: () {
+                  subOptionTile(context,
+                      icon: AppAssets.productDetailSVG,
+                      title: "Privacy Policy", onPressed: () {
                     Get.back();
-                    Get.to(MyWebView(title: "Privacy Policy", webURL: LocalStorage.privacyURL));
+                    Get.to(MyWebView(
+                        title: "Privacy Policy",
+                        webURL: LocalStorage.privacyURL));
                   }),
 
                   const Divider(height: 1, indent: 40),
 
                   /// Return Policy
-                  subOptionTile(context, icon: AppAssets.rtp, title: "Return Policy", onPressed: () {
+                  subOptionTile(context,
+                      icon: AppAssets.rtp,
+                      title: "Return Policy", onPressed: () {
                     Get.back();
-                    Get.to(MyWebView(title: "Return Policy", webURL: LocalStorage.termsURL));
+                    Get.to(MyWebView(
+                        title: "Return Policy",
+                        webURL: LocalStorage.returnURL));
                   }),
                 ],
               ),
@@ -266,7 +288,8 @@ class AppDrawer extends StatelessWidget {
               leading: SvgPicture.asset(
                 AppAssets.logOutIcon,
                 height: 16.h,
-                colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                colorFilter:
+                    ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
               ),
               title: Text(
                 "Log out",
@@ -276,7 +299,8 @@ class AppDrawer extends StatelessWidget {
                 AppDialogs.logoutDialog(
                   Get.context!,
                   isLoader: con.isLoader,
-                  fullName: "${LocalStorage.userModel.firstName} ${LocalStorage.userModel.lastName}",
+                  fullName:
+                      "${LocalStorage.userModel.firstName} ${LocalStorage.userModel.lastName}",
                   onCancellation: () {
                     Get.back();
                   },
@@ -292,7 +316,10 @@ class AppDrawer extends StatelessWidget {
     );
   }
 
-  Widget subOptionTile(BuildContext context, {required VoidCallback onPressed, required String icon, required String title}) {
+  Widget subOptionTile(BuildContext context,
+      {required VoidCallback onPressed,
+      required String icon,
+      required String title}) {
     return InkWell(
       onTap: onPressed,
       child: Ink(
@@ -304,12 +331,16 @@ class AppDrawer extends StatelessWidget {
               SvgPicture.asset(
                 icon,
                 height: 20,
-                colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.primary, BlendMode.srcIn),
+                colorFilter: ColorFilter.mode(
+                    Theme.of(context).colorScheme.primary, BlendMode.srcIn),
               ),
               (defaultPadding / 2).horizontalSpace,
               Text(
                 title,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 13.sp),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(fontSize: 13.sp),
               ),
             ],
           ),

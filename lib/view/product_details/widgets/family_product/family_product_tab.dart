@@ -93,12 +93,13 @@ class FamilyProductTab extends StatelessWidget {
                           );
                         },
                         diamondOnChanged: (value) {
-                          printData(value: value);
-                          productList[index]
-                              .diamonds
-                              ?.first
-                              .diamondClarity
-                              ?.value = value;
+                          if (value!.isNotEmpty) {
+                            productList[index]
+                                .diamonds
+                                ?.first
+                                .diamondClarity
+                                ?.value = value;
+                          }
                         },
                         sizeOnChanged: (value) {
                           productList[index].sizeId!.value = value;

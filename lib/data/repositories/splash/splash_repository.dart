@@ -13,7 +13,8 @@ class SplashRepository {
   ///                             GET SPLASH DATA API
   /// ***********************************************************************************
 
-  static Future<dynamic> getSplashDataAPI({RxBool? isLoader, required void Function() navigation}) async {
+  static Future<dynamic> getSplashDataAPI(
+      {RxBool? isLoader, required void Function() navigation}) async {
     ///
     if (await getConnectivityResult()) {
       if (isRegistered<SplashController>()) {
@@ -30,48 +31,68 @@ class SplashRepository {
                 isLoader?.value = false;
 
                 final GetSplashModel model = GetSplashModel.fromJson(response);
-
                 if (!isValEmpty(model.data)) {
                   // ***********************************************************************************
                   //                                    COMMON DETAILS
                   // ***********************************************************************************
 
                   if (isRegistered<PreDefinedValueController>()) {
-                    final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
-                    preValueCon.profileBanner.value = model.data?.profileBanner ?? "";
-                    preValueCon.categoryWiseSizesList.value = model.data!.categoryWiseSizes ?? [];
+                    final PreDefinedValueController preValueCon =
+                        Get.find<PreDefinedValueController>();
+                    preValueCon.profileBanner.value =
+                        model.data?.profileBanner ?? "";
+                    preValueCon.categoryWiseSizesList.value =
+                        model.data!.categoryWiseSizes ?? [];
                     preValueCon.metalsList.value = model.data!.metals ?? [];
                     preValueCon.diamondsList.value = model.data!.diamonds ?? [];
-                    preValueCon.productNamesList.value = model.data!.productionNames ?? [];
-                    preValueCon.deliveriesList.value = model.data!.deliveries ?? [];
-                    preValueCon.orderTypeList.value = model.data!.orderType ?? [];
+                    preValueCon.productNamesList.value =
+                        model.data!.productionNames ?? [];
+                    preValueCon.deliveriesList.value =
+                        model.data!.deliveries ?? [];
+                    preValueCon.orderTypeList.value =
+                        model.data!.orderType ?? [];
                     preValueCon.genderList.value = model.data!.gender ?? [];
-                    preValueCon.productNamesList.value = model.data!.productionNames ?? [];
-                    preValueCon.deliveriesList.value = model.data!.deliveries ?? [];
-                    preValueCon.collectionList.value = model.data!.collections ?? [];
+                    preValueCon.productNamesList.value =
+                        model.data!.productionNames ?? [];
+                    preValueCon.deliveriesList.value =
+                        model.data!.deliveries ?? [];
+                    preValueCon.collectionList.value =
+                        model.data!.collections ?? [];
                   }
 
                   // ***********************************************************************************
                   //                                    APP CONFIG DETAILS
                   // ***********************************************************************************
-                  if (!isValEmpty(model.data!.appConfigData) && (model.data!.appConfigData!.appConfigs ?? []).isNotEmpty && !isValEmpty(model.data!.appConfigData!.appConfigs![0].appConfigDetails)) {
+                  printData(value: model.data!.appConfigData);
+                  if (!isValEmpty(model.data!.appConfigData) &&
+                      (model.data!.appConfigData!.appConfigs ?? [])
+                          .isNotEmpty &&
+                      !isValEmpty(model.data!.appConfigData!.appConfigs![0]
+                          .appConfigDetails)) {
                     /// App Configurations
-                    AppConfigDetails appConfig = model.data!.appConfigData!.appConfigs![0].appConfigDetails!;
+                    AppConfigDetails appConfig = model
+                        .data!.appConfigData!.appConfigs![0].appConfigDetails!;
 
                     /// Store App Configs to Local Storage
                     LocalStorage.privacyURL = appConfig.privacy;
                     LocalStorage.termsURL = appConfig.terms;
                     LocalStorage.aboutUsURL = appConfig.aboutUs;
                     LocalStorage.contactUsURL = appConfig.contactUs;
-                    LocalStorage.contactMobileNumber = appConfig.contactMobileNumber;
+                    LocalStorage.contactMobileNumber =
+                        appConfig.contactMobileNumber;
                     LocalStorage.contactEmailID = appConfig.contactEmailId;
+                    LocalStorage.returnURL = appConfig.returnPolicy;
                   }
 
                   if (isValEmpty(model.data!.appConfigData!.versions)) {
                     /// Versions
 
                     /// CHECKING UPDATE
-                    splashCon.inAppUpdateChecker(appMaintenanceModel: model.data?.appConfigData!.appMaintenance, currentVersion: packageInfo.version, versions: model.data!.appConfigData!.versions!);
+                    splashCon.inAppUpdateChecker(
+                        appMaintenanceModel:
+                            model.data?.appConfigData!.appMaintenance,
+                        currentVersion: packageInfo.version,
+                        versions: model.data!.appConfigData!.versions!);
                   } else {
                     navigation();
                   }
@@ -115,7 +136,8 @@ class SplashRepository {
               "privacy": "https://example.com/privacy",
               "terms": "https://example.com/terms",
               "about_us": "https://example.com/about",
-              "play_store_link": "https://play.google.com/store/apps/details?id=com.example",
+              "play_store_link":
+                  "https://play.google.com/store/apps/details?id=com.example",
               "app_store_link": "https://apps.apple.com/app/id123456789",
               "contact_us": "https://example.com/contact",
               "contact_mobile_number": "+91234567890",

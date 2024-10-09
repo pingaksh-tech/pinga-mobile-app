@@ -41,6 +41,7 @@ class LocalStorage {
   static const String _currencySymbol = "CURRENCY-SYMBOL";
   static const String _privacyURL = "PRIVACY-URL";
   static const String _termsURL = "TERMS-URL";
+  static const String _returnURL = "RETURN-URL";
   static const String _aboutUsURL = "ABOUT-US-URL";
   static const String _contactUsURL = "CONTACT-US-URL";
   static const String _contactMobileNumber = "CONTACT-MOBILE-NUMBER";
@@ -65,22 +66,30 @@ class LocalStorage {
   static String get baseUrl => prefs.read(_baseUrl) ?? "";
 
   /// Primary color
-  static set primaryColor(Color? value) => prefs.write(_primaryColor, value != null ? AppColors.fromColor(value) : AppColors.primary);
+  static set primaryColor(Color? value) => prefs.write(_primaryColor,
+      value != null ? AppColors.fromColor(value) : AppColors.primary);
 
-  static Color get primaryColor => prefs.read(_primaryColor) != null ? AppColors.fromHex(prefs.read(_primaryColor)) : AppColors.primary;
+  static Color get primaryColor => prefs.read(_primaryColor) != null
+      ? AppColors.fromHex(prefs.read(_primaryColor))
+      : AppColors.primary;
 
   /// Secondary color
-  static set secondaryColor(Color? value) => prefs.write(_secondaryColor, value != null ? AppColors.fromColor(value) : AppColors.secondary);
+  static set secondaryColor(Color? value) => prefs.write(_secondaryColor,
+      value != null ? AppColors.fromColor(value) : AppColors.secondary);
 
-  static Color get secondaryColor => prefs.read(_secondaryColor) != null ? AppColors.fromHex(prefs.read(_secondaryColor)) : AppColors.secondary;
+  static Color get secondaryColor => prefs.read(_secondaryColor) != null
+      ? AppColors.fromHex(prefs.read(_secondaryColor))
+      : AppColors.secondary;
 
   /// User locale language
-  static set localeLanguage(String? value) => prefs.write(_localeLanguage, value);
+  static set localeLanguage(String? value) =>
+      prefs.write(_localeLanguage, value);
 
   static String get localeLanguage => prefs.read(_localeLanguage) ?? "";
 
   /// User locale language code
-  static set localeLanguageCode(String? value) => prefs.write(_localeLanguageCode, value);
+  static set localeLanguageCode(String? value) =>
+      prefs.write(_localeLanguageCode, value);
 
   static String get localeLanguageCode => prefs.read(_localeLanguageCode) ?? "";
 
@@ -94,23 +103,30 @@ class LocalStorage {
 
   static UserModel get userModel {
     final dynamic result = prefs.read(_userModel);
-    return !isValEmpty(result) ? UserModel.fromJson(json.decode(result)) : UserModel();
+    return !isValEmpty(result)
+        ? UserModel.fromJson(json.decode(result))
+        : UserModel();
   }
 
   /// ***********************************************************************************
   ///                                      CURRENCY
   /// ***********************************************************************************
 
-  static const String _defaultCurrencyType = "INR", _defaultCurrencySymbol = "₹";
+  static const String _defaultCurrencyType = "INR",
+      _defaultCurrencySymbol = "₹";
 
-  static String get currencyType => prefs.read(_currencyType) ?? _defaultCurrencyType;
+  static String get currencyType =>
+      prefs.read(_currencyType) ?? _defaultCurrencyType;
 
-  static String get currencySymbol => prefs.read(_currencySymbol) ?? _defaultCurrencySymbol;
+  static String get currencySymbol =>
+      prefs.read(_currencySymbol) ?? _defaultCurrencySymbol;
 
-  static Future setCurrency({String? currencyTYPE, String? currencySYMBOL}) async {
+  static Future setCurrency(
+      {String? currencyTYPE, String? currencySYMBOL}) async {
     await prefs.write(_currencyType, currencyTYPE ?? _defaultCurrencyType);
 
-    await prefs.write(_currencySymbol, currencySYMBOL ?? _defaultCurrencySymbol);
+    await prefs.write(
+        _currencySymbol, currencySYMBOL ?? _defaultCurrencySymbol);
 
     printData(key: "currencyType", value: currencyType);
     printData(key: "currencySymbol", value: currencySymbol);
@@ -120,37 +136,58 @@ class LocalStorage {
   ///                                     APP CONFIGS
   /// ***********************************************************************************
 
-  static String defaultPrivacyPolicyURL = AppStrings.privacyURL, defaultTermsURL = AppStrings.termsURL, defaultAboutUsURL = AppStrings.aboutUsURL, defaultContactUsURL = AppStrings.contactUsURL, defaultContactMobileNUmber = AppStrings.contactMobileNumber, defaultContactEmailID = AppStrings.contactEmailID;
+  static String defaultPrivacyPolicyURL = AppStrings.privacyURL,
+      defaultTermsURL = AppStrings.termsURL,
+      defaultReturnURL = AppStrings.returnURL,
+      defaultAboutUsURL = AppStrings.aboutUsURL,
+      defaultContactUsURL = AppStrings.contactUsURL,
+      defaultContactMobileNUmber = AppStrings.contactMobileNumber,
+      defaultContactEmailID = AppStrings.contactEmailID;
 
   /// PRIVACY POLICY
-  static set privacyURL(String? value) => prefs.write(_privacyURL, value ?? defaultPrivacyPolicyURL);
+  static set privacyURL(String? value) =>
+      prefs.write(_privacyURL, value ?? defaultPrivacyPolicyURL);
 
-  static String get privacyURL => prefs.read(_privacyURL) ?? defaultPrivacyPolicyURL;
+  static String get privacyURL =>
+      prefs.read(_privacyURL) ?? defaultPrivacyPolicyURL;
 
   /// TERMS
-  static set termsURL(String? value) => prefs.write(_termsURL, value ?? defaultTermsURL);
+  static set termsURL(String? value) =>
+      prefs.write(_termsURL, value ?? defaultTermsURL);
 
   static String get termsURL => prefs.read(_termsURL) ?? defaultTermsURL;
+  // RETURN
+  static set returnURL(String? value) =>
+      prefs.write(_returnURL, value ?? defaultReturnURL);
+
+  static String get returnURL => prefs.read(_returnURL) ?? defaultReturnURL;
 
   /// ABOUT US
-  static set aboutUsURL(String? value) => prefs.write(_aboutUsURL, value ?? defaultAboutUsURL);
+  static set aboutUsURL(String? value) =>
+      prefs.write(_aboutUsURL, value ?? defaultAboutUsURL);
 
   static String get aboutUsURL => prefs.read(_aboutUsURL) ?? defaultAboutUsURL;
 
   /// CONTACT US
-  static set contactUsURL(String? value) => prefs.write(_contactUsURL, value ?? defaultContactUsURL);
+  static set contactUsURL(String? value) =>
+      prefs.write(_contactUsURL, value ?? defaultContactUsURL);
 
-  static String get contactUsURL => prefs.read(_contactUsURL) ?? defaultContactUsURL;
+  static String get contactUsURL =>
+      prefs.read(_contactUsURL) ?? defaultContactUsURL;
 
   /// CONTACT - MOBILE NUMBER
-  static set contactMobileNumber(String? value) => prefs.write(_contactMobileNumber, value ?? defaultContactMobileNUmber);
+  static set contactMobileNumber(String? value) =>
+      prefs.write(_contactMobileNumber, value ?? defaultContactMobileNUmber);
 
-  static String get contactMobileNumber => prefs.read(_contactMobileNumber) ?? defaultContactMobileNUmber;
+  static String get contactMobileNumber =>
+      prefs.read(_contactMobileNumber) ?? defaultContactMobileNUmber;
 
   /// CONTACT - EMAIL ID
-  static set contactEmailID(String? value) => prefs.write(_contactEmailID, value ?? defaultContactEmailID);
+  static set contactEmailID(String? value) =>
+      prefs.write(_contactEmailID, value ?? defaultContactEmailID);
 
-  static String get contactEmailID => prefs.read(_contactEmailID) ?? defaultContactEmailID;
+  static String get contactEmailID =>
+      prefs.read(_contactEmailID) ?? defaultContactEmailID;
 
   /// ***********************************************************************************
   ///                                   Device Storage

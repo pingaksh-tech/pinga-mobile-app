@@ -343,12 +343,14 @@ class ProductsScreen extends StatelessWidget {
                                         );
                                       },
                                       diamondOnChanged: (value) {
-                                        con
-                                            .inventoryProductList[index]
-                                            .diamonds
-                                            ?.first
-                                            .diamondClarity
-                                            ?.value = value;
+                                        if (value!.isNotEmpty) {
+                                          con
+                                              .inventoryProductList[index]
+                                              .diamonds
+                                              ?.first
+                                              .diamondClarity
+                                              ?.value = value;
+                                        }
                                       },
                                       sizeOnChanged: (value) {
                                         con.inventoryProductList[index].sizeId!
