@@ -86,7 +86,7 @@ class HttpUtil {
           try {
             if (!isValEmpty(e.response)) {
               if (e.response?.statusCode == 426) {
-               /* showErrorToast = false;
+                showErrorToast = false;
 
                 // Refresh tokens
                 await _refreshTokens();
@@ -108,7 +108,7 @@ class HttpUtil {
                   queryParameters: options.queryParameters,
                 );
 
-                return handler.resolve(response);*/
+                return handler.resolve(response);
               }
 
               if (showErrorToast == true) {
