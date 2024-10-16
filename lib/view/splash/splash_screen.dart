@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-import '../../exports.dart';
+import '../../utils/app_assets.dart';
 import 'splash_controller.dart';
+// import 'splash_controller.dart';
 
 class SplashScreen extends StatelessWidget {
   SplashScreen({super.key});
@@ -12,6 +14,7 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FlutterNativeSplash.remove();
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Center(

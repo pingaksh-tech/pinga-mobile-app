@@ -13,6 +13,7 @@ class ProfileController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    ProfileRepository.getUserDetailAPI(userId: LocalStorage.userModel.id ?? "", isLoader: isLoading);
+    ProfileRepository.getUserDetailAPI(
+        userId: LocalStorage.userModel.id ?? "", isLoader: isLoading);
   }
 }

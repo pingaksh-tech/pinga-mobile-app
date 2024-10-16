@@ -73,6 +73,24 @@ dependencies:
   file_downloader_flutter: ^0.0.5
   flutter_pdfview: ^1.0.0
   open_file: ^3.3.2
+  flutter_native_splash: ^2.4.1
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/icons/pingaksh_fill_logo.png
+  color_dark: "#000000"
+  image_dark: assets/icons/pingaksh_fill_logo.png
+  ios: true
+  android: true  
+  ios_content_mode: center # Ensures the image is centered on iOS.
+  android_gravity: center # Ensures the image is centered on Android.
+
+
+android_12:
+  image: assets/icons/pingaksh_fill_logo.png
+  icon_background_color: "#ffffff"
+  image_dark: assets/icons/pingaksh_fill_logo.png
+  icon_background_color_dark: "#000000" 
 
 dev_dependencies:
   flutter_test:

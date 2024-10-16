@@ -11,7 +11,8 @@ class ProfileRepository {
   ///                                 GET USER API
   /// ***********************************************************************************
 
-  static Future<dynamic> getUserDetailAPI({RxBool? isLoader, required String userId}) async {
+  static Future<dynamic> getUserDetailAPI(
+      {RxBool? isLoader, required String userId}) async {
     ///
     if (await getConnectivityResult()) {
       try {
