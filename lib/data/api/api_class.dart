@@ -85,7 +85,7 @@ class HttpUtil {
         onError: (DioException e, handler) async {
           try {
             if (!isValEmpty(e.response)) {
-              if (e.response?.statusCode == 426) {
+              /*if (e.response?.statusCode == 426) {
                 showErrorToast = false;
 
                 // Refresh tokens
@@ -109,7 +109,7 @@ class HttpUtil {
                 );
 
                 return handler.resolve(response);
-              }
+              }*/
 
               if (showErrorToast == true) {
                 UiUtils.toast(e.response?.data['message'].toString());
