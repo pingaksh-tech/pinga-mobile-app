@@ -154,6 +154,7 @@ class AuthRepository {
         ).then(
           (response) async {
             if (response != null) {
+              LocalStorage.clearLocalStorage();
               Get.offAllNamed(AppRoutes.authScreen);
               loader?.value = false;
               return true;
@@ -190,6 +191,7 @@ class AuthRepository {
           (response) async {
             if (response != null) {
               loader?.value = false;
+              LocalStorage.clearLocalStorage();
 
               /// onSuccess
               if (onSuccess != null) onSuccess();
