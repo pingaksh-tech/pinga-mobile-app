@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -14,6 +15,7 @@ import 'exports.dart';
 import 'firebase_options.dart';
 import 'utils/custom_route_observer.dart';
 import 'utils/global_context.dart';
+
 // import 'view/cart/cart_controller.dart';
 // import 'view/home/home_controller.dart';
 import 'view/orders/widgets/order_filter/order_filter_controller.dart';
@@ -24,14 +26,12 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   WidgetsFlutterBinding.ensureInitialized();
-  await GetStorage.init()
-      .then((value) async => await LocalStorage.readDataInfo());
+  await GetStorage.init().then((value) async => await LocalStorage.readDataInfo());
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await NotificationsHelper.init();
   await FirebaseNotificationService.initialise();
-  FirebaseMessaging.onBackgroundMessage(
-      FirebaseNotificationService.firebaseMessagingBackgroundHandler);
+  FirebaseMessaging.onBackgroundMessage(FirebaseNotificationService.firebaseMessagingBackgroundHandler);
   runApp(const MyApp());
 }
 
@@ -40,7 +40,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    LocalStorage.printLocalStorageData();
+    if (kDebugMode) {
+      LocalStorage.printLocalStorageData();
+    }
     return ScreenUtilInit(
       designSize: const Size(360, 690),
       builder: (context, child) {
@@ -50,16 +52,8 @@ class MyApp extends StatelessWidget {
           initialBinding: BaseBinding(),
           themeMode: ThemeMode.light,
           navigatorKey: GlobalContext.instance.navigatorKey,
-          theme: AppTheme.lightMode(context,
-              kPrimaryColor: LocalStorage.primaryColor,
-              kSecondaryColor: LocalStorage.secondaryColor,
-              errorColor: AppColors.error,
-              fontFamily: AppTheme.fontFamilyName),
-          darkTheme: AppTheme.darkMode(context,
-              kPrimaryColor: LocalStorage.primaryColor,
-              kSecondaryColor: LocalStorage.secondaryColor,
-              errorColor: AppColors.error,
-              fontFamily: AppTheme.fontFamilyName),
+          theme: AppTheme.lightMode(context, kPrimaryColor: LocalStorage.primaryColor, kSecondaryColor: LocalStorage.secondaryColor, errorColor: AppColors.error, fontFamily: AppTheme.fontFamilyName),
+          darkTheme: AppTheme.darkMode(context, kPrimaryColor: LocalStorage.primaryColor, kSecondaryColor: LocalStorage.secondaryColor, errorColor: AppColors.error, fontFamily: AppTheme.fontFamilyName),
           scrollBehavior: ScrollBehaviorModified(),
           getPages: AppPages.pages,
           initialRoute: AppRoutes.splashScreen,

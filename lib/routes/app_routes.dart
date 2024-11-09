@@ -88,4 +88,9 @@ class AppRoutes {
   static const String catalogueScreen = '/catalogue-screen';
   static const String pdfViewerScreen = '/pdf-viewer-screen';
   static const String watchpdfViewerScreen = '/watch-pdf-viewer-screen';
+
+  /// ***********************************************************************************
+  ///                                 SETTING PAGES
+  /// ***********************************************************************************
+  static const String deleteAccountScreen = '/deleteAccountScreen';
 }

@@ -21,8 +21,7 @@ class ProfileScreen extends StatelessWidget {
   ProfileScreen({super.key});
 
   final ProfileController con = Get.put(ProfileController());
-  final PreDefinedValueController preValueCon =
-      Get.find<PreDefinedValueController>();
+  final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
 
   @override
   Widget build(BuildContext context) {
@@ -44,9 +43,7 @@ class ProfileScreen extends StatelessWidget {
                 Stack(
                   children: [
                     AppNetworkImage(
-                      imageUrl: !isValEmpty(preValueCon.profileBanner.value)
-                          ? preValueCon.profileBanner.value
-                          : "https://media.designrush.com/tinymce_images/316674/conversions/Desiree-Qelaj-content.jpg",
+                      imageUrl: !isValEmpty(preValueCon.profileBanner.value) ? preValueCon.profileBanner.value : "https://media.designrush.com/tinymce_images/316674/conversions/Desiree-Qelaj-content.jpg",
                       height: Get.height * 0.2,
                       width: Get.width,
                       borderRadius: BorderRadius.circular(0),
@@ -80,8 +77,7 @@ class ProfileScreen extends StatelessWidget {
                             alignment: Alignment.topCenter,
                             image: con.selectUserProfile.value.isEmpty
                                 ? NetworkImage(
-                                    con.userDetail.value.userImage ??
-                                        LocalStorage.userModel.userImage,
+                                    con.userDetail.value.userImage ?? LocalStorage.userModel.userImage,
                                   )
                                 : FileImage(
                                     File(con.selectUserProfile.value),
@@ -116,10 +112,7 @@ class ProfileScreen extends StatelessWidget {
                                 croppedFileChange: (cropper) async {
                                   if (cropper != null) {
                                     con.selectUserProfile.value = cropper.path;
-                                    await ProfileRepository.updateProfileApi(
-                                        userImagePath:
-                                            con.selectUserProfile.value,
-                                        isLoader: con.isLoader);
+                                    await ProfileRepository.updateProfileApi(userImagePath: con.selectUserProfile.value, isLoader: con.isLoader);
                                   }
                                 },
                               );
@@ -146,15 +139,13 @@ class ProfileScreen extends StatelessWidget {
               ],
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: defaultPadding)
-                  .copyWith(top: defaultPadding * 1.3),
+              padding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(top: defaultPadding * 1.3),
               child: Column(
                 children: [
                   profileTile(
                     context,
                     title: "Username",
-                    subTitle:
-                        "${LocalStorage.userModel.firstName ?? ""} ${LocalStorage.userModel.lastName ?? ""}",
+                    subTitle: "${LocalStorage.userModel.firstName ?? ""} ${LocalStorage.userModel.lastName ?? ""}",
                     iconImage: AppAssets.usernameIcon,
                     height: 15.h,
                   ),
@@ -162,28 +153,21 @@ class ProfileScreen extends StatelessWidget {
                   profileTile(
                     context,
                     title: "User type",
-                    subTitle: LocalStorage.userModel.roleId?.name ??
-                        con.userDetail.value.roleId?.name ??
-                        "",
+                    subTitle: LocalStorage.userModel.roleId?.name ?? con.userDetail.value.roleId?.name ?? "",
                     iconImage: AppAssets.userIcon,
                   ),
                   divider,
                   profileTile(
                     context,
                     title: "Contact no.",
-                    subTitle: LocalStorage.userModel.phone ??
-                        con.userDetail.value.phone ??
-                        "",
+                    subTitle: LocalStorage.userModel.phone ?? con.userDetail.value.phone ?? "",
                     iconImage: AppAssets.contactIcon,
                   ),
                   divider,
                   profileTile(
                     context,
                     title: "Address",
-                    subTitle: !isValEmpty(LocalStorage.userModel.address)
-                        ? LocalStorage.userModel.address ??
-                            con.userDetail.value.address
-                        : "  -  ",
+                    subTitle: !isValEmpty(LocalStorage.userModel.address) ? LocalStorage.userModel.address ?? con.userDetail.value.address : "  -  ",
                     iconImage: AppAssets.addressIcon,
                     height: 30.h,
                   ),
@@ -191,11 +175,7 @@ class ProfileScreen extends StatelessWidget {
                   profileTile(
                     context,
                     title: "GST no.",
-                    subTitle: !isValEmpty(LocalStorage.userModel.gstNo)
-                        ? LocalStorage.userModel.gstNo ??
-                            con.userDetail.value.gstNo ??
-                            ""
-                        : "  -  ",
+                    subTitle: !isValEmpty(LocalStorage.userModel.gstNo) ? LocalStorage.userModel.gstNo ?? con.userDetail.value.gstNo ?? "" : "  -  ",
                     iconImage: AppAssets.gstIcon,
                   ),
                   divider,
@@ -205,8 +185,7 @@ class ProfileScreen extends StatelessWidget {
                       AppDialogs.logoutDialog(
                         Get.context!,
                         isLoader: con.isLoader,
-                        fullName:
-                            "${LocalStorage.userModel.firstName} ${LocalStorage.userModel.lastName}",
+                        fullName: "${LocalStorage.userModel.firstName} ${LocalStorage.userModel.lastName}",
                         onCancellation: () {
                           Get.back();
                         },
@@ -227,6 +206,34 @@ class ProfileScreen extends StatelessWidget {
                         (defaultPadding / 2).horizontalSpace,
                         Text(
                           "Log out",
+                          style: AppTextStyle.subtitleStyle(context).copyWith(
+                            fontSize: 13.sp,
+                            height: 0,
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ).paddingSymmetric(vertical: defaultPadding / 2.5),
+                  ),
+                  divider,
+                  GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () {
+                      Get.toNamed(AppRoutes.deleteAccountScreen);
+                    },
+                    child: Row(
+                      children: [
+                        Container(
+                          child: SvgPicture.asset(
+                            AppAssets.deleteIcon,
+                            color: Theme.of(context).primaryColor,
+                            height: 20.sp,
+                          ).paddingOnly(left: defaultPadding / 3.5),
+                        ),
+                        (defaultPadding / 2).horizontalSpace,
+                        Text(
+                          "Delete Account",
                           style: AppTextStyle.subtitleStyle(context).copyWith(
                             fontSize: 13.sp,
                             height: 0,
@@ -291,8 +298,7 @@ class ProfileScreen extends StatelessWidget {
             children: [
               Text(
                 title ?? "",
-                style: AppTextStyle.subtitleStyle(context).copyWith(
-                    fontSize: 12.2.sp, color: AppColors.font, height: 1.4),
+                style: AppTextStyle.subtitleStyle(context).copyWith(fontSize: 12.2.sp, color: AppColors.font, height: 1.4),
               ),
               (1.6).verticalSpace,
               Text(

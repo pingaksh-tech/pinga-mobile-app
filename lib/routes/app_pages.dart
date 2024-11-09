@@ -26,6 +26,7 @@ import '../view/products/products_screen.dart';
 import '../view/products/widgets/filter/filter_screen.dart';
 import '../view/products/widgets/variant/variant_screen.dart';
 import '../view/profile/profile_screen.dart';
+import '../view/profile/widgets/delete_account/delete_account_screen.dart';
 import '../view/splash/splash_screen.dart';
 import '../view/sub_category/sub_category_screen.dart';
 import '../widgets/add_remark/add_remark_screen.dart';
@@ -35,18 +36,8 @@ class AppPages {
   AppPages._();
 
   /// Function to define a GetPage route
-  static GetPage<dynamic> _getPage(
-      {required String name,
-      required GetPageBuilder page,
-      Bindings? binding,
-      List<GetPage<dynamic>>? children,
-      bool preventDuplicates = true}) {
-    return GetPage(
-        name: name,
-        page: page,
-        binding: binding,
-        children: children ?? [],
-        preventDuplicates: preventDuplicates);
+  static GetPage<dynamic> _getPage({required String name, required GetPageBuilder page, Bindings? binding, List<GetPage<dynamic>>? children, bool preventDuplicates = true}) {
+    return GetPage(name: name, page: page, binding: binding, children: children ?? [], preventDuplicates: preventDuplicates);
   }
 
   static final List<GetPage<dynamic>> pages = <GetPage<dynamic>>[
@@ -54,21 +45,15 @@ class AppPages {
     _getPage(name: AppRoutes.authScreen, page: () => AuthScreen()),
     _getPage(name: AppRoutes.dashboardScreen, page: () => DashboardScreen()),
     _getPage(name: AppRoutes.bottomBarScreen, page: () => BottomBarScreen()),
-    _getPage(
-        name: AppRoutes.underMaintenanceScreen,
-        page: () => const UnderMaintenanceScreen()),
+    _getPage(name: AppRoutes.underMaintenanceScreen, page: () => const UnderMaintenanceScreen()),
     _getPage(name: AppRoutes.categoryScreen, page: () => SubCategoryScreen()),
     _getPage(name: AppRoutes.productScreen, page: () => ProductsScreen()),
     _getPage(name: AppRoutes.profileScreen, page: () => ProfileScreen()),
     _getPage(name: AppRoutes.cartScreen, page: () => CartScreen()),
-    _getPage(
-        name: AppRoutes.productDetailsScreen,
-        page: () => ProductDetailsScreen(),
-        preventDuplicates: false),
+    _getPage(name: AppRoutes.productDetailsScreen, page: () => ProductDetailsScreen(), preventDuplicates: false),
     _getPage(name: AppRoutes.filterScreen, page: () => FilterScreen()),
     _getPage(name: AppRoutes.watchListScreen, page: () => WatchListScreen()),
-    _getPage(
-        name: AppRoutes.addWatchListScreen, page: () => AddWatchListScreen()),
+    _getPage(name: AppRoutes.addWatchListScreen, page: () => AddWatchListScreen()),
     _getPage(name: AppRoutes.remarkScreen, page: () => AddRemarkScreen()),
     _getPage(name: AppRoutes.cartStockScreen, page: () => CartStockScreen()),
     _getPage(name: AppRoutes.summaryScreen, page: () => SummaryScreen()),
@@ -76,20 +61,15 @@ class AppPages {
     _getPage(name: AppRoutes.imageViewScreen, page: () => ImageViewScreen()),
     _getPage(name: AppRoutes.wishlistScreen, page: () => WishlistScreen()),
     _getPage(name: AppRoutes.settingsScreen, page: () => SettingsScreen()),
-    _getPage(
-        name: AppRoutes.orderFilterScreen, page: () => OrderFilterScreen()),
+    _getPage(name: AppRoutes.orderFilterScreen, page: () => OrderFilterScreen()),
     _getPage(name: AppRoutes.feedbackScreen, page: () => FeedbackScreen()),
-    _getPage(
-        name: AppRoutes.feedbackHistoryScreen,
-        page: () => FeedbackHistoryScreen()),
+    _getPage(name: AppRoutes.feedbackHistoryScreen, page: () => FeedbackHistoryScreen()),
     _getPage(name: AppRoutes.catalogueScreen, page: () => CatalogueScreen()),
     _getPage(name: AppRoutes.pdfViewerScreen, page: () => PdfViewerScreen()),
-    _getPage(
-        name: AppRoutes.watchpdfViewerScreen,
-        page: () => WatchPdfViewerScreen()),
+    _getPage(name: AppRoutes.watchpdfViewerScreen, page: () => WatchPdfViewerScreen()),
     _getPage(name: AppRoutes.checkoutScreen, page: () => CheckoutScreen()),
-    _getPage(
-        name: AppRoutes.orderDetailScreen, page: () => OrderDetailScreen()),
+    _getPage(name: AppRoutes.orderDetailScreen, page: () => OrderDetailScreen()),
     _getPage(name: AppRoutes.retailerScreen, page: () => RetailerScreen()),
+    _getPage(name: AppRoutes.deleteAccountScreen, page: () => DeleteAccountScreen()),
   ];
 }
