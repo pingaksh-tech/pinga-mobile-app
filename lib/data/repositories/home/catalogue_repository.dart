@@ -581,9 +581,6 @@ startxref
         ),
       );
 
-      printOkStatus(response.statusCode);
-      // printOkStatus(Uint8List.fromList(response.data));
-
       // Get temporary directory
       final dir = await getTemporaryDirectory();
 

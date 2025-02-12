@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class AppColors {
   AppColors._();
@@ -37,6 +38,8 @@ class AppColors {
       return reverse == true ? Colors.white : Colors.black;
     }
   }
+
+  static ColorFilter iconColorFilter({double? opacity}) => ColorFilter.mode(Theme.of(Get.context!).iconTheme.color!.withOpacity(opacity??1), BlendMode.srcIn);
 
   /// Hex to convert Color
   static Color fromHex(String hexString) {

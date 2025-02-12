@@ -62,6 +62,7 @@ class AppAssets {
   static const String watchlistFilled = '${svgPath}watchlist.svg';
   static const String jewelleryWearIcon = '${svgPath}jewellery_wear_icon.svg';
   static const String ringSizeIcon = '${svgPath}ring_size_icon.svg';
+
   // static const String colorIcon = '${svgPath}color_icon.svg';
   static const String diamondIcon = '${svgPath}diamond_icon.svg';
   static const String ringIcon = '${svgPath}ring_icon.svg';
@@ -130,6 +131,7 @@ class AppAssets {
   static const String dateSVG = '${svgPath}date_icon.svg';
   static const String typeSVG = '${svgPath}type_icon.svg';
   static const String logOutSVG = '${svgPath}logout_icon.svg';
+  static const String productPlaceholderSVG = '${svgPath}product_placeholder.svg';
 
   /// ***********************************************************************************
   ///                                   JSON

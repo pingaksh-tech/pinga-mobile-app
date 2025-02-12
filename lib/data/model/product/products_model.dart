@@ -6,11 +6,9 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 
-GetProductsModel getProductsModelFromJson(String str) =>
-    GetProductsModel.fromJson(json.decode(str));
+GetProductsModel getProductsModelFromJson(String str) => GetProductsModel.fromJson(json.decode(str));
 
-String getProductsModelToJson(GetProductsModel data) =>
-    json.encode(data.toJson());
+String getProductsModelToJson(GetProductsModel data) => json.encode(data.toJson());
 
 class GetProductsModel {
   final bool? success;
@@ -23,12 +21,10 @@ class GetProductsModel {
     this.data,
   });
 
-  factory GetProductsModel.fromJson(Map<String, dynamic> json) =>
-      GetProductsModel(
+  factory GetProductsModel.fromJson(Map<String, dynamic> json) => GetProductsModel(
         success: json["success"],
         message: json["message"],
-        data:
-            json["data"] == null ? null : ProductsModel.fromJson(json["data"]),
+        data: json["data"] == null ? null : ProductsModel.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -55,19 +51,14 @@ class ProductsModel {
         totalCount: json["totalCount"],
         page: json["page"],
         totalPages: json["totalPages"],
-        inventories: json["inventories"] == null
-            ? []
-            : List<InventoryModel>.from(
-                json["inventories"]!.map((x) => InventoryModel.fromJson(x))),
+        inventories: json["inventories"] == null ? [] : List<InventoryModel>.from(json["inventories"]!.map((x) => InventoryModel.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "totalCount": totalCount,
         "page": page,
         "totalPages": totalPages,
-        "inventories": inventories == null
-            ? []
-            : List<dynamic>.from(inventories!.map((x) => x.toJson())),
+        "inventories": inventories == null ? [] : List<dynamic>.from(inventories!.map((x) => x.toJson())),
       };
 }
 
@@ -158,9 +149,7 @@ class InventoryModel {
         slug: json["slug"],
         sku: json["sku"],
         quantity: 0.obs,
-        inventoryImages: json["inventory_images"] == null
-            ? []
-            : List<String>.from(json["inventory_images"]!.map((x) => x)),
+        inventoryImages: json["inventory_images"] == null ? [] : List<String>.from(json["inventory_images"]!.map((x) => x)),
         categoryId: json["category_id"],
         subCategoryId: json["sub_category_id"],
         sizeId: RxString(json["size_id"].toString()),
@@ -168,59 +157,30 @@ class InventoryModel {
         remark: RxString(''),
         metalWeight: json["metal_weight"]?.toDouble(),
         status: json["status"],
-        diamonds: json["diamonds"] == null
-            ? []
-            : List<DiamondListModel>.from(
-                json["diamonds"]!.map((x) => DiamondListModel.fromJson(x))),
+        diamonds: json["diamonds"] == null ? [] : List<DiamondListModel>.from(json["diamonds"]!.map((x) => DiamondListModel.fromJson(x))),
         diamondTotalPrice: json["diamond_total_price"]?.toDouble(),
         manufacturingPrice: json["manufacturing_price"]?.toDouble(),
         gender: json["gender"],
-        productTags: json["product_tags"] == null
-            ? []
-            : List<String>.from(json["product_tags"]!.map((x) => x)),
+        productTags: json["product_tags"] == null ? [] : List<String>.from(json["product_tags"]!.map((x) => x)),
         createdBy: json["created_by"],
         updatedBy: json["updated_by"],
         inStock: json["in_stock"],
         wearItItem: json["wear_it_item"],
         delivery: json["delivery"],
         productionName: json["production_name"],
-        deletedAt: json["deleted_at"] == null
-            ? null
-            : DateTime.parse(json["deleted_at"]),
-        familyProducts: json["family_products"] == null
-            ? []
-            : List<dynamic>.from(json["family_products"]!.map((x) => x)),
-        createdAt: json["createdAt"] == null
-            ? null
-            : DateTime.parse(json["createdAt"]),
-        updatedAt: json["updatedAt"] == null
-            ? null
-            : DateTime.parse(json["updatedAt"]),
+        deletedAt: json["deleted_at"] == null ? null : DateTime.parse(json["deleted_at"]),
+        familyProducts: json["family_products"] == null ? [] : List<dynamic>.from(json["family_products"]!.map((x) => x)),
+        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
         v: json["__v"],
-        metal: json["metal"] == null
-            ? null
-            : MetalListModel.fromJson(json["metal"]),
-        diamondPricings: json["diamond_pricings"] == null
-            ? []
-            : List<DiamondPricingModel>.from(json["diamond_pricings"]!
-                .map((x) => DiamondPricingModel.fromJson(x))),
-        diamondWeight: json["diamond_weight"] == null
-            ? []
-            : List<DiamondWeight>.from(
-                json["diamond_weight"]!.map((x) => DiamondWeight.fromJson(x))),
-        inventoryTotalPrice: json["inventory_total_price"] == null
-            ? null
-            : RxNum(
-                num.tryParse(json["inventory_total_price"].toString()) ?? 0),
+        metal: json["metal"] == null ? null : MetalListModel.fromJson(json["metal"]),
+        diamondPricings: json["diamond_pricings"] == null ? [] : List<DiamondPricingModel>.from(json["diamond_pricings"]!.map((x) => DiamondPricingModel.fromJson(x))),
+        diamondWeight: json["diamond_weight"] == null ? [] : List<DiamondWeight>.from(json["diamond_weight"]!.map((x) => DiamondWeight.fromJson(x))),
+        inventoryTotalPrice: json["inventory_total_price"] == null ? null : RxNum(num.tryParse(json["inventory_total_price"].toString()) ?? 0),
         singleInvImage: json["single_inv_image"],
         isDiamondMultiple: json["isDiamondMultiple"],
-        collection: json["collection"] == null
-            ? []
-            : List<CollectionModel>.from(
-                json["collection"]!.map((x) => CollectionModel.fromJson(x))),
-        watchlist: json["watchlist"] == null
-            ? []
-            : List<dynamic>.from(json["watchlist"]!.map((x) => x)),
+        collection: json["collection"] == null ? [] : List<CollectionModel>.from(json["collection"]!.map((x) => CollectionModel.fromJson(x))),
+        watchlist: json["watchlist"] == null ? [] : List<dynamic>.from(json["watchlist"]!.map((x) => x)),
         isWishlist: RxBool(json["isWishList"] ?? false),
       );
 
@@ -230,9 +190,7 @@ class InventoryModel {
         "slug": slug,
         "sku": sku,
         "quantity": quantity?.value,
-        "inventory_images": inventoryImages == null
-            ? []
-            : List<dynamic>.from(inventoryImages!.map((x) => x)),
+        "inventory_images": inventoryImages == null ? [] : List<dynamic>.from(inventoryImages!.map((x) => x)),
         "category_id": categoryId,
         "sub_category_id": subCategoryId,
         "size_id": sizeId.obs,
@@ -240,15 +198,11 @@ class InventoryModel {
         "remark": remark.obs,
         "metal_weight": metalWeight,
         "status": status,
-        "diamonds": diamonds == null
-            ? []
-            : List<dynamic>.from(diamonds!.map((x) => x.toJson())),
+        "diamonds": diamonds == null ? [] : List<dynamic>.from(diamonds!.map((x) => x.toJson())),
         "diamond_total_price": diamondTotalPrice,
         "manufacturing_price": manufacturingPrice,
         "gender": gender,
-        "product_tags": productTags == null
-            ? []
-            : List<dynamic>.from(productTags!.map((x) => x)),
+        "product_tags": productTags == null ? [] : List<dynamic>.from(productTags!.map((x) => x)),
         "created_by": createdBy,
         "updated_by": updatedBy,
         "in_stock": inStock,
@@ -256,28 +210,18 @@ class InventoryModel {
         "delivery": delivery,
         "production_name": productionName,
         "deleted_at": deletedAt,
-        "family_products": familyProducts == null
-            ? []
-            : List<dynamic>.from(familyProducts!.map((x) => x)),
+        "family_products": familyProducts == null ? [] : List<dynamic>.from(familyProducts!.map((x) => x)),
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "__v": v,
         "metal": metal?.toJson(),
-        "diamond_pricings": diamondPricings == null
-            ? []
-            : List<dynamic>.from(diamondPricings!.map((x) => x.toJson())),
-        "diamond_weight": diamondWeight == null
-            ? []
-            : List<dynamic>.from(diamondWeight!.map((x) => x.toJson())),
+        "diamond_pricings": diamondPricings == null ? [] : List<dynamic>.from(diamondPricings!.map((x) => x.toJson())),
+        "diamond_weight": diamondWeight == null ? [] : List<dynamic>.from(diamondWeight!.map((x) => x.toJson())),
         "inventory_total_price": inventoryTotalPrice?.value,
         "single_inv_image": singleInvImage,
         "isDiamondMultiple": isDiamondMultiple,
-        "collection": collection == null
-            ? []
-            : List<dynamic>.from(collection!.map((x) => x.toJson())),
-        "watchlist": watchlist == null
-            ? []
-            : List<dynamic>.from(watchlist!.map((x) => x)),
+        "collection": collection == null ? [] : List<dynamic>.from(collection!.map((x) => x.toJson())),
+        "watchlist": watchlist == null ? [] : List<dynamic>.from(watchlist!.map((x) => x)),
         "isWishList": isWishlist?.value,
       };
 }
@@ -291,8 +235,7 @@ class CollectionModel {
     this.name,
   });
 
-  factory CollectionModel.fromJson(Map<String, dynamic> json) =>
-      CollectionModel(
+  factory CollectionModel.fromJson(Map<String, dynamic> json) => CollectionModel(
         id: json["_id"],
         name: json["name"],
       );
@@ -312,8 +255,7 @@ class DiamondPricingModel {
     this.carat,
   });
 
-  factory DiamondPricingModel.fromJson(Map<String, dynamic> json) =>
-      DiamondPricingModel(
+  factory DiamondPricingModel.fromJson(Map<String, dynamic> json) => DiamondPricingModel(
         id: json["_id"],
         carat: json["carat"]?.toDouble(),
       );
@@ -357,9 +299,8 @@ class DiamondListModel {
     this.id,
   });
 
-  factory DiamondListModel.fromJson(Map<String, dynamic> json) =>
-      DiamondListModel(
-        diamondClarity: RxString(json["diamond_clarity"].toString()),
+  factory DiamondListModel.fromJson(Map<String, dynamic> json) => DiamondListModel(
+        diamondClarity: RxString(json["diamond_clarity"] ?? ""),
         diamondShape: json["diamond_shape"],
         diamondSize: json["diamond_size"],
         diamondCount: num.tryParse(json["diamond_count"].toString()) ?? 0,
@@ -416,12 +357,8 @@ class MetalListModel {
         createdBy: json["created_by"],
         updatedBy: json["updated_by"],
         deletedAt: json["deleted_at"],
-        createdAt: json["createdAt"] == null
-            ? null
-            : DateTime.parse(json["createdAt"]),
-        updatedAt: json["updatedAt"] == null
-            ? null
-            : DateTime.parse(json["updatedAt"]),
+        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
         v: json["__v"],
       );
 

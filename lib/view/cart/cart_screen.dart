@@ -37,11 +37,7 @@ class CartScreen extends StatelessWidget {
                         BaseController baseCon = Get.find<BaseController>();
                         printData(value: baseCon.globalProductDetails);
 
-                        int.parse(baseCon.globalProductDetails.length
-                                    .toString()) >=
-                                1
-                            ? Get.offAllNamed(AppRoutes.bottomBarScreen)
-                            : Get.back();
+                        int.parse(baseCon.globalProductDetails.length.toString()) >= 1 ? Get.offAllNamed(AppRoutes.bottomBarScreen) : Get.back();
                       }
                     },
                     icon: SvgPicture.asset(
@@ -69,8 +65,7 @@ class CartScreen extends StatelessWidget {
                       physics: const AlwaysScrollableScrollPhysics(),
                       children: [
                         Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: defaultPadding / 1.2),
+                          margin: EdgeInsets.symmetric(horizontal: defaultPadding / 1.2),
                           decoration: BoxDecoration(
                             color: Theme.of(context).primaryColor.withAlpha(20),
                             borderRadius: BorderRadius.circular(defaultRadius),
@@ -78,23 +73,17 @@ class CartScreen extends StatelessWidget {
                           child: CustomCheckboxTile(
                               title: "Select all items",
                               behavior: HitTestBehavior.deferToChild,
-                              isSelected: RxBool(con.selectedList.length ==
-                                  con.cartList.length),
-                              titleStyle: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium
-                                  ?.copyWith(
+                              isSelected: RxBool(con.selectedList.length == con.cartList.length),
+                              titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
                                     fontWeight: FontWeight.w500,
                                   ),
                               scale: 1.1,
                               borderWidth: 1.6,
                               onChanged: (_) {
-                                if (con.selectedList.length !=
-                                    con.cartList.length) {
+                                if (con.selectedList.length != con.cartList.length) {
                                   con.selectedList.addAll(
                                     con.cartList.where(
-                                      (item) =>
-                                          !con.selectedList.contains(item),
+                                      (item) => !con.selectedList.contains(item),
                                     ),
                                   );
                                 } else {
@@ -107,34 +96,21 @@ class CartScreen extends StatelessWidget {
                         Column(
                           children: [
                             ListView.separated(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: defaultPadding),
+                              padding: EdgeInsets.symmetric(vertical: defaultPadding),
                               itemCount: con.cartList.length,
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              separatorBuilder: (context, index) =>
-                                  SizedBox(height: defaultPadding),
+                              separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
                               itemBuilder: (context, index) {
                                 return ProductTile(
                                   screenType: "isCartScreen",
-                                  isFancy:
-                                      con.cartList[index].isDiamondMultiple ??
-                                          false,
+                                  isFancy: con.cartList[index].isDiamondMultiple ?? false,
                                   cartId: con.cartList[index].id,
                                   inventoryId: con.cartList[index].inventoryId,
                                   productsListTypeType: ProductsListType.cart,
-                                  selectMetalCart:
-                                      (con.cartList[index].metalId!.value).obs,
+                                  selectMetalCart: (con.cartList[index].metalId!.value).obs,
                                   diamonds: con.cartList[index].diamonds,
-                                  selectDiamondCart:
-                                      (con.cartList[index].diamonds != null &&
-                                              con.cartList[index].diamonds!
-                                                  .isNotEmpty)
-                                          ? (con.cartList[index].diamonds?.first
-                                                      .diamondClarity?.value ??
-                                                  "")
-                                              .obs
-                                          : "".obs,
+                                  selectDiamondCart: (con.cartList[index].diamonds != null && con.cartList[index].diamonds!.isNotEmpty) ? (con.cartList[index].diamonds?.first.diamondClarity?.value ?? "").obs : "".obs,
                                   diamondOnChanged: (value) {
                                     //   printBlue(value);
                                     //   if (value!.isNotEmpty) {
@@ -147,55 +123,35 @@ class CartScreen extends StatelessWidget {
                                     //   }
                                   },
                                   item: con.cartList[index],
-                                  category: RxString(
-                                      con.cartList[index].subCategoryId ?? ""),
-                                  isSizeAvailable: !isValEmpty(
-                                      con.cartList[index].sizeId!.value),
+                                  category: RxString(con.cartList[index].subCategoryId ?? ""),
+                                  isSizeAvailable: !isValEmpty(con.cartList[index].sizeId!.value),
                                   productTileType: ProductTileType.cartTile,
-                                  diamondList: RxList(
-                                      con.cartList[index].diamonds ?? []),
+                                  diamondList: RxList(con.cartList[index].diamonds ?? []),
                                   isCartSelected: RxBool(
                                     con.selectedList.contains(
                                       con.cartList[index],
                                     ),
                                   ),
-                                  remark: RxString(
-                                      con.cartList[index].remark!.value),
-                                  imageUrl: (con.cartList[index]
-                                                  .inventoryImage !=
-                                              null &&
-                                          con.cartList[index].inventoryImage!
-                                              .isNotEmpty)
-                                      ? con.cartList[index].inventoryImage![0]
-                                      : "",
-                                  productName:
-                                      (con.cartList[index].inventoryName ?? ""),
-                                  productPrice: con
-                                      .cartList[index].inventoryTotalPrice
-                                      .toString(),
-                                  brandName:
-                                      con.cartList[index].inventoryName ??
-                                          "Unknown",
-                                  productQuantity:
-                                      RxInt(con.cartList[index].quantity ?? 0),
-                                  selectSize:
-                                      (con.cartList[index].sizeId!.value).obs,
+                                  remark: RxString(con.cartList[index].remark!.value),
+                                  imageUrl: (con.cartList[index].inventoryImage != null && con.cartList[index].inventoryImage!.isNotEmpty) ? con.cartList[index].inventoryImage![0] : "",
+                                  productName: (con.cartList[index].inventoryName ?? ""),
+                                  productPrice: con.cartList[index].inventoryTotalPrice.toString(),
+                                  brandName: con.cartList[index].inventoryName ?? "Unknown",
+                                  productQuantity: RxInt(con.cartList[index].quantity ?? 0),
+                                  selectSize: (con.cartList[index].sizeId!.value).obs,
                                   deleteOnTap: () {
                                     //? CART DELETE API
-                                    CartRepository.deleteCartAPi(
-                                        cartId: con.cartList[index].id);
+                                    CartRepository.deleteCartAPi(cartId: con.cartList[index].id);
                                     con.calculateSelectedItemPrice();
                                     con.calculateSelectedQue();
                                     Get.back();
                                   },
                                   onChanged: (_) {
-                                    if (!con.selectedList
-                                        .contains(con.cartList[index])) {
+                                    if (!con.selectedList.contains(con.cartList[index])) {
                                       con.selectedList.add(con.cartList[index]);
                                       con.calculateSelectedQue();
                                     } else {
-                                      con.selectedList
-                                          .remove(con.cartList[index]);
+                                      con.selectedList.remove(con.cartList[index]);
                                     }
                                     con.calculateSelectedItemPrice();
                                     con.calculateSelectedQue();
@@ -213,51 +169,26 @@ class CartScreen extends StatelessWidget {
                                     // addProductIdToGlobalList((con.cartList[index].id ?? ""), type: GlobalProductPrefixType.cart);
                                     navigateToProductDetailsScreen(
                                       productDetails: {
-                                        "productId":
-                                            (con.cartList[index].id ?? ""),
-                                        "diamondClarity": con.cartList[index]
-                                                    .isDiamondMultiple ==
-                                                false
-                                            ? (con.cartList[index].diamonds !=
-                                                        null &&
-                                                    con.cartList[index]
-                                                        .diamonds!.isNotEmpty)
-                                                ? con
-                                                        .cartList[index]
-                                                        .diamonds
-                                                        ?.first
-                                                        .diamondClarity
-                                                        ?.value ??
-                                                    ""
+                                        "productId": (con.cartList[index].id ?? ""),
+                                        "diamondClarity": con.cartList[index].isDiamondMultiple == false
+                                            ? (con.cartList[index].diamonds != null && con.cartList[index].diamonds!.isNotEmpty)
+                                                ? con.cartList[index].diamonds?.first.diamondClarity?.value ?? ""
                                                 : ""
                                             : "",
-                                        "metalId":
-                                            con.cartList[index].metalId!.value,
-                                        "sizeId":
-                                            con.cartList[index].sizeId!.value,
-                                        "diamonds": con.cartList[index]
-                                                    .isDiamondMultiple ==
-                                                true
-                                            ? con.cartList[index].diamonds!
-                                            : [],
-                                        "type": GlobalProductPrefixType
-                                            .productDetails,
+                                        "metalId": con.cartList[index].metalId!.value,
+                                        "sizeId": con.cartList[index].sizeId!.value,
+                                        "diamonds": con.cartList[index].isDiamondMultiple == true ? con.cartList[index].diamonds! : [],
+                                        "type": GlobalProductPrefixType.productDetails,
                                       },
-                                      type: GlobalProductPrefixType
-                                          .productDetails,
+                                      type: GlobalProductPrefixType.productDetails,
                                       arguments: {
-                                        "category":
-                                            con.cartList[index].subCategoryId ??
-                                                '',
-                                        'isFancy': con
-                                            .cartList[index].isDiamondMultiple,
+                                        "category": con.cartList[index].subCategoryId ?? '',
+                                        'isFancy': con.cartList[index].isDiamondMultiple,
                                         'cartId': /*AppStrings.cartIdPrefixSlug +*/
                                             (con.cartList[index].id ?? ""),
                                         "inventoryId": /*AppStrings.cartIdPrefixSlug +*/
-                                            (con.cartList[index].inventoryId ??
-                                                ""),
-                                        'name':
-                                            con.cartList[index].inventoryName,
+                                            (con.cartList[index].inventoryId ?? ""),
+                                        'name': con.cartList[index].inventoryName,
                                       },
                                     );
                                   },
@@ -269,10 +200,7 @@ class CartScreen extends StatelessWidget {
                             Visibility(
                               visible: con.paginationLoader.isTrue,
                               child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                        horizontal: defaultPadding,
-                                        vertical: defaultPadding / 2)
-                                    .copyWith(top: 0),
+                                padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding / 2).copyWith(top: 0),
                                 child: ShimmerUtils.shimmer(
                                   child: ShimmerUtils.shimmerContainer(
                                     borderRadiusSize: defaultRadius,
@@ -290,8 +218,7 @@ class CartScreen extends StatelessWidget {
                       children: [
                         EmptyElement(
                           title: "Cart is empty",
-                          padding:
-                              EdgeInsets.symmetric(vertical: Get.width / 2.5),
+                          padding: EdgeInsets.symmetric(vertical: Get.width / 2.5),
                         ),
                       ],
                     ))
@@ -300,8 +227,7 @@ class CartScreen extends StatelessWidget {
                   shrinkWrap: true,
                   padding: EdgeInsets.all(defaultPadding),
                   physics: const NeverScrollableScrollPhysics(),
-                  separatorBuilder: (context, index) =>
-                      SizedBox(height: defaultPadding),
+                  separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
                   itemBuilder: (context, index) => const CartItemShimmer(),
                 ),
 
@@ -312,10 +238,7 @@ class CartScreen extends StatelessWidget {
               child: con.cartLoader.isFalse
                   ? con.cartList.isNotEmpty
                       ? Container(
-                          padding: EdgeInsets.only(
-                              top: defaultPadding,
-                              bottom: MediaQuery.of(context).padding.bottom +
-                                  defaultPadding),
+                          padding: EdgeInsets.only(top: defaultPadding, bottom: MediaQuery.of(context).padding.bottom + defaultPadding),
                           decoration: BoxDecoration(
                             color: Theme.of(context).primaryColor.withAlpha(20),
                             borderRadius: BorderRadius.vertical(
@@ -325,90 +248,64 @@ class CartScreen extends StatelessWidget {
                           child: Column(
                             children: [
                               Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: defaultPadding),
+                                padding: EdgeInsets.symmetric(horizontal: defaultPadding),
                                 child: Column(
                                   children: [
                                     cartSummaryItem(
                                       context,
                                       title: "Cart Items",
-                                      price:
-                                          "${con.selectedList.length}/${con.cartDetail.value.totalItems}",
+                                      price: "${con.selectedList.length}/${con.cartDetail.value.totalItems}",
                                     ),
                                     cartSummaryItem(
                                       context,
                                       title: "Cart Quantity",
-                                      price:
-                                          "${con.selectedQuantity.value}/${con.cartDetail.value.totalQuantity}",
+                                      price: "${con.selectedQuantity.value}/${con.cartDetail.value.totalQuantity}",
                                     ),
                                     cartSummaryItem(
                                       context,
                                       title: "Cart Amount",
-                                      price:
-                                          "${UiUtils.amountFormat(con.selectedPrice.value, decimalDigits: 0)} / ${UiUtils.amountFormat(con.cartDetail.value.totalPrice, decimalDigits: 0)}",
+                                      price: "${UiUtils.amountFormat(con.selectedPrice.value, decimalDigits: 0)} / ${UiUtils.amountFormat(con.cartDetail.value.totalPrice, decimalDigits: 0)}",
                                     ),
                                     (defaultPadding / 2).verticalSpace,
                                     Row(
                                       children: [
                                         GestureDetector(
                                           onTap: () {
-                                            Get.toNamed(
-                                                AppRoutes.summaryScreen);
+                                            Get.toNamed(AppRoutes.summaryScreen);
                                           },
                                           child: Container(
                                             padding: EdgeInsets.all(7.w),
-                                            margin: EdgeInsets.only(
-                                                right: defaultPadding / 2),
+                                            margin: EdgeInsets.only(right: defaultPadding / 2),
                                             decoration: BoxDecoration(
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      defaultRadius / 1.5),
+                                              color: Theme.of(context).primaryColor,
+                                              borderRadius: BorderRadius.circular(defaultRadius / 1.5),
                                             ),
                                             child: SvgPicture.asset(
                                               AppAssets.summaryIcon,
                                               height: 22.h,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .surface, // ignore: deprecated_member_use
+                                              color: Theme.of(context).colorScheme.surface, // ignore: deprecated_member_use
                                             ),
                                           ),
                                         ),
                                         Expanded(
                                           child: AppButton(
-                                            padding: EdgeInsets.only(
-                                                right: defaultPadding / 2),
-                                            backgroundColor:
-                                                con.selectedList.isEmpty
-                                                    ? AppColors.lightGrey
-                                                    : AppColors.primary,
+                                            padding: EdgeInsets.only(right: defaultPadding / 2),
+                                            backgroundColor: con.selectedList.isEmpty ? AppColors.lightGrey : AppColors.primary,
                                             height: 30.h,
                                             flexibleWidth: true,
                                             title: "Check - out",
-                                            disableButton:
-                                                con.selectedList.isEmpty,
-                                            titleStyle:
-                                                AppTextStyle.appButtonStyle(
-                                                        context)
-                                                    .copyWith(
-                                              color: con.selectedList.isEmpty
-                                                  ? null
-                                                  : Theme.of(context)
-                                                      .colorScheme
-                                                      .surface,
+                                            disableButton: con.selectedList.isEmpty,
+                                            titleStyle: AppTextStyle.appButtonStyle(context).copyWith(
+                                              color: con.selectedList.isEmpty ? null : Theme.of(context).colorScheme.surface,
                                             ),
                                             onPressed: () {
                                               Get.toNamed(
                                                 AppRoutes.checkoutScreen,
                                                 arguments: {
-                                                  "subQuantity": con
-                                                      .selectedQuantity.value,
-                                                  "subTotal":
-                                                      con.selectedPrice.value,
+                                                  "subQuantity": con.selectedQuantity.value,
+                                                  "subTotal": con.selectedPrice.value,
                                                   "cartList": con.selectedList,
-                                                  "totalItems":
-                                                      con.selectedList.length,
+                                                  "totalItems": con.selectedList.length,
                                                 },
                                               );
                                             },
@@ -416,31 +313,16 @@ class CartScreen extends StatelessWidget {
                                         ),
                                         Expanded(
                                           child: AppButton(
-                                            backgroundColor:
-                                                con.selectedList.isEmpty
-                                                    ? AppColors.lightGrey
-                                                    : Colors.red,
+                                            backgroundColor: con.selectedList.isEmpty ? AppColors.lightGrey : Colors.red,
                                             height: 30.h,
                                             flexibleWidth: true,
                                             title: "Delete",
-                                            disableButton:
-                                                con.selectedList.isEmpty,
-                                            titleStyle:
-                                                AppTextStyle.appButtonStyle(
-                                                        context)
-                                                    .copyWith(
-                                              color: con.selectedList.isEmpty
-                                                  ? null
-                                                  : Theme.of(context)
-                                                      .colorScheme
-                                                      .surface,
+                                            disableButton: con.selectedList.isEmpty,
+                                            titleStyle: AppTextStyle.appButtonStyle(context).copyWith(
+                                              color: con.selectedList.isEmpty ? null : Theme.of(context).colorScheme.surface,
                                             ),
                                             onPressed: () {
-                                              AppDialogs.cartDialog(context,
-                                                  contentText:
-                                                      "Are you sure?\nYou want to remove this item from the cart?",
-                                                  buttonTitle: "NO",
-                                                  onPressed: () async {
+                                              AppDialogs.cartDialog(context, contentText: "Are you sure?\nYou want to remove this item from the cart?", buttonTitle: "NO", onPressed: () async {
                                                 Get.back();
 
                                                 //? Delete cart list api
@@ -449,16 +331,9 @@ class CartScreen extends StatelessWidget {
                                                 // await CartRepository
                                                 //     .deleteCartAPi();
                                                 // } else {
-                                                List<String> selectedCartIds =
-                                                    con.selectedList
-                                                        .map((item) =>
-                                                            item.id ?? "")
-                                                        .toList();
+                                                List<String> selectedCartIds = con.selectedList.map((item) => item.id ?? "").toList();
 
-                                                await CartRepository
-                                                    .multipleCartDelete(
-                                                        selectedCartIds:
-                                                            selectedCartIds);
+                                                await CartRepository.multipleCartDelete(selectedCartIds: selectedCartIds);
                                               }
                                                   // },
                                                   );
@@ -485,26 +360,19 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Widget cartSummaryItem(BuildContext context,
-      {required String title, required String price}) {
+  Widget cartSummaryItem(BuildContext context, {required String title, required String price}) {
     return Container(
       padding: EdgeInsets.only(bottom: defaultPadding / 2),
       child: Row(
         children: [
           Text(
             title,
-            style: Theme.of(Get.context!)
-                .textTheme
-                .titleMedium
-                ?.copyWith(fontSize: 14.sp, fontWeight: FontWeight.w500),
+            style: Theme.of(Get.context!).textTheme.titleMedium?.copyWith(fontSize: 14.sp, fontWeight: FontWeight.w500),
           ),
           const Spacer(),
           Text(
             price,
-            style: Theme.of(Get.context!)
-                .textTheme
-                .titleMedium
-                ?.copyWith(fontSize: 14.sp, fontWeight: FontWeight.w500),
+            style: Theme.of(Get.context!).textTheme.titleMedium?.copyWith(fontSize: 14.sp, fontWeight: FontWeight.w500),
           ),
         ],
       ),

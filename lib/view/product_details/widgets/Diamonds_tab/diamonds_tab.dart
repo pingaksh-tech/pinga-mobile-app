@@ -13,11 +13,9 @@ class DiamondsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      padding: EdgeInsets.symmetric(horizontal: defaultPadding)
-          .copyWith(top: 52, bottom: defaultPadding * 5),
+      padding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(top: 52, bottom: defaultPadding * 5),
       itemCount: diamondList.length,
-      separatorBuilder: (context, index) =>
-          SizedBox(height: defaultPadding / 2),
+      separatorBuilder: (context, index) => SizedBox(height: defaultPadding / 2),
       itemBuilder: (context, index) => Obx(
         () => Container(
           decoration: BoxDecoration(
@@ -27,8 +25,7 @@ class DiamondsTab extends StatelessWidget {
             ),
             boxShadow: defaultShadowAllSide,
           ),
-          padding: EdgeInsets.symmetric(
-              horizontal: defaultPadding, vertical: defaultPadding / 1.5),
+          padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding / 1.5),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -37,7 +34,7 @@ class DiamondsTab extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      "Clarity  : ${diamondList[index].diamondClarity}",
+                      "Clarity  : ${diamondList[index].diamondClarity?.value ?? '-'}",
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontSize: 14.sp,
@@ -47,8 +44,7 @@ class DiamondsTab extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    UiUtils.amountFormat(diamondList[index].totalPrice ?? 0,
-                        decimalDigits: 2),
+                    UiUtils.amountFormat(diamondList[index].totalPrice ?? 0, decimalDigits: 2),
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontSize: 14.sp,
@@ -59,16 +55,14 @@ class DiamondsTab extends StatelessWidget {
                 ],
               ),
               Text(
-                "Shape     : ${diamondList[index].diamondShape}",
+                "Shape     : ${diamondList[index].diamondShape ?? '-'}",
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontSize: 12.sp, color: AppColors.font.withOpacity(.6)),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.font.withOpacity(.6)),
               ),
               Text(
-                "Quantity  : ${diamondList[index].diamondCount}",
+                "Quantity  : ${diamondList[index].diamondCount ?? '-'}",
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontSize: 12.sp, color: AppColors.font.withOpacity(.6)),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.font.withOpacity(.6)),
               ),
             ],
           ),

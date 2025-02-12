@@ -21,3 +21,4 @@ export 'utils/local_storage.dart';
 export 'utils/shimmer_utils.dart';
 export 'utils/ui_utils.dart';
 export 'utils/utils.dart';
+export 'widgets/global_widgets.dart';

@@ -112,15 +112,13 @@ class _ProductTileState extends State<ProductTile> {
   /// Set Default Select Value Of Product
   Future<void> predefinedValue() async {
     if (isRegistered<PreDefinedValueController>()) {
-      final PreDefinedValueController preValueCon =
-          Get.find<PreDefinedValueController>();
+      final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
       RxList<MetalModel> metalList = preValueCon.metalsList;
       List<CategoryWiseSize> allSizeList = preValueCon.categoryWiseSizesList;
       RxList<DiamondModel> diamondList = preValueCon.diamondsList;
       //? Metal Value Select in default
       if (metalList.isNotEmpty) {
-        int index = metalList
-            .indexWhere((element) => element.id == widget.selectMetalCart);
+        int index = metalList.indexWhere((element) => element.id == widget.selectMetalCart);
         if (index != -1) {
           metalModel = metalList[index];
         } else {
@@ -131,12 +129,10 @@ class _ProductTileState extends State<ProductTile> {
       if (allSizeList.isNotEmpty) {
         RxList<DiamondModel> sizeList = <DiamondModel>[].obs;
         for (var element in allSizeList) {
-          if (element.id?.value == widget.category?.value &&
-              element.data != null) {
+          if (element.id?.value == widget.category?.value && element.data != null) {
             sizeList = element.data!.obs;
 
-            int index = sizeList
-                .indexWhere((element) => element.id == widget.selectSize);
+            int index = sizeList.indexWhere((element) => element.id == widget.selectSize);
             if (index != -1) {
               sizeModel.value = sizeList[index];
             } else {
@@ -147,8 +143,7 @@ class _ProductTileState extends State<ProductTile> {
       }
       //? Diamond value selection
       if (diamondList.isNotEmpty) {
-        int diamondIndex = diamondList.indexWhere(
-            (element) => element.shortName == widget.selectDiamondCart?.value);
+        int diamondIndex = diamondList.indexWhere((element) => element.shortName == widget.selectDiamondCart?.value);
         if (diamondIndex != -1) {
           diamondModel = diamondList[diamondIndex];
         } else {
@@ -162,7 +157,6 @@ class _ProductTileState extends State<ProductTile> {
   void initState() {
     super.initState();
     predefinedValue();
-    printOkStatus(widget.selectSize?.value);
   }
 
   @override
@@ -202,21 +196,23 @@ class _ProductTileState extends State<ProductTile> {
               children: [
                 SizedBox(
                   height: Get.width / 2 - defaultPadding * 2.5,
-                  child: AppNetworkImage(
-                    height: double.infinity,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    borderRadius: BorderRadius.circular(defaultRadius / 1.5),
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    imageUrl: widget.imageUrl,
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.lightGrey.withOpacity(0.5),
-                        blurRadius: 1,
-                        offset: const Offset(0, 1),
-                      ),
-                    ],
-                  ),
+                  child: isValEmpty(widget.imageUrl)
+                      ? productPlaceHolderImage()
+                      : AppNetworkImage(
+                          height: double.infinity,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          borderRadius: BorderRadius.circular(defaultRadius / 1.5),
+                          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                          imageUrl: widget.imageUrl,
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.lightGrey.withOpacity(0.5),
+                              blurRadius: 1,
+                              offset: const Offset(0, 1),
+                            ),
+                          ],
+                        ),
                 ),
                 /*Container(
                   margin: EdgeInsets.all(defaultPadding / 2),
@@ -248,11 +244,7 @@ class _ProductTileState extends State<ProductTile> {
                               'quantity': widget.productQuantity?.value ?? 0,
                               'sizeId': sizeModel.value.id?.value ?? "",
                               'metalId': metalModel.id?.value ?? "",
-                              'diamondClarity': (widget.diamondList != null &&
-                                      widget.diamondList!.isNotEmpty)
-                                  ? widget
-                                      .diamondList?.first.diamondClarity?.value
-                                  : "",
+                              'diamondClarity': (widget.diamondList != null && widget.diamondList!.isNotEmpty) ? widget.diamondList?.first.diamondClarity?.value : "",
                               "diamond": widget.diamonds,
                               "isMultiDiamond": widget.isFancy,
                             },
@@ -261,9 +253,7 @@ class _ProductTileState extends State<ProductTile> {
                       }
                     },
                     child: Icon(
-                      shadows: const [
-                        Shadow(color: AppColors.background, blurRadius: 4)
-                      ],
+                      shadows: const [Shadow(color: AppColors.background, blurRadius: 4)],
                       Icons.more_vert_rounded,
                       size: 18.sp,
                     ),
@@ -272,8 +262,7 @@ class _ProductTileState extends State<ProductTile> {
               ],
             ),
             Padding(
-              padding: EdgeInsets.all(defaultPadding / 4).copyWith(
-                  top: defaultPadding / 2, bottom: defaultPadding / 2),
+              padding: EdgeInsets.all(defaultPadding / 4).copyWith(top: defaultPadding / 2, bottom: defaultPadding / 2),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -283,15 +272,13 @@ class _ProductTileState extends State<ProductTile> {
                       widget.productName,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w400, fontSize: 12.sp),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w400, fontSize: 12.sp),
                     ),
                   ),
                   SizedBox(height: 1.h),
                   Text(
                     UiUtils.amountFormat(widget.productPrice),
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w600, fontSize: 14.sp),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600, fontSize: 14.sp),
                   ),
                 ],
               ),
@@ -301,8 +288,7 @@ class _ProductTileState extends State<ProductTile> {
               child: Row(
                 children: [
                   /// Size
-                  if (!isValEmpty(widget.selectSize?.value))
-                    sizeSelector(category: widget.category?.value),
+                  if (!isValEmpty(widget.selectSize?.value)) sizeSelector(category: widget.category?.value),
                   (defaultPadding / 4).horizontalSpace,
 
                   /// Diamond
@@ -326,10 +312,7 @@ class _ProductTileState extends State<ProductTile> {
             ),
             (defaultPadding / 4).verticalSpace,
             Padding(
-              padding: EdgeInsets.symmetric(
-                      horizontal: defaultPadding / 6,
-                      vertical: defaultPadding / 6)
-                  .copyWith(top: 0),
+              padding: EdgeInsets.symmetric(horizontal: defaultPadding / 6, vertical: defaultPadding / 6).copyWith(top: 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -337,16 +320,12 @@ class _ProductTileState extends State<ProductTile> {
                     child: AppButton(
                       flexibleWidth: true,
                       flexibleHeight: true,
-                      backgroundColor:
-                          Theme.of(context).primaryColor.withOpacity(0.06),
+                      backgroundColor: Theme.of(context).primaryColor.withOpacity(0.06),
                       child: SvgPicture.asset(
-                        widget.isLike?.value ?? false
-                            ? AppAssets.likeFill
-                            : AppAssets.like,
+                        widget.isLike?.value ?? false ? AppAssets.likeFill : AppAssets.like,
                         height: 19.sp,
                         width: 19.sp,
-                        colorFilter: ColorFilter.mode(
-                            AppColors.primary, BlendMode.srcIn),
+                        colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
                       ),
                       onPressed: () async {
                         if (widget.isLike != null) {
@@ -385,11 +364,9 @@ class _ProductTileState extends State<ProductTile> {
   Widget productListTile() {
     return Obx(() {
       return Padding(
-        padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2)
-            .copyWith(top: defaultPadding / 1.2),
+        padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2).copyWith(top: defaultPadding / 1.2),
         child: Container(
-          padding:
-              EdgeInsets.all(defaultPadding / 1.5).copyWith(top: 0, right: 0),
+          padding: EdgeInsets.all(defaultPadding / 1.5).copyWith(top: 0, right: 0),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(
@@ -404,14 +381,20 @@ class _ProductTileState extends State<ProductTile> {
                 children: [
                   Expanded(
                     flex: 2,
-                    child: AppNetworkImage(
-                      imageUrl: widget.imageUrl,
-                      height: 44.h,
-                      width: 44.h,
-                      fit: BoxFit.cover,
-                      borderRadius: BorderRadius.circular(defaultRadius / 2),
-                      padding: EdgeInsets.only(top: defaultPadding / 1.5),
-                    ),
+                    child: isValEmpty(widget.imageUrl)
+                        ? SizedBox(
+                            height: 44.h,
+                            width: 44.h,
+                            child: productPlaceHolderImage(),
+                          )
+                        : AppNetworkImage(
+                            imageUrl: widget.imageUrl,
+                            height: 44.h,
+                            width: 44.h,
+                            fit: BoxFit.cover,
+                            borderRadius: BorderRadius.circular(defaultRadius / 2),
+                            padding: EdgeInsets.only(top: defaultPadding / 1.5),
+                          ),
                   ),
                   6.horizontalSpace,
                   Expanded(
@@ -423,8 +406,7 @@ class _ProductTileState extends State<ProductTile> {
                           children: [
                             Expanded(
                               child: Padding(
-                                padding:
-                                    EdgeInsets.only(top: defaultPadding / 1.5),
+                                padding: EdgeInsets.only(top: defaultPadding / 1.5),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -432,23 +414,13 @@ class _ProductTileState extends State<ProductTile> {
                                     Text(
                                       widget.productName,
                                       overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium
-                                          ?.copyWith(
-                                              fontSize: 11.sp,
-                                              color: AppColors.font
-                                                  .withOpacity(.6)),
+                                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 11.sp, color: AppColors.font.withOpacity(.6)),
                                     ),
 
                                     /// PRICE
                                     Text(
-                                      UiUtils.amountFormat(widget.productPrice,
-                                          decimalDigits: 0),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium
-                                          ?.copyWith(
+                                      UiUtils.amountFormat(widget.productPrice, decimalDigits: 0),
+                                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
                                             fontSize: 13.sp,
                                             color: AppColors.primary,
                                             fontWeight: FontWeight.w500,
@@ -473,19 +445,15 @@ class _ProductTileState extends State<ProductTile> {
                                   await WishlistRepository.createWishlistAPI(
                                     inventoryId: widget.inventoryId ?? '',
                                     isWishlist: widget.isLike!.value,
-                                    productListType:
-                                        widget.productsListTypeType,
+                                    productListType: widget.productsListTypeType,
                                   );
                                 }
                               },
                               icon: SvgPicture.asset(
-                                widget.isLike?.value ?? false
-                                    ? AppAssets.likeFill
-                                    : AppAssets.like,
+                                widget.isLike?.value ?? false ? AppAssets.likeFill : AppAssets.like,
                                 height: 19.sp,
                                 width: 19.sp,
-                                colorFilter: ColorFilter.mode(
-                                    AppColors.primary, BlendMode.srcIn),
+                                colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
                               ),
                             ),
                           ],
@@ -503,10 +471,7 @@ class _ProductTileState extends State<ProductTile> {
                 child: Row(
                   children: [
                     /// Size Selector
-                    if (widget.isSizeAvailable)
-                      sizeSelector(
-                          direction: Axis.vertical,
-                          category: widget.category?.value),
+                    if (widget.isSizeAvailable) sizeSelector(direction: Axis.vertical, category: widget.category?.value),
                     6.horizontalSpace,
 
                     /// Color Selector
@@ -537,8 +502,7 @@ class _ProductTileState extends State<ProductTile> {
   Widget variantView() {
     return Obx(() {
       return Padding(
-        padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2)
-            .copyWith(top: defaultPadding / 1.2),
+        padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2).copyWith(top: defaultPadding / 1.2),
         child: Container(
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
@@ -553,13 +517,19 @@ class _ProductTileState extends State<ProductTile> {
             children: [
               Expanded(
                 flex: 2,
-                child: AppNetworkImage(
-                  imageUrl: widget.imageUrl,
-                  height: 44.h,
-                  width: 44.h,
-                  fit: BoxFit.cover,
-                  borderRadius: BorderRadius.circular(defaultRadius / 2),
-                ),
+                child: isValEmpty(widget.imageUrl)
+                    ? SizedBox(
+                        height: 44.h,
+                        width: 44.h,
+                        child: productPlaceHolderImage(),
+                      )
+                    : AppNetworkImage(
+                        imageUrl: widget.imageUrl,
+                        height: 44.h,
+                        width: 44.h,
+                        fit: BoxFit.cover,
+                        borderRadius: BorderRadius.circular(defaultRadius / 2),
+                      ),
               ),
               6.horizontalSpace,
               Expanded(
@@ -577,22 +547,13 @@ class _ProductTileState extends State<ProductTile> {
                               Text(
                                 widget.productName,
                                 overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium
-                                    ?.copyWith(
-                                        fontSize: 11.sp,
-                                        color: AppColors.font.withOpacity(.6)),
+                                style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 11.sp, color: AppColors.font.withOpacity(.6)),
                               ),
 
                               /// PRICE
                               Text(
-                                UiUtils.amountFormat(widget.productPrice,
-                                    decimalDigits: 0),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium
-                                    ?.copyWith(
+                                UiUtils.amountFormat(widget.productPrice, decimalDigits: 0),
+                                style: Theme.of(context).textTheme.titleMedium?.copyWith(
                                       fontSize: 13.sp,
                                       color: AppColors.primary,
                                       fontWeight: FontWeight.w500,
@@ -610,26 +571,19 @@ class _ProductTileState extends State<ProductTile> {
                     Row(
                       children: [
                         /// Size Selector
-                        if (widget.isSizeAvailable)
-                          sizeSelector(
-                              isFlexible: true,
-                              direction: Axis.vertical,
-                              category: widget.category?.value),
+                        if (widget.isSizeAvailable) sizeSelector(isFlexible: true, direction: Axis.vertical, category: widget.category?.value),
                         6.horizontalSpace,
 
                         /// Color Selector
-                        metalSelector(
-                            isFlexible: true, direction: Axis.vertical),
+                        metalSelector(isFlexible: true, direction: Axis.vertical),
                         6.horizontalSpace,
 
                         /// Diamond Selector
-                        diamondSelector(
-                            isFlexible: true, direction: Axis.vertical),
+                        diamondSelector(isFlexible: true, direction: Axis.vertical),
                         6.horizontalSpace,
 
                         /// Remark Selector
-                        remarkSelector(
-                            isFlexible: true, direction: Axis.vertical),
+                        remarkSelector(isFlexible: true, direction: Axis.vertical),
                       ],
                     ),
                     // 4.verticalSpace,
@@ -665,24 +619,17 @@ class _ProductTileState extends State<ProductTile> {
           quantity: quantity ?? widget.productQuantity?.value ?? 0,
           metalId: metalId ?? metalModel.id?.value ?? "",
           sizeId: sizeId ?? sizeModel.value.id?.value ?? "",
-          remark: selectedRemark.value.isNotEmpty
-              ? selectedRemark.value
-              : widget.remark?.value ?? "",
-          diamondClarity: widget.isFancy == false
-              ? diamondClarity ?? diamondClarity ?? (diamondModel.name ?? "")
-              : "",
+          remark: selectedRemark.value.isNotEmpty ? selectedRemark.value : widget.remark?.value ?? "",
+          diamondClarity: widget.isFancy == false ? diamondClarity ?? diamondClarity ?? (diamondModel.name ?? "") : "",
           diamonds: widget.isFancy == true
               ? diamonds ??
                   List.generate(
                     widget.diamonds!.length,
                     (index) => {
-                      "diamond_clarity":
-                          widget.diamonds?[index].diamondClarity?.value ?? "",
-                      "diamond_shape":
-                          widget.diamonds?[index].diamondShape ?? "",
+                      "diamond_clarity": widget.diamonds?[index].diamondClarity?.value ?? "",
+                      "diamond_shape": widget.diamonds?[index].diamondShape ?? "",
                       "diamond_size": widget.diamonds?[index].diamondSize ?? "",
-                      "diamond_count":
-                          widget.diamonds?[index].diamondCount ?? 0,
+                      "diamond_count": widget.diamonds?[index].diamondCount ?? 0,
                       "_id": widget.diamonds?[index].id ?? "",
                     },
                   )
@@ -707,25 +654,16 @@ class _ProductTileState extends State<ProductTile> {
               inventoryId: inventoryId ?? widget.inventoryId ?? "",
               metalId: metalId ?? metalModel.id?.value ?? "",
               sizeId: sizeId ?? sizeModel.value.id?.value ?? "",
-              diamondClarity: widget.isFancy == false
-                  ? diamondClarity ??
-                      diamondClarity ??
-                      (diamondModel.name ?? "")
-                  : "",
+              diamondClarity: widget.isFancy == false ? diamondClarity ?? diamondClarity ?? (diamondModel.name ?? "") : "",
               diamonds: widget.isFancy == true
                   ? diamonds ??
                       List.generate(
                         widget.diamonds!.length,
                         (index) => {
-                          "diamond_clarity":
-                              widget.diamonds?[index].diamondClarity?.value ??
-                                  "",
-                          "diamond_shape":
-                              widget.diamonds?[index].diamondShape ?? "",
-                          "diamond_size":
-                              widget.diamonds?[index].diamondSize ?? "",
-                          "diamond_count":
-                              widget.diamonds?[index].diamondCount ?? 0,
+                          "diamond_clarity": widget.diamonds?[index].diamondClarity?.value ?? "",
+                          "diamond_shape": widget.diamonds?[index].diamondShape ?? "",
+                          "diamond_size": widget.diamonds?[index].diamondSize ?? "",
+                          "diamond_count": widget.diamonds?[index].diamondCount ?? 0,
                           "_id": widget.diamonds?[index].id ?? "",
                         },
                       )
@@ -830,15 +768,10 @@ class _ProductTileState extends State<ProductTile> {
                     ? List.generate(
                         widget.diamonds!.length,
                         (index) => {
-                          "diamond_clarity":
-                              widget.diamonds?[index].diamondClarity?.value ??
-                                  "",
-                          "diamond_shape":
-                              widget.diamonds?[index].diamondShape ?? "",
-                          "diamond_size":
-                              widget.diamonds?[index].diamondSize ?? "",
-                          "diamond_count":
-                              widget.diamonds?[index].diamondCount ?? 0,
+                          "diamond_clarity": widget.diamonds?[index].diamondClarity?.value ?? "",
+                          "diamond_shape": widget.diamonds?[index].diamondShape ?? "",
+                          "diamond_size": widget.diamonds?[index].diamondSize ?? "",
+                          "diamond_count": widget.diamonds?[index].diamondCount ?? 0,
                           "_id": widget.diamonds?[index].id ?? "",
                         },
                       )
@@ -852,14 +785,10 @@ class _ProductTileState extends State<ProductTile> {
                   ? List.generate(
                       widget.diamonds!.length,
                       (index) => {
-                        "diamond_clarity":
-                            widget.diamonds?[index].diamondClarity?.value ?? "",
-                        "diamond_shape":
-                            widget.diamonds?[index].diamondShape ?? "",
-                        "diamond_size":
-                            widget.diamonds?[index].diamondSize ?? "",
-                        "diamond_count":
-                            widget.diamonds?[index].diamondCount ?? 0,
+                        "diamond_clarity": widget.diamonds?[index].diamondClarity?.value ?? "",
+                        "diamond_shape": widget.diamonds?[index].diamondShape ?? "",
+                        "diamond_size": widget.diamonds?[index].diamondSize ?? "",
+                        "diamond_count": widget.diamonds?[index].diamondCount ?? 0,
                         "_id": widget.diamonds?[index].id ?? "",
                       },
                     )
@@ -877,8 +806,7 @@ class _ProductTileState extends State<ProductTile> {
             // }
 
             /// GET NEW PRODUCT PRICE
-            await getProductPriceAPI(
-                diamondClarity: diamondModel.shortName ?? "");
+            await getProductPriceAPI(diamondClarity: diamondModel.shortName ?? "");
 
             if (!isValEmpty(widget.cartId)) {
               addOrUpdateCart(diamondClarity: value.shortName);
@@ -929,9 +857,7 @@ class _ProductTileState extends State<ProductTile> {
         },
       );
 
-  Widget remarkSelector(
-          {bool isFlexible = false, Axis direction = Axis.horizontal}) =>
-      horizontalSelectorButton(
+  Widget remarkSelector({bool isFlexible = false, Axis direction = Axis.horizontal}) => horizontalSelectorButton(
         context,
         isFlexible: isFlexible,
         remarkSelected: widget.remark ?? selectedRemark,
@@ -947,9 +873,7 @@ class _ProductTileState extends State<ProductTile> {
         },
       );
 
-  Widget stockSelector(
-          {bool isFlexible = false, Axis direction = Axis.horizontal}) =>
-      horizontalSelectorButton(
+  Widget stockSelector({bool isFlexible = false, Axis direction = Axis.horizontal}) => horizontalSelectorButton(
         context,
         isFlexible: isFlexible,
         selectableItemType: SelectableItemType.stock,
@@ -966,9 +890,7 @@ class _ProductTileState extends State<ProductTile> {
           onTap: widget.onTap,
           child: Container(
             margin: EdgeInsets.symmetric(horizontal: defaultPadding),
-            padding: EdgeInsets.symmetric(
-                horizontal: defaultPadding / 1.2,
-                vertical: defaultPadding / 1.2),
+            padding: EdgeInsets.symmetric(horizontal: defaultPadding / 1.2, vertical: defaultPadding / 1.2),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surface,
               borderRadius: BorderRadius.circular(defaultRadius),
@@ -988,10 +910,8 @@ class _ProductTileState extends State<ProductTile> {
                                 height: Get.width * 0.2,
                                 width: Get.width * 0.2,
                                 fit: BoxFit.cover,
-                                backgroundColor:
-                                    Theme.of(context).scaffoldBackgroundColor,
-                                borderRadius:
-                                    BorderRadius.circular(defaultRadius),
+                                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                                borderRadius: BorderRadius.circular(defaultRadius),
                                 imageUrl: widget.imageUrl,
                                 boxShadow: [
                                   BoxShadow(
@@ -1005,10 +925,10 @@ class _ProductTileState extends State<ProductTile> {
                                 width: Get.width * 0.2,
                                 height: Get.width * 0.2,
                                 decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.circular(defaultRadius),
+                                  borderRadius: BorderRadius.circular(defaultRadius),
                                   color: AppColors.primary.withOpacity(0.1),
                                 ),
+                                child: productPlaceHolderImage(showShadow: false),
                               ),
                         if (widget.isCartSelected != null)
                           Positioned(
@@ -1035,38 +955,21 @@ class _ProductTileState extends State<ProductTile> {
                                     Text(
                                       widget.productName,
                                       maxLines: 2,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium
-                                          ?.copyWith(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 13.sp),
+                                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500, fontSize: 13.sp),
                                     ),
                                     Text(
                                       "Brand: ${widget.brandName}",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleSmall
-                                          ?.copyWith(
-                                              fontWeight: FontWeight.w400),
+                                      style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w400),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.only(
-                                          right: defaultPadding,
-                                          top: defaultPadding / 5),
+                                      padding: EdgeInsets.only(right: defaultPadding, top: defaultPadding / 5),
                                       child: Text(
-                                        UiUtils.amountFormat(
-                                            widget.productPrice),
+                                        UiUtils.amountFormat(widget.productPrice),
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
-                                        style: Theme.of(Get.context!)
-                                            .textTheme
-                                            .titleMedium
-                                            ?.copyWith(
-                                                fontSize: 16.sp,
-                                                fontWeight: FontWeight.w700),
+                                        style: Theme.of(Get.context!).textTheme.titleMedium?.copyWith(fontSize: 16.sp, fontWeight: FontWeight.w700),
                                       ),
                                     ),
                                   ],
@@ -1100,8 +1003,7 @@ class _ProductTileState extends State<ProductTile> {
                                             context,
                                             onPressed: widget.deleteOnTap,
                                             buttonTitle: "NO",
-                                            contentText:
-                                                "Are you sure?\nYou want to remove this item from the cart?",
+                                            contentText: "Are you sure?\nYou want to remove this item from the cart?",
                                           );
                                         },
                                         size: 30.sp,
@@ -1120,49 +1022,36 @@ class _ProductTileState extends State<ProductTile> {
                                   plusMinusTile(
                                     context,
                                     isCart: true,
-                                    textValue:
-                                        widget.productQuantity ?? RxInt(0),
+                                    textValue: widget.productQuantity ?? RxInt(0),
                                     onTap: (value) {
                                       addOrUpdateCart(quantity: value);
                                       if (widget.productQuantity?.value == 0) {
                                         widget.deleteOnTap;
                                       }
-                                      cartCon.incrementQuantity(
-                                          widget.item ?? CartModel());
-                                      cartCon.decrementQuantity(
-                                          widget.item ?? CartModel());
+                                      cartCon.incrementQuantity(widget.item ?? CartModel());
+                                      cartCon.decrementQuantity(widget.item ?? CartModel());
                                     },
                                     onIncrement: (value) {
-                                      cartCon.incrementQuantity(
-                                          widget.item ?? CartModel());
+                                      cartCon.incrementQuantity(widget.item ?? CartModel());
                                       addOrUpdateCart(quantity: value);
                                     },
                                     onDecrement: (value) {
-                                      cartCon.decrementQuantity(
-                                          widget.item ?? CartModel());
-                                      widget.productQuantity?.value != 0
-                                          ? addOrUpdateCart(quantity: value)
-                                          : null;
+                                      cartCon.decrementQuantity(widget.item ?? CartModel());
+                                      widget.productQuantity?.value != 0 ? addOrUpdateCart(quantity: value) : null;
 
                                       widget.productQuantity?.value == 0
                                           ? AppDialogs.cartDialog(
                                               context,
                                               buttonTitle: "NO",
                                               onPressed: widget.deleteOnTap,
-                                              contentText:
-                                                  "Are you sure?\nYou want to remove this item from the cart?",
+                                              contentText: "Are you sure?\nYou want to remove this item from the cart?",
                                             ).then(
                                               (value) {
                                                 if (value != null) {
                                                   if (value == false) {
-                                                    widget.productQuantity
-                                                        ?.value = 1;
-                                                    cartCon.incrementQuantity(
-                                                        widget.item ??
-                                                            CartModel());
-                                                    cartCon.decrementQuantity(
-                                                        widget.item ??
-                                                            CartModel());
+                                                    widget.productQuantity?.value = 1;
+                                                    cartCon.incrementQuantity(widget.item ?? CartModel());
+                                                    cartCon.decrementQuantity(widget.item ?? CartModel());
                                                   }
                                                 }
                                               },
@@ -1194,8 +1083,7 @@ class _ProductTileState extends State<ProductTile> {
                     metalSelector(
                       direction: Axis.vertical,
                       isFlexible: true,
-                      selectMetalCart:
-                          RxString(widget.selectMetalCart?.value ?? ""),
+                      selectMetalCart: RxString(widget.selectMetalCart?.value ?? ""),
                     ),
                     (defaultPadding / 4).horizontalSpace,
                     diamondSelector(

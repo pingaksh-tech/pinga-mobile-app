@@ -403,7 +403,6 @@ class FilterScreen extends StatelessWidget {
                     type: FilterItemType.collection,
                     onSelect: () {
                       con.applyFilterCounts[8] = con.selectedCollections.length;
-                      printOkStatus(con.applyFilterCounts[8]);
                     },
                   )
               },

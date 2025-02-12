@@ -12,10 +12,12 @@ import 'widgets/filter/filter_controller.dart';
 
 class ProductsController extends GetxController {
   RxBool isLoader = false.obs;
+
   // RxBool isSizeAvailable = false.obs;
   RxString categoryId = "".obs;
 
   Rx<CategoryModel> currentCategory = CategoryModel().obs;
+
   // RxBool isFancyDiamond = false.obs;
 
   RxString categoryName = "".obs;
@@ -32,10 +34,12 @@ class ProductsController extends GetxController {
   Rx<ProductsListType> productListType = ProductsListType.normal.obs;
   RxString watchlistId = "".obs;
 
+  RxInt totalProducts = 0.obs;
+
   /// PAGINATION
   ScrollController scrollController = ScrollController();
   RxInt page = 1.obs;
-  RxInt itemLimit = 10.obs;
+  RxInt itemLimit = 50.obs;
   RxBool nextPageAvailable = true.obs;
   RxBool paginationLoader = false.obs;
   RxBool loader = true.obs;
@@ -116,17 +120,10 @@ class ProductsController extends GetxController {
     ///  PRODUCTS
     scrollController.addListener(
       () async {
-        if (scrollController.position.maxScrollExtent ==
-            scrollController.position.pixels) {
+        if (scrollController.position.maxScrollExtent == scrollController.position.pixels) {
           if (nextPageAvailable.value && paginationLoader.isFalse) {
             /// GET PRODUCTS API
-            await ProductRepository.getFilterProductsListAPI(
-                loader: paginationLoader,
-                productsListType: productListType.value,
-                watchListId: watchlistId.value,
-                categoryId: categoryId.value,
-                subCategoryId: subCategory.value.id ?? "",
-                isInitial: false);
+            await ProductRepository.getFilterProductsListAPI(loader: paginationLoader, productsListType: productListType.value, watchListId: watchlistId.value, categoryId: categoryId.value, subCategoryId: subCategory.value.id ?? "", isInitial: false);
           }
         }
       },
@@ -151,8 +148,7 @@ class ProductsController extends GetxController {
 
   Future<void> preValueAvailable() async {
     if (isRegistered<PreDefinedValueController>()) {
-      final PreDefinedValueController preValueCon =
-          Get.find<PreDefinedValueController>();
+      final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
 
       for (var element in preValueCon.categoryWiseSizesList) {
         if (productListType.value == ProductsListType.normal) {

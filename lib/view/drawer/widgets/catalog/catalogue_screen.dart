@@ -27,8 +27,7 @@ class CatalogueScreen extends StatelessWidget {
       ),
       body: Obx(() {
         return PullToRefreshIndicator(
-          onRefresh: () =>
-              CatalogueRepository.getCatalogue(isPullToRefresh: true),
+          onRefresh: () => CatalogueRepository.getCatalogue(isPullToRefresh: true),
           child: ListView(
             controller: con.scrollController,
             physics: const AlwaysScrollableScrollPhysics(),
@@ -42,28 +41,22 @@ class CatalogueScreen extends StatelessWidget {
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               itemCount: con.catalogueList.length,
-                              separatorBuilder: (context, index) =>
-                                  SizedBox(height: defaultPadding),
+                              separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
                               itemBuilder: (context, index) => Obx(
                                 () {
                                   return catalogueTile(
                                     context,
                                     index: index,
                                     title: con.catalogueList[index].name,
-                                    subtitle:
-                                        con.catalogueList[index].name?.value,
-                                    date: con.catalogueList[index].createdAt
-                                        .toString(),
+                                    subtitle: con.catalogueList[index].name?.value,
+                                    date: con.catalogueList[index].createdAt.toString(),
                                     onPressed: () {
-                                      CatalogueRepository
-                                          .resetDownloadRequest();
+                                      CatalogueRepository.resetDownloadRequest();
                                       Get.toNamed(
                                         AppRoutes.pdfViewerScreen,
                                         arguments: {
-                                          "title": con
-                                              .catalogueList[index].name?.value,
-                                          "catalogueId":
-                                              con.catalogueList[index].id ?? "",
+                                          "title": con.catalogueList[index].name?.value,
+                                          "catalogueId": con.catalogueList[index].id ?? "",
                                         },
                                       );
                                     },
@@ -76,10 +69,7 @@ class CatalogueScreen extends StatelessWidget {
                             Visibility(
                               visible: con.paginationLoader.isTrue,
                               child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                        horizontal: defaultPadding,
-                                        vertical: defaultPadding / 2)
-                                    .copyWith(top: 0),
+                                padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding / 2).copyWith(top: 0),
                                 child: shimmerTile(),
                               ),
                             )
@@ -91,8 +81,7 @@ class CatalogueScreen extends StatelessWidget {
                       EmptyElement(
                           title: "Catalogue Not Found!",
                           alignment: Alignment.center,
-                          padding:
-                              EdgeInsets.symmetric(vertical: Get.width / 2.5),
+                          padding: EdgeInsets.symmetric(vertical: Get.width / 2.5),
                         )
                   :
 
@@ -128,12 +117,7 @@ class CatalogueScreen extends StatelessWidget {
     );
   }
 
-  Widget catalogueTile(BuildContext context,
-      {RxString? title,
-      String? subtitle,
-      String? date,
-      int index = 0,
-      required VoidCallback onPressed}) {
+  Widget catalogueTile(BuildContext context, {RxString? title, String? subtitle, String? date, int index = 0, required VoidCallback onPressed}) {
     return InkWell(
       borderRadius: BorderRadius.circular(defaultRadius),
       highlightColor: Colors.transparent,
@@ -158,9 +142,7 @@ class CatalogueScreen extends StatelessWidget {
                 child: SvgPicture.asset(
                   height: 20.h,
                   AppAssets.catalogueAlt,
-                  colorFilter: ColorFilter.mode(
-                      Theme.of(context).primaryColor.withOpacity(.6),
-                      BlendMode.srcIn),
+                  colorFilter: ColorFilter.mode(Theme.of(context).primaryColor.withOpacity(.6), BlendMode.srcIn),
                 ),
               ),
               8.horizontalSpace,
@@ -200,9 +182,7 @@ class CatalogueScreen extends StatelessWidget {
               AppPopUpMenuButton(
                 menuList: const [/*"Download",*/ "Rename", "Delete"],
                 child: Icon(
-                  shadows: const [
-                    Shadow(color: AppColors.background, blurRadius: 4)
-                  ],
+                  shadows: const [Shadow(color: AppColors.background, blurRadius: 4)],
                   Icons.more_vert_rounded,
                   size: 18.sp,
                 ),
@@ -231,19 +211,15 @@ class CatalogueScreen extends StatelessWidget {
                             con.catalogueList[index].name?.value = val;
 
                             /// RENAME CATALOGUE
-                            await CatalogueRepository.renameCatalogueAPI(
-                                catalogueId: con.catalogueList[index].id ?? "",
-                                catalogueName: val);
+                            await CatalogueRepository.renameCatalogueAPI(catalogueId: con.catalogueList[index].id ?? "", catalogueName: val);
                           }
                         },
                       );
                       break;
                     case "Delete":
-                      printOkStatus("dss");
 
                       /// DELETE CATALOGUE API
-                      await CatalogueRepository.deleteCatalogueAPI(
-                          catalogueId: con.catalogueList[index].id ?? "");
+                      await CatalogueRepository.deleteCatalogueAPI(catalogueId: con.catalogueList[index].id ?? "");
                       break;
                   }
                 },

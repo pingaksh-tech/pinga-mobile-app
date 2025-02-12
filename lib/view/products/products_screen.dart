@@ -31,19 +31,15 @@ class ProductsScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: MyAppBar(
           backgroundColor: Theme.of(context).colorScheme.surface,
-          shadowColor:
-              Theme.of(context).scaffoldBackgroundColor.withOpacity(0.3),
-          title: con.categoryName.isNotEmpty
-              ? con.categoryName.value
-              : con.subCategory.value.name,
+          shadowColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.3),
+          title: con.categoryName.isNotEmpty ? con.categoryName.value : con.subCategory.value.name,
 
           actions: [
             CartIconButton(
               onPressed: () {
                 Get.offAllNamed(
                   AppRoutes.cartScreen,
-                  predicate: (route) =>
-                      route.settings.name == AppRoutes.productScreen,
+                  predicate: (route) => route.settings.name == AppRoutes.productScreen,
                 );
                 // Get.back();
                 // if (isRegistered<BottomBarController>()) {
@@ -84,11 +80,9 @@ class ProductsScreen extends StatelessWidget {
                     ),
                   ),
                   SortAndFilterButton(
-                    title:
-                        "Filter ${filterCon.count != 0 ? "(${filterCon.count})" : ""}",
+                    title: "Filter ${filterCon.count != 0 ? "(${filterCon.count})" : ""}",
                     image: AppAssets.filter,
-                    onTap: () =>
-                        Get.toNamed(AppRoutes.filterScreen, arguments: {
+                    onTap: () => Get.toNamed(AppRoutes.filterScreen, arguments: {
                       "subCategoryId": con.subCategory.value.id,
                       "categoryId": con.categoryId.value,
                       "watchlistId": con.watchlistId.value,
@@ -103,19 +97,12 @@ class ProductsScreen extends StatelessWidget {
                   ),
                   AppIconButton(
                     icon: SvgPicture.asset(
-                      con.isProductViewChange.isFalse
-                          ? AppAssets.appIcon
-                          : AppAssets.listIcon,
-                      color: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.color
-                          ?.withOpacity(.55), // ignore: deprecated_member_use
+                      con.isProductViewChange.isFalse ? AppAssets.appIcon : AppAssets.listIcon,
+                      color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(.55), // ignore: deprecated_member_use
                       height: 18.sp,
                     ),
                     onPressed: () {
-                      con.isProductViewChange.value =
-                          !con.isProductViewChange.value;
+                      con.isProductViewChange.value = !con.isProductViewChange.value;
                     },
                   ),
                 ],
@@ -139,10 +126,7 @@ class ProductsScreen extends StatelessWidget {
                       );
                     },
                     child: ListView(
-                      padding: EdgeInsets.symmetric(
-                              horizontal: defaultPadding / 2,
-                              vertical: defaultPadding)
-                          .copyWith(top: 0, bottom: defaultPadding * 5),
+                      padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2, vertical: defaultPadding).copyWith(top: 0, bottom: defaultPadding * 5),
                       controller: con.scrollController,
                       children: [
                         Divider(
@@ -152,11 +136,8 @@ class ProductsScreen extends StatelessWidget {
                           endIndent: defaultPadding / 2,
                         ),
                         Text(
-                          "Total Products ${con.inventoryProductList.length}",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium
-                              ?.copyWith(color: AppColors.subText),
+                          "Total Products ${con.totalProducts.value}",
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.subText),
                           textAlign: TextAlign.center,
                         ).paddingOnly(top: defaultPadding / 3),
 
@@ -164,10 +145,7 @@ class ProductsScreen extends StatelessWidget {
                         if (kDebugMode && con.inventoryProductList.isNotEmpty)
                           Text(
                             "Multi-Diamond - ${con.inventoryProductList[0].isDiamondMultiple} | Size? - ${con.inventoryProductList[0].sizeId != null}",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(color: AppColors.subText),
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.subText),
                             textAlign: TextAlign.center,
                           ).paddingOnly(top: defaultPadding / 3),
 
@@ -186,157 +164,52 @@ class ProductsScreen extends StatelessWidget {
                                   children: [
                                     ProductTile(
                                       screenType: "isProductsScreen",
-                                      category: RxString(con
-                                              .inventoryProductList[index]
-                                              .subCategoryId ??
-                                          ""),
-                                      isFancy: con.inventoryProductList[index]
-                                              .isDiamondMultiple ??
-                                          false,
-                                      inventoryId:
-                                          con.inventoryProductList[index].id,
-                                      diamondList: RxList(con
-                                              .inventoryProductList[index]
-                                              .diamonds ??
-                                          []),
-                                      productTileType:
-                                          con.isProductViewChange.isTrue
-                                              ? ProductTileType.grid
-                                              : ProductTileType.list,
+                                      category: RxString(con.inventoryProductList[index].subCategoryId ?? ""),
+                                      isFancy: con.inventoryProductList[index].isDiamondMultiple ?? false,
+                                      inventoryId: con.inventoryProductList[index].id,
+                                      diamondList: RxList(con.inventoryProductList[index].diamonds ?? []),
+                                      productTileType: con.isProductViewChange.isTrue ? ProductTileType.grid : ProductTileType.list,
                                       onTap: () {
                                         // addProductIdToGlobalList((con.inventoryProductList[index].id ?? ""), type: GlobalProductPrefixType.productDetails);
                                         navigateToProductDetailsScreen(
                                           productDetails: {
-                                            "productId": (con
-                                                    .inventoryProductList[index]
-                                                    .id ??
-                                                ""),
-                                            "diamondClarity": con
-                                                        .inventoryProductList[
-                                                            index]
-                                                        .isDiamondMultiple ==
-                                                    true
+                                            "productId": (con.inventoryProductList[index].id ?? ""),
+                                            "diamondClarity": con.inventoryProductList[index].isDiamondMultiple == true
                                                 ? ""
-                                                : (con
-                                                                .inventoryProductList[
-                                                                    index]
-                                                                .diamonds !=
-                                                            null &&
-                                                        con
-                                                            .inventoryProductList[
-                                                                index]
-                                                            .diamonds!
-                                                            .isNotEmpty)
-                                                    ? con
-                                                            .inventoryProductList[
-                                                                index]
-                                                            .diamonds
-                                                            ?.first
-                                                            .diamondClarity
-                                                            ?.value ??
-                                                        ""
+                                                : (con.inventoryProductList[index].diamonds != null && con.inventoryProductList[index].diamonds!.isNotEmpty)
+                                                    ? con.inventoryProductList[index].diamonds?.first.diamondClarity?.value ?? ""
                                                     : "",
-                                            "diamonds": con
-                                                        .inventoryProductList[
-                                                            index]
-                                                        .isDiamondMultiple ==
-                                                    true
-                                                ? con
-                                                    .inventoryProductList[index]
-                                                    .diamonds!
-                                                : [],
-                                            "metalId": con
-                                                .inventoryProductList[index]
-                                                .metalId!
-                                                .value,
-                                            "sizeId": con
-                                                .inventoryProductList[index]
-                                                .sizeId!
-                                                .value,
-                                            "type": GlobalProductPrefixType
-                                                .productDetails,
+                                            "diamonds": con.inventoryProductList[index].isDiamondMultiple == true ? con.inventoryProductList[index].diamonds! : [],
+                                            "metalId": con.inventoryProductList[index].metalId!.value,
+                                            "sizeId": con.inventoryProductList[index].sizeId!.value,
+                                            "type": GlobalProductPrefixType.productDetails,
                                           },
-                                          type: GlobalProductPrefixType
-                                              .productDetails,
+                                          type: GlobalProductPrefixType.productDetails,
                                           arguments: {
                                             "category": /*AppStrings.cartIdPrefixSlug +*/
-                                                (con.inventoryProductList[index]
-                                                        .subCategoryId ??
-                                                    ''),
-                                            'isSize': !isValEmpty(con
-                                                .inventoryProductList[index]
-                                                .sizeId),
-                                            'isFancy': con
-                                                    .inventoryProductList[index]
-                                                    .isDiamondMultiple ??
-                                                false,
+                                                (con.inventoryProductList[index].subCategoryId ?? ''),
+                                            'isSize': !isValEmpty(con.inventoryProductList[index].sizeId),
+                                            'isFancy': con.inventoryProductList[index].isDiamondMultiple ?? false,
                                             'inventoryId': /*AppStrings.productIdPrefixSlug +*/
-                                                (con.inventoryProductList[index]
-                                                        .id ??
-                                                    ""),
-                                            'name': con
-                                                .inventoryProductList[index]
-                                                .name,
-                                            "productsListTypeType":
-                                                ProductsListType.normal,
+                                                (con.inventoryProductList[index].id ?? ""),
+                                            'name': con.inventoryProductList[index].name,
+                                            "productsListTypeType": ProductsListType.normal,
                                             // 'like': con.inventoryProductList[index].isWishlist,
-                                            "sizeId": con
-                                                .inventoryProductList[index]
-                                                .sizeId!
-                                                .value,
-                                            "remark": con
-                                                .inventoryProductList[index]
-                                                .remark!
-                                                .value,
-                                            "quantity": con
-                                                .inventoryProductList[index]
-                                                .quantity!
-                                                .value,
+                                            "sizeId": con.inventoryProductList[index].sizeId!.value,
+                                            "remark": con.inventoryProductList[index].remark!.value,
+                                            "quantity": con.inventoryProductList[index].quantity!.value,
 
-                                            "diamondClarity": (con
-                                                            .inventoryProductList[
-                                                                index]
-                                                            .diamonds !=
-                                                        null &&
-                                                    con
-                                                        .inventoryProductList[
-                                                            index]
-                                                        .diamonds!
-                                                        .isNotEmpty)
-                                                ? con
-                                                        .inventoryProductList[
-                                                            index]
-                                                        .diamonds
-                                                        ?.first
-                                                        .diamondClarity
-                                                        ?.value ??
-                                                    ""
-                                                : "",
+                                            "diamondClarity": (con.inventoryProductList[index].diamonds != null && con.inventoryProductList[index].diamonds!.isNotEmpty) ? con.inventoryProductList[index].diamonds?.first.diamondClarity?.value ?? "" : "",
 
-                                            "metalId": con
-                                                .inventoryProductList[index]
-                                                .metalId!
-                                                .value,
+                                            "metalId": con.inventoryProductList[index].metalId!.value,
 
-                                            "diamonds": con
-                                                        .inventoryProductList[
-                                                            index]
-                                                        .isDiamondMultiple ==
-                                                    true
-                                                ? con
-                                                    .inventoryProductList[index]
-                                                    .diamonds
-                                                : [],
+                                            "diamonds": con.inventoryProductList[index].isDiamondMultiple == true ? con.inventoryProductList[index].diamonds : [],
                                           },
                                           whenComplete: () {
-                                            if (isRegistered<
-                                                BaseController>()) {
-                                              BaseController baseCon =
-                                                  Get.find<BaseController>();
-                                              if (baseCon.globalProductDetails
-                                                  .isNotEmpty) {
-                                                baseCon.globalProductDetails
-                                                    .removeLast();
+                                            if (isRegistered<BaseController>()) {
+                                              BaseController baseCon = Get.find<BaseController>();
+                                              if (baseCon.globalProductDetails.isNotEmpty) {
+                                                baseCon.globalProductDetails.removeLast();
                                               }
                                             }
                                           },
@@ -344,77 +217,28 @@ class ProductsScreen extends StatelessWidget {
                                       },
                                       diamondOnChanged: (value) {
                                         if (value!.isNotEmpty) {
-                                          con
-                                              .inventoryProductList[index]
-                                              .diamonds
-                                              ?.first
-                                              .diamondClarity
-                                              ?.value = value;
+                                          con.inventoryProductList[index].diamonds?.first.diamondClarity?.value = value;
                                         }
                                       },
                                       sizeOnChanged: (value) {
-                                        con.inventoryProductList[index].sizeId!
-                                            .value = value;
+                                        con.inventoryProductList[index].sizeId!.value = value;
                                       },
                                       metalOnChanged: (value) {
-                                        con.inventoryProductList[index].metalId!
-                                            .value = value;
+                                        con.inventoryProductList[index].metalId!.value = value;
                                       },
                                       remarkOnChanged: (value) {
-                                        con.inventoryProductList[index].remark!
-                                            .value = value;
+                                        con.inventoryProductList[index].remark!.value = value;
                                       },
-                                      isLike: con.inventoryProductList[index]
-                                          .isWishlist,
-                                      imageUrl: (con.inventoryProductList[index]
-                                                      .inventoryImages !=
-                                                  null &&
-                                              con.inventoryProductList[index]
-                                                  .inventoryImages!.isNotEmpty)
-                                          ? con.inventoryProductList[index]
-                                              .inventoryImages![0]
-                                          : "",
-                                      productName: con
-                                              .inventoryProductList[index]
-                                              .name ??
-                                          "",
-                                      productPrice: con
-                                          .inventoryProductList[index]
-                                          .inventoryTotalPrice
-                                          .toString(),
-                                      productQuantity: con
-                                          .inventoryProductList[index].quantity,
-                                      isSizeAvailable: !isValEmpty(con
-                                          .inventoryProductList[index].sizeId),
-                                      selectSize: con
-                                          .inventoryProductList[index]
-                                          .sizeId!
-                                          .value
-                                          .obs,
-                                      selectMetalCart: con
-                                          .inventoryProductList[index]
-                                          .metalId!
-                                          .value
-                                          .obs,
-                                      selectDiamondCart: (con
-                                                      .inventoryProductList[
-                                                          index]
-                                                      .diamonds !=
-                                                  null &&
-                                              con.inventoryProductList[index]
-                                                  .diamonds!.isNotEmpty)
-                                          ? (con
-                                                      .inventoryProductList[
-                                                          index]
-                                                      .diamonds
-                                                      ?.first
-                                                      .diamondClarity
-                                                      ?.value ??
-                                                  "")
-                                              .obs
-                                          : "".obs,
-                                      diamonds: con.inventoryProductList[index]
-                                          .diamonds!,
+                                      isLike: con.inventoryProductList[index].isWishlist,
+                                      imageUrl: (con.inventoryProductList[index].inventoryImages != null && con.inventoryProductList[index].inventoryImages!.isNotEmpty) ? con.inventoryProductList[index].inventoryImages![0] : "",
+                                      productName: con.inventoryProductList[index].name ?? "",
+                                      productPrice: con.inventoryProductList[index].inventoryTotalPrice.toString(),
+                                      productQuantity: con.inventoryProductList[index].quantity,
+                                      isSizeAvailable: !isValEmpty(con.inventoryProductList[index].sizeId),
+                                      selectSize: con.inventoryProductList[index].sizeId!.value.obs,
+                                      selectMetalCart: con.inventoryProductList[index].metalId!.value.obs,
+                                      selectDiamondCart: (con.inventoryProductList[index].diamonds != null && con.inventoryProductList[index].diamonds!.isNotEmpty) ? (con.inventoryProductList[index].diamonds?.first.diamondClarity?.value ?? "").obs : "".obs,
+                                      diamonds: con.inventoryProductList[index].diamonds!,
                                     ),
                                     // if (con.paginationLoader.value &&
                                     //     index + 1 ==
@@ -424,10 +248,7 @@ class ProductsScreen extends StatelessWidget {
                                 ),
                               ),
                             ]),
-                            if (con.paginationLoader.value)
-                              con.isProductViewChange.isTrue
-                                  ? productGridShimmer(context)
-                                  : productListShimmer(context)
+                            if (con.paginationLoader.value) con.isProductViewChange.isTrue ? productGridShimmer(context) : productListShimmer(context)
                           ],
                         )
                       ],
@@ -437,8 +258,7 @@ class ProductsScreen extends StatelessWidget {
 
                 /// EMPTY DATA VIEW
                 EmptyElement(
-                    title:
-                        "${con.subCategory.value.name ?? "Products"} Not Found!",
+                    title: "${con.subCategory.value.name ?? "Products"} Not Found!",
                     alignment: Alignment.center,
                     padding: EdgeInsets.symmetric(vertical: Get.width / 2.5),
                   )
@@ -460,17 +280,12 @@ class ProductsScreen extends StatelessWidget {
               Get.toNamed(
                 AppRoutes.watchpdfViewerScreen,
                 arguments: {
-                  "title": con.categoryName.isNotEmpty
-                      ? con.categoryName.value
-                      : con.subCategory.value.name,
+                  "title": con.categoryName.isNotEmpty ? con.categoryName.value : con.subCategory.value.name,
                   "watchId": con.watchlistId.value,
                 },
               );
             } else {
-              AppDialogs.productDownloadDialog(context,
-                  isDownloadFileNameChange: true,
-                  showOnlyDownloadedCatalogues:
-                      con.inventoryProductList.isEmpty);
+              AppDialogs.productDownloadDialog(context, isDownloadFileNameChange: true, showOnlyDownloadedCatalogues: con.inventoryProductList.isEmpty);
             }
           },
         ),
