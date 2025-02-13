@@ -1,16 +1,17 @@
-# pingaksh_mobile
+# Pingaksh - Jewellery Mobile App
 
-A new Flutter project.
+# Bundle Ids
+Android: com.shreeramdootjewels.pingaksh
+iOS: com.pingaksh.app
 
-## Getting Started
+# TODO for App Publishing
+- Check environmentType in [app_environment.dart](lib%2Fdata%2Fhandler%2Fapp_environment.dart) file (Set it to Production for Store Release)
+- Update app version and build number for Android and iOS
+  - for Android, update version in [pubspec.yaml](pubspec.yaml)
+  - for iOS, update version XCode
+- Do Testing the Production App in Real Device with Release App, then move to the Store Upload Procedure
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Store App Links
+- Android [https://play.google.com/store/apps/details?id=com.shreeramdootjewels.pingaksh]
+- iOS [https://apps.apple.com/us/app/pingaksh/id6737975605]
