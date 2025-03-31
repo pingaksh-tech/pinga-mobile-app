@@ -65,14 +65,14 @@ dependencies:
   image_cropper: ^7.0.4
   flutter_image_compress: ^2.3.0
   syncfusion_flutter_pdfviewer: ^25.2.7
-  no_screenshot: ^0.0.1+6
+  no_screenshot: ^0.3.1
   firebase_core: ^3.1.0
   firebase_messaging: ^15.0.1
   in_app_update: ^4.2.3
   awesome_notifications: ^0.9.3+1
   file_downloader_flutter: ^0.0.5
   flutter_pdfview: ^1.0.0
-  open_file: ^3.3.2
+  open_file: ^3.5.1
   flutter_native_splash: ^2.4.1
 
 flutter_native_splash:
