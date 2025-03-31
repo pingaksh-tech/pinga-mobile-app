@@ -10,17 +10,18 @@ import '../../../../exports.dart';
 import '../../../../res/app_bar.dart';
 import '../../../../widgets/custom_check_box_tile.dart';
 import '../../../../widgets/filter_listview_widget.dart';
+import '../../products_controller.dart';
 import 'filter_controller.dart';
 
 class FilterScreen extends StatelessWidget {
   FilterScreen({super.key});
 
   final FilterController con = Get.put(FilterController());
-  final PreDefinedValueController preValCon =
-      Get.find<PreDefinedValueController>();
+  final PreDefinedValueController preValCon = Get.find<PreDefinedValueController>();
 
-  Color get dividerColor =>
-      Theme.of(Get.context!).dividerColor.withOpacity(0.08);
+  final ProductsController filterCon = Get.isRegistered<ProductsController>() ? Get.find<ProductsController>() : Get.put(ProductsController());
+
+  Color get dividerColor => Theme.of(Get.context!).dividerColor.withOpacity(0.08);
 
   @override
   Widget build(BuildContext context) {
@@ -44,20 +45,15 @@ class FilterScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return Obx(
                     () {
-                      bool isSelected =
-                          con.filterType.value == con.filterOptions[index];
+                      bool isSelected = con.filterType.value == con.filterOptions[index];
                       return GestureDetector(
                         onTap: () {
                           con.filterType.value = con.filterOptions[index];
                         },
                         child: Container(
-                          padding: EdgeInsets.symmetric(
-                              vertical: defaultPadding,
-                              horizontal: defaultPadding / 1.5),
+                          padding: EdgeInsets.symmetric(vertical: defaultPadding, horizontal: defaultPadding / 1.5),
                           alignment: Alignment.center,
-                          color: isSelected
-                              ? Theme.of(context).colorScheme.surface
-                              : Theme.of(context).scaffoldBackgroundColor,
+                          color: isSelected ? Theme.of(context).colorScheme.surface : Theme.of(context).scaffoldBackgroundColor,
                           child: Column(
                             children: [
                               SvgPicture.asset(
@@ -67,12 +63,7 @@ class FilterScreen extends StatelessWidget {
                               Text(
                                 "${con.filterOptions[index].label} ${con.applyFilterCounts[index] != 0 ? "(${con.applyFilterCounts[index]})" : ""}",
                                 textAlign: TextAlign.center,
-                                style: AppTextStyle.titleStyle(context)
-                                    .copyWith(
-                                        fontSize: 13.sp,
-                                        fontWeight: isSelected
-                                            ? FontWeight.w500
-                                            : FontWeight.w400),
+                                style: AppTextStyle.titleStyle(context).copyWith(fontSize: 13.sp, fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400),
                               ),
                             ],
                           ),
@@ -88,10 +79,7 @@ class FilterScreen extends StatelessWidget {
               flex: 2,
               child: switch (con.filterType.value) {
                 FilterItemType.range => Padding(
-                    padding: EdgeInsets.only(
-                        top: defaultPadding,
-                        left: defaultPadding,
-                        right: defaultPadding),
+                    padding: EdgeInsets.only(top: defaultPadding, left: defaultPadding, right: defaultPadding),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -101,16 +89,14 @@ class FilterScreen extends StatelessWidget {
                         ).paddingOnly(bottom: defaultPadding / 5),
                         Text(
                           "${con.minMetalWt.value.toStringAsFixed(2)} - ${con.maxMetalWt.value.toStringAsFixed(2)}",
-                          style: AppTextStyle.titleStyle(context)
-                              .copyWith(fontSize: 13.sp),
+                          style: AppTextStyle.titleStyle(context).copyWith(fontSize: 13.sp),
                         ),
                         Theme(
                           data: ThemeData(
                             sliderTheme: const SliderThemeData(trackHeight: 2),
                           ),
                           child: RangeSlider(
-                            values: RangeValues(
-                                con.minMetalWt.value, con.maxMetalWt.value),
+                            values: RangeValues(con.minMetalWt.value, con.maxMetalWt.value),
                             activeColor: Theme.of(context).primaryColor,
                             max: 200.0,
                             min: 0.01,
@@ -128,13 +114,10 @@ class FilterScreen extends StatelessWidget {
                         Text(
                           "Diamond WT",
                           style: Theme.of(context).textTheme.bodyLarge,
-                        ).paddingOnly(
-                            bottom: defaultPadding / 5,
-                            top: defaultPadding / 2),
+                        ).paddingOnly(bottom: defaultPadding / 5, top: defaultPadding / 2),
                         Text(
                           "${con.minDiamondWt.value.toStringAsFixed(2)} - ${con.maxDiamondWt.value.toStringAsFixed(2)}",
-                          style: AppTextStyle.titleStyle(context)
-                              .copyWith(fontSize: 13.sp),
+                          style: AppTextStyle.titleStyle(context).copyWith(fontSize: 13.sp),
                         ),
                         Theme(
                           data: ThemeData(
@@ -143,8 +126,7 @@ class FilterScreen extends StatelessWidget {
                             ),
                           ),
                           child: RangeSlider(
-                            values: RangeValues(
-                                con.minDiamondWt.value, con.maxDiamondWt.value),
+                            values: RangeValues(con.minDiamondWt.value, con.maxDiamondWt.value),
                             activeColor: Theme.of(context).primaryColor,
                             max: 20,
                             min: 0.01,
@@ -168,29 +150,20 @@ class FilterScreen extends StatelessWidget {
                         return ListView.separated(
                           shrinkWrap: true,
                           physics: const RangeMaintainingScrollPhysics(),
-                          padding: EdgeInsets.symmetric(
-                              vertical: defaultPadding / 2),
+                          padding: EdgeInsets.symmetric(vertical: defaultPadding / 2),
                           itemBuilder: (context, index) => Obx(() {
                             return CustomCheckboxTile(
                               scale: 1,
-                              isSelected: (con.selectMrp.value.label ==
-                                      con.mrpList[index].label)
-                                  .obs,
+                              isSelected: (con.selectMrp.value.label == con.mrpList[index].label).obs,
                               title: con.mrpList[index].label?.value,
-                              titleStyle: TextStyle(
-                                  fontSize: 13.sp,
-                                  fontWeight: con.selectMrp.value.label ==
-                                          con.mrpList[index].label
-                                      ? FontWeight.w500
-                                      : FontWeight.w400),
+                              titleStyle: TextStyle(fontSize: 13.sp, fontWeight: con.selectMrp.value.label == con.mrpList[index].label ? FontWeight.w500 : FontWeight.w400),
                               onChanged: (value) {
                                 if (value == false) {
                                   con.selectMrp.value = MrpModel();
                                 } else {
                                   con.selectMrp.value = con.mrpList[index];
                                 }
-                                if (con.selectMrp.value.label != null &&
-                                    con.selectMrp.value.label!.isNotEmpty) {
+                                if (con.selectMrp.value.label != null && con.selectMrp.value.label!.isNotEmpty) {
                                   con.count++;
                                   con.applyFilterCounts[1] = 1;
                                 } else {
@@ -208,28 +181,16 @@ class FilterScreen extends StatelessWidget {
                       }),
                       CustomCheckboxTile(
                         scale: 1,
-                        isSelected:
-                            (con.selectMrp.value.label?.value == 'customs').obs,
+                        isSelected: (con.selectMrp.value.label?.value == 'customs').obs,
                         title: "Customs",
-                        titleStyle: TextStyle(
-                            fontSize: 13.sp,
-                            fontWeight: con.selectMrp.value.label
-                                        .toString()
-                                        .toLowerCase() ==
-                                    'customs'
-                                ? FontWeight.w500
-                                : FontWeight.w400),
+                        titleStyle: TextStyle(fontSize: 13.sp, fontWeight: con.selectMrp.value.label.toString().toLowerCase() == 'customs' ? FontWeight.w500 : FontWeight.w400),
                         onChanged: (value) {
                           if (value == false) {
                             con.selectMrp.value = MrpModel();
                           } else {
-                            con.selectMrp.value =
-                                MrpModel(label: "customs".obs);
+                            con.selectMrp.value = MrpModel(label: "customs".obs);
                           }
-                          (con.selectMrp.value.label != null &&
-                                  con.selectMrp.value.label!.isNotEmpty)
-                              ? con.applyFilterCounts[1] = 1
-                              : con.applyFilterCounts[1] = 0;
+                          (con.selectMrp.value.label != null && con.selectMrp.value.label!.isNotEmpty) ? con.applyFilterCounts[1] = 1 : con.applyFilterCounts[1] = 0;
                         },
                       ),
                       10.verticalSpace,
@@ -239,21 +200,11 @@ class FilterScreen extends StatelessWidget {
                             Expanded(
                               child: AppTextField(
                                 hintText: "From",
-                                hintStyle: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium
-                                    ?.copyWith(
-                                        fontWeight: FontWeight.w500,
-                                        color: AppColors.font.withOpacity(.5)),
+                                hintStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500, color: AppColors.font.withOpacity(.5)),
                                 controller: con.mrpFromCon.value,
-                                padding: EdgeInsets.symmetric(
-                                        horizontal: defaultPadding / 1.4)
-                                    .copyWith(right: 0),
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: defaultPadding / 1.5,
-                                    horizontal: defaultPadding),
-                                fillColor:
-                                    Theme.of(context).scaffoldBackgroundColor,
+                                padding: EdgeInsets.symmetric(horizontal: defaultPadding / 1.4).copyWith(right: 0),
+                                contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.5, horizontal: defaultPadding),
+                                fillColor: Theme.of(context).scaffoldBackgroundColor,
                                 textInputAction: TextInputAction.next,
                                 keyboardType: TextInputType.number,
                                 enabledBorder: OutlineInputBorder(
@@ -271,21 +222,11 @@ class FilterScreen extends StatelessWidget {
                             Expanded(
                               child: AppTextField(
                                 hintText: "To",
-                                hintStyle: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium
-                                    ?.copyWith(
-                                        fontWeight: FontWeight.w500,
-                                        color: AppColors.font.withOpacity(.5)),
+                                hintStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500, color: AppColors.font.withOpacity(.5)),
                                 controller: con.mrpToCon.value,
-                                padding: EdgeInsets.symmetric(
-                                        horizontal: defaultPadding / 1.4)
-                                    .copyWith(left: 0),
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: defaultPadding / 1.5,
-                                    horizontal: defaultPadding),
-                                fillColor:
-                                    Theme.of(context).scaffoldBackgroundColor,
+                                padding: EdgeInsets.symmetric(horizontal: defaultPadding / 1.4).copyWith(left: 0),
+                                contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.5, horizontal: defaultPadding),
+                                fillColor: Theme.of(context).scaffoldBackgroundColor,
                                 textInputAction: TextInputAction.done,
                                 keyboardType: TextInputType.number,
                                 enabledBorder: OutlineInputBorder(
@@ -317,9 +258,7 @@ class FilterScreen extends StatelessWidget {
                           } else {
                             con.count--;
                           }
-                          con.isAvailable.value
-                              ? con.applyFilterCounts[2] = 1
-                              : con.applyFilterCounts[2] = 0;
+                          con.isAvailable.value ? con.applyFilterCounts[2] = 1 : con.applyFilterCounts[2] = 0;
                         }
                       },
                     ),
@@ -337,13 +276,10 @@ class FilterScreen extends StatelessWidget {
                       return CustomCheckboxTile(
                         scale: 1,
                         title: preValCon.genderList[index].capitalizeFirst,
-                        isSelected: RxBool(con.selectedGender
-                            .contains(preValCon.genderList[index])),
+                        isSelected: RxBool(con.selectedGender.contains(preValCon.genderList[index])),
                         onChanged: (val) {
-                          if (con.selectedGender
-                              .contains(preValCon.genderList[index])) {
-                            con.selectedGender
-                                .remove(preValCon.genderList[index]);
+                          if (con.selectedGender.contains(preValCon.genderList[index])) {
+                            con.selectedGender.remove(preValCon.genderList[index]);
                             if (con.selectedGender.isEmpty) {
                               con.count--;
                             }
@@ -392,8 +328,7 @@ class FilterScreen extends StatelessWidget {
                     deliveryList: preValCon.productNamesList,
                     type: FilterItemType.production,
                     onSelect: () {
-                      con.applyFilterCounts[7] =
-                          con.selectedProductNames.length;
+                      con.applyFilterCounts[7] = con.selectedProductNames.length;
                     },
                   ),
 
@@ -410,8 +345,7 @@ class FilterScreen extends StatelessWidget {
           ],
         ),
         bottomNavigationBar: Padding(
-          padding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(
-              bottom: MediaQuery.of(context).padding.bottom + defaultPadding),
+          padding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(bottom: MediaQuery.of(context).padding.bottom + defaultPadding),
           child: Row(
             children: [
               Expanded(
@@ -457,6 +391,10 @@ class FilterScreen extends StatelessWidget {
                       deliveryList: con.selectedDelivery,
                       productionNameList: con.selectedProductNames,
                       collectionList: con.selectedCollections,
+                      sortBy: [
+                        if (filterCon.selectPrice.value.isNotEmpty) "inventory_total_price:${filterCon.selectPrice.value.split("/").last}",
+                        if (!isValEmpty(filterCon.selectNewestOrOldest.value)) "createdAt:${filterCon.selectNewestOrOldest.value.split("/").last}",
+                      ],
                     ).then((value) => Get.back(result: con.count));
                   },
                 ),
@@ -468,8 +406,5 @@ class FilterScreen extends StatelessWidget {
     );
   }
 
-  Divider get separateDivider => Divider(
-      height: defaultPadding / 2,
-      indent: defaultPadding,
-      endIndent: defaultPadding);
+  Divider get separateDivider => Divider(height: defaultPadding / 2, indent: defaultPadding, endIndent: defaultPadding);
 }

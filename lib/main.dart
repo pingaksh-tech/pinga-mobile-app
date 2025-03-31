@@ -24,14 +24,12 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   WidgetsFlutterBinding.ensureInitialized();
-  await GetStorage.init()
-      .then((value) async => await LocalStorage.readDataInfo());
+  await GetStorage.init().then((value) async => await LocalStorage.readDataInfo());
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await NotificationsHelper.init();
   await FirebaseNotificationService.initialise();
-  FirebaseMessaging.onBackgroundMessage(
-      FirebaseNotificationService.firebaseMessagingBackgroundHandler);
+  FirebaseMessaging.onBackgroundMessage(FirebaseNotificationService.firebaseMessagingBackgroundHandler);
   runApp(const MyApp());
 }
 
@@ -50,16 +48,8 @@ class MyApp extends StatelessWidget {
           initialBinding: BaseBinding(),
           themeMode: ThemeMode.light,
           navigatorKey: GlobalContext.instance.navigatorKey,
-          theme: AppTheme.lightMode(context,
-              kPrimaryColor: LocalStorage.primaryColor,
-              kSecondaryColor: LocalStorage.secondaryColor,
-              errorColor: AppColors.error,
-              fontFamily: AppTheme.fontFamilyName),
-          darkTheme: AppTheme.darkMode(context,
-              kPrimaryColor: LocalStorage.primaryColor,
-              kSecondaryColor: LocalStorage.secondaryColor,
-              errorColor: AppColors.error,
-              fontFamily: AppTheme.fontFamilyName),
+          theme: AppTheme.lightMode(context, kPrimaryColor: LocalStorage.primaryColor, kSecondaryColor: LocalStorage.secondaryColor, errorColor: AppColors.error, fontFamily: AppTheme.fontFamilyName),
+          darkTheme: AppTheme.darkMode(context, kPrimaryColor: LocalStorage.primaryColor, kSecondaryColor: LocalStorage.secondaryColor, errorColor: AppColors.error, fontFamily: AppTheme.fontFamilyName),
           scrollBehavior: ScrollBehaviorModified(),
           getPages: AppPages.pages,
           initialRoute: AppRoutes.splashScreen,

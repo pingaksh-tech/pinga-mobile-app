@@ -88,7 +88,7 @@ class ProductRepository {
                 if ((!isValEmpty(minMetal) && !isValEmpty(maxMetal))) "metal_wt": {"min": minMetal, "max": maxMetal},
                 if ((!isValEmpty(minDiamond) && !isValEmpty(maxDiamond))) "diamond_wt": {"min": minDiamond, "max": maxDiamond}
               },
-            if ((!isValEmpty(minMrp) && !isValEmpty(maxMrp))) "mrp": {"min": minMrp, "max": maxMrp},
+            if ((!isValEmpty(minMrp) && !isValEmpty(maxMrp ?? 0))) "mrp": {"min": minMrp, "max": maxMrp ?? 0},
             if (inStock != null)
               "available": {
                 "in_stock": inStock,

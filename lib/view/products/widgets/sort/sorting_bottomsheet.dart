@@ -7,28 +7,27 @@ import '../../../../data/repositories/product/product_repository.dart';
 import '../../../../exports.dart';
 import '../../../../widgets/checkbox_title_tile.dart';
 import '../../products_controller.dart';
+import '../filter/filter_controller.dart';
 
 class SortingBottomSheet extends StatelessWidget {
   final ProductsListType productsListType;
   final String watchlistId;
 
-  SortingBottomSheet(
-      {super.key, required this.productsListType, required this.watchlistId});
+  SortingBottomSheet({super.key, required this.productsListType, required this.watchlistId});
 
   final ProductsController con = Get.find<ProductsController>();
+  final FilterController filterCon = Get.isRegistered<FilterController>() ? Get.find<FilterController>() : Get.put(FilterController());
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
       return Container(
         width: Get.width,
-        padding: EdgeInsets.all(defaultPadding).copyWith(
-            bottom: MediaQuery.of(context).padding.bottom + defaultPadding),
+        padding: EdgeInsets.all(defaultPadding).copyWith(bottom: MediaQuery.of(context).padding.bottom + defaultPadding),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
-          border: Border.all(
-              color: Theme.of(context).iconTheme.color!.withAlpha(15)),
+          border: Border.all(color: Theme.of(context).iconTheme.color!.withAlpha(15)),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -40,8 +39,7 @@ class SortingBottomSheet extends StatelessWidget {
                   child: Text(
                     "Sort by",
                     textAlign: TextAlign.center,
-                    style: AppTextStyle.titleStyle(context)
-                        .copyWith(fontWeight: FontWeight.w500, fontSize: 16.sp),
+                    style: AppTextStyle.titleStyle(context).copyWith(fontWeight: FontWeight.w500, fontSize: 16.sp),
                   ),
                 ),
                 AppIconButton(
@@ -61,17 +59,13 @@ class SortingBottomSheet extends StatelessWidget {
               itemCount: con.sortWithPriceList.length,
               itemBuilder: (context, index) => Obx(
                 () => CheckBoxWithTitleTile(
-                  isCheck:
-                      (con.selectPrice.value == con.sortWithPriceList[index])
-                          .obs,
-                  title:
-                      con.sortWithPriceList[index].toString().split("/").first,
+                  isCheck: (con.selectPrice.value == con.sortWithPriceList[index]).obs,
+                  title: con.sortWithPriceList[index].toString().split("/").first,
                   isMultiSelection: false,
                   onTap: () {
                     if (con.selectPrice.value == con.sortWithPriceList[index]) {
                       // Unselect if already selected
-                      con.sortList
-                          .removeWhere((r) => r == con.selectPrice.value);
+                      con.sortList.removeWhere((r) => r == con.selectPrice.value);
                       con.selectPrice.value = '';
                     } else {
                       // Select the new option
@@ -82,8 +76,7 @@ class SortingBottomSheet extends StatelessWidget {
                   onChanged: (value) {
                     if (con.selectPrice.value == con.sortWithPriceList[index]) {
                       // Unselect if already selected
-                      con.sortList
-                          .removeWhere((r) => r == con.selectPrice.value);
+                      con.sortList.removeWhere((r) => r == con.selectPrice.value);
                       con.selectPrice.value = '';
                     } else {
                       // Select the new option
@@ -101,36 +94,28 @@ class SortingBottomSheet extends StatelessWidget {
               itemCount: con.sortWithTimeList.length,
               itemBuilder: (context, index) => Obx(
                 () => CheckBoxWithTitleTile(
-                  isCheck: (con.selectNewestOrOldest.value ==
-                          con.sortWithTimeList[index])
-                      .obs,
+                  isCheck: (con.selectNewestOrOldest.value == con.sortWithTimeList[index]).obs,
                   title: con.sortWithTimeList[index].split("/").first,
                   isMultiSelection: false,
                   onTap: () {
-                    if (con.selectNewestOrOldest.value ==
-                        con.sortWithTimeList[index]) {
+                    if (con.selectNewestOrOldest.value == con.sortWithTimeList[index]) {
                       // Unselect if already selected
-                      con.sortList.removeWhere(
-                          (r) => r == con.selectNewestOrOldest.value);
+                      con.sortList.removeWhere((r) => r == con.selectNewestOrOldest.value);
                       con.selectNewestOrOldest.value = '';
                     } else {
                       // Select the new option
-                      con.selectNewestOrOldest.value =
-                          con.sortWithTimeList[index];
+                      con.selectNewestOrOldest.value = con.sortWithTimeList[index];
                     }
                     con.updateSortingList();
                   },
                   onChanged: (value) {
-                    if (con.selectNewestOrOldest.value ==
-                        con.sortWithTimeList[index]) {
+                    if (con.selectNewestOrOldest.value == con.sortWithTimeList[index]) {
                       // Unselect if already selected
-                      con.sortList.removeWhere(
-                          (r) => r == con.selectNewestOrOldest.value);
+                      con.sortList.removeWhere((r) => r == con.selectNewestOrOldest.value);
                       con.selectNewestOrOldest.value = '';
                     } else {
                       // Select the new option
-                      con.selectNewestOrOldest.value =
-                          con.sortWithTimeList[index];
+                      con.selectNewestOrOldest.value = con.sortWithTimeList[index];
                     }
                     con.updateSortingList();
                   },
@@ -159,10 +144,7 @@ class SortingBottomSheet extends StatelessWidget {
               children: List.generate(
                 con.sortList.length,
                 (index) => Container(
-                  padding: EdgeInsets.symmetric(
-                          horizontal: defaultPadding,
-                          vertical: defaultPadding / 3.5)
-                      .copyWith(right: defaultPadding / 2),
+                  padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding / 3.5).copyWith(right: defaultPadding / 2),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(defaultRadius - 2),
                     color: Theme.of(context).primaryColor,
@@ -185,8 +167,7 @@ class SortingBottomSheet extends StatelessWidget {
                           con.sortList.remove(con.sortList[index]);
                           if (con.sortWithTimeList.contains(removedSorting)) {
                             con.selectNewestOrOldest.value = '';
-                          } else if (con.sortWithPriceList
-                              .contains(removedSorting)) {
+                          } else if (con.sortWithPriceList.contains(removedSorting)) {
                             con.selectPrice.value = '';
                           } else if (removedSorting == 'Most Ordered') {
                             con.isMostOrder.value = false;
@@ -194,9 +175,7 @@ class SortingBottomSheet extends StatelessWidget {
                         },
                         icon: SvgPicture.asset(
                           AppAssets.crossIcon,
-                          color: Theme.of(context)
-                              .colorScheme
-                              .surface, // ignore: deprecated_member_use
+                          color: Theme.of(context).colorScheme.surface, // ignore: deprecated_member_use
                         ),
                       ),
                     ],
@@ -214,8 +193,7 @@ class SortingBottomSheet extends StatelessWidget {
                       buttonType: ButtonType.outline,
                       borderColor: Theme.of(context).primaryColor,
                       title: "Clear All",
-                      titleStyle: AppTextStyle.appButtonStyle(context)
-                          .copyWith(color: Theme.of(context).primaryColor),
+                      titleStyle: AppTextStyle.appButtonStyle(context).copyWith(color: Theme.of(context).primaryColor),
                       onPressed: () async {
                         con.selectNewestOrOldest.value = '';
                         con.selectPrice.value = '';
@@ -238,9 +216,7 @@ class SortingBottomSheet extends StatelessWidget {
                   defaultPadding.horizontalSpace,
                   Expanded(
                     child: AppButton(
-                        disableButton: (con.selectPrice.value.isEmpty &&
-                            con.selectNewestOrOldest.value
-                                .isEmpty /*  && con.isMostOrder.isFalse */),
+                        disableButton: (con.selectPrice.value.isEmpty && con.selectNewestOrOldest.value.isEmpty /*  && con.isMostOrder.isFalse */),
                         loader: con.isLoader.value,
                         height: 30.h,
                         title: "Apply",
@@ -253,11 +229,22 @@ class SortingBottomSheet extends StatelessWidget {
                               subCategoryId: con.subCategory.value.id ?? "",
                               loader: con.loader,
                               sortBy: [
-                                if (con.selectPrice.value.isNotEmpty)
-                                  "inventory_total_price:${con.selectPrice.value.split("/").last}",
-                                if (!isValEmpty(con.selectNewestOrOldest.value))
-                                  "createdAt:${con.selectNewestOrOldest.value.split("/").last}",
+                                if (con.selectPrice.value.isNotEmpty) "inventory_total_price:${con.selectPrice.value.split("/").last}",
+                                if (!isValEmpty(con.selectNewestOrOldest.value)) "createdAt:${con.selectNewestOrOldest.value.split("/").last}",
                               ],
+                              minMetal: filterCon.minMetalWt.value,
+                              maxMetal: filterCon.maxMetalWt.value,
+                              minDiamond: filterCon.minDiamondWt.value,
+                              maxDiamond: filterCon.maxDiamondWt.value,
+                              minMrp: filterCon.selectMrp.value.min?.value,
+                              maxMrp: filterCon.selectMrp.value.max?.value,
+                              inStock: filterCon.isAvailable.value,
+                              genderList: filterCon.selectedGender,
+                              diamondList: filterCon.selectedDiamonds,
+                              ktList: filterCon.selectedKt,
+                              deliveryList: filterCon.selectedDelivery,
+                              productionNameList: filterCon.selectedProductNames,
+                              collectionList: filterCon.selectedCollections,
                             );
 
                             Get.back();
