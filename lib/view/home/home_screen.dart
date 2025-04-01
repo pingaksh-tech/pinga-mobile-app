@@ -4,15 +4,15 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+
 import '../../data/repositories/banner/banner_repository.dart';
 import '../../data/repositories/category/category_repository.dart';
+import '../../exports.dart';
 import '../../res/app_network_image.dart';
 import '../../res/empty_element.dart';
 import '../../utils/app_aspect_ratios.dart';
 import '../../widgets/pull_to_refresh_indicator.dart';
 import 'home_controller.dart';
-
-import '../../exports.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -192,12 +192,12 @@ class HomeScreen extends StatelessWidget {
     return GridView.builder(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      padding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(top: defaultPadding / 5, bottom: defaultBottomPadding),
+      padding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(top: defaultPadding / 5),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         mainAxisSpacing: defaultPadding / 2,
         crossAxisSpacing: defaultPadding / 1.8,
-        mainAxisExtent: 135.h,
+        mainAxisExtent: 125.h,
       ),
       itemCount: length,
       itemBuilder: itemBuilder,
