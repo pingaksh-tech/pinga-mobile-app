@@ -171,6 +171,11 @@ class FilterScreen extends StatelessWidget {
                                   con.applyFilterCounts[1] = 0;
                                 }
 
+                                if (con.mrpFromCon.value.text.isNotEmpty && con.mrpToCon.value.text.isNotEmpty) {
+                                  con.mrpFromCon.value.clear();
+                                  con.mrpToCon.value.clear();
+                                }
+
                                 con.selectMrp.refresh();
                               },
                             );
@@ -190,7 +195,14 @@ class FilterScreen extends StatelessWidget {
                           } else {
                             con.selectMrp.value = MrpModel(label: "customs".obs);
                           }
-                          (con.selectMrp.value.label != null && con.selectMrp.value.label!.isNotEmpty) ? con.applyFilterCounts[1] = 1 : con.applyFilterCounts[1] = 0;
+
+                          if (con.selectMrp.value.label != null && con.selectMrp.value.label!.isNotEmpty) {
+                            con.count++;
+                            con.applyFilterCounts[1] = 1;
+                          } else {
+                            con.count--;
+                            con.applyFilterCounts[1] = 0;
+                          }
                         },
                       ),
                       10.verticalSpace,
@@ -213,9 +225,6 @@ class FilterScreen extends StatelessWidget {
                                   ),
                                   borderSide: BorderSide.none,
                                 ),
-                                onChanged: (val) {
-                                  con.selectMrp.value.min?.value;
-                                },
                               ),
                             ),
                             10.horizontalSpace,
@@ -280,13 +289,9 @@ class FilterScreen extends StatelessWidget {
                         onChanged: (val) {
                           if (con.selectedGender.contains(preValCon.genderList[index])) {
                             con.selectedGender.remove(preValCon.genderList[index]);
-                            if (con.selectedGender.isEmpty) {
-                              con.count--;
-                            }
+                            con.count--;
                           } else {
-                            if (con.selectedGender.isEmpty) {
-                              con.count++;
-                            }
+                            con.count++;
                             con.selectedGender.add(preValCon.genderList[index]);
                           }
 
@@ -382,8 +387,8 @@ class FilterScreen extends StatelessWidget {
                       maxMetal: con.maxMetalWt.value,
                       minDiamond: con.minDiamondWt.value,
                       maxDiamond: con.maxDiamondWt.value,
-                      minMrp: con.selectMrp.value.min?.value,
-                      maxMrp: con.selectMrp.value.max?.value,
+                      minMrp: con.selectMrp.value.label == "customs".obs ? int.parse(con.mrpFromCon.value.text) : con.selectMrp.value.min?.value,
+                      maxMrp: con.selectMrp.value.label == "customs".obs ? int.parse(con.mrpToCon.value.text) : con.selectMrp.value.max?.value,
                       inStock: con.isAvailable.value,
                       genderList: con.selectedGender,
                       diamondList: con.selectedDiamonds,

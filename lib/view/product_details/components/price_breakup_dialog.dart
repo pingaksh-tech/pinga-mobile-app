@@ -9,8 +9,7 @@ import '../../../exports.dart';
 EdgeInsets get bodyPadding => EdgeInsets.symmetric(horizontal: defaultPadding);
 
 class PriceBreakupDialog {
-  static Future<dynamic> priceBreakupDialog(BuildContext context,
-      {required PriceBreaking priceBreakModel}) {
+  static Future<dynamic> priceBreakupDialog(BuildContext context, {required PriceBreaking priceBreakModel}) {
     return Get.dialog(
       Dialog(
         child: Container(
@@ -30,27 +29,19 @@ class PriceBreakupDialog {
                 children: [
                   /// Header
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: defaultPadding)
-                        .copyWith(
-                            right: defaultPadding / 2, top: defaultPadding),
+                    padding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(right: defaultPadding / 2, top: defaultPadding),
                     child: Row(
                       children: [
                         Expanded(
                           child: Text(
                             "Price breakup",
                             textAlign: TextAlign.center,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(
-                                    fontSize: 15.sp,
-                                    fontWeight: FontWeight.w400),
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 15.sp, fontWeight: FontWeight.w400),
                           ),
                         ),
                         AppIconButton(
                           size: 24.h,
-                          splashColor:
-                              Theme.of(context).scaffoldBackgroundColor,
+                          splashColor: Theme.of(context).scaffoldBackgroundColor,
                           onPressed: () {
                             Get.back();
                           },
@@ -71,18 +62,11 @@ class PriceBreakupDialog {
                       Text(
                         "METAL",
                         textAlign: TextAlign.center,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
-                            ?.copyWith(
-                                fontSize: 12.sp, color: AppColors.primary),
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.primary),
                       ),
                       Padding(
                         padding: bodyPadding,
-                        child: Divider(
-                            height: 5.h,
-                            color:
-                                Theme.of(context).dividerColor.withOpacity(.2)),
+                        child: Divider(height: 5.h, color: Theme.of(context).dividerColor.withOpacity(.2)),
                       ),
 
                       /// Table View
@@ -94,26 +78,18 @@ class PriceBreakupDialog {
                             1: FlexColumnWidth(1),
                             2: FlexColumnWidth(1),
                           },
-                          defaultVerticalAlignment:
-                              TableCellVerticalAlignment.middle,
+                          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                           children: [
                             /// Title Row
-                            priceTableRow(context,
-                                value1: "Weight",
-                                value2: "Per gram price",
-                                value3: "Total"),
+                            priceTableRow(context, value1: "Weight", value2: "Per gram price", value3: "Total"),
 
                             /// Value Row
                             priceTableRow(
                               context,
                               isSubtitle: true,
                               value1: "${priceBreakModel.metal?.metalWeight} g",
-                              value2: UiUtils.amountFormat(
-                                  priceBreakModel.metal?.pricePerGram ?? 0,
-                                  decimalDigits: 0),
-                              value3: UiUtils.amountFormat(
-                                  priceBreakModel.metal?.metalPrice ?? 0,
-                                  decimalDigits: 0),
+                              value2: UiUtils.amountFormat(priceBreakModel.metal?.pricePerGram ?? 0, decimalDigits: 0),
+                              value3: UiUtils.amountFormat(priceBreakModel.metal?.metalPrice ?? 0, decimalDigits: 0),
                             ),
                           ],
                         ),
@@ -123,18 +99,11 @@ class PriceBreakupDialog {
                       Text(
                         "DIAMOND",
                         textAlign: TextAlign.center,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
-                            ?.copyWith(
-                                fontSize: 12.sp, color: AppColors.primary),
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.primary),
                       ),
                       Padding(
                         padding: bodyPadding,
-                        child: Divider(
-                            height: 5.h,
-                            color:
-                                Theme.of(context).dividerColor.withOpacity(.2)),
+                        child: Divider(height: 5.h, color: Theme.of(context).dividerColor.withOpacity(.2)),
                       ),
 
                       /// Table View
@@ -146,22 +115,19 @@ class PriceBreakupDialog {
                             1: FlexColumnWidth(1),
                             // 2: FlexColumnWidth(1),
                           },
-                          defaultVerticalAlignment:
-                              TableCellVerticalAlignment.middle,
+                          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                           children: [
                             /// Title Row
-                            priceTableRow(context,
-                                value1: "Weight", value2: "Total"),
+                            priceTableRow(context, value1: "Weight", value2: "Sleeve size", value3: "Carat price", value4: "Total"),
 
                             /// Value Row
                             priceTableRow(
                               context,
                               isSubtitle: true,
-                              value1:
-                                  "${priceBreakModel.diamond?.diamondWeight ?? 0}",
-                              value2: UiUtils.amountFormat(
-                                  priceBreakModel.diamond?.diamondPrice ?? 0,
-                                  decimalDigits: 0),
+                              value1: "${priceBreakModel.diamond?.diamondWeight ?? 0}",
+                              value2: "${priceBreakModel.diamond?.diamondSleeveSize ?? 0}",
+                              value3: "${priceBreakModel.diamond?.diamondCartPrice ?? 0}",
+                              value4: UiUtils.amountFormat(priceBreakModel.diamond?.diamondPrice ?? 0, decimalDigits: 0),
                             ),
                           ],
                         ),
@@ -171,18 +137,11 @@ class PriceBreakupDialog {
                       Text(
                         "OTHER",
                         textAlign: TextAlign.center,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
-                            ?.copyWith(
-                                fontSize: 12.sp, color: AppColors.primary),
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.primary),
                       ),
                       Padding(
                         padding: bodyPadding,
-                        child: Divider(
-                            height: 5.h,
-                            color:
-                                Theme.of(context).dividerColor.withOpacity(.2)),
+                        child: Divider(height: 5.h, color: Theme.of(context).dividerColor.withOpacity(.2)),
                       ),
 
                       /// Table View
@@ -195,24 +154,13 @@ class PriceBreakupDialog {
                               child: Text(
                                 "Manufacturing Price",
                                 textAlign: TextAlign.start,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium
-                                    ?.copyWith(
-                                        fontSize: 12.sp, color: AppColors.font),
+                                style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.font),
                               ),
                             ),
                             Text(
-                              UiUtils.amountFormat(
-                                  priceBreakModel.other?.manufacturingPrice ??
-                                      0,
-                                  decimalDigits: 0),
+                              UiUtils.amountFormat(priceBreakModel.other?.manufacturingPrice ?? 0, decimalDigits: 0),
                               textAlign: TextAlign.center,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium
-                                  ?.copyWith(
-                                      fontSize: 12.sp, color: AppColors.font),
+                              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.font),
                             ),
                           ],
                         ),
@@ -247,14 +195,12 @@ class PriceBreakupDialog {
                       flex: 4,
                       child: Text(
                         textAlign: TextAlign.end,
-                        UiUtils.amountFormat(priceBreakModel.total ?? 0,
-                            decimalDigits: 0),
-                        style:
-                            Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.primary,
-                                ),
+                        UiUtils.amountFormat(priceBreakModel.total ?? 0, decimalDigits: 0),
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.primary,
+                            ),
                       ),
                     )
                   ],
@@ -272,6 +218,7 @@ class PriceBreakupDialog {
     required String value1,
     required String value2,
     String? value3,
+    String? value4,
     bool isSubtitle = false,
   }) {
     return TableRow(
@@ -296,27 +243,25 @@ class PriceBreakupDialog {
             value1,
             maxLines: 1,
             textAlign: TextAlign.start,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontSize: 12.sp,
-                color: isSubtitle ? AppColors.subText : AppColors.font),
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: isSubtitle ? AppColors.subText : AppColors.font),
           ),
         ),
         Text(
           value2,
-          textAlign: value3 != null && value3.isNotEmpty
-              ? TextAlign.center
-              : TextAlign.end,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontSize: 12.sp,
-              color: isSubtitle ? AppColors.subText : AppColors.font),
+          textAlign: value3 != null && value3.isNotEmpty ? TextAlign.center : TextAlign.end,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: isSubtitle ? AppColors.subText : AppColors.font),
         ),
         if (value3 != null && value3.isNotEmpty)
           Text(
             value3,
             textAlign: TextAlign.end,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontSize: 12.sp,
-                color: isSubtitle ? AppColors.subText : AppColors.font),
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: isSubtitle ? AppColors.subText : AppColors.font),
+          ),
+        if (value4 != null && value4.isNotEmpty)
+          Text(
+            value4,
+            textAlign: TextAlign.end,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: isSubtitle ? AppColors.subText : AppColors.font),
           ),
       ],
     );

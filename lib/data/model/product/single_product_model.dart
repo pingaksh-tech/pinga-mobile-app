@@ -151,21 +151,29 @@ class PriceBreaking {
 
 class PriceBreakingDiamond {
   num? diamondWeight;
+  num? diamondCartPrice;
+  num? diamondSleeveSize;
   num? diamondPrice;
 
   PriceBreakingDiamond({
     this.diamondWeight,
+    this.diamondCartPrice,
+    this.diamondSleeveSize,
     this.diamondPrice,
   });
 
   factory PriceBreakingDiamond.fromJson(Map<String, dynamic> json) =>
       PriceBreakingDiamond(
         diamondWeight: num.tryParse(json["diamond_weight"].toString()) ?? 0,
+        diamondCartPrice: num.tryParse(json["per_carat_price"].toString()) ?? 0,
+        diamondSleeveSize: num.tryParse(json["sleeve_size_wise_price"].toString()) ?? 0,
         diamondPrice: num.tryParse(json["diamond_price"].toString()) ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
         "diamond_weight": diamondWeight,
+        "per_carat_price": diamondCartPrice,
+        "sleeve_size_wise_price": diamondSleeveSize,
         "diamond_price": diamondPrice,
       };
 }

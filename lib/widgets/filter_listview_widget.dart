@@ -69,15 +69,9 @@ class _FilterListViewWidgetState extends State<FilterListViewWidget> {
             case FilterItemType.diamond:
               if (filterCon.selectedDiamonds.contains(widget.diamondList?[index].name)) {
                 filterCon.selectedDiamonds.remove(widget.diamondList?[index].name);
-
-                if (filterCon.selectedDiamonds.isEmpty) {
-                  filterCon.count--;
-                }
+                filterCon.count--;
               } else {
-                if (filterCon.selectedDiamonds.isEmpty) {
-                  filterCon.count++;
-                }
-
+                filterCon.count++;
                 filterCon.selectedDiamonds.add(widget.diamondList?[index].name ?? "");
               }
               printOkStatus(filterCon.count);
@@ -86,15 +80,9 @@ class _FilterListViewWidgetState extends State<FilterListViewWidget> {
             case FilterItemType.delivery:
               if (filterCon.selectedDelivery.contains(widget.deliveryList?[index])) {
                 filterCon.selectedDelivery.remove(widget.deliveryList?[index]);
-
-                if (filterCon.selectedDelivery.isEmpty) {
-                  filterCon.count--;
-                }
+                filterCon.count--;
               } else {
-                if (filterCon.selectedDelivery.isEmpty) {
-                  filterCon.count++;
-                }
-
+                filterCon.count++;
                 filterCon.selectedDelivery.add(widget.deliveryList?[index] ?? "");
               }
               break;
@@ -102,29 +90,19 @@ class _FilterListViewWidgetState extends State<FilterListViewWidget> {
             case FilterItemType.production:
               if (filterCon.selectedProductNames.contains(widget.deliveryList?[index])) {
                 filterCon.selectedProductNames.remove(widget.deliveryList?[index]);
-
-                if (filterCon.selectedProductNames.isEmpty) {
-                  filterCon.count--;
-                }
+                filterCon.count--;
               } else {
-                if (filterCon.selectedProductNames.isEmpty) {
-                  filterCon.count++;
-                }
+                filterCon.count++;
                 filterCon.selectedProductNames.add(widget.deliveryList?[index] ?? "");
               }
               break;
 
             case FilterItemType.kt:
               if (filterCon.selectedKt.contains(widget.metalList?[index].id ?? "")) {
-                filterCon.selectedKt.remove(widget.metalList?[index].id ?? "");
-
-                if (filterCon.selectedKt.isEmpty) {
-                  filterCon.count--;
-                }
+                filterCon.selectedKt.remove(widget.metalList?[index].id?.value ?? "");
+                filterCon.count--;
               } else {
-                if (filterCon.selectedKt.isEmpty) {
-                  filterCon.count++;
-                }
+                filterCon.count++;
                 filterCon.selectedKt.add(widget.metalList?[index].id?.value ?? "");
               }
               break;
@@ -132,13 +110,9 @@ class _FilterListViewWidgetState extends State<FilterListViewWidget> {
             case FilterItemType.collection:
               if (filterCon.selectedCollections.contains(widget.collectionList?[index].id)) {
                 filterCon.selectedCollections.remove(widget.collectionList?[index].id);
-                if (filterCon.selectedCollections.isEmpty) {
-                  filterCon.count--;
-                }
+                filterCon.count--;
               } else {
-                if (filterCon.selectedCollections.isEmpty) {
-                  filterCon.count++;
-                }
+                filterCon.count++;
                 filterCon.selectedCollections.add(widget.collectionList?[index].id ?? "");
               }
               break;

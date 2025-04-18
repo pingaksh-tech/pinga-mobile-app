@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import '../../exports.dart';
 
 class AppEnvironment {
-  static EnvironmentType environmentType = EnvironmentType.production;
+  static EnvironmentType environmentType = EnvironmentType.development;
 
   static String getApiURL() {
     printData(key: "API environment", value: environmentType.name);
