@@ -3,12 +3,13 @@ import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
-import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../../exports.dart';
 import '../../../view/drawer/widgets/catalog/catalogue_controller.dart';
+import '../../../view/drawer/widgets/pdf_preview/pdf_preview_controller.dart';
 import '../../../view/drawer/widgets/pdf_viewer/pdf_controller.dart';
+import '../../model/catalog/get_catalog_pdf_model.dart';
 import '../../model/home/catalogue_model.dart';
 
 class CatalogueRepository {
@@ -54,28 +55,20 @@ class CatalogueRepository {
             if (!isValEmpty(sortBy)) "sortBy": sortBy,
             if ((!isValEmpty(minMetal) && !isValEmpty(maxMetal)))
               "range": {
-                if ((!isValEmpty(minMetal) && !isValEmpty(maxMetal)))
-                  "metal_wt": {"min": minMetal, "max": maxMetal},
-                if ((!isValEmpty(minDiamond) && !isValEmpty(maxDiamond)))
-                  "diamond_wt": {"min": minDiamond, "max": maxDiamond}
+                if ((!isValEmpty(minMetal) && !isValEmpty(maxMetal))) "metal_wt": {"min": minMetal, "max": maxMetal},
+                if ((!isValEmpty(minDiamond) && !isValEmpty(maxDiamond))) "diamond_wt": {"min": minDiamond, "max": maxDiamond}
               },
-            if ((!isValEmpty(minMrp) && !isValEmpty(maxMrp)))
-              "mrp": {"min": minMrp, "max": maxMrp},
+            if ((!isValEmpty(minMrp) && !isValEmpty(maxMrp))) "mrp": {"min": minMrp, "max": maxMrp},
             if (inStock != null)
               "available": {
                 "in_stock": inStock,
               },
-            if (genderList != null && genderList.isNotEmpty)
-              "gender": genderList,
-            if (diamondList != null && diamondList.isNotEmpty)
-              "diamond": diamondList,
+            if (genderList != null && genderList.isNotEmpty) "gender": genderList,
+            if (diamondList != null && diamondList.isNotEmpty) "diamond": diamondList,
             if (ktList != null && ktList.isNotEmpty) "metal_ids": ktList,
-            if (deliveryList != null && deliveryList.isNotEmpty)
-              "delivery": deliveryList,
-            if (productionNameList != null && productionNameList.isNotEmpty)
-              "production_name": productionNameList,
-            if (collectionList != null && collectionList.isNotEmpty)
-              "collection": collectionList,
+            if (deliveryList != null && deliveryList.isNotEmpty) "delivery": deliveryList,
+            if (productionNameList != null && productionNameList.isNotEmpty) "production_name": productionNameList,
+            if (collectionList != null && collectionList.isNotEmpty) "collection": collectionList,
           },
           loader: loader,
         ).then(
@@ -142,8 +135,7 @@ class CatalogueRepository {
                 }
 
                 int currentPage = (model.data!.page ?? 1);
-                con.nextPageAvailable.value =
-                    currentPage < (model.data!.totalPages ?? 0);
+                con.nextPageAvailable.value = currentPage < (model.data!.totalPages ?? 0);
                 con.page.value = currentPage + 1;
               }
 
@@ -181,14 +173,11 @@ class CatalogueRepository {
         ).then(
           (response) async {
             if (response != null) {
-              if (response['data'] != null &&
-                  response['data']['status'] == true) {
+              if (response['data'] != null && response['data']['status'] == true) {
                 if (isRegistered<CatalogueController>()) {
-                  final CatalogueController con =
-                      Get.find<CatalogueController>();
+                  final CatalogueController con = Get.find<CatalogueController>();
 
-                  int index = con.catalogueList
-                      .indexWhere((element) => element.id == catalogueId);
+                  int index = con.catalogueList.indexWhere((element) => element.id == catalogueId);
                   if (index != -1) {
                     con.catalogueList.removeAt(index);
                   }
@@ -233,14 +222,11 @@ class CatalogueRepository {
         ).then(
           (response) async {
             if (response != null) {
-              if (response['data'] != null &&
-                  response['data']['status'] == true) {
+              if (response['data'] != null && response['data']['status'] == true) {
                 if (isRegistered<CatalogueController>()) {
-                  final CatalogueController con =
-                      Get.find<CatalogueController>();
+                  final CatalogueController con = Get.find<CatalogueController>();
 
-                  int index = con.catalogueList
-                      .indexWhere((element) => element.id == catalogueId);
+                  int index = con.catalogueList.indexWhere((element) => element.id == catalogueId);
                   if (index != -1) {
                     con.catalogueList[index].name?.value = catalogueName;
                   }
@@ -322,6 +308,7 @@ startxref
     required String catalogueId,
     required CatalogueType catalogueType,
     RxBool? loader,
+    Function()? onSuccess,
   }) async {
     cancelToken = CancelToken();
     if (await getConnectivityResult()) {
@@ -330,14 +317,13 @@ startxref
       try {
         /// API
         await APIFunction.getApiCall(
-          apiUrl: ApiUrls.downloadCatalogueGET(
-              catalogueId: catalogueId, catalogueType: catalogueType.name),
+          apiUrl: ApiUrls.downloadCatalogueGET(catalogueId: catalogueId, catalogueType: catalogueType.name),
           options: Options(
             headers: {
               "Content-Type": "application/pdf",
               "Authorization": "Bearer ${LocalStorage.accessToken}",
             },
-            responseType: ResponseType.bytes, // Set the response type to bytes
+            // responseType: ResponseType.bytes, // Set the response type to bytes
           ),
           cancelToken: cancelToken,
           loader: loader,
@@ -349,7 +335,16 @@ startxref
               return; // Skip further execution
             }
             if (response != null) {
-              // Get the app's document directory
+              GetCatalogPdfModel model = GetCatalogPdfModel.fromJson(response);
+              if (isRegistered<PdfPreviewController>()) {
+                PdfPreviewController pdfViewCon = Get.find<PdfPreviewController>();
+                pdfViewCon.productList.assignAll(model.data ?? []);
+
+                pdfViewCon.productList.refresh();
+              }
+
+              onSuccess?.call();
+              /*  // Get the app's document directory
               Directory appDocDir = await getTemporaryDirectory();
               String appDocPath = appDocDir.path;
               Directory catalogueDir = Directory("$appDocPath/catalogue");
@@ -363,8 +358,7 @@ startxref
 
               // Write the response data to a file
               File file = File(filePath);
-              await file.writeAsBytes(
-                  response); // Directly use response as it is Uint8List
+              await file.writeAsBytes(response); // Directly use response as it is Uint8List
 
               printOkStatus('File saved at $filePath');
 
@@ -376,10 +370,10 @@ startxref
               await OpenFile.open(file.path).whenComplete(() {
                 // Get.back();
               });
-
+ */
               if (isRegistered<PdfController>()) {
                 final PdfController con = Get.find<PdfController>();
-                con.pdfFile = file;
+                // con.pdfFile = file;
                 con.isDownloading.value = false;
                 printYellow(con.pdfFile);
                 printYellow(await con.pdfFile.exists());
@@ -402,8 +396,7 @@ startxref
             if (e.response!.statusCode == 502) {
               printYellow('Received a 502 Bad Gateway error');
             } else {
-              printYellow(
-                  'DioException response: ${e.response!.statusCode} - ${e.response!.statusMessage}');
+              printYellow('DioException response: ${e.response!.statusCode} - ${e.response!.statusMessage}');
             }
           } else {
             printYellow('DioException error: ${e.message}');
@@ -554,14 +547,11 @@ startxref
   }*/
 
   static String getRandomString(int length) {
-    const characters =
-        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    return String.fromCharCodes(Iterable.generate(length,
-        (_) => characters.codeUnitAt(Random().nextInt(characters.length))));
+    const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    return String.fromCharCodes(Iterable.generate(length, (_) => characters.codeUnitAt(Random().nextInt(characters.length))));
   }
 
-  static Future<File> urlFileSaver(
-      {required String url, String? fileName}) async {
+  static Future<File> urlFileSaver({required String url, String? fileName}) async {
     printData(key: "URL", value: url);
     try {
       const extension = "pdf";

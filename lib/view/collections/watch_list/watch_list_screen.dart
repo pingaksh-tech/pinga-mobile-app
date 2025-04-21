@@ -51,18 +51,14 @@ class WatchListScreen extends StatelessWidget {
                         AppAssets.search,
                         height: 22,
                         width: 22,
-                        color: UiUtils.keyboardIsOpen.isTrue
-                            ? Theme.of(context).primaryColor
-                            : Colors
-                                .grey.shade400, // ignore: deprecated_member_use
+                        color: UiUtils.keyboardIsOpen.isTrue ? Theme.of(context).primaryColor : Colors.grey.shade400, // ignore: deprecated_member_use
                       ),
                     ),
                     suffixIcon: con.showCloseButton.isTrue
                         ? Center(
                             child: SvgPicture.asset(
                               AppAssets.crossIcon,
-                              color: Theme.of(context)
-                                  .primaryColor, // ignore: deprecated_member_use
+                              color: Theme.of(context).primaryColor, // ignore: deprecated_member_use
                             ),
                           )
                         : null,
@@ -71,18 +67,14 @@ class WatchListScreen extends StatelessWidget {
                             FocusScope.of(context).unfocus();
                             con.showCloseButton.value = false;
                             con.searchCon.value.clear();
-                            await WatchListRepository.getWatchListAPI(
-                                searchText: con.searchCon.value.text.trim(),
-                                loader: con.loader);
+                            await WatchListRepository.getWatchListAPI(searchText: con.searchCon.value.text.trim(), loader: con.loader);
                           }
                         : null,
                     onChanged: (_) {
                       if (con.searchCon.value.text.isNotEmpty) {
                         commonDebounce(
                           callback: () async {
-                            return WatchListRepository.getWatchListAPI(
-                                searchText: con.searchCon.value.text.trim(),
-                                loader: con.loader);
+                            return WatchListRepository.getWatchListAPI(searchText: con.searchCon.value.text.trim(), loader: con.loader);
                           },
                         );
 
@@ -95,8 +87,7 @@ class WatchListScreen extends StatelessWidget {
                 ),
               )),
           body: PullToRefreshIndicator(
-              onRefresh: () =>
-                  WatchListRepository.getWatchListAPI(isPullToRefresh: true),
+              onRefresh: () => WatchListRepository.getWatchListAPI(isPullToRefresh: true),
               child: ListView(
                 controller: con.scrollController,
                 padding: EdgeInsets.all(defaultPadding).copyWith(top: 10.h),
@@ -118,11 +109,8 @@ class WatchListScreen extends StatelessWidget {
                                       Get.toNamed(
                                         AppRoutes.productScreen,
                                         arguments: {
-                                          "watchlistName":
-                                              con.watchList[index].name,
-                                          "watchlistId":
-                                              con.watchList[index].id?.value ??
-                                                  "",
+                                          "watchlistName": con.watchList[index].name,
+                                          "watchlistId": con.watchList[index].id?.value ?? "",
                                           "type": ProductsListType.watchlist,
                                           // "categoryId": con.watchList[index].?.value
                                           // 'catagory' :  con.watchList[index].?.value,
@@ -131,15 +119,20 @@ class WatchListScreen extends StatelessWidget {
                                     },
                                     child: WatchlistTile(
                                       name: con.watchList[index].name,
-                                      noOfItem: con.watchList[index]
-                                              .watchListItemCount ??
-                                          0,
-                                      createdBy:
-                                          "${LocalStorage.userModel.firstName ?? ""} ${LocalStorage.userModel.lastName ?? ""}",
+                                      noOfItem: con.watchList[index].watchListItemCount ?? 0,
+                                      createdBy: "${LocalStorage.userModel.firstName ?? ""} ${LocalStorage.userModel.lastName ?? ""}",
                                       downloadOnPressed: () async {
-                                        WatchListRepository
-                                            .resetDownloadRequest();
+                                        WatchListRepository.resetDownloadRequest();
+
                                         Get.toNamed(
+                                          AppRoutes.pdfPreviewScreen,
+                                          arguments: {
+                                            "title": con.watchList[index].name,
+                                            "isFromCatalog":false,
+                                            "catalogueId": con.watchList[index].id?.value ?? "",
+                                          },
+                                        );
+                                        /*   Get.toNamed(
                                           AppRoutes.watchpdfViewerScreen,
                                           arguments: {
                                             "title": con.watchList[index].name,
@@ -147,44 +140,29 @@ class WatchListScreen extends StatelessWidget {
                                                     ?.value ??
                                                 "",
                                           },
-                                        );
+                                        ); */
                                       },
                                       cartOnPressed: () async {
                                         /// ADD WATCHLIST TO CART
-                                        await CartRepository
-                                            .addWatchlistToCartAPI(
-                                                watchlistId: con
-                                                        .watchList[index]
-                                                        .id
-                                                        ?.value ??
-                                                    "");
+                                        await CartRepository.addWatchlistToCartAPI(watchlistId: con.watchList[index].id?.value ?? "");
                                       },
                                       deleteOnPressed: () {
                                         AppDialogs.cartDialog(
                                           context,
                                           buttonTitle: "NO",
-                                          contentText:
-                                              "Are you sure?\nYou want to remove this watchlist?",
+                                          contentText: "Are you sure?\nYou want to remove this watchlist?",
                                           onPressed: () async {
                                             /// DELETE WATCHLIST API
-                                            await WatchListRepository
-                                                .deleteWatchlistAPI(
-                                                    watchlistId: con
-                                                            .watchList[index]
-                                                            .id
-                                                            ?.value ??
-                                                        "");
+                                            await WatchListRepository.deleteWatchlistAPI(watchlistId: con.watchList[index].id?.value ?? "");
                                           },
                                         );
                                       },
                                     ),
                                   ),
                                   Visibility(
-                                    visible: (con.paginationLoader.value &&
-                                        index + 1 == con.watchList.length),
+                                    visible: (con.paginationLoader.value && index + 1 == con.watchList.length),
                                     child: Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 100),
+                                      padding: const EdgeInsets.only(bottom: 100),
                                       child: watchListShimmer(),
                                     ),
                                   ),
@@ -194,12 +172,10 @@ class WatchListScreen extends StatelessWidget {
                           : EmptyElement(
                               title: "Watchlist is empty",
                               imagePath: AppAssets.emptyData,
-                              padding: EdgeInsets.symmetric(
-                                  vertical: Get.width / 2.5),
+                              padding: EdgeInsets.symmetric(vertical: Get.width / 2.5),
                             )
                       : ListView.separated(
-                          separatorBuilder: (context, index) =>
-                              SizedBox(height: defaultPadding),
+                          separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
                           shrinkWrap: true,
                           itemBuilder: (context, index) => watchListShimmer(),
                           itemCount: 10,

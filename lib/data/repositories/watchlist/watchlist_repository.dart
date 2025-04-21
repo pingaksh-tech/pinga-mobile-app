@@ -1,14 +1,12 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
-import 'package:open_file/open_file.dart';
-import 'package:path_provider/path_provider.dart';
 
 import '../../../exports.dart';
 import '../../../view/collections/watch_list/components/watch_pdf_viewer/watch_pdf_controller.dart';
 import '../../../view/collections/watch_list/watch_list_controller.dart';
+import '../../../view/drawer/widgets/pdf_preview/pdf_preview_controller.dart';
 import '../../../view/drawer/widgets/wishlist/wishlist_controller.dart';
+import '../../model/catalog/get_catalog_pdf_model.dart';
 import '../../model/watchlist/single_watchlist_model.dart';
 import '../../model/watchlist/watchlist_model.dart';
 
@@ -56,11 +54,9 @@ class WatchListRepository {
               if (response['data'] != null) {
                 if (productListType == ProductsListType.wishlist) {
                   if (isRegistered<WishlistController>()) {
-                    final WishlistController wishlistCon =
-                        Get.find<WishlistController>();
+                    final WishlistController wishlistCon = Get.find<WishlistController>();
 
-                    int index = wishlistCon.productsList.indexWhere(
-                        (element) => element.inventoryId == inventoryId);
+                    int index = wishlistCon.productsList.indexWhere((element) => element.inventoryId == inventoryId);
                     if (index != -1) {
                       wishlistCon.productsList.removeAt(index);
                     }
@@ -129,8 +125,7 @@ class WatchListRepository {
                 }
 
                 int currentPage = (model.data!.page ?? 1);
-                con.nextPageAvailable.value =
-                    currentPage < (model.data!.totalPages ?? 0);
+                con.nextPageAvailable.value = currentPage < (model.data!.totalPages ?? 0);
                 con.page.value += currentPage;
               }
 
@@ -163,22 +158,18 @@ class WatchListRepository {
 
         /// API
         await APIFunction.deleteApiCall(
-          apiUrl:
-              ApiUrls.getAndDeleteSingleWatchListAPI(watchlistId: watchlistId),
+          apiUrl: ApiUrls.getAndDeleteSingleWatchListAPI(watchlistId: watchlistId),
           loader: loader,
         ).then(
           (response) async {
             if (response != null) {
-              GetSingleWatchlistModel model =
-                  GetSingleWatchlistModel.fromJson(response);
+              GetSingleWatchlistModel model = GetSingleWatchlistModel.fromJson(response);
 
               if (model.data != null) {
                 if (isRegistered<WatchListController>()) {
-                  final WatchListController con =
-                      Get.find<WatchListController>();
+                  final WatchListController con = Get.find<WatchListController>();
 
-                  int index = con.watchList.indexWhere(
-                      (element) => element.id?.value == watchlistId);
+                  int index = con.watchList.indexWhere((element) => element.id?.value == watchlistId);
                   if (index != -1) {
                     con.watchList.removeAt(index);
                   }
@@ -255,6 +246,7 @@ class WatchListRepository {
     required String title,
     required String watchId,
     RxBool? loader,
+    Function()? onSuccess,
   }) async {
     cancelToken = CancelToken();
     if (await getConnectivityResult()) {
@@ -269,7 +261,7 @@ class WatchListRepository {
               "Content-Type": "application/pdf",
               "Authorization": "Bearer ${LocalStorage.accessToken}",
             },
-            responseType: ResponseType.bytes, // Set the response type to bytes
+            // responseType: ResponseType.bytes, // Set the response type to bytes
           ),
           cancelToken: cancelToken,
           loader: loader,
@@ -281,7 +273,16 @@ class WatchListRepository {
               return; // Skip further execution
             }
             if (response != null) {
-              // Get the app's document directory
+              GetCatalogPdfModel model = GetCatalogPdfModel.fromJson(response);
+              if (isRegistered<PdfPreviewController>()) {
+                PdfPreviewController pdfViewCon = Get.find<PdfPreviewController>();
+                pdfViewCon.productList.assignAll(model.data ?? []);
+
+                pdfViewCon.productList.refresh();
+              }
+              onSuccess?.call();
+
+              /*    // Get the app's document directory
               Directory appDocDir = await getTemporaryDirectory();
               String appDocPath = appDocDir.path;
               Directory catalogueDir = Directory("$appDocPath/catalogue");
@@ -295,8 +296,7 @@ class WatchListRepository {
 
               // Write the response data to a file
               File file = File(filePath);
-              await file.writeAsBytes(
-                  response); // Directly use response as it is Uint8List
+              await file.writeAsBytes(response); // Directly use response as it is Uint8List
 
               printOkStatus('File saved at $filePath');
 
@@ -307,11 +307,11 @@ class WatchListRepository {
               /// Open the PDF if the request was not canceled
               await OpenFile.open(file.path).whenComplete(() {
                 // Get.back();
-              });
+              }); */
 
               if (isRegistered<WatchPdfController>()) {
                 final WatchPdfController con = Get.find<WatchPdfController>();
-                con.pdfFile = file;
+                // con.pdfFile = file;
                 con.isDownloading.value = false;
                 printYellow(con.pdfFile);
                 printYellow(await con.pdfFile.exists());
@@ -334,8 +334,7 @@ class WatchListRepository {
             if (e.response!.statusCode == 502) {
               printYellow('Received a 502 Bad Gateway error');
             } else {
-              printYellow(
-                  'DioException response: ${e.response!.statusCode} - ${e.response!.statusMessage}');
+              printYellow('DioException response: ${e.response!.statusCode} - ${e.response!.statusMessage}');
             }
           } else {
             printYellow('DioException error: ${e.message}');

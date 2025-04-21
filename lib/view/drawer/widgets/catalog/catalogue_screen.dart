@@ -53,12 +53,20 @@ class CatalogueScreen extends StatelessWidget {
                                     onPressed: () {
                                       CatalogueRepository.resetDownloadRequest();
                                       Get.toNamed(
-                                        AppRoutes.pdfViewerScreen,
+                                        AppRoutes.pdfPreviewScreen,
                                         arguments: {
                                           "title": con.catalogueList[index].name?.value,
                                           "catalogueId": con.catalogueList[index].id ?? "",
                                         },
                                       );
+
+                                      /* Get.toNamed(
+                                        AppRoutes.pdfViewerScreen,
+                                        arguments: {
+                                          "title": con.catalogueList[index].name?.value,
+                                          "catalogueId": con.catalogueList[index].id ?? "",
+                                        },
+                                      ); */
                                     },
                                   );
                                 },
