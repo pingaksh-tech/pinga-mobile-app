@@ -365,6 +365,7 @@ class FilterScreen extends StatelessWidget {
                       watchListId: con.watchlistId,
                       categoryId: con.categoryId,
                       subCategoryId: con.subCategoryId,
+                      inStock: con.isAvailable.value,
                     ).then((value) => Get.back());
                   },
                 ),

@@ -123,6 +123,7 @@ class ProductsScreen extends StatelessWidget {
                         productsListType: con.productListType.value,
                         watchListId: con.watchlistId.value,
                         subCategoryId: con.subCategory.value.id ?? "",
+                        inStock: filterCon.isAvailable.value,
                       );
                     },
                     child: ListView(

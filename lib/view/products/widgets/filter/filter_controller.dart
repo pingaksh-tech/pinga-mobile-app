@@ -52,7 +52,7 @@ class FilterController extends GetxController {
   String categoryId = "";
   String watchlistId = "";
   ProductsListType productsListType = ProductsListType.normal;
-  int count = 0;
+  int count = 1;
 
   @override
   void onInit() {
@@ -80,11 +80,8 @@ class FilterController extends GetxController {
   }
 
   void onSilderChangeCount() {
-    if (minMetalWt >= 0.01 &&
-        maxMetalWt <= 200.0 &&
-        minDiamondWt >= 0.01 &&
-        maxDiamondWt <= 20.0) {
-      if (count == 0) {
+    if (minMetalWt >= 0.01 && maxMetalWt <= 200.0 && minDiamondWt >= 0.01 && maxDiamondWt <= 20.0) {
+      if (count == 1) {
         count++;
       }
     }
@@ -109,8 +106,12 @@ class FilterController extends GetxController {
     selectLatestDesign.value = "";
     count = 0;
 
-    applyFilterCounts.value =
-        (List.generate(filterOptions.length, (index) => 0));
+    applyFilterCounts.value = (List.generate(filterOptions.length, (index) => 0));
+
+    if (isAvailable.isTrue) {
+      applyFilterCounts[2] = 1;
+      count = 1;
+    }
   }
 
   /* void rangeCount() {

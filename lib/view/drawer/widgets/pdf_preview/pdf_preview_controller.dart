@@ -91,10 +91,14 @@ class PdfPreviewController extends GetxController {
     // Get the app's document directory
 
     Directory appDocDir = Directory("");
-    if (Platform.isAndroid) {
-      appDocDir = Directory("/storage/emulated/0/Download");
+    if (isDownload) {
+      if (Platform.isAndroid) {
+        appDocDir = Directory("/storage/emulated/0/Download");
+      } else {
+        appDocDir = await getApplicationDocumentsDirectory();
+      }
     } else {
-      appDocDir = await getApplicationDocumentsDirectory();
+      appDocDir = await getTemporaryDirectory();
     }
 
     String appDocPath = appDocDir.path;
@@ -112,5 +116,6 @@ class PdfPreviewController extends GetxController {
     if (docPdf != null) await file.writeAsBytes(docPdf!.value); // Directly use response as it is Uint8List
 
     printOkStatus('File saved at $filePath');
+    if (isDownload) UiUtils.toast("PDF downloaded successfully");
   }
 }

@@ -36,8 +36,12 @@ class NotificationsHelper {
   ///  *********************************************
 
   static init() async {
-    await awesomeNotifications.requestPermissionToSendNotifications();
-    await _initNotification();
+    try {
+      await awesomeNotifications.requestPermissionToSendNotifications();
+      await _initNotification();
+    } catch (e) {
+      printErrors(type: "Notification Init", errText: e);
+    }
   }
 
   ///  *********************************************

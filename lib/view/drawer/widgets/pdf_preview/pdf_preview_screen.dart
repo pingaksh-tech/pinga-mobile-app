@@ -176,6 +176,8 @@ MultiPage multiPage({
                               padding: const EdgeInsets.symmetric(horizontal: 4),
                               child: Column(
                                 children: [
+                                  SizedBox(height: defaultPadding),
+
                                   Text("${productList[index].name}", style: commonBoldText, textAlign: TextAlign.center, maxLines: 2),
                                   SizedBox(height: defaultPadding),
 
@@ -183,12 +185,9 @@ MultiPage multiPage({
                                   Text("Collection: -", style: commonMediumStyle, textAlign: TextAlign.center),
                                   SizedBox(height: defaultPadding),
 
-                                  /// KISNA MRP
-                                  Text("KISNA FG MRP: ${productList[index].price}", style: commonMediumStyle.copyWith(color: PdfColor.fromHex("#993F8A")), textAlign: TextAlign.center),
+                                  /// MRP
+                                  Text("MRP: ${productList[index].price}", style: commonMediumStyle.copyWith(color: PdfColor.fromHex("#993F8A")), textAlign: TextAlign.center),
                                   SizedBox(height: defaultPadding / 2),
-
-                                  /// SIVA MRP
-                                  Text("SIVA 18 MRP: ₹0", style: commonMediumStyle.copyWith(color: PdfColor.fromHex("#993F8A")), textAlign: TextAlign.center),
                                 ],
                               )),
                         ],
@@ -248,12 +247,9 @@ MultiPage multiPage({
                               Text("Collection: -", style: commonMediumStyle, textAlign: TextAlign.center),
                               SizedBox(height: defaultPadding),
 
-                              /// KISNA MRP
-                              Text("KISNA FG MRP: ${productList[index].price}", style: commonMediumStyle.copyWith(color: PdfColor.fromHex("#993F8A")), textAlign: TextAlign.center),
+                              /// MRP
+                              Text("MRP: ${productList[index].price}", style: commonMediumStyle.copyWith(color: PdfColor.fromHex("#993F8A")), textAlign: TextAlign.center),
                               SizedBox(height: defaultPadding / 2),
-
-                              /// SIVA MRP
-                              Text("SIVA 18 MRP: ₹0", style: commonMediumStyle.copyWith(color: PdfColor.fromHex("#993F8A")), textAlign: TextAlign.center),
                             ],
                           ))
                         ],

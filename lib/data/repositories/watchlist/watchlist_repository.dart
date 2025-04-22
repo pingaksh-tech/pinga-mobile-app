@@ -39,7 +39,7 @@ class WatchListRepository {
             "inventory_id": inventoryId,
             "quantity": quantity,
             "metal_id": metalId,
-            if (!isValEmpty(sizeId)) "size_id": sizeId,
+            "size_id": sizeId,
             if (!isValEmpty(diamondClarity)) "diamond_clarity": diamondClarity,
             if (!isValEmpty(diamonds)) "diamonds": diamonds,
             if (!isValEmpty(remark)) "remark": remark,

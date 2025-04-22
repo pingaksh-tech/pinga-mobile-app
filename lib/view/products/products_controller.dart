@@ -103,6 +103,7 @@ class ProductsController extends GetxController {
       watchListId: watchlistId.value,
       categoryId: categoryId.value,
       subCategoryId: subCategory.value.id ?? "",
+      inStock: filterCon.isAvailable.value,
     );
 
     // int index = homeCon.categoriesList.indexWhere((element) => element.id == categoryId.value);

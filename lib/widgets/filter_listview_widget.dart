@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../data/model/common/splash_model.dart';
 
+import '../data/model/common/splash_model.dart';
 import '../exports.dart';
 import '../view/products/widgets/filter/filter_controller.dart';
 import 'custom_check_box_tile.dart';
@@ -98,7 +98,7 @@ class _FilterListViewWidgetState extends State<FilterListViewWidget> {
               break;
 
             case FilterItemType.kt:
-              if (filterCon.selectedKt.contains(widget.metalList?[index].id ?? "")) {
+              if (filterCon.selectedKt.contains(widget.metalList?[index].id?.value ?? "")) {
                 filterCon.selectedKt.remove(widget.metalList?[index].id?.value ?? "");
                 filterCon.count--;
               } else {
