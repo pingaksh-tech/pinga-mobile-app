@@ -24,7 +24,7 @@ class FilterController extends GetxController {
   Rx<TextEditingController> itemNameCon = TextEditingController().obs;
   Rx<FilterItemType> filterType = FilterItemType.range.obs;
 
-  RxBool isAvailable = true.obs;
+  RxBool isAvailable = false.obs;
   RxList<StockAvailableList> availableList = <StockAvailableList>[].obs;
   RxList<Product> genderList = <Product>[].obs;
 
