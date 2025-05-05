@@ -39,7 +39,7 @@ class ProductsController extends GetxController {
   /// PAGINATION
   ScrollController scrollController = ScrollController();
   RxInt page = 1.obs;
-  RxInt itemLimit = 50.obs;
+  RxInt itemLimit = 10.obs;
   RxBool nextPageAvailable = true.obs;
   RxBool paginationLoader = false.obs;
   RxBool loader = true.obs;
@@ -118,13 +118,41 @@ class ProductsController extends GetxController {
   }
 
   void manageScrollController() {
+    final FilterController con = Get.find<FilterController>();
+
     ///  PRODUCTS
     scrollController.addListener(
       () async {
         if (scrollController.position.maxScrollExtent == scrollController.position.pixels) {
           if (nextPageAvailable.value && paginationLoader.isFalse) {
             /// GET PRODUCTS API
-            await ProductRepository.getFilterProductsListAPI(loader: paginationLoader, productsListType: productListType.value, watchListId: watchlistId.value, categoryId: categoryId.value, subCategoryId: subCategory.value.id ?? "", isInitial: false);
+            await ProductRepository.getFilterProductsListAPI(
+              loader: paginationLoader,
+              productsListType: productListType.value,
+              watchListId: watchlistId.value,
+              categoryId: categoryId.value,
+              subCategoryId: subCategory.value.id ?? "",
+              isInitial: false,
+
+              /// Filter
+              minMetal: con.minMetalWt.value,
+              maxMetal: con.maxMetalWt.value,
+              minDiamond: con.minDiamondWt.value,
+              maxDiamond: con.maxDiamondWt.value,
+              minMrp: con.selectMrp.value.label == "customs".obs ? int.parse(con.mrpFromCon.value.text) : con.selectMrp.value.min?.value,
+              maxMrp: con.selectMrp.value.label == "customs".obs ? int.parse(con.mrpToCon.value.text) : con.selectMrp.value.max?.value,
+              inStock: con.isAvailable.value,
+              genderList: con.selectedGender,
+              diamondList: con.selectedDiamonds,
+              ktList: con.selectedKt,
+              deliveryList: con.selectedDelivery,
+              productionNameList: con.selectedProductNames,
+              collectionList: con.selectedCollections,
+              sortBy: [
+                if (selectPrice.value.isNotEmpty) "inventory_total_price:${selectPrice.value.split("/").last}",
+                if (!isValEmpty(selectNewestOrOldest.value)) "createdAt:${selectNewestOrOldest.value.split("/").last}",
+              ],
+            );
           }
         }
       },

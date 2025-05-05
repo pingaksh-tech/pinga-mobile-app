@@ -46,7 +46,7 @@ class _FilterListViewWidgetState extends State<FilterListViewWidget> {
           FilterItemType.diamond => widget.diamondList?[index].name ?? "",
           FilterItemType.delivery => widget.deliveryList?[index] ?? "",
           FilterItemType.production => widget.deliveryList?[index] ?? "",
-          FilterItemType.kt => widget.metalList?[index].metalCarat ?? "",
+          FilterItemType.kt => widget.metalList?[index].name ?? "",
           FilterItemType.collection => widget.collectionList?[index].name ?? "",
           FilterItemType.range => "",
           FilterItemType.mrp => "",

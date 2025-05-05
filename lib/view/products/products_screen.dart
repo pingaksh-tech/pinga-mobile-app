@@ -114,7 +114,7 @@ class ProductsScreen extends StatelessWidget {
             ? con.inventoryProductList.isNotEmpty
                 ? PullToRefreshIndicator(
                     onRefresh: () async {
-                      filterCon.clearAllFilters();
+                      // filterCon.clearAllFilters();
 
                       /// GET ALL PRODUCTS
                       return await ProductRepository.getFilterProductsListAPI(
@@ -124,6 +124,25 @@ class ProductsScreen extends StatelessWidget {
                         watchListId: con.watchlistId.value,
                         subCategoryId: con.subCategory.value.id ?? "",
                         inStock: filterCon.isAvailable.value,
+
+                        /// Filter
+                        minMetal: filterCon.minMetalWt.value,
+                        maxMetal: filterCon.maxMetalWt.value,
+                        minDiamond: filterCon.minDiamondWt.value,
+                        maxDiamond: filterCon.maxDiamondWt.value,
+                        minMrp: filterCon.selectMrp.value.label == "customs".obs ? int.parse(filterCon.mrpFromCon.value.text) : filterCon.selectMrp.value.min?.value,
+                        maxMrp: filterCon.selectMrp.value.label == "customs".obs ? int.parse(filterCon.mrpToCon.value.text) : filterCon.selectMrp.value.max?.value,
+
+                        genderList: filterCon.selectedGender,
+                        diamondList: filterCon.selectedDiamonds,
+                        ktList: filterCon.selectedKt,
+                        deliveryList: filterCon.selectedDelivery,
+                        productionNameList: filterCon.selectedProductNames,
+                        collectionList: filterCon.selectedCollections,
+                        sortBy: [
+                          if (con.selectPrice.value.isNotEmpty) "inventory_total_price:${con.selectPrice.value.split("/").last}",
+                          if (!isValEmpty(con.selectNewestOrOldest.value)) "createdAt:${con.selectNewestOrOldest.value.split("/").last}",
+                        ],
                       );
                     },
                     child: ListView(
