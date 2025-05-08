@@ -401,7 +401,11 @@ class FilterScreen extends StatelessWidget {
                         if (filterCon.selectPrice.value.isNotEmpty) "inventory_total_price:${filterCon.selectPrice.value.split("/").last}",
                         if (!isValEmpty(filterCon.selectNewestOrOldest.value)) "createdAt:${filterCon.selectNewestOrOldest.value.split("/").last}",
                       ],
-                    ).then((value) => Get.back(result: con.count));
+                    ).then((value) {
+                      if (Get.currentRoute == AppRoutes.filterScreen) {
+                        Get.back(result: con.count);
+                      }
+                    });
                   },
                 ),
               ),
