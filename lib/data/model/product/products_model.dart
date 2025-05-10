@@ -288,7 +288,9 @@ class DiamondListModel {
   final String? diamondSize;
   final num? diamondCount;
   final num? totalPrice;
+  final double? diamondWeight;
   final String? id;
+  final Size? size;
 
   DiamondListModel({
     this.diamondClarity,
@@ -296,7 +298,9 @@ class DiamondListModel {
     this.diamondSize,
     this.diamondCount,
     this.totalPrice,
+    this.diamondWeight,
     this.id,
+    this.size,
   });
 
   factory DiamondListModel.fromJson(Map<String, dynamic> json) => DiamondListModel(
@@ -305,7 +309,9 @@ class DiamondListModel {
         diamondSize: json["diamond_size"],
         diamondCount: num.tryParse(json["diamond_count"].toString()) ?? 0,
         totalPrice: num.tryParse(json["total_price"].toString()) ?? 0,
+        diamondWeight: json["diamond_weight"]?.toDouble(),
         id: json["_id"],
+        size: json["size"] == null ? null : Size.fromJson(json["size"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -314,7 +320,37 @@ class DiamondListModel {
         "diamond_size": diamondSize,
         "diamond_count": diamondCount,
         "total_price": totalPrice,
+        "diamond_weight": diamondWeight,
         "_id": id,
+        "size": size?.toJson(),
+      };
+}
+
+class Size {
+  final String? id;
+  final String? slieveSizeRange;
+  final String? diamondSlieveSize;
+  final String? mmSize;
+
+  Size({
+    this.id,
+    this.slieveSizeRange,
+    this.diamondSlieveSize,
+    this.mmSize,
+  });
+
+  factory Size.fromJson(Map<String, dynamic> json) => Size(
+        id: json["_id"],
+        slieveSizeRange: json["slieve_size_range"],
+        diamondSlieveSize: json["diamond_slieve_size"],
+        mmSize: json["mm_size"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "_id": id,
+        "slieve_size_range": slieveSizeRange,
+        "diamond_slieve_size": diamondSlieveSize,
+        "mm_size": mmSize,
       };
 }
 

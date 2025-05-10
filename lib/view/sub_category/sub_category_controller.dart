@@ -96,6 +96,7 @@ class SubCategoryController extends GetxController with GetTickerProviderStateMi
     );
   }
 
+  RxBool isPlatinumBrand = false.obs;
   @override
   void onInit() {
     super.onInit();
@@ -107,6 +108,9 @@ class SubCategoryController extends GetxController with GetTickerProviderStateMi
       }
       if (Get.arguments["categoryId"].runtimeType == String) {
         categoryId.value = Get.arguments["categoryId"] ?? "";
+      }
+      if (Get.arguments["isPlatinumBrand"].runtimeType == bool) {
+        isPlatinumBrand.value = Get.arguments["isPlatinumBrand"] ?? false;
       }
     }
 

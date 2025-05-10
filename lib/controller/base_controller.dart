@@ -1,8 +1,10 @@
-import 'package:get/get.dart';
-import 'package:no_screenshot/no_screenshot.dart';
-import 'package:package_info_plus/package_info_plus.dart';
+import 'dart:io';
 
-import '../data/handler/app_environment.dart';
+import 'package:get/get.dart';
+// import 'package:no_screenshot/no_screenshot.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:screen_protector/screen_protector.dart';
+
 import '../exports.dart';
 
 class BaseBinding implements Bindings {
@@ -23,8 +25,7 @@ class BaseController extends GetxController {
   late PackageInfo packageInfo;
 
   List<Map> globalProductDetails = <Map>[].obs;
-  get lastProductDetails =>
-      globalProductDetails.isNotEmpty ? globalProductDetails.last : "";
+  get lastProductDetails => globalProductDetails.isNotEmpty ? globalProductDetails.last : "";
 
   @override
   void onInit() {
@@ -44,8 +45,14 @@ class BaseController extends GetxController {
 
     /// No Screenshot
     /// TODO
-    if (AppEnvironment.environmentType == EnvironmentType.production) {
-      await NoScreenshot.instance.screenshotOff();
+    // if (AppEnvironment.environmentType == EnvironmentType.production) {
+    // await NoScreenshot.instance.screenshotOff();
+    if (Platform.isIOS) {
+      await ScreenProtector.preventScreenshotOn();
+    } else {
+      await ScreenProtector.protectDataLeakageOn();
     }
+
+    // }
   }
 }

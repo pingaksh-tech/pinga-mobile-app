@@ -88,7 +88,7 @@ class PriceBreakupDialog {
                               context,
                               isSubtitle: true,
                               value1: "${priceBreakModel.metal?.metalWeight} g",
-                              value2: UiUtils.amountFormat(priceBreakModel.metal?.pricePerGram ?? 0, decimalDigits: 0),
+                              value2: UiUtils.amountFormat(priceBreakModel.metal?.pricePerGram ?? 0, decimalDigits: 2),
                               value3: UiUtils.amountFormat(priceBreakModel.metal?.metalPrice ?? 0, decimalDigits: 0),
                             ),
                           ],
@@ -118,16 +118,15 @@ class PriceBreakupDialog {
                           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                           children: [
                             /// Title Row
-                            priceTableRow(context, value1: "Weight", value2: "Sleeve size", value3: "Carat price", value4: "Total"),
+                            priceTableRow(context, value1: "Weight", value2: "Carat price", value3: "Total"),
 
                             /// Value Row
                             priceTableRow(
                               context,
                               isSubtitle: true,
                               value1: "${priceBreakModel.diamond?.diamondWeight ?? 0}",
-                              value2: "${priceBreakModel.diamond?.diamondSleeveSize ?? 0}",
-                              value3: "${priceBreakModel.diamond?.diamondCartPrice ?? 0}",
-                              value4: UiUtils.amountFormat(priceBreakModel.diamond?.diamondPrice ?? 0, decimalDigits: 0),
+                              value2: UiUtils.amountFormat(priceBreakModel.diamond?.diamondCartPrice ?? 0, decimalDigits: 2),
+                              value3: UiUtils.amountFormat(priceBreakModel.diamond?.diamondPrice ?? 0, decimalDigits: 0),
                             ),
                           ],
                         ),
@@ -135,7 +134,7 @@ class PriceBreakupDialog {
 
                       /// Other Pricing
                       Text(
-                        "OTHER",
+                        "MANUFACTURING",
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.primary),
                       ),
@@ -145,22 +144,27 @@ class PriceBreakupDialog {
                       ),
 
                       /// Table View
+                      /// Table View
                       Padding(
-                        padding: bodyPadding,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        padding: bodyPadding.copyWith(bottom: defaultPadding),
+                        child: Table(
+                          columnWidths: const {
+                            0: FlexColumnWidth(1),
+                            1: FlexColumnWidth(1),
+                            // 2: FlexColumnWidth(1),
+                          },
+                          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                           children: [
-                            Expanded(
-                              child: Text(
-                                "Manufacturing Price",
-                                textAlign: TextAlign.start,
-                                style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.font),
-                              ),
-                            ),
-                            Text(
-                              UiUtils.amountFormat(priceBreakModel.other?.manufacturingPrice ?? 0, decimalDigits: 0),
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.font),
+                            /// Title Row
+                            priceTableRow(context, value1: "Weight", value2: "Per Gram Labour", value3: "Total"),
+
+                            /// Value Row
+                            priceTableRow(
+                              context,
+                              isSubtitle: true,
+                              value1: "${priceBreakModel.manufacturingPrice?.metalWeight ?? 0}",
+                              value2: UiUtils.amountFormat(priceBreakModel.manufacturingPrice?.perGramLabour ?? 0, decimalDigits: 2),
+                              value3: UiUtils.amountFormat(priceBreakModel.manufacturingPrice?.manufacturingPrice ?? 0, decimalDigits: 0),
                             ),
                           ],
                         ),

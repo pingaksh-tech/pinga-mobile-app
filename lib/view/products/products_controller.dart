@@ -57,6 +57,8 @@ class ProductsController extends GetxController {
     "Oldest First/-1",
   ].obs;
 
+  RxBool isPlatinumBrand = false.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -81,6 +83,10 @@ class ProductsController extends GetxController {
       if (Get.arguments["watchlistId"].runtimeType == String) {
         watchlistId.value = Get.arguments["watchlistId"];
         filterCon.watchlistId = Get.arguments["watchlistId"];
+      }
+
+      if (Get.arguments["isPlatinumBrand"].runtimeType == bool) {
+        isPlatinumBrand.value = Get.arguments["isPlatinumBrand"] ?? false;
       }
     }
   }

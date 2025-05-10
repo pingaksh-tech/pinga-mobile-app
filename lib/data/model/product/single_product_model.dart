@@ -4,11 +4,9 @@ import 'package:get/get.dart';
 
 import 'products_model.dart';
 
-GetSingleProductModel getSignleProductModelFromJson(String str) =>
-    GetSingleProductModel.fromJson(json.decode(str));
+GetSingleProductModel getSignleProductModelFromJson(String str) => GetSingleProductModel.fromJson(json.decode(str));
 
-String getSignleProductModelToJson(GetSingleProductModel data) =>
-    json.encode(data.toJson());
+String getSignleProductModelToJson(GetSingleProductModel data) => json.encode(data.toJson());
 
 class GetSingleProductModel {
   final String? message;
@@ -19,12 +17,9 @@ class GetSingleProductModel {
     this.data,
   });
 
-  factory GetSingleProductModel.fromJson(Map<String, dynamic> json) =>
-      GetSingleProductModel(
+  factory GetSingleProductModel.fromJson(Map<String, dynamic> json) => GetSingleProductModel(
         message: json["message"],
-        data: json["data"] == null
-            ? null
-            : SingleProductModel.fromJson(json["data"]),
+        data: json["data"] == null ? null : SingleProductModel.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -64,34 +59,20 @@ class SingleProductModel {
     this.inventoryId,
   });
 
-  factory SingleProductModel.fromJson(Map<String, dynamic> json) =>
-      SingleProductModel(
+  factory SingleProductModel.fromJson(Map<String, dynamic> json) => SingleProductModel(
         inventoryId: json["_id"],
         subCategoryId: json["sub_category_id"],
         sizeId: json["size_id"],
         metalId: json["metal_id"],
         cartQuantity: json["cartQty"].runtimeType == int ? json["cartQty"] : 0,
-        extraMetalWeight:
-            num.tryParse(json["extra_metal_weight"].toString()) ?? 0,
+        extraMetalWeight: num.tryParse(json["extra_metal_weight"].toString()) ?? 0,
         isWishList: json["isWishList"],
         isDiamondMultiple: json["isDiamondMultiple"],
-        inventoryImages: json["inventory_images"] == null
-            ? []
-            : List<String>.from(json["inventory_images"]!.map((x) => x)),
-        priceBreaking: json["price_breaking"] == null
-            ? null
-            : PriceBreaking.fromJson(json["price_breaking"]),
-        productInfo: json["product_info"] == null
-            ? null
-            : ProductInfo.fromJson(json["product_info"]),
-        diamonds: json["diamonds"] == null
-            ? []
-            : List<DiamondListModel>.from(
-                json["diamonds"]!.map((x) => DiamondListModel.fromJson(x))),
-        familyProducts: json["family_products"] == null
-            ? []
-            : List<InventoryModel>.from(json["family_products"]!
-                .map((x) => InventoryModel.fromJson(x))),
+        inventoryImages: json["inventory_images"] == null ? [] : List<String>.from(json["inventory_images"]!.map((x) => x)),
+        priceBreaking: json["price_breaking"] == null ? null : PriceBreaking.fromJson(json["price_breaking"]),
+        productInfo: json["product_info"] == null ? null : ProductInfo.fromJson(json["product_info"]),
+        diamonds: json["diamonds"] == null ? [] : List<DiamondListModel>.from(json["diamonds"]!.map((x) => DiamondListModel.fromJson(x))),
+        familyProducts: json["family_products"] == null ? [] : List<InventoryModel>.from(json["family_products"]!.map((x) => InventoryModel.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -103,49 +84,67 @@ class SingleProductModel {
         "isWishList": isWishList,
         "isDiamondMultiple": isDiamondMultiple,
         "extra_metal_weight": extraMetalWeight,
-        "inventory_images": inventoryImages == null
-            ? []
-            : List<dynamic>.from(inventoryImages!.map((x) => x)),
+        "inventory_images": inventoryImages == null ? [] : List<dynamic>.from(inventoryImages!.map((x) => x)),
         "price_breaking": priceBreaking?.toJson(),
         "product_info": productInfo?.toJson(),
-        "diamonds": diamonds == null
-            ? []
-            : List<dynamic>.from(diamonds!.map((x) => x.toJson())),
-        "family_products": familyProducts == null
-            ? []
-            : List<dynamic>.from(familyProducts!.map((x) => x)),
+        "diamonds": diamonds == null ? [] : List<dynamic>.from(diamonds!.map((x) => x.toJson())),
+        "family_products": familyProducts == null ? [] : List<dynamic>.from(familyProducts!.map((x) => x)),
       };
 }
 
 class PriceBreaking {
   final Metal? metal;
   final PriceBreakingDiamond? diamond;
+  final ManufacturingPrice? manufacturingPrice;
   final Other? other;
   RxNum? total;
 
   PriceBreaking({
     this.metal,
     this.diamond,
+    this.manufacturingPrice,
     this.other,
     this.total,
   });
 
   factory PriceBreaking.fromJson(Map<String, dynamic> json) => PriceBreaking(
         metal: json["metal"] == null ? null : Metal.fromJson(json["metal"]),
-        diamond: json["diamond"] == null
-            ? null
-            : PriceBreakingDiamond.fromJson(json["diamond"]),
+        diamond: json["diamond"] == null ? null : PriceBreakingDiamond.fromJson(json["diamond"]),
+        manufacturingPrice: json["manufacturing_price"] == null ? null : ManufacturingPrice.fromJson(json["manufacturing_price"]),
         other: json["other"] == null ? null : Other.fromJson(json["other"]),
-        total: json["total"] == null
-            ? null
-            : RxNum(num.tryParse(json["total"].toString()) ?? 0),
+        total: json["total"] == null ? null : RxNum(num.tryParse(json["total"].toString()) ?? 0),
       );
 
   Map<String, dynamic> toJson() => {
         "metal": metal?.toJson(),
         "diamond": diamond?.toJson(),
+        "manufacturing_price": manufacturingPrice?.toJson(),
         "other": other?.toJson(),
         "total": total?.value,
+      };
+}
+
+class ManufacturingPrice {
+  final double? metalWeight;
+  final double? perGramLabour;
+  final double? manufacturingPrice;
+
+  ManufacturingPrice({
+    this.metalWeight,
+    this.perGramLabour,
+    this.manufacturingPrice,
+  });
+
+  factory ManufacturingPrice.fromJson(Map<String, dynamic> json) => ManufacturingPrice(
+        metalWeight: json["metal_weight"]?.toDouble(),
+        perGramLabour: json["per_gram_labour"]?.toDouble(),
+        manufacturingPrice: json["manufacturing_price"]?.toDouble(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "metal_weight": metalWeight,
+        "per_gram_labour": perGramLabour,
+        "manufacturing_price": manufacturingPrice,
       };
 }
 
@@ -162,8 +161,7 @@ class PriceBreakingDiamond {
     this.diamondPrice,
   });
 
-  factory PriceBreakingDiamond.fromJson(Map<String, dynamic> json) =>
-      PriceBreakingDiamond(
+  factory PriceBreakingDiamond.fromJson(Map<String, dynamic> json) => PriceBreakingDiamond(
         diamondWeight: num.tryParse(json["diamond_weight"].toString()) ?? 0,
         diamondCartPrice: num.tryParse(json["per_carat_price"].toString()) ?? 0,
         diamondSleeveSize: num.tryParse(json["sleeve_size_wise_price"].toString()) ?? 0,
@@ -210,8 +208,7 @@ class Other {
   });
 
   factory Other.fromJson(Map<String, dynamic> json) => Other(
-        manufacturingPrice:
-            num.tryParse(json["manufacturing_price"].toString()) ?? 0,
+        manufacturingPrice: num.tryParse(json["manufacturing_price"].toString()) ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -223,6 +220,9 @@ class ProductInfo {
   final String? metal;
   final String? karatage;
   final num? metalWt;
+  final double? totalDiamondWeight;
+  final num? totalDiamonds;
+  final String? diamondClarity;
   final String? category;
   final List<dynamic>? collection;
   final String? approxDelivery;
@@ -231,6 +231,9 @@ class ProductInfo {
     this.metal,
     this.karatage,
     this.metalWt,
+    this.totalDiamondWeight,
+    this.totalDiamonds,
+    this.diamondClarity,
     this.category,
     this.collection,
     this.approxDelivery,
@@ -241,20 +244,22 @@ class ProductInfo {
         karatage: json["Karatage"],
         metalWt: num.tryParse(json["Metal Wt"].toString()) ?? 0,
         category: json["Category"],
-        collection: json["Collection"] == null
-            ? []
-            : List<dynamic>.from(json["Collection"]!.map((x) => x)),
+        collection: json["Collection"] == null ? [] : List<dynamic>.from(json["Collection"]!.map((x) => x)),
         approxDelivery: json["approx_delivery"],
+        totalDiamondWeight: json["total_diamond_weight"]?.toDouble(),
+        totalDiamonds: json["total_diamonds"] ?? 0,
+        diamondClarity: json["diamond_clarity"] ?? "-",
       );
 
   Map<String, dynamic> toJson() => {
         "Metal": metal,
         "Karatage": karatage,
         "Metal Wt": metalWt,
+        "total_diamond_weight": totalDiamondWeight,
+        "total_diamonds": totalDiamonds,
+        "diamond_clarity": diamondClarity,
         "Category": category,
-        "Collection": collection == null
-            ? []
-            : List<dynamic>.from(collection!.map((x) => x)),
+        "Collection": collection == null ? [] : List<dynamic>.from(collection!.map((x) => x)),
         "approx_delivery": approxDelivery,
       };
 }

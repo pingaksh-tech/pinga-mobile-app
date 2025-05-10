@@ -87,7 +87,7 @@ class ProductDetailsScreen extends StatelessWidget {
                                               itemBuilder: (context, index) {
                                                 return AppNetworkImage(
                                                   imageUrl: (con.productDetailModel.value.inventoryImages != null && con.productDetailModel.value.inventoryImages!.isNotEmpty) ? (con.productDetailModel.value.inventoryImages?[index] ?? "") : "Image Not found",
-                                                  fit: BoxFit.cover,
+                                                  fit: BoxFit.contain,
                                                   height: Get.height * 0.5,
                                                   borderRadius: BorderRadius.zero,
                                                 );

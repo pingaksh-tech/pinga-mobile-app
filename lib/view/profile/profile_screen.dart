@@ -15,6 +15,7 @@ import '../../data/repositories/user/user_repository.dart';
 import '../../exports.dart';
 import '../../res/app_dialog.dart';
 import '../../res/app_network_image.dart';
+import '../../utils/app_aspect_ratios.dart';
 import 'profile_controller.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -42,12 +43,13 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 Stack(
                   children: [
-                    AppNetworkImage(
-                      imageUrl: !isValEmpty(preValueCon.profileBanner.value) ? preValueCon.profileBanner.value : "https://media.designrush.com/tinymce_images/316674/conversions/Desiree-Qelaj-content.jpg",
-                      height: Get.height * 0.2,
-                      width: Get.width,
-                      borderRadius: BorderRadius.circular(0),
-                      fit: BoxFit.cover,
+                    AspectRatio(
+                      aspectRatio: AppAspectRatios.r16_7,
+                      child: AppNetworkImage(
+                        imageUrl: !isValEmpty(preValueCon.profileBanner.value) ? preValueCon.profileBanner.value : "https://media.designrush.com/tinymce_images/316674/conversions/Desiree-Qelaj-content.jpg",
+                        borderRadius: BorderRadius.circular(0),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                     Positioned.fill(
                       child: ClipRRect(

@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import '../../exports.dart';
 
 class AppEnvironment {
-  static EnvironmentType environmentType = EnvironmentType.production;
+  static EnvironmentType environmentType = EnvironmentType.local;
 
   static String getApiURL() {
     printData(key: "API environment", value: environmentType.name);
@@ -32,7 +32,7 @@ class AppEnvironment {
 
       case EnvironmentType.local:
         if (kDebugMode) {
-          return "http://192.168.1.12:3000/api/";
+          return "http://192.168.1.47:3000/api/";
         } else {
           return "http://192.168.1.12:3000/api/";
         }

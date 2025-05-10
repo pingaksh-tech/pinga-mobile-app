@@ -18,8 +18,7 @@ class SubCategoriesTabView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       return PullToRefreshIndicator(
-        onRefresh: () => SubCategoryRepository.getSubCategoriesAPI(
-            isPullToRefresh: true, searchText: con.getSearchText),
+        onRefresh: () => SubCategoryRepository.getSubCategoriesAPI(isPullToRefresh: true, searchText: con.getSearchText),
         child: ListView(
           physics: const AlwaysScrollableScrollPhysics(),
           controller: con.scrollControllerSubCategory,
@@ -37,38 +36,29 @@ class SubCategoriesTabView extends StatelessWidget {
                           return Column(
                             children: [
                               SubCategoryTile(
-                                categoryName:
-                                    con.subCategoriesList[index].name ?? "",
-                                subTitle:
-                                    "Available ${(con.subCategoriesList[index].totalCount ?? 0)}",
-                                imageUrl: con.subCategoriesList[index]
-                                        .subCategoryImage ??
-                                    "",
+                                categoryName: con.subCategoriesList[index].name ?? "",
+                                subTitle: "Available ${(con.subCategoriesList[index].totalCount ?? 0)}",
+                                imageUrl: con.subCategoriesList[index].subCategoryImage ?? "",
                                 onTap: () => Get.toNamed(
                                   AppRoutes.productScreen,
                                   arguments: {
                                     "category": con.subCategoriesList[index],
                                     "categoryId": con.categoryId.value,
                                     "type": ProductsListType.normal,
+                                    "isPlatinumBrand": con.isPlatinumBrand.value,
                                   },
                                 ),
                               ),
 
                               /// PAGINATION LOADER
                               Obx(() {
-                                return Visibility(
-                                    visible: (con.paginationLoaderSubCategory
-                                            .value &&
-                                        index + 1 ==
-                                            con.subCategoriesList.length),
-                                    child: shimmerTile());
+                                return Visibility(visible: (con.paginationLoaderSubCategory.value && index + 1 == con.subCategoriesList.length), child: shimmerTile());
                               })
                             ],
                           );
                         }),
                         itemCount: con.subCategoriesList.length,
-                        separatorBuilder: (context, index) =>
-                            SizedBox(height: defaultPadding / 1.2),
+                        separatorBuilder: (context, index) => SizedBox(height: defaultPadding / 1.2),
                       )
                     :
 
@@ -76,8 +66,7 @@ class SubCategoriesTabView extends StatelessWidget {
                     EmptyElement(
                         title: "Categories Not Found!",
                         alignment: Alignment.center,
-                        padding:
-                            EdgeInsets.symmetric(vertical: Get.width / 2.5),
+                        padding: EdgeInsets.symmetric(vertical: Get.width / 2.5),
                       )
                 :
 

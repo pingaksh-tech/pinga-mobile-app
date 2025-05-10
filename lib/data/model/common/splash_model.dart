@@ -6,8 +6,7 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 
-GetSplashModel getSplashModelFromJson(String str) =>
-    GetSplashModel.fromJson(json.decode(str));
+GetSplashModel getSplashModelFromJson(String str) => GetSplashModel.fromJson(json.decode(str));
 
 String getSplashModelToJson(GetSplashModel data) => json.encode(data.toJson());
 
@@ -25,9 +24,7 @@ class GetSplashModel {
   factory GetSplashModel.fromJson(Map<String, dynamic> json) => GetSplashModel(
         success: json["success"],
         message: json["message"],
-        data: json["data"] == null
-            ? null
-            : SplashDataModel.fromJson(json["data"]),
+        data: json["data"] == null ? null : SplashDataModel.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -62,68 +59,30 @@ class SplashDataModel {
     this.profileBanner,
   });
 
-  factory SplashDataModel.fromJson(Map<String, dynamic> json) =>
-      SplashDataModel(
+  factory SplashDataModel.fromJson(Map<String, dynamic> json) => SplashDataModel(
         profileBanner: json["profileBanner"],
-        appConfigData: json["appMaintenance"] == null
-            ? null
-            : AppConfigData.fromJson(json["appMaintenance"]),
-        collections: json["collections"] == null
-            ? []
-            : List<CollectionModel>.from(
-                json["collections"]!.map((x) => CollectionModel.fromJson(x))),
-        gender: json["gender"] == null
-            ? []
-            : List<String>.from(json["gender"]!.map((x) => x)),
-        productionNames: json["production_names"] == null
-            ? []
-            : List<String>.from(json["production_names"]!.map((x) => x)),
-        deliveries: json["deliveries"] == null
-            ? []
-            : List<String>.from(json["deliveries"]!.map((x) => x)),
-        categoryWiseSizes: json["categoryWiseSize"] == null
-            ? []
-            : List<CategoryWiseSize>.from(json["categoryWiseSize"]!
-                .map((x) => CategoryWiseSize.fromJson(x))),
-        metals: json["metals"] == null
-            ? []
-            : List<MetalModel>.from(
-                json["metals"]!.map((x) => MetalModel.fromJson(x))),
-        diamonds: json["diamonds"] == null
-            ? []
-            : List<DiamondModel>.from(
-                json["diamonds"]!.map((x) => DiamondModel.fromJson(x))),
-        orderType: json["orderType"] == null
-            ? []
-            : List<String>.from(json["orderType"]!.map((x) => x)),
+        appConfigData: json["appMaintenance"] == null ? null : AppConfigData.fromJson(json["appMaintenance"]),
+        collections: json["collections"] == null ? [] : List<CollectionModel>.from(json["collections"]!.map((x) => CollectionModel.fromJson(x))),
+        gender: json["gender"] == null ? [] : List<String>.from(json["gender"]!.map((x) => x)),
+        productionNames: json["production_names"] == null ? [] : List<String>.from((json["production_names"] ?? []).map((x) => x ?? "")),
+        deliveries: json["deliveries"] == null ? [] : List<String>.from(json["deliveries"]!.map((x) => x)),
+        categoryWiseSizes: json["categoryWiseSize"] == null ? [] : List<CategoryWiseSize>.from(json["categoryWiseSize"]!.map((x) => CategoryWiseSize.fromJson(x))),
+        metals: json["metals"] == null ? [] : List<MetalModel>.from(json["metals"]!.map((x) => MetalModel.fromJson(x))),
+        diamonds: json["diamonds"] == null ? [] : List<DiamondModel>.from(json["diamonds"]!.map((x) => DiamondModel.fromJson(x))),
+        orderType: json["orderType"] == null ? [] : List<String>.from(json["orderType"]!.map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
         "profileBanner": profileBanner,
         "appMaintenance": appConfigData?.toJson(),
-        "collections": collections == null
-            ? []
-            : List<dynamic>.from(collections!.map((x) => x.toJson())),
-        "gender":
-            gender == null ? [] : List<dynamic>.from(gender!.map((x) => x)),
-        "production_names": productionNames == null
-            ? []
-            : List<dynamic>.from(productionNames!.map((x) => x)),
-        "deliveries": deliveries == null
-            ? []
-            : List<dynamic>.from(deliveries!.map((x) => x)),
-        "categoryWiseSize": categoryWiseSizes == null
-            ? []
-            : List<dynamic>.from(categoryWiseSizes!.map((x) => x.toJson())),
-        "metals": metals == null
-            ? []
-            : List<dynamic>.from(metals!.map((x) => x.toJson())),
-        "diamonds": diamonds == null
-            ? []
-            : List<dynamic>.from(diamonds!.map((x) => x.toJson())),
-        "orderType": orderType == null
-            ? []
-            : List<dynamic>.from(orderType!.map((x) => x)),
+        "collections": collections == null ? [] : List<dynamic>.from(collections!.map((x) => x.toJson())),
+        "gender": gender == null ? [] : List<dynamic>.from(gender!.map((x) => x)),
+        "production_names": productionNames == null ? [] : List<dynamic>.from(productionNames!.map((x) => x)),
+        "deliveries": deliveries == null ? [] : List<dynamic>.from(deliveries!.map((x) => x)),
+        "categoryWiseSize": categoryWiseSizes == null ? [] : List<dynamic>.from(categoryWiseSizes!.map((x) => x.toJson())),
+        "metals": metals == null ? [] : List<dynamic>.from(metals!.map((x) => x.toJson())),
+        "diamonds": diamonds == null ? [] : List<dynamic>.from(diamonds!.map((x) => x.toJson())),
+        "orderType": orderType == null ? [] : List<dynamic>.from(orderType!.map((x) => x)),
       };
 }
 
@@ -142,28 +101,16 @@ class AppConfigData {
 
   factory AppConfigData.fromJson(Map<String, dynamic> json) => AppConfigData(
         id: json["_id"],
-        appMaintenance: json["app-maintenance"] == null
-            ? null
-            : AppMaintenanceModel.fromJson(json["app-maintenance"]),
-        appConfigs: json["app_config"] == null
-            ? []
-            : List<AppConfig>.from(
-                json["app_config"]!.map((x) => AppConfig.fromJson(x))),
-        versions: json["versions"] == null
-            ? []
-            : List<VersionModel>.from(
-                json["versions"]!.map((x) => VersionModel.fromJson(x))),
+        appMaintenance: json["app-maintenance"] == null ? null : AppMaintenanceModel.fromJson(json["app-maintenance"]),
+        appConfigs: json["app_config"] == null ? [] : List<AppConfig>.from(json["app_config"]!.map((x) => AppConfig.fromJson(x))),
+        versions: json["versions"] == null ? [] : List<VersionModel>.from(json["versions"]!.map((x) => VersionModel.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "_id": id,
         "app-maintenance": appMaintenance?.toJson(),
-        "app_config": appConfigs == null
-            ? []
-            : List<dynamic>.from(appConfigs!.map((x) => x.toJson())),
-        "versions": versions == null
-            ? []
-            : List<dynamic>.from(versions!.map((x) => x.toJson())),
+        "app_config": appConfigs == null ? [] : List<dynamic>.from(appConfigs!.map((x) => x.toJson())),
+        "versions": versions == null ? [] : List<dynamic>.from(versions!.map((x) => x.toJson())),
       };
 }
 
@@ -187,16 +134,10 @@ class AppConfig {
   factory AppConfig.fromJson(Map<String, dynamic> json) => AppConfig(
         id: json["_id"],
         defaultConfig: json["default_config"],
-        appConfigDetails: json["app_config"] == null
-            ? null
-            : AppConfigDetails.fromJson(json["app_config"]),
+        appConfigDetails: json["app_config"] == null ? null : AppConfigDetails.fromJson(json["app_config"]),
         type: json["type"],
-        createdAt: json["createdAt"] == null
-            ? null
-            : DateTime.parse(json["createdAt"]),
-        updatedAt: json["updatedAt"] == null
-            ? null
-            : DateTime.parse(json["updatedAt"]),
+        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -236,8 +177,7 @@ class AppConfigDetails {
     this.returnPolicy,
   });
 
-  factory AppConfigDetails.fromJson(Map<String, dynamic> json) =>
-      AppConfigDetails(
+  factory AppConfigDetails.fromJson(Map<String, dynamic> json) => AppConfigDetails(
         primary: json["primary"],
         themeMode: json["theme_mode"],
         privacy: json["privacy"],
@@ -277,8 +217,7 @@ class AppMaintenanceModel {
     this.message,
   });
 
-  factory AppMaintenanceModel.fromJson(Map<String, dynamic> json) =>
-      AppMaintenanceModel(
+  factory AppMaintenanceModel.fromJson(Map<String, dynamic> json) => AppMaintenanceModel(
         underMaintenance: json["under_maintenance"],
         title: json["title"],
         message: json["message"],
@@ -325,12 +264,8 @@ class VersionModel {
         maintenance: json["maintenance"],
         maintenanceMessage: json["maintenance_msg"],
         type: json["type"],
-        createdAt: json["createdAt"] == null
-            ? null
-            : DateTime.parse(json["createdAt"]),
-        updatedAt: json["updatedAt"] == null
-            ? null
-            : DateTime.parse(json["updatedAt"]),
+        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -358,22 +293,16 @@ class CategoryWiseSize {
     this.data,
   });
 
-  factory CategoryWiseSize.fromJson(Map<String, dynamic> json) =>
-      CategoryWiseSize(
+  factory CategoryWiseSize.fromJson(Map<String, dynamic> json) => CategoryWiseSize(
         id: RxString(json["_id"].toString()),
         name: json["name"],
-        data: json["data"] == null
-            ? []
-            : List<DiamondModel>.from(
-                json["data"]!.map((x) => DiamondModel.fromJson(x))),
+        data: json["data"] == null ? [] : List<DiamondModel>.from(json["data"]!.map((x) => DiamondModel.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "_id": id?.value,
         "name": name,
-        "data": data == null
-            ? []
-            : List<dynamic>.from(data!.map((x) => x.toJson())),
+        "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
       };
 }
 
@@ -468,8 +397,7 @@ class CollectionModel {
     this.count,
   });
 
-  factory CollectionModel.fromJson(Map<String, dynamic> json) =>
-      CollectionModel(
+  factory CollectionModel.fromJson(Map<String, dynamic> json) => CollectionModel(
         id: json["_id"],
         name: json["name"],
         count: json["count"],

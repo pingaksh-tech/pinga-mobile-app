@@ -20,6 +20,18 @@ class FilterController extends GetxController {
   RxString selectSeller = "".obs;
   RxString selectLatestDesign = "".obs;
 
+// Static Values
+  final double minMetalWtStatic = 0.01;
+  final double maxMetalWtStatic = 200.0;
+  final double minDiamondWtStatic = 0.01;
+  final double maxDiamondWtStatic = 20.0;
+
+//
+  Rx<TextEditingController> minMetalWeightTEC = TextEditingController().obs;
+  Rx<TextEditingController> maxMetalWeightTEC = TextEditingController().obs;
+  Rx<TextEditingController> minDiamondWeightTEC = TextEditingController().obs;
+  Rx<TextEditingController> maxDiamondWeightTEC = TextEditingController().obs;
+
   RxString selectFilter = "Range".obs;
   Rx<TextEditingController> itemNameCon = TextEditingController().obs;
   Rx<FilterItemType> filterType = FilterItemType.range.obs;
@@ -54,6 +66,8 @@ class FilterController extends GetxController {
   ProductsListType productsListType = ProductsListType.normal;
   int count = 1;
 
+  RxBool isPlatinumBrand = false.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -70,6 +84,9 @@ class FilterController extends GetxController {
       if (Get.arguments['watchlistId'].runtimeType == String) {
         watchlistId = Get.arguments['watchlistId'];
       }
+      if (Get.arguments["isPlatinumBrand"].runtimeType == bool) {
+        isPlatinumBrand.value = Get.arguments["isPlatinumBrand"] ?? false;
+      }
     }
   }
 
@@ -77,6 +94,21 @@ class FilterController extends GetxController {
   void onReady() async {
     super.onReady();
     await FilterRepository.stockAvailableList();
+    addRangeValueFromVariableToController();
+  }
+
+  addRangeValueFromVariableToController() {
+    minMetalWeightTEC.value.text = minMetalWt.value.toString();
+    maxMetalWeightTEC.value.text = maxMetalWt.value.toString();
+    minDiamondWeightTEC.value.text = minDiamondWt.value.toString();
+    maxDiamondWeightTEC.value.text = maxDiamondWt.value.toString();
+  }
+
+  fixRangeValueFromVariableToController() {
+    minMetalWeightTEC.value.text = (minMetalWeightTEC.value.text.isEmpty || isValZero(num.tryParse(minMetalWeightTEC.value.text) ?? 0)) ? minMetalWt.value.toString() : minMetalWeightTEC.value.text;
+    maxMetalWeightTEC.value.text = (maxMetalWeightTEC.value.text.isEmpty || isValZero(num.tryParse(maxMetalWeightTEC.value.text) ?? 0)) ? maxMetalWt.value.toString() : maxMetalWeightTEC.value.text;
+    minDiamondWeightTEC.value.text = (minDiamondWeightTEC.value.text.isEmpty || isValZero(num.tryParse(minDiamondWeightTEC.value.text) ?? 0)) ? minDiamondWt.value.toString() : minDiamondWeightTEC.value.text;
+    maxDiamondWeightTEC.value.text = (maxDiamondWeightTEC.value.text.isEmpty || isValZero(num.tryParse(maxDiamondWeightTEC.value.text) ?? 0)) ? maxDiamondWt.value.toString() : maxDiamondWeightTEC.value.text;
   }
 
   void onSilderChangeCount() {
@@ -112,6 +144,7 @@ class FilterController extends GetxController {
       applyFilterCounts[2] = 1;
       count = 1;
     }
+    addRangeValueFromVariableToController();
   }
 
   /* void rangeCount() {

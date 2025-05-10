@@ -2,7 +2,7 @@ name: pingaksh_mobile
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.8+8
 
 environment:
-  sdk: '>=3.4.0 <4.0.0'
+  sdk: ">=3.4.0 <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -30,7 +30,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -65,7 +64,8 @@ dependencies:
   image_cropper: ^8.0.0
   flutter_image_compress: ^2.3.0
   syncfusion_flutter_pdfviewer: ^25.2.7
-  no_screenshot: ^0.3.1
+  # no_screenshot: ^0.3.1
+
   firebase_core: ^3.1.0
   firebase_messaging: ^15.0.1
   in_app_update: ^4.2.3
@@ -76,6 +76,7 @@ dependencies:
   flutter_native_splash: ^2.4.1
   pdf: ^3.11.0
   printing: ^5.13.3
+  screen_protector: ^1.4.2+1
 
 flutter_native_splash:
   color: "#ffffff"
@@ -86,7 +87,6 @@ flutter_native_splash:
   android: true
   ios_content_mode: center # Ensures the image is centered on iOS.
   android_gravity: center # Ensures the image is centered on Android.
-
 
 android_12:
   image: assets/icons/pingaksh_fill_logo.png
@@ -111,7 +111,6 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

@@ -82,12 +82,20 @@ class ProductsScreen extends StatelessWidget {
                   SortAndFilterButton(
                     title: "Filter ${filterCon.count != 0 ? "(${filterCon.count})" : ""}",
                     image: AppAssets.filter,
-                    onTap: () => Get.toNamed(AppRoutes.filterScreen, arguments: {
-                      "subCategoryId": con.subCategory.value.id,
-                      "categoryId": con.categoryId.value,
-                      "watchlistId": con.watchlistId.value,
-                      "productListType": con.productListType.value,
-                    }),
+                    onTap: () {
+                      if (isRegistered<FilterController>()) {
+                        FilterController filterCon = Get.find<FilterController>();
+                        filterCon.isPlatinumBrand.value = con.isPlatinumBrand.value;
+                      }
+
+                      Get.toNamed(AppRoutes.filterScreen, arguments: {
+                        "subCategoryId": con.subCategory.value.id,
+                        "categoryId": con.categoryId.value,
+                        "watchlistId": con.watchlistId.value,
+                        "productListType": con.productListType.value,
+                        "isPlatinumBrand": con.isPlatinumBrand.value,
+                      });
+                    },
                   ),
                   SizedBox(
                     height: 20.h,

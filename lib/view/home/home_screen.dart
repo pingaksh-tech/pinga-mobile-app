@@ -227,6 +227,7 @@ class HomeScreen extends StatelessWidget {
         arguments: {
           "categoryName": category.name,
           "categoryId": category.id,
+          "isPlatinumBrand": category.name?.toString().toLowerCase().contains("platinum") ?? false,
         },
       ),
       child: Container(
