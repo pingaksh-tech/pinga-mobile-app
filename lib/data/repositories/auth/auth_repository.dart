@@ -66,8 +66,9 @@ class AuthRepository {
         ).then(
           (response) async {
             loader?.value = false;
-            if (!isValEmpty(response['message']))
+            if (!isValEmpty(response['message'])) {
               UiUtils.toast(response['message']);
+            }
             if (!isValEmpty(response) /*&& response["success"] == true*/) {
               onSuccess();
             }
@@ -122,8 +123,9 @@ class AuthRepository {
               Get.offAllNamed(AppRoutes.bottomBarScreen);
               loader?.value = false;
             } else {
-              if (!isValEmpty(response['message']))
+              if (!isValEmpty(response['message'])) {
                 UiUtils.toast(response['message']);
+              }
               loader?.value = false;
             }
 
