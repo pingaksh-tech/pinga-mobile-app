@@ -29,8 +29,7 @@ class OrderDetailScreen extends StatelessWidget {
                   children: [
                     Text(
                       "Order Details",
-                      style: AppTextStyle.titleStyle(context).copyWith(
-                          fontSize: 16.sp, fontWeight: FontWeight.w500),
+                      style: AppTextStyle.titleStyle(context).copyWith(fontSize: 16.sp, fontWeight: FontWeight.w500),
                     ).paddingOnly(bottom: defaultPadding / 2),
                     Container(
                       padding: EdgeInsets.all(defaultPadding),
@@ -46,60 +45,35 @@ class OrderDetailScreen extends StatelessWidget {
                           orderDetailsKeyValuePairWidget(
                             context,
                             title: "Order No.",
-                            subtitleText: !isValEmpty(
-                                    con.orderDetailModel.value.order?.orderNo)
-                                ? con.orderDetailModel.value.order?.orderNo ??
-                                    ""
-                                : "",
+                            subtitleText: !isValEmpty(con.orderDetailModel.value.order?.orderNo) ? con.orderDetailModel.value.order?.orderNo ?? "" : "",
                           ),
                           orderDetailsKeyValuePairWidget(
                             context,
                             title: "Order Date",
-                            subtitleText: !isValEmpty(
-                                    con.orderDetailModel.value.order?.createdAt)
-                                ? DateFormat('MM/dd/yyyy HH:mm:ss').format(con
-                                    .orderDetailModel.value.order!.createdAt!
-                                    .toLocal())
-                                : "",
+                            subtitleText: !isValEmpty(con.orderDetailModel.value.order?.createdAt) ? DateFormat('MM/dd/yyyy HH:mm:ss').format(con.orderDetailModel.value.order!.createdAt!.toLocal()) : "",
                           ),
                           orderDetailsKeyValuePairWidget(
                             context,
                             title: "Retailer Name",
-                            subtitleText: !isValEmpty(con.orderDetailModel.value
-                                    .order?.retailerId?.businessName)
-                                ? con.orderDetailModel.value.order?.retailerId
-                                        ?.businessName ??
-                                    ""
-                                : "",
+                            subtitleText: !isValEmpty(con.orderDetailModel.value.order?.retailerId?.businessName) ? con.orderDetailModel.value.order?.retailerId?.businessName ?? "" : "",
                           ),
                           orderDetailsKeyValuePairWidget(
                             context,
                             title: "Order Type",
-                            subtitleText: !isValEmpty(
-                                    con.orderDetailModel.value.order?.orderType)
-                                ? con.orderDetailModel.value.order?.orderType ??
-                                    ""
-                                : "",
+                            subtitleText: !isValEmpty(con.orderDetailModel.value.order?.orderType) ? con.orderDetailModel.value.order?.orderType ?? "" : "",
                           ),
                           orderDetailsKeyValuePairWidget(
                             context,
                             title: "Approx. Delivery",
-                            subtitleText: !isValEmpty(
-                                    con.orderDetailModel.value.orderItems)
-                                ? con.orderDetailModel.value.orderItems?.first
-                                        .productId?.delivery ??
-                                    ""
-                                : "gfdgfg",
+                            subtitleText: !isValEmpty(con.orderDetailModel.value.orderItems) ? con.orderDetailModel.value.orderItems?.first.productId?.delivery ?? "" : "gfdgfg",
                           ),
                         ],
                       ),
                     ),
                     Text(
                       "Product Details",
-                      style: AppTextStyle.titleStyle(context).copyWith(
-                          fontSize: 16.sp, fontWeight: FontWeight.w500),
-                    ).paddingOnly(
-                        top: defaultPadding * 2, bottom: defaultPadding / 2),
+                      style: AppTextStyle.titleStyle(context).copyWith(fontSize: 16.sp, fontWeight: FontWeight.w500),
+                    ).paddingOnly(top: defaultPadding * 2, bottom: defaultPadding / 2),
                     Expanded(
                       child: ListView.builder(
                         // shrinkWrap: true,
@@ -115,48 +89,20 @@ class OrderDetailScreen extends StatelessWidget {
                             children: [
                               Row(
                                 children: [
-                                  con
-                                          .orderDetailModel
-                                          .value
-                                          .productItems![index]
-                                          .inventoryImages!
-                                          .isNotEmpty
+                                  con.orderDetailModel.value.productItems![index].inventoryImages!.isNotEmpty
                                       ? AppNetworkImage(
                                           height: Get.width * 0.18,
                                           width: Get.width * 0.18,
                                           fit: BoxFit.cover,
-                                          borderRadius: BorderRadius.circular(
-                                              defaultRadius),
-                                          imageUrl: (con
-                                                          .orderDetailModel
-                                                          .value
-                                                          .productItems?[index]
-                                                          .inventoryImages!
-                                                          .first !=
-                                                      null &&
-                                                  !isValEmpty(con
-                                                      .orderDetailModel
-                                                      .value
-                                                      .productItems?[index]
-                                                      .inventoryImages!
-                                                      .first))
-                                              ? con
-                                                      .orderDetailModel
-                                                      .value
-                                                      .productItems![index]
-                                                      .inventoryImages!
-                                                      .first ??
-                                                  ""
-                                              : "",
+                                          borderRadius: BorderRadius.circular(defaultRadius),
+                                          imageUrl: (con.orderDetailModel.value.productItems?[index].inventoryImages!.first != null && !isValEmpty(con.orderDetailModel.value.productItems?[index].inventoryImages!.first)) ? con.orderDetailModel.value.productItems![index].inventoryImages!.first ?? "" : "",
                                         )
                                       : Container(
                                           height: Get.width * 0.18,
                                           width: Get.width * 0.18,
                                           decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(
-                                                defaultRadius),
-                                            color: AppColors.primary
-                                                .withOpacity(0.1),
+                                            borderRadius: BorderRadius.circular(defaultRadius),
+                                            color: AppColors.primary.withOpacity(0.1),
                                           ),
                                         ),
                                   (defaultPadding / 2).horizontalSpace,
@@ -166,37 +112,17 @@ class OrderDetailScreen extends StatelessWidget {
                                         orderDetailsKeyValuePairWidget(
                                           context,
                                           title: "Name",
-                                          subtitleText: con
-                                                  .orderDetailModel
-                                                  .value
-                                                  .orderItems?[index]
-                                                  .productId
-                                                  ?.name ??
-                                              "",
+                                          subtitleText: con.orderDetailModel.value.orderItems?[index].productId?.name ?? "",
                                         ),
                                         orderDetailsKeyValuePairWidget(
                                           context,
                                           title: "Metal",
-                                          subtitleText:
-                                              "${con.orderDetailModel.value.productItems?[index].productInfo?.metal} - ${con.orderDetailModel.value.productItems?[index].productInfo?.karatage}",
+                                          subtitleText: "${con.orderDetailModel.value.productItems?[index].productInfo?.metal} - ${con.orderDetailModel.value.productItems?[index].productInfo?.karatage}",
                                         ),
                                         orderDetailsKeyValuePairWidget(
                                           context,
                                           title: "Diamond",
-                                          subtitleText: !isValEmpty(con
-                                                  .orderDetailModel
-                                                  .value
-                                                  .productItems?[index]
-                                                  .diamonds)
-                                              ? (con
-                                                      .orderDetailModel
-                                                      .value
-                                                      .productItems?[index]
-                                                      .diamonds
-                                                      ?.first
-                                                      .diamondClarity ??
-                                                  "")
-                                              : "",
+                                          subtitleText: !isValEmpty(con.orderDetailModel.value.productItems?[index].diamonds) ? (con.orderDetailModel.value.productItems?[index].diamonds?.first.diamondClarity ?? "") : "",
                                         ),
                                       ],
                                     ),
@@ -211,10 +137,7 @@ class OrderDetailScreen extends StatelessWidget {
                                       context,
                                       title: "Quantity",
                                       titleFlex: 4,
-                                      subtitleText: con.orderDetailModel.value
-                                              .orderItems?[index].qty
-                                              .toString() ??
-                                          "",
+                                      subtitleText: con.orderDetailModel.value.orderItems?[index].qty.toString() ?? "",
                                     ),
                                   ),
                                   Expanded(
@@ -222,10 +145,7 @@ class OrderDetailScreen extends StatelessWidget {
                                       context,
                                       title: "MRP",
                                       subtitleText: UiUtils.amountFormat(
-                                        con.orderDetailModel.value
-                                                .orderItems?[index].grandTotal
-                                                .toString() ??
-                                            "",
+                                        con.orderDetailModel.value.orderItems?[index].grandTotal.toString() ?? "",
                                         decimalDigits: 2,
                                       ),
                                     ),
@@ -235,8 +155,7 @@ class OrderDetailScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                        itemCount:
-                            con.orderDetailModel.value.productItems?.length,
+                        itemCount: con.orderDetailModel.value.productItems?.length,
                       ),
                     ),
                   ],
@@ -272,11 +191,7 @@ class OrderDetailScreen extends StatelessWidget {
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w600,
-                color: Theme.of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.color
-                    ?.withOpacity(.7),
+                color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(.7),
               ),
         ).paddingOnly(right: defaultPadding),
         Expanded(
@@ -285,10 +200,7 @@ class OrderDetailScreen extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: Text(
               subtitleText,
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium
-                  ?.copyWith(fontSize: 12.sp, color: AppColors.font),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.font),
             ),
           ),
         ),
