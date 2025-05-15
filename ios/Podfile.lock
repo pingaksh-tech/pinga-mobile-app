@@ -243,7 +243,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   awesome_notifications: 66d28ab7174ca2823b04d275cb043e0a4a3eb9cf
   connectivity_plus: 2a701ffec2c0ae28a48cf7540e279787e77c447d
-  device_info_plus: c6fb39579d0f423935b0c9ce7ee2f44b71b9fce6
+  device_info_plus: bf2e3232933866d73fe290f2942f2156cdd10342
   Firebase: 1fe1c0a7d9aaea32efe01fbea5f0ebd8d70e53a2
   firebase_core: 432718558359a8c08762151b5f49bb0f093eb6e0
   firebase_messaging: 3b99522baf7480dfb4b7683d2b34e842d577c362
@@ -278,7 +278,7 @@ SPEC CHECKSUMS:
   share_plus: 8b6f8b3447e494cca5317c8c3073de39b3600d1f
   smart_auth: 4bedbc118723912d0e45a07e8ab34039c19e04f2
   sqflite: 673a0e54cc04b7d6dba8d24fb8095b31c3a99eec
-  syncfusion_flutter_pdfviewer: bb9998884b864cfedf72628df3503bdf57e397c0
+  syncfusion_flutter_pdfviewer: cfcf23c03816192575902e615fa50adc9f95b724
   TOCropViewController: 80b8985ad794298fb69d3341de183f33d1853654
   url_launcher_ios: 5334b05cef931de560670eeae103fd3e431ac3fe
   webview_flutter_wkwebview: 2a23822e9039b7b1bc52e5add778e5d89ad488d1
