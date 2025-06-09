@@ -6,8 +6,7 @@ class ApiUrls {
   static String baseUrl = AppEnvironment.getApiURL();
 
   /// SPLASH
-  static String splashGET({required String versionCode}) =>
-      "mobile/setting/splash-screen/${Platform.isAndroid ? 'android' : 'iOS'}/$versionCode";
+  static String splashGET({required String versionCode}) => "mobile/setting/splash-screen/${Platform.isAndroid ? 'android' : 'iOS'}/$versionCode";
 
   /// AUTH
   static const String sendMobileOtpPOST = "mobile/auth/login";
@@ -32,8 +31,7 @@ class ApiUrls {
   /// PRODUCTS
   static const String getAllProductsPOST = "inventory/filter";
   static const String getProductPricePOST = "inventory/changing-price";
-  static String getSingleProductDetailPOST =
-      "inventory/inventory-details-changing-price";
+  static String getSingleProductDetailPOST = "inventory/inventory-details-changing-price";
   static String getSingleProductDetailGET = "inventory/findOne/";
 
   /// WISHLIST
@@ -41,18 +39,14 @@ class ApiUrls {
 
   /// WATCHLIST
   static const String createAndGetWatchlistAPI = "mobile/watchlist";
-  static const String cartToWatchlistPOST =
-      "mobile/watchlist/cart-to-watchlist";
+  static const String cartToWatchlistPOST = "mobile/watchlist/cart-to-watchlist";
 
-  static String getAndDeleteSingleWatchListAPI({required String watchlistId}) =>
-      "mobile/watchlist/$watchlistId";
-  static String getSingleWatchListAPI({required String watchListId}) =>
-      "mobile/watchlist/find-inventories/$watchListId";
+  static String getAndDeleteSingleWatchListAPI({required String watchlistId}) => "mobile/watchlist/$watchlistId";
+  static String getSingleWatchListAPI({required String watchListId}) => "mobile/watchlist/find-inventories/$watchListId";
 
   /// USER
   static const String deleteAccountDELETE = "";
-  static String getUserAPI({required String userId}) =>
-      "mobile/profile/$userId";
+  static String getUserAPI({required String userId}) => "mobile/profile/$userId";
   static String updateUserAPI = "mobile/profile";
 
   /// CART
@@ -65,17 +59,14 @@ class ApiUrls {
   static String placeOrderPOST = "order/create";
   static String getRetailerApi = "retailer/";
   static String getCartSummary = "/mobile/cart/summary";
-  static String getSingleCartDetailGET({required String cartId}) =>
-      "/mobile/cart/item/$cartId";
+  static String getSingleCartDetailGET({required String cartId}) => "/mobile/cart/item/$cartId";
 
-  static String addWatchlistToCart({required String watchlistId}) =>
-      "mobile/watchlist/cart/$watchlistId";
+  static String addWatchlistToCart({required String watchlistId}) => "mobile/watchlist/cart/$watchlistId";
 
   /// ORDERS
   static String orderProductUrl = "order/list";
   static String createOrGetOrder = "/mobile/order/";
-  static String getSingleOrderDetailGET({required String orderId}) =>
-      "/mobile/order/$orderId";
+  static String getSingleOrderDetailGET({required String orderId}) => "/mobile/order/$orderId";
 
   /// WISHLIST
   static String watchlistGet = "wishlist/get";
@@ -83,12 +74,8 @@ class ApiUrls {
   /// CATALOGUE
   static String createAndGetCatalogueAPI = "mobile/catalogue";
 
-  static String deleteAndRenameCatalogue({required String catalogueId}) =>
-      "mobile/catalogue/$catalogueId";
+  static String deleteAndRenameCatalogue({required String catalogueId}) => "mobile/catalogue/$catalogueId";
 
-  static String downloadCatalogueGET(
-          {required String catalogueId, required String catalogueType}) =>
-      "mobile/catalogue/$catalogueType/$catalogueId";
-  static String downloadWatchCatalogueGET({required String watchId}) =>
-      "mobile/watchlist/download/$watchId";
+  static String downloadCatalogueGET({required String catalogueId, required String catalogueType}) => "mobile/catalogue/$catalogueType/$catalogueId";
+  static String downloadWatchCatalogueGET({required String watchId}) => "mobile/watchlist/download/$watchId";
 }
