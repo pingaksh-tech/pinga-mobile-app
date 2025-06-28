@@ -53,12 +53,10 @@ class BottomBarScreen extends StatelessWidget {
               backgroundColor: Theme.of(context).colorScheme.surface,
               showBackIcon: false,
               title: con.bottomBarDataList[con.currentBottomIndex.value].screenName,
-              toolbarHeight: ResponsiveUtils.getAppBarHeight(context),
               leading: Builder(
                 builder: (context) => IconButton(
                   icon: SvgPicture.asset(
                     AppAssets.menuIcon,
-                    height: ResponsiveUtils.getIconSize(context),
                     colorFilter: ColorFilter.mode(
                       Theme.of(context).primaryColor,
                       BlendMode.srcIn,
@@ -97,7 +95,6 @@ class BottomBarScreen extends StatelessWidget {
                                   AppIconButton(
                                     icon: SvgPicture.asset(
                                       AppAssets.filter,
-                                      height: ResponsiveUtils.getIconSize(context),
                                       colorFilter: ColorFilter.mode(
                                         Theme.of(context).primaryColor,
                                         BlendMode.srcIn,
@@ -143,18 +140,18 @@ class BottomBarScreen extends StatelessWidget {
             ),
             body: con.isLoading.value
                 ? Padding(
-                    padding: ResponsiveUtils.getResponsivePadding(context),
+                    padding: const EdgeInsets.all(16),
                     child: ListView.separated(
                       itemCount: 15,
                       separatorBuilder: (context, index) {
-                        return SizedBox(height: ResponsiveUtils.getSpacing(context));
+                        return const SizedBox(height: 16);
                       },
                       itemBuilder: (context, index) {
                         return ShimmerUtils.shimmer(
                           child: ShimmerUtils.shimmerContainer(
                             height: 70,
                             width: Get.width,
-                            borderRadius: BorderRadius.circular(ResponsiveUtils.getBorderRadius(context)),
+                            borderRadius: BorderRadius.circular(defaultRadius),
                           ),
                         );
                       },
@@ -179,11 +176,11 @@ class BottomBarScreen extends StatelessWidget {
                   ),
             bottomNavigationBar: IntrinsicHeight(
               child: BottomAppBar(
-                notchMargin: ResponsiveUtils.isTablet(context) ? 8 : 6,
+                notchMargin: 6,
                 elevation: 30,
                 shadowColor: Theme.of(context).colorScheme.primary,
                 color: Theme.of(context).colorScheme.surface,
-                padding: EdgeInsets.symmetric(vertical: ResponsiveUtils.getBottomNavHeight(context) / 4, horizontal: ResponsiveUtils.getResponsivePadding(context).horizontal),
+                padding: EdgeInsets.symmetric(vertical: defaultPadding / 1.2, horizontal: defaultPadding / 2),
                 shape: const CircularNotchedRectangle(),
                 child: Obx(
                   () => Row(

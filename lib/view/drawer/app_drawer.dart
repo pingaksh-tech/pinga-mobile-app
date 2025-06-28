@@ -24,7 +24,6 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      width: ResponsiveUtils.getDrawerWidth(context),
       child: Obx(() {
         return Column(
           children: [
@@ -32,7 +31,7 @@ class AppDrawer extends StatelessWidget {
             Stack(
               children: [
                 DrawerHeader(
-                  margin: EdgeInsets.only(top: ResponsiveUtils.getSpacing(context) / 2),
+                  margin: EdgeInsets.only(top: defaultPadding / 2),
                   padding: EdgeInsets.zero,
                   child: AspectRatio(
                     aspectRatio: AppAspectRatios.r16_7,
@@ -54,14 +53,12 @@ class AppDrawer extends StatelessWidget {
                   ListTile(
                     leading: SvgPicture.asset(
                       AppAssets.homeOutlinedSVG,
-                      height: ResponsiveUtils.getIconSize(context),
+                      height: 16.h,
                       colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
                     ),
                     title: Text(
                       "Home",
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontSize: Theme.of(context).textTheme.titleMedium!.fontSize! * ResponsiveUtils.getFontSizeMultiplier(context),
-                          ),
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                     onTap: homeOnPressed,
                   ),
@@ -71,14 +68,12 @@ class AppDrawer extends StatelessWidget {
                   ListTile(
                     leading: SvgPicture.asset(
                       AppAssets.catalogIcon,
-                      height: ResponsiveUtils.getIconSize(context),
+                      height: 16.h,
                       colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
                     ),
                     title: Text(
                       "My Catalogue",
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontSize: Theme.of(context).textTheme.titleMedium!.fontSize! * ResponsiveUtils.getFontSizeMultiplier(context),
-                          ),
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                     onTap: () {
                       Get.back();
@@ -108,18 +103,16 @@ class AppDrawer extends StatelessWidget {
                   ListTile(
                     leading: SvgPicture.asset(
                       AppAssets.customerCareIcon,
-                      height: ResponsiveUtils.getIconSize(context),
+                      height: 16.h,
                       colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
                     ),
                     title: Text(
                       "Customer Care",
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontSize: Theme.of(context).textTheme.titleMedium!.fontSize! * ResponsiveUtils.getFontSizeMultiplier(context),
-                          ),
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                     trailing: SvgPicture.asset(
                       con.isShowCare.isTrue ? AppAssets.upArrow : AppAssets.downArrow,
-                      height: ResponsiveUtils.getIconSize(context) / 2,
+                      height: 8,
                     ),
                     onTap: () {
                       con.isShowCare.value = !con.isShowCare.value;
@@ -129,38 +122,36 @@ class AppDrawer extends StatelessWidget {
                   AnimatedClipRect(
                     open: con.isShowCare.value,
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: ResponsiveUtils.getSpacing(context) / 2),
+                      padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2),
                       child: Column(
                         children: [
                           const Divider(height: 1, indent: 50),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              (ResponsiveUtils.getSpacing(context) * 2.5).horizontalSpace,
+                              (defaultPadding * 2.5).horizontalSpace,
                               Text(
                                 "Contact us On",
-                                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                      fontSize: 13.sp * ResponsiveUtils.getFontSizeMultiplier(context),
-                                    ),
+                                style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 13.sp),
                               ),
                               const Spacer(),
                               AppIconButton(
-                                  size: ResponsiveUtils.getButtonHeight(context),
+                                  size: 40.h,
                                   icon: Icon(
                                     Icons.call,
                                     color: Theme.of(context).colorScheme.primary,
-                                    size: ResponsiveUtils.getIconSize(context),
+                                    size: 20,
                                   ),
                                   onPressed: () {
                                     makePhoneCall(LocalStorage.contactMobileNumber);
                                   }),
                               AppIconButton(
-                                size: ResponsiveUtils.getButtonHeight(context),
+                                size: 40,
                                 onPressed: () => sendEmail(LocalStorage.contactEmailID),
                                 icon: Icon(
                                   Icons.email_rounded,
                                   color: Theme.of(context).colorScheme.primary,
-                                  size: ResponsiveUtils.getIconSize(context) * 1.1,
+                                  size: 22,
                                 ),
                               )
                             ],
@@ -175,18 +166,16 @@ class AppDrawer extends StatelessWidget {
                   ListTile(
                     leading: SvgPicture.asset(
                       AppAssets.policiesIcon,
-                      height: ResponsiveUtils.getIconSize(context),
+                      height: 16.h,
                       colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
                     ),
                     title: Text(
                       "Policies",
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontSize: Theme.of(context).textTheme.titleMedium!.fontSize! * ResponsiveUtils.getFontSizeMultiplier(context),
-                          ),
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                     trailing: SvgPicture.asset(
                       con.isShowPolicies.isTrue ? AppAssets.upArrow : AppAssets.downArrow,
-                      height: ResponsiveUtils.getIconSize(context) / 2,
+                      height: 8,
                     ),
                     onTap: () {
                       con.isShowPolicies.value = !con.isShowPolicies.value;
@@ -268,14 +257,12 @@ class AppDrawer extends StatelessWidget {
                   ListTile(
                     leading: SvgPicture.asset(
                       AppAssets.logOutIcon,
-                      height: ResponsiveUtils.getIconSize(context),
+                      height: 16.h,
                       colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
                     ),
                     title: Text(
                       "Log out",
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontSize: Theme.of(context).textTheme.titleMedium!.fontSize! * ResponsiveUtils.getFontSizeMultiplier(context),
-                          ),
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                     onTap: () {
                       AppDialogs.logoutDialog(
@@ -312,13 +299,13 @@ class AppDrawer extends StatelessWidget {
                   ),
                 ),
                 child: Padding(
-                  padding: ResponsiveUtils.getResponsivePadding(context),
+                  padding: EdgeInsets.all(defaultPadding),
                   child: Row(
                     children: [
                       /// User Avatar
                       Container(
-                        height: ResponsiveUtils.isTablet(context) ? 60.r : 50.r,
-                        width: ResponsiveUtils.isTablet(context) ? 60.r : 50.r,
+                        height: 50.r,
+                        width: 50.r,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: AppColors.primary.withOpacity(0.1),
@@ -332,12 +319,12 @@ class AppDrawer extends StatelessWidget {
                               )
                             : Icon(
                                 Icons.person,
-                                size: ResponsiveUtils.isTablet(context) ? 36.r : 30.r,
+                                size: 30.r,
                                 color: AppColors.primary,
                               ),
                       ),
 
-                      (ResponsiveUtils.getSpacing(context) / 2).horizontalSpace,
+                      (defaultPadding / 2).horizontalSpace,
 
                       /// User Details
                       Expanded(
@@ -346,10 +333,7 @@ class AppDrawer extends StatelessWidget {
                           children: [
                             Text(
                               "${LocalStorage.userModel.firstName} ${LocalStorage.userModel.lastName}",
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: Theme.of(context).textTheme.titleMedium!.fontSize! * ResponsiveUtils.getFontSizeMultiplier(context),
-                                  ),
+                              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600, fontSize: 16),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -357,8 +341,8 @@ class AppDrawer extends StatelessWidget {
                               Text(
                                 LocalStorage.userModel.email ?? "",
                                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      fontSize: 12,
                                       color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.7),
-                                      fontSize: Theme.of(context).textTheme.bodySmall!.fontSize! * ResponsiveUtils.getFontSizeMultiplier(context),
                                     ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -368,13 +352,12 @@ class AppDrawer extends StatelessWidget {
                       ),
 
                       /// Profile Edit Button
-
                       AppIconButton(
-                        size: ResponsiveUtils.getButtonHeight(context),
+                        size: 30,
                         icon: Icon(
                           Icons.arrow_forward_ios_outlined,
                           color: AppColors.primary,
-                          size: ResponsiveUtils.getIconSize(context),
+                          size: 20,
                         ),
                         onPressed: () {
                           Get.back();
@@ -397,21 +380,19 @@ class AppDrawer extends StatelessWidget {
       onTap: onPressed,
       child: Ink(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: ResponsiveUtils.getSpacing(context) / 2),
+          padding: EdgeInsets.symmetric(vertical: defaultPadding / 2),
           child: Row(
             children: [
-              (ResponsiveUtils.getSpacing(context) * 2.5).horizontalSpace,
+              40.horizontalSpace,
               SvgPicture.asset(
                 icon,
-                height: ResponsiveUtils.getIconSize(context),
+                height: 20,
                 colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.primary, BlendMode.srcIn),
               ),
-              (ResponsiveUtils.getSpacing(context) / 2).horizontalSpace,
+              (defaultPadding / 2).horizontalSpace,
               Text(
                 title,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontSize: 13.sp * ResponsiveUtils.getFontSizeMultiplier(context),
-                    ),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 13.sp),
               ),
             ],
           ),

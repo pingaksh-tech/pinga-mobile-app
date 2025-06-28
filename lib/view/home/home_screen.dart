@@ -54,9 +54,9 @@ class HomeScreen extends StatelessWidget {
                           ? List.generate(
                               con.bannersList.length,
                               (index) => Container(
-                                margin: EdgeInsets.all(ResponsiveUtils.getSpacing(context)).copyWith(bottom: ResponsiveUtils.getSpacing(context) / 2, top: 0),
+                                margin: EdgeInsets.all(defaultPadding).copyWith(bottom: defaultPadding / 2, top: 0),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(ResponsiveUtils.getBorderRadius(context)),
+                                  borderRadius: BorderRadius.circular(defaultRadius),
                                   boxShadow: defaultShadow(context),
                                 ),
                                 clipBehavior: Clip.antiAlias,
@@ -75,10 +75,10 @@ class HomeScreen extends StatelessWidget {
                       List.generate(
                           1,
                           (index) => Padding(
-                            padding: EdgeInsets.symmetric(horizontal: ResponsiveUtils.getSpacing(context), vertical: ResponsiveUtils.getSpacing(context) / 2),
+                            padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding / 2),
                             child: ShimmerUtils.shimmer(
                               child: ShimmerUtils.shimmerContainer(
-                                borderRadiusSize: ResponsiveUtils.getBorderRadius(context),
+                                borderRadiusSize: defaultRadius,
                               ),
                             ),
                           ),
@@ -95,65 +95,19 @@ class HomeScreen extends StatelessWidget {
 
                         /// CATEGORIES LIST VIEW
                         Padding(
-                            padding: EdgeInsets.symmetric(horizontal: ResponsiveUtils.getSpacing(context)).copyWith(top: ResponsiveUtils.getSpacing(context) / 5),
+                            padding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(top: defaultPadding / 5),
                             child: Column(
                               children: [
                                 customGridView(context, con.categoriesList),
-
-                                // gridviewBuilder(
-                                //   length: con.categoriesList.length,
-                                //   itemBuilder: (context, index) => GestureDetector(
-                                //         onTap: () => Get.toNamed(
-                                //           AppRoutes.categoryScreen,
-                                //           arguments: {
-                                //             "categoryName": con.categoriesList[index].name,
-                                //             "categoryId": con.categoriesList[index].id,
-                                //           },
-                                //         ),
-                                //         child: Stack(
-                                //           alignment: Alignment.center,
-                                //           children: [
-                                //             AppNetworkImage(
-                                //               height: double.infinity,
-                                //               width: double.infinity,
-                                //               imageUrl: con.categoriesList[index].categoryImage ?? "",
-                                //               borderRadius: BorderRadius.circular(defaultRadius),
-                                //               fit: BoxFit.cover,
-                                //             ),
-                                //             Positioned.fill(
-                                //               child: ClipRRect(
-                                //                 borderRadius: BorderRadius.circular(defaultRadius),
-                                //                 child: BackdropFilter(
-                                //                   filter: ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
-                                //                   child: Container(
-                                //                 color: Colors.black.withOpacity(0.45),
-                                //               ),
-                                //             ),
-                                //           ),
-                                //           ),
-                                //           Padding(
-                                //             padding: EdgeInsets.all(defaultPadding),
-                                //             child: Text(
-                                //               (con.categoriesList[index].name ?? AppStrings.defaultPingakshLogoURL),
-                                //               textAlign: TextAlign.center,
-                                //               style: AppTextStyle.titleStyle(context).copyWith(color: Theme.of(context).scaffoldBackgroundColor),
-                                //               overflow: TextOverflow.fade,
-                                //             ),
-                                //           ),
-                                //         ],
-                                //       ),
-                                //     ),
-                                //   ),
-                                // ),
 
                                 /// PAGINATION LOADER
                                 Visibility(
                                   visible: con.paginationLoader.isTrue,
                                   child: Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: ResponsiveUtils.getSpacing(context), vertical: ResponsiveUtils.getSpacing(context) / 2).copyWith(top: 0),
+                                    padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding / 2).copyWith(top: 0),
                                     child: ShimmerUtils.shimmer(
                                       child: ShimmerUtils.shimmerContainer(
-                                        borderRadiusSize: ResponsiveUtils.getBorderRadius(context),
+                                        borderRadiusSize: defaultRadius,
                                         height: Get.width / 3,
                                         width: Get.width,
                                       ),
@@ -180,7 +134,7 @@ class HomeScreen extends StatelessWidget {
                         length: 6,
                         itemBuilder: (context, index) => ShimmerUtils.shimmer(
                           child: ShimmerUtils.shimmerContainer(
-                            borderRadiusSize: ResponsiveUtils.getBorderRadius(context),
+                            borderRadiusSize: defaultRadius,
                           ),
                         ),
                       )
@@ -199,16 +153,16 @@ class HomeScreen extends StatelessWidget {
       // Check if it's the last item and there's only one left
       if (i == categories.length - 1) {
         rows.add(Padding(
-          padding: EdgeInsets.only(bottom: ResponsiveUtils.getSpacing(context) / 2),
+          padding: EdgeInsets.only(bottom: defaultPadding / 2),
           child: buildCategoryItem(context, categories[i], fullWidth: true),
         ));
       } else {
         rows.add(Padding(
-          padding: EdgeInsets.only(bottom: ResponsiveUtils.getSpacing(context) / 2),
+          padding: EdgeInsets.only(bottom: defaultPadding / 2),
           child: Row(
             children: [
               Expanded(child: buildCategoryItem(context, categories[i])),
-              SizedBox(width: ResponsiveUtils.getSpacing(context)),
+              SizedBox(width: defaultPadding),
               Expanded(child: buildCategoryItem(context, categories[i + 1])),
             ],
           ),
@@ -229,9 +183,9 @@ class HomeScreen extends StatelessWidget {
         },
       ),
       child: Container(
-        height: ResponsiveUtils.isTablet(context) ? 200.h : 150.h,
+        height: 150.h,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(ResponsiveUtils.getBorderRadius(context)),
+          borderRadius: BorderRadius.circular(defaultRadius),
           boxShadow: defaultShadow(context),
         ),
         clipBehavior: Clip.antiAlias,
@@ -242,12 +196,12 @@ class HomeScreen extends StatelessWidget {
               height: double.infinity,
               width: double.infinity,
               imageUrl: category.categoryImage ?? "",
-              borderRadius: BorderRadius.circular(ResponsiveUtils.getBorderRadius(context)),
+              borderRadius: BorderRadius.circular(defaultRadius),
               fit: BoxFit.cover,
             ),
             Positioned.fill(
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(ResponsiveUtils.getBorderRadius(context)),
+                borderRadius: BorderRadius.circular(defaultRadius),
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
                   child: Container(
@@ -257,13 +211,12 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: ResponsiveUtils.getResponsivePadding(context),
+              padding: EdgeInsets.all(defaultPadding),
               child: Text(
                 (category.name ?? AppStrings.defaultPingakshLogoURL),
                 textAlign: TextAlign.center,
                 style: AppTextStyle.titleStyle(context).copyWith(
                   color: Theme.of(context).scaffoldBackgroundColor,
-                  fontSize: AppTextStyle.titleStyle(context).fontSize! * ResponsiveUtils.getFontSizeMultiplier(context),
                 ),
                 overflow: TextOverflow.fade,
               ),
