@@ -13,7 +13,6 @@ import '../../controller/predefine_value_controller.dart';
 import '../../data/repositories/auth/auth_repository.dart';
 import '../../data/repositories/user/user_repository.dart';
 import '../../exports.dart';
-import '../../res/app_bar.dart';
 import '../../res/app_dialog.dart';
 import '../../res/app_network_image.dart';
 import '../../utils/app_aspect_ratios.dart';
@@ -31,11 +30,6 @@ class ProfileScreen extends StatelessWidget {
     return Obx(
       () => Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
-        appBar: MyAppBar(
-          title: "Profile",
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-        ),
         body: ListView(
           physics: const RangeMaintainingScrollPhysics(),
           children: [

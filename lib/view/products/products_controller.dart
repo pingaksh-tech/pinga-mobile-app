@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -37,14 +35,6 @@ class ProductsController extends GetxController {
   RxString watchlistId = "".obs;
 
   RxInt totalProducts = 0.obs;
-
-  /// SEARCH FIELD
-  Rx<TextEditingController> searchTEC = TextEditingController().obs;
-  Rx<FocusNode> searchFocusNode = FocusNode().obs;
-  Timer? searchDebounce;
-
-  String get getSearchText => searchTEC.value.text.trim();
-  RxBool showCloseButton = false.obs;
 
   /// PAGINATION
   ScrollController scrollController = ScrollController();
@@ -110,14 +100,6 @@ class ProductsController extends GetxController {
     manageScrollController();
   }
 
-  @override
-  void onClose() {
-    searchDebounce?.cancel();
-    searchTEC.value.dispose();
-    searchFocusNode.value.dispose();
-    super.onClose();
-  }
-
   /// API
   Future<void> getProductList({RxBool? loader}) async {
     /// GET ALL PRODUCTS
@@ -128,7 +110,6 @@ class ProductsController extends GetxController {
       categoryId: categoryId.value,
       subCategoryId: subCategory.value.id ?? "",
       inStock: filterCon.isAvailable.value,
-      searchText: getSearchText,
     );
 
     // int index = homeCon.categoriesList.indexWhere((element) => element.id == categoryId.value);
@@ -158,7 +139,6 @@ class ProductsController extends GetxController {
               categoryId: categoryId.value,
               subCategoryId: subCategory.value.id ?? "",
               isInitial: false,
-              searchText: getSearchText,
 
               /// Filter
               minMetal: con.minMetalWt.value,

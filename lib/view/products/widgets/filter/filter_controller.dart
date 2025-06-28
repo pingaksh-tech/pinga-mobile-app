@@ -125,7 +125,7 @@ class FilterController extends GetxController {
     maxMetalWt.value = 200.0;
     minDiamondWt.value = 0.01;
     maxDiamondWt.value = 20.0;
-    isAvailable.value = false;
+
     selectedProductNames.clear();
     selectedDelivery.clear();
     selectedKt.clear();

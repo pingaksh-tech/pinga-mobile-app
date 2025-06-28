@@ -18,7 +18,6 @@ export 'utils/app_text_style.dart';
 export 'utils/color_print.dart';
 export 'utils/enums/common_enums.dart';
 export 'utils/local_storage.dart';
-export 'utils/responsive_utils.dart';
 export 'utils/shimmer_utils.dart';
 export 'utils/ui_utils.dart';
 export 'utils/utils.dart';
