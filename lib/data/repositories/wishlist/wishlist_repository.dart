@@ -35,35 +35,27 @@ class WishlistRepository {
               if (isWishlist == false) {
                 if (productListType == ProductsListType.wishlist) {
                   if (isRegistered<WishlistController>()) {
-                    final WishlistController wishlistCon =
-                        Get.find<WishlistController>();
+                    final WishlistController wishlistCon = Get.find<WishlistController>();
 
-                    int index = wishlistCon.productsList.indexWhere(
-                        (element) => element.inventoryId == inventoryId);
+                    int index = wishlistCon.productsList.indexWhere((element) => element.inventoryId == inventoryId);
                     if (index != -1) {
                       wishlistCon.productsList.removeAt(index);
                     }
                   }
                 }
                 if (Get.isRegistered<ProductsController>()) {
-                  final ProductsController productsCon =
-                      Get.find<ProductsController>();
-                  int index = productsCon.inventoryProductList
-                      .indexWhere((element) => element.id == inventoryId);
+                  final ProductsController productsCon = Get.find<ProductsController>();
+                  int index = productsCon.inventoryProductList.indexWhere((element) => element.id == inventoryId);
                   if (index != -1) {
-                    productsCon.inventoryProductList[index].isWishlist?.value =
-                        false;
+                    productsCon.inventoryProductList[index].isWishlist?.value = false;
                   }
                 }
               } else if (isWishlist == true) {
                 if (Get.isRegistered<ProductsController>()) {
-                  final ProductsController productsCon =
-                      Get.find<ProductsController>();
-                  int index = productsCon.inventoryProductList
-                      .indexWhere((element) => element.id == inventoryId);
+                  final ProductsController productsCon = Get.find<ProductsController>();
+                  int index = productsCon.inventoryProductList.indexWhere((element) => element.id == inventoryId);
                   if (index != -1) {
-                    productsCon.inventoryProductList[index].isWishlist?.value =
-                        true;
+                    productsCon.inventoryProductList[index].isWishlist?.value = true;
                   }
                 }
               }
@@ -128,8 +120,7 @@ class WishlistRepository {
                 }
 
                 int currentPage = (model.data!.page ?? 1);
-                con.nextPageAvailable.value =
-                    currentPage < (model.data!.totalPages ?? 0);
+                con.nextPageAvailable.value = currentPage < (model.data!.totalPages ?? 0);
                 con.page.value += currentPage;
               }
 

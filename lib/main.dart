@@ -25,7 +25,15 @@ void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init().then((value) async => await LocalStorage.readDataInfo());
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+  // Set orientation - allow both for better tablet support
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+    DeviceOrientation.landscapeLeft,
+    DeviceOrientation.landscapeRight,
+  ]);
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await NotificationsHelper.init();
   await FirebaseNotificationService.initialise();
@@ -40,7 +48,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     LocalStorage.printLocalStorageData();
     return ScreenUtilInit(
+      // Update design size to be more responsive for tablets
       designSize: const Size(360, 690),
+      minTextAdapt: true, // Enable text scaling
+      splitScreenMode: true, // Support split screen on tablets
       builder: (context, child) {
         return GetMaterialApp(
           title: AppStrings.appName.value,

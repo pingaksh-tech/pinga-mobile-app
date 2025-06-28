@@ -15,6 +15,7 @@ import '../cart/cart_controller.dart';
 import '../cart/components/cart_popup_menu.dart';
 import '../drawer/app_drawer.dart';
 import '../orders/widgets/order_filter/order_filter_controller.dart';
+import '../products/components/cart_icon_button.dart';
 import 'bottombar_controller.dart';
 
 class BottomBarScreen extends StatelessWidget {
@@ -52,10 +53,12 @@ class BottomBarScreen extends StatelessWidget {
               backgroundColor: Theme.of(context).colorScheme.surface,
               showBackIcon: false,
               title: con.bottomBarDataList[con.currentBottomIndex.value].screenName,
+              toolbarHeight: ResponsiveUtils.getAppBarHeight(context),
               leading: Builder(
                 builder: (context) => IconButton(
                   icon: SvgPicture.asset(
                     AppAssets.menuIcon,
+                    height: ResponsiveUtils.getIconSize(context),
                     colorFilter: ColorFilter.mode(
                       Theme.of(context).primaryColor,
                       BlendMode.srcIn,
@@ -94,6 +97,7 @@ class BottomBarScreen extends StatelessWidget {
                                   AppIconButton(
                                     icon: SvgPicture.asset(
                                       AppAssets.filter,
+                                      height: ResponsiveUtils.getIconSize(context),
                                       colorFilter: ColorFilter.mode(
                                         Theme.of(context).primaryColor,
                                         BlendMode.srcIn,
@@ -125,23 +129,32 @@ class BottomBarScreen extends StatelessWidget {
                                     )
                                 ],
                               )
-                            : const SizedBox(),
+                            : con.currentBottomIndex.value == 4
+                                ? CartIconButton(
+                                    onPressed: () {
+                                      Get.offAllNamed(
+                                        AppRoutes.cartScreen,
+                                        predicate: (route) => route.settings.name == AppRoutes.bottomBarScreen,
+                                      );
+                                    },
+                                  )
+                                : const SizedBox.shrink(),
               ],
             ),
             body: con.isLoading.value
                 ? Padding(
-                    padding: const EdgeInsets.all(16),
+                    padding: ResponsiveUtils.getResponsivePadding(context),
                     child: ListView.separated(
                       itemCount: 15,
                       separatorBuilder: (context, index) {
-                        return const SizedBox(height: 16);
+                        return SizedBox(height: ResponsiveUtils.getSpacing(context));
                       },
                       itemBuilder: (context, index) {
                         return ShimmerUtils.shimmer(
                           child: ShimmerUtils.shimmerContainer(
                             height: 70,
                             width: Get.width,
-                            borderRadius: BorderRadius.circular(defaultRadius),
+                            borderRadius: BorderRadius.circular(ResponsiveUtils.getBorderRadius(context)),
                           ),
                         );
                       },
@@ -166,11 +179,11 @@ class BottomBarScreen extends StatelessWidget {
                   ),
             bottomNavigationBar: IntrinsicHeight(
               child: BottomAppBar(
-                notchMargin: 6,
+                notchMargin: ResponsiveUtils.isTablet(context) ? 8 : 6,
                 elevation: 30,
                 shadowColor: Theme.of(context).colorScheme.primary,
                 color: Theme.of(context).colorScheme.surface,
-                padding: EdgeInsets.symmetric(vertical: defaultPadding / 1.2, horizontal: defaultPadding / 2),
+                padding: EdgeInsets.symmetric(vertical: ResponsiveUtils.getBottomNavHeight(context) / 4, horizontal: ResponsiveUtils.getResponsivePadding(context).horizontal),
                 shape: const CircularNotchedRectangle(),
                 child: Obx(
                   () => Row(
