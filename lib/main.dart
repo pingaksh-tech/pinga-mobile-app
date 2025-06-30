@@ -13,7 +13,9 @@ import 'data/services/notification/notification_helper.dart';
 import 'exports.dart';
 import 'firebase_options.dart';
 import 'utils/custom_route_observer.dart';
+import 'utils/device_utils.dart';
 import 'utils/global_context.dart';
+
 // import 'view/cart/cart_controller.dart';
 // import 'view/home/home_controller.dart';
 import 'view/orders/widgets/order_filter/order_filter_controller.dart';
@@ -47,24 +49,31 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     LocalStorage.printLocalStorageData();
-    return ScreenUtilInit(
-      // Update design size to be more responsive for tablets
-      designSize: const Size(360, 690),
-      minTextAdapt: true, // Enable text scaling
-      splitScreenMode: true, // Support split screen on tablets
-      builder: (context, child) {
-        return GetMaterialApp(
-          title: AppStrings.appName.value,
-          debugShowCheckedModeBanner: false,
-          initialBinding: BaseBinding(),
-          themeMode: ThemeMode.light,
-          navigatorKey: GlobalContext.instance.navigatorKey,
-          theme: AppTheme.lightMode(context, kPrimaryColor: LocalStorage.primaryColor, kSecondaryColor: LocalStorage.secondaryColor, errorColor: AppColors.error, fontFamily: AppTheme.fontFamilyName),
-          darkTheme: AppTheme.darkMode(context, kPrimaryColor: LocalStorage.primaryColor, kSecondaryColor: LocalStorage.secondaryColor, errorColor: AppColors.error, fontFamily: AppTheme.fontFamilyName),
-          scrollBehavior: ScrollBehaviorModified(),
-          getPages: AppPages.pages,
-          initialRoute: AppRoutes.splashScreen,
-          navigatorObservers: [CustomRouteObserver()],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        /// Determine if the device is a tablet and set the appropriate design size.
+        final designSize = DeviceUtil.getDesignSize(context);
+        return ScreenUtilInit(
+          // Update design size to be more responsive for tablets
+          designSize: designSize,
+          minTextAdapt: true,
+          splitScreenMode: true,
+
+          builder: (context, child) {
+            return GetMaterialApp(
+              title: AppStrings.appName.value,
+              debugShowCheckedModeBanner: false,
+              initialBinding: BaseBinding(),
+              themeMode: ThemeMode.light,
+              navigatorKey: GlobalContext.instance.navigatorKey,
+              theme: AppTheme.lightMode(context, kPrimaryColor: LocalStorage.primaryColor, kSecondaryColor: LocalStorage.secondaryColor, errorColor: AppColors.error, fontFamily: AppTheme.fontFamilyName),
+              darkTheme: AppTheme.darkMode(context, kPrimaryColor: LocalStorage.primaryColor, kSecondaryColor: LocalStorage.secondaryColor, errorColor: AppColors.error, fontFamily: AppTheme.fontFamilyName),
+              scrollBehavior: ScrollBehaviorModified(),
+              getPages: AppPages.pages,
+              initialRoute: AppRoutes.splashScreen,
+              navigatorObservers: [CustomRouteObserver()],
+            );
+          },
         );
       },
     );
