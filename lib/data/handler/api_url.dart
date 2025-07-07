@@ -42,10 +42,12 @@ class ApiUrls {
   static const String cartToWatchlistPOST = "mobile/watchlist/cart-to-watchlist";
 
   static String getAndDeleteSingleWatchListAPI({required String watchlistId}) => "mobile/watchlist/$watchlistId";
+
   static String getSingleWatchListAPI({required String watchListId}) => "mobile/watchlist/find-inventories/$watchListId";
 
   /// USER
   static const String deleteAccountDELETE = "";
+
   static String getUserAPI({required String userId}) => "mobile/profile/$userId";
   static String updateUserAPI = "mobile/profile";
 
@@ -59,6 +61,7 @@ class ApiUrls {
   static String placeOrderPOST = "order/create";
   static String getRetailerApi = "retailer/";
   static String getCartSummary = "/mobile/cart/summary";
+
   static String getSingleCartDetailGET({required String cartId}) => "/mobile/cart/item/$cartId";
 
   static String addWatchlistToCart({required String watchlistId}) => "mobile/watchlist/cart/$watchlistId";
@@ -66,6 +69,7 @@ class ApiUrls {
   /// ORDERS
   static String orderProductUrl = "order/list";
   static String createOrGetOrder = "/mobile/order/";
+
   static String getSingleOrderDetailGET({required String orderId}) => "/mobile/order/$orderId";
 
   /// WISHLIST
@@ -77,5 +81,6 @@ class ApiUrls {
   static String deleteAndRenameCatalogue({required String catalogueId}) => "mobile/catalogue/$catalogueId";
 
   static String downloadCatalogueGET({required String catalogueId, required String catalogueType}) => "mobile/catalogue/$catalogueType/$catalogueId";
+
   static String downloadWatchCatalogueGET({required String watchId}) => "mobile/watchlist/download/$watchId";
 }

@@ -140,6 +140,7 @@ class AppAssets {
   static const String dateSVG = '${svgPath}date_icon.svg';
   static const String typeSVG = '${svgPath}type_icon.svg';
   static const String logOutSVG = '${svgPath}logout_icon.svg';
+  static const String labelIconSVG = '${svgPath}lable_icon.svg';
   static const String productPlaceholderSVG = '${svgPath}product_placeholder.svg';
 
   /// ***********************************************************************************

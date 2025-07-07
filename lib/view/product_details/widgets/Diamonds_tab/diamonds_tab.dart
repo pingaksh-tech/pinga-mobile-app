@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 
 import '../../../../data/model/product/products_model.dart';
 import '../../../../exports.dart';
@@ -12,117 +11,105 @@ class DiamondsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      padding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(top: 52, bottom: defaultPadding * 5),
-      itemCount: diamondList.length,
-      separatorBuilder: (context, index) => SizedBox(height: defaultPadding / 2),
-      itemBuilder: (context, index) => Obx(
-        () => Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
-            borderRadius: BorderRadius.circular(
-              defaultRadius,
-            ),
-            boxShadow: defaultShadowAllSide,
-          ),
-          padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding / 1.5),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minWidth: 500),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(bottom: defaultPadding * 2),
+          child: Table(
+            border: TableBorder.all(color: Theme.of(context).dividerColor.withOpacity(0.15)),
+            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+            columnWidths: const {
+              0: FlexColumnWidth(2), // Clarity
+              1: FlexColumnWidth(2), // Shape
+              2: FlexColumnWidth(2), // Sleeve Size
+              3: FlexColumnWidth(2), // Weight
+              4: FlexColumnWidth(2), // Quantity
+              5: FlexColumnWidth(2), // Amount
+            },
             children: [
-              Row(
+              // Header row
+              TableRow(
+                decoration: BoxDecoration(color: Theme.of(context).colorScheme.surface.withOpacity(0.5)),
                 children: [
-                  Expanded(
-                    child: Text(
-                      "Clarity  : ${diamondList[index].diamondClarity?.value ?? '-'}",
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontSize: 14.sp,
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.w500,
-                          ),
-                    ),
+                  Padding(
+                    padding: EdgeInsets.all(defaultPadding / 3),
+                    child: Text('Clarity', style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
                   ),
-                  Text(
-                    UiUtils.amountFormat(diamondList[index].totalPrice ?? 0, decimalDigits: 2),
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontSize: 14.sp,
-                          color: AppColors.primary,
-                          fontWeight: FontWeight.w500,
-                        ),
+                  Padding(
+                    padding: EdgeInsets.all(defaultPadding / 3),
+                    child: Text('Shape', style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(defaultPadding / 3),
+                    child: Text('Size', style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(defaultPadding / 3),
+                    child: Text('Wts', style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(defaultPadding / 3),
+                    child: Text('Qty', style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(defaultPadding / 3),
+                    child: Text('Amt', style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
                   ),
                 ],
               ),
-              buildDiamondDetailsTile(context, index, "Shape", diamondList[index].diamondShape ?? '-'),
-              buildDiamondDetailsTile(context, index, "Sleeve size", diamondList[index].size?.diamondSlieveSize ?? '-'),
-              buildDiamondDetailsTile(context, index, "Weight", "${diamondList[index].diamondWeight ?? '-'}"),
-              buildDiamondDetailsTile(context, index, "Quantity", "${diamondList[index].diamondCount ?? '-'}"),
+              // Data rows
+              ...diamondList.map((diamond) => TableRow(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(defaultPadding / 3),
+                        child: Text(
+                          diamond.diamondClarity?.value ?? '-',
+                          style: Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 12.sp),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(defaultPadding / 3),
+                        child: Text(
+                          diamond.diamondShape ?? '-',
+                          style: Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 12.sp),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(defaultPadding / 3),
+                        child: Text(
+                          diamond.size?.diamondSlieveSize ?? '-',
+                          style: Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 12.sp),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(defaultPadding / 3),
+                        child: Text(
+                          diamond.diamondWeight?.toString() ?? '-',
+                          style: Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 12.sp),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(defaultPadding / 3),
+                        child: Text(
+                          diamond.diamondCount?.toString() ?? '-',
+                          style: Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 12.sp),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(defaultPadding / 3),
+                        child: Text(
+                          UiUtils.amountFormat(diamond.totalPrice ?? 0, decimalDigits: 2),
+                          style: Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 12.sp),
+                        ),
+                      ),
+                    ],
+                  )),
             ],
           ),
         ),
       ),
     );
   }
-
-  Widget buildDiamondDetailsTile(BuildContext context, int index, String title, String value) {
-    TextStyle? textStyle = Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.font.withOpacity(.6));
-    return Row(
-      children: [
-        Expanded(
-          flex: 3,
-          child: Text(
-            title,
-            overflow: TextOverflow.ellipsis,
-            style: textStyle,
-          ),
-        ),
-        Expanded(
-          flex: 1,
-          child: Text(
-            " : ",
-            overflow: TextOverflow.ellipsis,
-            style: textStyle,
-          ),
-        ),
-        Expanded(
-          flex: 8,
-          child: Text(
-            value,
-            overflow: TextOverflow.ellipsis,
-            style: textStyle,
-          ),
-        ),
-      ],
-    );
-  }
 }
-
-// Row(
-//                 children: [
-//                   Expanded(
-//                     flex: 2,
-//                     child: Text(
-//                       "Shape",
-//                       overflow: TextOverflow.ellipsis,
-//                       style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.font.withOpacity(.6)),
-//                     ),
-//                   ),
-//                   Expanded(
-//                     flex: 1,
-//                     child: Text(
-//                       " : ",
-//                       overflow: TextOverflow.ellipsis,
-//                       style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.font.withOpacity(.6)),
-//                     ),
-//                   ),
-//                   Expanded(
-//                     flex: 6,
-//                     child: Text(
-//                       diamondList[index].diamondShape ?? '-',
-//                       overflow: TextOverflow.ellipsis,
-//                       style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.font.withOpacity(.6)),
-//                     ),
-//                   ),
-//                 ],
-//               );

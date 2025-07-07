@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -9,12 +9,11 @@ import '../../data/model/product/products_model.dart';
 import '../../data/model/product/single_product_model.dart';
 import '../../data/repositories/wishlist/wishlist_repository.dart';
 import '../../exports.dart';
+import '../../packages/cached_network_image/cached_network_image.dart';
 import '../../res/app_bar.dart';
 import '../../res/app_dialog.dart';
-import '../../res/app_network_image.dart';
 import '../../widgets/plus_minus_title/plus_minus_tile.dart';
 import '../../widgets/size_selector/size_selector_botton.dart';
-import '../../widgets/sliver_delegate.dart';
 import '../../widgets/tab_bar.dart';
 import '../products/components/cart_icon_button.dart';
 import 'components/custom_product_watch_button.dart';
@@ -48,294 +47,270 @@ class ProductDetailsScreen extends StatelessWidget {
           ],
         ),
         body: con.loader.isFalse
-            ? DefaultTabController(
-                length: 3,
-                child: NestedScrollView(
-                  controller: con.scrollController.value,
-                  headerSliverBuilder: (context, innerBoxIsScrolled) {
-                    return [
-                      SliverToBoxAdapter(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          // padding: EdgeInsets.zero,
-                          children: [
-                            ...[
-                              /// ***********************************************************************************
-                              ///                                    IMAGE VIEW
-                              /// ***********************************************************************************
-
-                              AspectRatio(
-                                aspectRatio: 1,
-                                child: GestureDetector(
-                                  behavior: HitTestBehavior.translucent,
-                                  onTap: () {
-                                    Get.toNamed(
-                                      AppRoutes.imageViewScreen,
-                                      arguments: {'imageList': con.productDetailModel.value.inventoryImages, "name": con.productName.value},
-                                    );
-                                  },
-                                  child: Stack(
-                                    children: [
-                                      /// IMAGES
-                                      (con.productDetailModel.value.inventoryImages != null && con.productDetailModel.value.inventoryImages!.isNotEmpty)
-                                          ? PageView.builder(
-                                              controller: con.imagesPageController.value,
-                                              itemCount: con.productDetailModel.value.inventoryImages?.length,
-                                              onPageChanged: (index) {
-                                                con.currentPage.value = index;
-                                              },
-                                              itemBuilder: (context, index) {
-                                                return AppNetworkImage(
-                                                  imageUrl: (con.productDetailModel.value.inventoryImages != null && con.productDetailModel.value.inventoryImages!.isNotEmpty) ? (con.productDetailModel.value.inventoryImages?[index] ?? "") : "Image Not found",
-                                                  fit: BoxFit.contain,
-                                                  height: Get.height * 0.5,
-                                                  borderRadius: BorderRadius.zero,
-                                                );
-                                              },
-                                            )
-                                          : Container(
-                                              color: AppColors.primary.withOpacity(0.1),
-                                              height: Get.height * 0.5,
-                                              width: Get.width,
-                                              alignment: Alignment.center,
-                                              child: productPlaceHolderImage(showShadow: false, borderRadius: 0),
-                                            ),
-
-                                      /// PAGE INDEX INDICATOR
-                                      if ((con.productDetailModel.value.inventoryImages?.length ?? 0) > 1)
-                                        Positioned(
-                                          bottom: defaultPadding,
-                                          left: Get.width / 2.3,
-                                          child: Obx(() {
-                                            return Container(
-                                              decoration: BoxDecoration(
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: Theme.of(context).colorScheme.surface.withOpacity(.1),
-                                                    blurRadius: 20,
-                                                    spreadRadius: 5,
-                                                  )
-                                                ],
-                                              ),
-                                              child: AnimatedSmoothIndicator(
-                                                activeIndex: con.currentPage.value,
-                                                count: con.productDetailModel.value.inventoryImages != null ? con.productDetailModel.value.inventoryImages!.length : 0,
-                                                effect: ScrollingDotsEffect(
-                                                  dotHeight: 8.0,
-                                                  dotWidth: 8.0,
-                                                  spacing: 5.0,
-                                                  dotColor: Theme.of(context).primaryColor.withOpacity(0.15),
-                                                  activeDotColor: Theme.of(context).primaryColor,
-                                                ),
-                                              ),
-                                            );
-                                          }),
-                                        ),
-
-                                      /// LIKE
-                                      Positioned(
-                                        bottom: defaultPadding * 1,
-                                        right: defaultPadding * 1,
-                                        child: Obx(() {
-                                          return AppIconButton(
-                                            backgroundColor: Theme.of(context).cardColor.withOpacity(1),
-                                            icon: SvgPicture.asset(
-                                              con.isLike.value ? AppAssets.likeFill : AppAssets.like,
-                                              colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
-                                            ),
-                                            onPressed: () async {
-                                              con.isLike.value = !con.isLike.value;
-                                              con.isLike.refresh();
-
-                                              /// CREATE WISHLIST API
-                                              await WishlistRepository.createWishlistAPI(
-                                                productListType: con.productsListTypeType,
-                                                inventoryId: con.inventoryId.value,
-                                                isWishlist: con.isLike.value,
-                                              );
-                                            },
-                                            shadowColor: Theme.of(context).colorScheme.surface.withOpacity(.1),
+            ? SingleChildScrollView(
+                child: Column(
+                  // shrinkWrap: true,
+                  // physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                    Column(
+                      children: [
+                        AspectRatio(
+                          aspectRatio: 1,
+                          child: GestureDetector(
+                            behavior: HitTestBehavior.translucent,
+                            onTap: () {
+                              Get.toNamed(
+                                AppRoutes.imageViewScreen,
+                                arguments: {'imageList': con.productDetailModel.value.inventoryImages, "name": con.productName.value},
+                              );
+                            },
+                            child: Stack(
+                              children: [
+                                /// IMAGES
+                                (con.productDetailModel.value.inventoryImages != null && con.productDetailModel.value.inventoryImages!.isNotEmpty)
+                                    ? PageView.builder(
+                                        controller: con.imagesPageController.value,
+                                        itemCount: con.productDetailModel.value.inventoryImages?.length,
+                                        onPageChanged: (index) {
+                                          con.currentPage.value = index;
+                                        },
+                                        itemBuilder: (context, index) {
+                                          return AppNetworkImage(
+                                            imageUrl: (con.productDetailModel.value.inventoryImages != null && con.productDetailModel.value.inventoryImages!.isNotEmpty) ? (con.productDetailModel.value.inventoryImages?[index] ?? "") : "Image Not found",
+                                            fit: BoxFit.contain,
+                                            height: Get.height * 0.5,
+                                            borderRadius: BorderRadius.zero,
                                           );
-                                        }),
+                                        },
+                                      )
+                                    : Container(
+                                        color: AppColors.primary.withOpacity(0.1),
+                                        height: Get.height * 0.5,
+                                        width: Get.width,
+                                        alignment: Alignment.center,
+                                        child: productPlaceHolderImage(showShadow: false, borderRadius: 0),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              ),
 
-                              /// ***********************************************************************************
-                              ///                                  PRODUCT DETAILS
-                              /// ***********************************************************************************
-
-                              defaultPadding.verticalSpace,
-                              // Padding(
-                              //   padding: bodyPadding,
-                              //   child: Text(
-                              //     "SARDUNYA RING",
-                              //     style: Theme.of(context).textTheme.titleMedium?.copyWith(),
-                              //   ),
-                              // ),
-                              // (defaultPadding / 6).verticalSpace,
-
-                              /// PRODUCT PRICE
-                              Padding(
-                                padding: bodyPadding,
-                                child: Row(
-                                  children: [
-                                    Obx(
-                                      () => Text(
-                                        UiUtils.amountFormat(con.productDetailModel.value.priceBreaking?.total?.value ?? 0),
-                                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                              fontWeight: FontWeight.w800,
-                                              color: Theme.of(context).primaryColor,
-                                            ),
-                                      ),
-                                    ),
-                                    defaultPadding.horizontalSpace,
-
-                                    /// PRICE BREAKUP
-                                    AppButton(
-                                      height: 15.h,
-                                      margin: EdgeInsets.symmetric(horizontal: 10.w),
-                                      borderRadius: BorderRadius.circular(5.r),
-                                      flexibleWidth: true,
-                                      title: "Price breakup",
-                                      titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                            fontSize: 11.sp,
-                                            color: AppColors.background,
-                                            fontWeight: FontWeight.w500,
-                                            letterSpacing: .3,
+                                /// PAGE INDEX INDICATOR
+                                if ((con.productDetailModel.value.inventoryImages?.length ?? 0) > 1)
+                                  Positioned(
+                                    bottom: defaultPadding,
+                                    left: Get.width / 2.3,
+                                    child: Obx(() {
+                                      return Container(
+                                        decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Theme.of(context).colorScheme.surface.withOpacity(.1),
+                                              blurRadius: 20,
+                                              spreadRadius: 5,
+                                            )
+                                          ],
+                                        ),
+                                        child: AnimatedSmoothIndicator(
+                                          activeIndex: con.currentPage.value,
+                                          count: con.productDetailModel.value.inventoryImages != null ? con.productDetailModel.value.inventoryImages!.length : 0,
+                                          effect: ScrollingDotsEffect(
+                                            dotHeight: 8.0,
+                                            dotWidth: 8.0,
+                                            spacing: 5.0,
+                                            dotColor: Theme.of(context).primaryColor.withOpacity(0.15),
+                                            activeDotColor: Theme.of(context).primaryColor,
                                           ),
-                                      onPressed: () {
-                                        PriceBreakupDialog.priceBreakupDialog(context, priceBreakModel: con.productDetailModel.value.priceBreaking ?? PriceBreaking());
-                                      },
-                                    )
-                                  ],
-                                ),
-                              ),
-
-                              Divider(height: defaultPadding * 2, indent: defaultPadding, endIndent: defaultPadding),
-                              Padding(
-                                padding: bodyPadding,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    /// Wear
-                                    // CustomProductWatchButton(
-                                    //   size: 58.h,
-                                    //   icon: AppAssets.jewelleryWearIcon,
-                                    //   title: "Wear",
-                                    //   onPressed: () {},
-                                    // ),
-
-                                    /// Watch
-                                    CustomProductWatchButton(
-                                      size: 58.h,
-                                      icon: AppAssets.watchlistFilled,
-                                      title: "Watch",
-                                      onPressed: () {
-                                        Get.toNamed(
-                                          AppRoutes.addWatchListScreen,
-                                          arguments: {
-                                            'inventoryId': con.inventoryId.value,
-                                            'quantity': con.quantity.value,
-                                            'sizeId': con.productDetailModel.value.sizeId,
-                                            'metalId': con.productDetailModel.value.metalId,
-                                            'diamondClarity': (con.productDetailModel.value.diamonds != null && con.productDetailModel.value.diamonds!.isNotEmpty) ? con.productDetailModel.value.diamonds?.first.diamondClarity?.value : "",
-                                            "diamond": con.productDetailModel.value.diamonds,
-                                            "isMultiDiamond": con.isMultipleDiamondSelection.value,
-                                          },
-                                        );
-                                      },
-                                    ),
-                                    defaultPadding.horizontalSpace,
-
-                                    /// Add Metal
-                                    CustomProductWatchButton(
-                                      size: 58.h,
-                                      title: "Add\nmetal",
-                                      onPressed: () {
-                                        AppDialogs.addMetalDialog(
-                                          context,
-                                          metalWeight: con.productDetailModel.value.extraMetalWeight,
-                                          metalPrice: con.productDetailModel.value.priceBreaking?.metal?.pricePerGram ?? 0,
-                                        ).then(
-                                          (value) {
-                                            if (value != null) {
-                                              con.extraMetalPrice = value['price'];
-                                              con.extraMetalWt = value['wt'];
-                                            }
-                                          },
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              (defaultPadding).verticalSpace,
-                            ],
-                          ],
-                        ),
-                      ),
-
-                      /// TAB BAR
-                      SliverOverlapAbsorber(
-                        handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                        sliver: SliverPersistentHeader(
-                          pinned: true,
-                          delegate: SliverAppBarDelegate(
-                            maxHeight: 50,
-                            minHeight: 48,
-                            child: Container(
-                              color: AppColors.background,
-                              padding: EdgeInsets.symmetric(horizontal: defaultPadding),
-                              child: MySlideTabBar(
-                                  tabAlignment: TabAlignment.start,
-                                  backgroundColor: AppColors.background,
-                                  borderRadius: BorderRadius.vertical(top: Radius.circular(4.r)),
-                                  border: Border.all(
-                                    color: Theme.of(context).dividerColor.withOpacity(0.15),
+                                        ),
+                                      );
+                                    }),
                                   ),
-                                  tabs: const [
-                                    Tab(
-                                      text: "Product Info",
-                                    ),
-                                    // Tab(
-                                    //   text: "Variants",
-                                    // ),
-                                    Tab(
-                                      text: "Diamonds",
-                                    ),
-                                    Tab(
-                                      text: "Family Product",
-                                    )
-                                  ]),
+
+                                /// LIKE
+                                Positioned(
+                                  bottom: defaultPadding * 1,
+                                  right: defaultPadding * 1,
+                                  child: Obx(() {
+                                    return AppIconButton(
+                                      backgroundColor: Theme.of(context).cardColor.withOpacity(1),
+                                      icon: SvgPicture.asset(
+                                        con.isLike.value ? AppAssets.likeFill : AppAssets.like,
+                                        colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                                      ),
+                                      onPressed: () async {
+                                        con.isLike.value = !con.isLike.value;
+                                        con.isLike.refresh();
+
+                                        /// CREATE WISHLIST API
+                                        await WishlistRepository.createWishlistAPI(
+                                          productListType: con.productsListTypeType,
+                                          inventoryId: con.inventoryId.value,
+                                          isWishlist: con.isLike.value,
+                                        );
+                                      },
+                                      shadowColor: Theme.of(context).colorScheme.surface.withOpacity(.1),
+                                    );
+                                  }),
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                      )
-                    ];
-                  },
-                  body: TabBarView(
-                    children: [
-                      /// PRODUCT INFO TAB
-                      ProductInfoTab(infoList: con.productDetailModel.value.productInfo?.toJson().entries.toList() ?? []),
 
-                      // /// VARIANTS TAB
-                      // VariantsTab(
-                      //   productCategory: con.productCategory.value,
-                      //   isSize: con.isSize.value,
-                      // ),
-                      /// DIAMOND TAB
-                      DiamondsTab(diamondList: con.productDetailModel.value.diamonds ?? []),
+                        /// ***********************************************************************************
+                        ///                                  PRODUCT DETAILS
+                        /// ***********************************************************************************
+                        defaultPadding.verticalSpace,
+                        // Padding(
+                        //   padding: bodyPadding,
+                        //   child: Text(
+                        //     "SARDUNYA RING",
+                        //     style: Theme.of(context).textTheme.titleMedium?.copyWith(),
+                        //   ),
+                        // ),
+                        // (defaultPadding / 6).verticalSpace,
+                        /// PRODUCT PRICE
+                        Padding(
+                          padding: bodyPadding,
+                          child: Row(
+                            children: [
+                              Obx(
+                                () => Text(
+                                  UiUtils.amountFormat(con.productDetailModel.value.priceBreaking?.total?.value ?? 0),
+                                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                        fontWeight: FontWeight.w800,
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                ),
+                              ),
+                              defaultPadding.horizontalSpace,
 
-                      /// FAMILY PRODUCT TAB
-                      FamilyProductTab(
-                        productList: con.productDetailModel.value.familyProducts ?? [],
-                        category: con.productCategory.value,
-                      )
-                    ],
-                  ),
+                              /// PRICE BREAKUP
+                              AppButton(
+                                height: 15.h,
+                                margin: EdgeInsets.symmetric(horizontal: 10.w),
+                                borderRadius: BorderRadius.circular(5.r),
+                                flexibleWidth: true,
+                                title: "Price breakup",
+                                titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                      fontSize: 11.sp,
+                                      color: AppColors.background,
+                                      fontWeight: FontWeight.w500,
+                                      letterSpacing: .3,
+                                    ),
+                                onPressed: () {
+                                  PriceBreakupDialog.priceBreakupDialog(context, priceBreakModel: con.productDetailModel.value.priceBreaking ?? PriceBreaking());
+                                },
+                              )
+                            ],
+                          ),
+                        ),
+                        Divider(height: defaultPadding * 2, indent: defaultPadding, endIndent: defaultPadding),
+
+                        Padding(
+                          padding: bodyPadding,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              /// Wear
+                              // CustomProductWatchButton(
+                              //   size: 58.h,
+                              //   icon: AppAssets.jewelleryWearIcon,
+                              //   title: "Wear",
+                              //   onPressed: () {},
+                              // ),
+                              /// Watch
+                              CustomProductWatchButton(
+                                size: 58.h,
+                                icon: AppAssets.watchlistFilled,
+                                title: "Watch",
+                                onPressed: () {
+                                  Get.toNamed(
+                                    AppRoutes.addWatchListScreen,
+                                    arguments: {
+                                      'inventoryId': con.inventoryId.value,
+                                      'quantity': con.quantity.value,
+                                      'sizeId': con.productDetailModel.value.sizeId,
+                                      'metalId': con.productDetailModel.value.metalId,
+                                      'diamondClarity': (con.productDetailModel.value.diamonds != null && con.productDetailModel.value.diamonds!.isNotEmpty) ? con.productDetailModel.value.diamonds?.first.diamondClarity?.value : "",
+                                      "diamond": con.productDetailModel.value.diamonds,
+                                      "isMultiDiamond": con.isMultipleDiamondSelection.value,
+                                    },
+                                  );
+                                },
+                              ),
+                              defaultPadding.horizontalSpace,
+
+                              /// Add Metal
+                              CustomProductWatchButton(
+                                size: 58.h,
+                                title: "Add\nmetal",
+                                onPressed: () {
+                                  AppDialogs.addMetalDialog(
+                                    context,
+                                    metalWeight: con.productDetailModel.value.extraMetalWeight,
+                                    metalPrice: con.productDetailModel.value.priceBreaking?.metal?.pricePerGram ?? 0,
+                                  ).then(
+                                    (value) {
+                                      if (value != null) {
+                                        con.extraMetalPrice = value['price'];
+                                        con.extraMetalWt = value['wt'];
+                                      }
+                                    },
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        defaultPadding.verticalSpace,
+                        Container(
+                          color: AppColors.background,
+                          padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                          child: MySlideTabBar(
+                            tabAlignment: TabAlignment.start,
+                            backgroundColor: AppColors.background,
+                            borderRadius: BorderRadius.vertical(top: Radius.circular(4.r)),
+                            border: Border.all(
+                              color: Theme.of(context).dividerColor.withOpacity(0.15),
+                            ),
+                            tabs: const [
+                              Tab(
+                                text: "Product Info",
+                              ),
+                              // Tab(
+                              //   text: "Variants",
+                              // ),
+                              Tab(
+                                text: "Diamonds",
+                              ),
+                              Tab(
+                                text: "Family Product",
+                              )
+                            ],
+                            onTap: (index) {
+                              con.selectedIndex.value = index;
+                            },
+                            controller: con.tabController,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Obx(
+                      () => IndexedStack(
+                        index: con.selectedIndex.value,
+                        children: [
+                          /// PRODUCT INFO TAB
+                          ProductInfoTab(infoList: con.productDetailModel.value.productInfo?.toJson().entries.toList() ?? []),
+
+                          /// DIAMOND TAB
+                          DiamondsTab(diamondList: con.productDetailModel.value.diamonds ?? []),
+
+                          /// FAMILY PRODUCT TAB
+                          FamilyProductTab(
+                            productList: con.productDetailModel.value.familyProducts ?? [],
+                            category: con.productCategory.value,
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               )
             : ListView(

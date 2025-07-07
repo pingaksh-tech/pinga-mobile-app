@@ -147,7 +147,7 @@ class FilterController extends GetxController {
     addRangeValueFromVariableToController();
   }
 
-  /* void rangeCount() {
+/* void rangeCount() {
     int range = 0;
     if (minMetalWt.value >= 0.01 && maxMetalWt.value < 200.0) {
       printOkStatus("dn");

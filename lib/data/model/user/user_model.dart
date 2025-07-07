@@ -62,7 +62,8 @@ class UserModel {
   final String? email;
   final String? phone;
   final String? password;
-  final int? otp;
+
+  // final String? otp;
   final RoleId? roleId;
   final bool? status;
   final String? refreshToken;
@@ -81,7 +82,7 @@ class UserModel {
     this.email,
     this.phone,
     this.password,
-    this.otp,
+    // this.otp,
     this.roleId,
     this.status,
     this.refreshToken,
@@ -101,7 +102,7 @@ class UserModel {
         email: json["email"],
         phone: json["phone"],
         password: json["password"],
-        otp: json["otp"],
+        // otp: json["otp"],
         roleId: json["role_id"] == null ? null : RoleId.fromJson(json["role_id"]),
         status: json["status"],
         refreshToken: json["refresh_token"],
@@ -121,7 +122,7 @@ class UserModel {
         "email": email,
         "phone": phone,
         "password": password,
-        "otp": otp,
+        // "otp": otp,
         "role_id": roleId?.toJson(),
         "status": status,
         "refresh_token": refreshToken,

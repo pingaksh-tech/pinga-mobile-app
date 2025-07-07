@@ -131,8 +131,8 @@ class SummaryScreen extends StatelessWidget {
                                         children: [
                                           summaryTile(
                                             context,
-                                            image: AppAssets.diamondIcon,
-                                            titleText: "Diamond",
+                                            image: AppAssets.labelIconSVG,
+                                            titleText: "Label",
                                             subtitleText: con.weightSummaryList[index].id ?? "",
                                           ),
                                           (defaultPadding / 4).verticalSpace,

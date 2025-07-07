@@ -261,17 +261,21 @@ class FilterScreen extends StatelessWidget {
                                 title: con.mrpList[index].label?.value,
                                 titleStyle: TextStyle(fontSize: 13.sp, fontWeight: con.selectMrp.value.label == con.mrpList[index].label ? FontWeight.w500 : FontWeight.w400),
                                 onChanged: (value) {
+                                  bool wasSet = con.applyFilterCounts[1] == 1;
+                                  bool isNowSet = value == true;
+
+                                  if (!wasSet && isNowSet) {
+                                    con.count++;
+                                    con.applyFilterCounts[1] = 1;
+                                  } else if (wasSet && !isNowSet) {
+                                    con.count--;
+                                    con.applyFilterCounts[1] = 0;
+                                  }
+
                                   if (value == false) {
                                     con.selectMrp.value = MrpModel();
                                   } else {
                                     con.selectMrp.value = con.mrpList[index];
-                                  }
-                                  if (con.selectMrp.value.label != null && con.selectMrp.value.label!.isNotEmpty) {
-                                    con.count++;
-                                    con.applyFilterCounts[1] = 1;
-                                  } else {
-                                    con.count--;
-                                    con.applyFilterCounts[1] = 0;
                                   }
 
                                   if (con.mrpFromCon.value.text.isNotEmpty && con.mrpToCon.value.text.isNotEmpty) {
@@ -293,18 +297,21 @@ class FilterScreen extends StatelessWidget {
                           title: "Customs",
                           titleStyle: TextStyle(fontSize: 13.sp, fontWeight: con.selectMrp.value.label.toString().toLowerCase() == 'customs' ? FontWeight.w500 : FontWeight.w400),
                           onChanged: (value) {
+                            bool wasSet = con.applyFilterCounts[1] == 1;
+                            bool isNowSet = value == true;
+
+                            if (!wasSet && isNowSet) {
+                              con.count++;
+                              con.applyFilterCounts[1] = 1;
+                            } else if (wasSet && !isNowSet) {
+                              con.count--;
+                              con.applyFilterCounts[1] = 0;
+                            }
+
                             if (value == false) {
                               con.selectMrp.value = MrpModel();
                             } else {
                               con.selectMrp.value = MrpModel(label: "customs".obs);
-                            }
-
-                            if (con.selectMrp.value.label != null && con.selectMrp.value.label!.isNotEmpty) {
-                              con.count++;
-                              con.applyFilterCounts[1] = 1;
-                            } else {
-                              con.count--;
-                              con.applyFilterCounts[1] = 0;
                             }
                           },
                         ),

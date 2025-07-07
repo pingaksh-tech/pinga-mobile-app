@@ -96,9 +96,9 @@ class PdfPreviewScreen extends widget.StatelessWidget {
                     ),
                   );
                   con.docPdf?.value = await exportDoc.save();
-                  if (con.isFromCatalog.isFalse) {
-                    con.downloadPDF(isDownload: true);
-                  }
+                  // if (con.isFromCatalog.isFalse) {
+                  //   con.downloadPDF(isDownload: true);
+                  // }
                   return await doc.save();
                 },
               )

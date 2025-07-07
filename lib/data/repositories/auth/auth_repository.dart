@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
-import '../../../exports.dart';
 
+import '../../../exports.dart';
 import '../../api/api_utils.dart';
 import '../../model/user/user_model.dart';
 
@@ -86,10 +86,7 @@ class AuthRepository {
   ///                                   VERIFY OTP API
   /// ***********************************************************************************
 
-  static Future<dynamic> verifyMobileOtpAPI(
-      {required String mobileNumber,
-      required String otp,
-      RxBool? loader}) async {
+  static Future<dynamic> verifyMobileOtpAPI({required String mobileNumber, required String otp, RxBool? loader}) async {
     if (await getConnectivityResult()) {
       try {
         loader?.value = true;
@@ -105,17 +102,14 @@ class AuthRepository {
         ).then(
           (response) async {
             if (!isValEmpty(response) /*&& response["success"] == true*/) {
-              UserDataModel userDataModel =
-                  userDataModelFromJson(jsonEncode(response));
+              UserDataModel userDataModel = userDataModelFromJson(jsonEncode(response));
 
               /// STORE USER DETAILS IN LOCAL STORAGE
               LocalStorage.userModel = userDataModel.data?.user;
 
               /// STORE ACCESS AND REFRESH TOKENS
-              LocalStorage.accessToken =
-                  userDataModel.data?.tokens?.accessToken;
-              LocalStorage.refreshToken =
-                  userDataModel.data?.tokens?.refreshToken;
+              LocalStorage.accessToken = userDataModel.data?.tokens?.accessToken;
+              LocalStorage.refreshToken = userDataModel.data?.tokens?.refreshToken;
 
               UiUtils.toast(AppStrings.loginSuccessfully);
 

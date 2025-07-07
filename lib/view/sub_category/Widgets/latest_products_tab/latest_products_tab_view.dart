@@ -35,14 +35,71 @@ class LatestProductsTabView extends StatelessWidget {
                           padding: EdgeInsets.all(defaultPadding),
                           itemBuilder: (context, index) => Column(
                             children: [
-                              AspectRatio(
-                                aspectRatio: AppAspectRatios.r16_5,
-                                child: AppNetworkImage(
-                                  width: double.infinity,
-                                  imageUrl: con.latestProductList[index].productImage ?? "",
-                                  fit: BoxFit.cover,
-                                  boxShadow: defaultShadowAllSide,
-                                  borderRadius: BorderRadius.circular(defaultRadius),
+                              InkWell(
+                                // onTap: () => Get.toNamed(
+                                //   AppRoutes.productDetailsScreen,
+                                //   arguments: {
+                                //     "category": /*AppStrings.cartIdPrefixSlug +*/
+                                //         (con.latestProductList[index].category?.id ?? ''),
+                                //     'inventoryId': (con.latestProductList[index].inventoryIds ?? ""),
+                                //     'name': con.latestProductList[index].productName ?? "",
+                                //     "productsListTypeType": ProductsListType.normal,
+                                //   },
+                                // ),
+                                onTap: () {
+                                  // navigateToProductDetailsScreen(
+                                  //   productDetails: {
+                                  //     "productId": (con.latestProductList[index].id ?? ""),
+                                  //     "diamondClarity": con.inventoryProductList[index].isDiamondMultiple == true
+                                  //         ? ""
+                                  //         : (con.inventoryProductList[index].diamonds != null && con.inventoryProductList[index].diamonds!.isNotEmpty)
+                                  //             ? con.inventoryProductList[index].diamonds?.first.diamondClarity?.value ?? ""
+                                  //             : "",
+                                  //     "diamonds": con.inventoryProductList[index].isDiamondMultiple == true ? con.inventoryProductList[index].diamonds! : [],
+                                  //     "metalId": con.inventoryProductList[index].metalId!.value,
+                                  //     "sizeId": con.inventoryProductList[index].sizeId!.value,
+                                  //     "type": GlobalProductPrefixType.productDetails,
+                                  //   },
+                                  //   type: GlobalProductPrefixType.productDetails,
+                                  //   arguments: {
+                                  //     "category": /*AppStrings.cartIdPrefixSlug +*/
+                                  //         (con.latestProductList[index].category?.id ?? ''),
+                                  //     'isSize': !isValEmpty(con.inventoryProductList[index].sizeId),
+                                  //     'isFancy': con.inventoryProductList[index].isDiamondMultiple ?? false,
+                                  //     'inventoryId': /*AppStrings.productIdPrefixSlug +*/
+                                  //         (con.latestProductList[index].inventoryId ?? ""),
+                                  //     'name': con.latestProductList[index].productName,
+                                  //     "productsListTypeType": ProductsListType.normal,
+                                  //     // 'like': con.inventoryProductList[index].isWishlist,
+                                  //     "sizeId": con.inventoryProductList[index].sizeId!.value,
+                                  //     "remark": con.inventoryProductList[index].remark!.value,
+                                  //     "quantity": con.inventoryProductList[index].quantity!.value,
+                                  //
+                                  //     "diamondClarity": (con.inventoryProductList[index].diamonds != null && con.inventoryProductList[index].diamonds!.isNotEmpty) ? con.inventoryProductList[index].diamonds?.first.diamondClarity?.value ?? "" : "",
+                                  //
+                                  //     "metalId": con.inventoryProductList[index].metalId!.value,
+                                  //
+                                  //     "diamonds": con.inventoryProductList[index].isDiamondMultiple == true ? con.inventoryProductList[index].diamonds : [],
+                                  //   },
+                                  //   whenComplete: () {
+                                  //     if (isRegistered<BaseController>()) {
+                                  //       BaseController baseCon = Get.find<BaseController>();
+                                  //       if (baseCon.globalProductDetails.isNotEmpty) {
+                                  //         baseCon.globalProductDetails.removeLast();
+                                  //       }
+                                  //     }
+                                  //   },
+                                  // );
+                                },
+                                child: AspectRatio(
+                                  aspectRatio: AppAspectRatios.r16_5,
+                                  child: AppNetworkImage(
+                                    width: double.infinity,
+                                    imageUrl: con.latestProductList[index].productImage ?? "",
+                                    fit: BoxFit.cover,
+                                    boxShadow: defaultShadowAllSide,
+                                    borderRadius: BorderRadius.circular(defaultRadius),
+                                  ),
                                 ),
                               ),
 
