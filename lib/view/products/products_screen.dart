@@ -331,7 +331,7 @@ class ProductsScreen extends StatelessWidget {
                                       productName: con.inventoryProductList[index].name ?? "",
                                       productPrice: con.inventoryProductList[index].inventoryTotalPrice.toString(),
                                       productQuantity: con.inventoryProductList[index].quantity,
-                                      isSizeAvailable: !isValEmpty(con.inventoryProductList[index].sizeId),
+                                      isSizeAvailable: con.inventoryProductList[index].isShowSize ?? false,
                                       selectSize: con.inventoryProductList[index].sizeId!.value.obs,
                                       selectMetalCart: con.inventoryProductList[index].metalId!.value.obs,
                                       selectDiamondCart: (con.inventoryProductList[index].diamonds != null && con.inventoryProductList[index].diamonds!.isNotEmpty) ? (con.inventoryProductList[index].diamonds?.first.diamondClarity?.value ?? "").obs : "".obs,

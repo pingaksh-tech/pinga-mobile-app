@@ -174,13 +174,13 @@ class BottomBarScreen extends StatelessWidget {
                     },
                     child: con.bottomBarDataList.isNotEmpty ? con.bottomBarDataList[con.currentBottomIndex.value].screenWidget! : const SizedBox(),
                   ),
-            bottomNavigationBar: IntrinsicHeight(
+            bottomNavigationBar: SafeArea(
               child: BottomAppBar(
                 notchMargin: 6,
                 elevation: 30,
                 shadowColor: Theme.of(context).colorScheme.primary,
                 color: Theme.of(context).colorScheme.surface,
-                padding: EdgeInsets.symmetric(vertical: defaultPadding / 1.2, horizontal: defaultPadding / 2),
+                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                 shape: const CircularNotchedRectangle(),
                 child: Obx(
                   () => Row(
@@ -194,14 +194,18 @@ class BottomBarScreen extends StatelessWidget {
                           },
                           child: Center(
                             child: Column(
+                              mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 AnimatedContainer(
                                   duration: const Duration(milliseconds: 250),
-                                  padding: EdgeInsets.all(defaultPadding / 1.5),
+                                  padding: const EdgeInsets.all(8),
                                   decoration: BoxDecoration(
                                     color: con.currentBottomIndex.value == index ? Theme.of(context).primaryColor : null,
-                                    border: Border.all(color: con.currentBottomIndex.value == index ? Theme.of(context).primaryColor : Theme.of(context).colorScheme.surface, strokeAlign: 5),
+                                    border: Border.all(
+                                      color: con.currentBottomIndex.value == index ? Theme.of(context).primaryColor : Theme.of(context).colorScheme.surface,
+                                      strokeAlign: 5,
+                                    ),
                                     shape: BoxShape.circle,
                                   ),
                                   child: con.currentBottomIndex.value == index

@@ -84,8 +84,7 @@ class ProductRepository {
             "page": con.page.value.toString(),
             "limit": con.itemLimit.value.toString(),
             if (!isValEmpty(sortBy)) "sortBy": sortBy,
-            //TODO: search text is not working check in development environment
-            // if (!isValEmpty(searchText)) "search": searchText,
+            if (!isValEmpty(searchText)) "search": searchText,
             if ((!isValEmpty(minMetal) && !isValEmpty(maxMetal)))
               "range": {
                 if ((!isValEmpty(minMetal) && !isValEmpty(maxMetal))) "metal_wt": {"min": minMetal, "max": maxMetal},

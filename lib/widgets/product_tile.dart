@@ -109,6 +109,8 @@ class _ProductTileState extends State<ProductTile> {
   CartModel cart = CartModel();
   List<String> menuList = [/*AppStrings.variants,*/ AppStrings.addToWatchlist];
 
+  late RxInt productQuantity;
+
   /// Set Default Select Value Of Product
   Future<void> predefinedValue() async {
     if (isRegistered<PreDefinedValueController>()) {
@@ -156,6 +158,7 @@ class _ProductTileState extends State<ProductTile> {
   @override
   void initState() {
     super.initState();
+    productQuantity = widget.productQuantity ?? RxInt(0);
     predefinedValue();
   }
 
@@ -288,7 +291,7 @@ class _ProductTileState extends State<ProductTile> {
               child: Row(
                 children: [
                   /// Size
-                  if (!isValEmpty(widget.selectSize?.value)) sizeSelector(category: widget.category?.value),
+                  if (widget.isSizeAvailable) sizeSelector(category: widget.category?.value),
                   (defaultPadding / 4).horizontalSpace,
 
                   /// Diamond
@@ -1072,7 +1075,7 @@ class _ProductTileState extends State<ProductTile> {
                 (defaultPadding / 2).verticalSpace,
                 Row(
                   children: [
-                    if (!isValEmpty(widget.selectSize))
+                    if (widget.isSizeAvailable)
                       sizeSelector(
                         direction: Axis.vertical,
                         isFlexible: true,

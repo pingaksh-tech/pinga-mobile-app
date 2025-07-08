@@ -91,6 +91,8 @@ class LatestProductsTabView extends StatelessWidget {
                                   //   },
                                   // );
                                 },
+                                highlightColor: Colors.transparent,
+                                splashColor: Colors.transparent,
                                 child: AspectRatio(
                                   aspectRatio: AppAspectRatios.r16_5,
                                   child: AppNetworkImage(

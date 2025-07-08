@@ -426,123 +426,125 @@ class ProductDetailsScreen extends StatelessWidget {
                   )
                 ],
               ),
-        // bottom sheet
-        bottomNavigationBar: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              decoration: BoxDecoration(color: AppColors.background, boxShadow: [
-                BoxShadow(
-                  color: Theme.of(context).iconTheme.color!.withOpacity(0.03),
-                  blurRadius: 4,
-                  spreadRadius: 7,
-                ),
-              ]),
-              padding: EdgeInsets.all(defaultPadding),
-              child: Row(
-                children: [
-                  /// Size Selector
-                  if (!isValEmpty(con.productDetailModel.value.sizeId))
+        // bottom sheets
+        bottomNavigationBar: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                decoration: BoxDecoration(color: AppColors.background, boxShadow: [
+                  BoxShadow(
+                    color: Theme.of(context).iconTheme.color!.withOpacity(0.03),
+                    blurRadius: 4,
+                    spreadRadius: 7,
+                  ),
+                ]),
+                padding: EdgeInsets.all(defaultPadding),
+                child: Row(
+                  children: [
+                    /// Size Selector
+                    if (!isValEmpty(con.productDetailModel.value.sizeId))
+                      horizontalSelectorButton(
+                        context,
+                        categoryId: con.productCategory.value,
+                        selectedSize: con.selectedSize,
+                        selectableItemType: SelectableItemType.size,
+                        sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
+                        axisDirection: Axis.vertical,
+                        sizeOnChanged: (value) async {
+                          /// Selected Size
+                          if ((value.runtimeType == DiamondModel)) {
+                            con.selectedSize.value = value;
+                            con.sizeId.value = value.id.toString();
+
+                            /// GET NEW PRODUCT PRICE
+                            con.priceChangeAPI();
+                          }
+                        },
+                      ),
+                    (defaultPadding / 5).horizontalSpace,
+
+                    /// Metal Selector
                     horizontalSelectorButton(
                       context,
-                      categoryId: con.productCategory.value,
-                      selectedSize: con.selectedSize,
-                      selectableItemType: SelectableItemType.size,
+                      categoryId: con.selectedMetal.value.id?.value ?? "",
+                      selectedMetal: con.selectedMetal,
+                      selectableItemType: SelectableItemType.metal,
                       sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
                       axisDirection: Axis.vertical,
-                      sizeOnChanged: (value) async {
-                        /// Selected Size
-                        if ((value.runtimeType == DiamondModel)) {
-                          con.selectedSize.value = value;
-                          con.sizeId.value = value.id.toString();
+                      metalOnChanged: (value) async {
+                        /// Selected Metal
+                        if ((value.runtimeType == MetalModel)) {
+                          con.selectedMetal.value = value;
 
                           /// GET NEW PRODUCT PRICE
                           con.priceChangeAPI();
                         }
                       },
                     ),
-                  (defaultPadding / 5).horizontalSpace,
+                    (defaultPadding / 5).horizontalSpace,
 
-                  /// Metal Selector
-                  horizontalSelectorButton(
-                    context,
-                    categoryId: con.selectedMetal.value.id?.value ?? "",
-                    selectedMetal: con.selectedMetal,
-                    selectableItemType: SelectableItemType.metal,
-                    sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
-                    axisDirection: Axis.vertical,
-                    metalOnChanged: (value) async {
-                      /// Selected Metal
-                      if ((value.runtimeType == MetalModel)) {
-                        con.selectedMetal.value = value;
+                    /// Diamond Selector
+                    horizontalSelectorButton(
+                      context,
+                      categoryId: con.selectedDiamond.value.id?.value ?? "",
+                      selectedDiamond: con.selectedDiamond,
+                      isFancy: con.isMultipleDiamondSelection.value,
+                      diamondsList: RxList(con.productDetailModel.value.diamonds ?? []),
+                      selectableItemType: SelectableItemType.diamond,
+                      sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
+                      axisDirection: Axis.vertical,
+                      multiRubyOnChanged: (diamondList) async {
+                        /// Return List of Selected Diamond
+                        if ((diamondList.runtimeType == RxList<DiamondListModel>)) {
+                          con.diamondList.value = diamondList;
 
-                        /// GET NEW PRODUCT PRICE
-                        con.priceChangeAPI();
-                      }
-                    },
-                  ),
-                  (defaultPadding / 5).horizontalSpace,
+                          /// GET NEW PRODUCT PRICE
+                          con.priceChangeAPI();
+                        }
+                      },
+                      rubyOnChanged: (value) {
+                        /// Selected Diamond
+                        if ((value.runtimeType == DiamondModel)) {
+                          con.selectedDiamond.value = value;
 
-                  /// Diamond Selector
-                  horizontalSelectorButton(
-                    context,
-                    categoryId: con.selectedDiamond.value.id?.value ?? "",
-                    selectedDiamond: con.selectedDiamond,
-                    isFancy: con.isMultipleDiamondSelection.value,
-                    diamondsList: RxList(con.productDetailModel.value.diamonds ?? []),
-                    selectableItemType: SelectableItemType.diamond,
-                    sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
-                    axisDirection: Axis.vertical,
-                    multiRubyOnChanged: (diamondList) async {
-                      /// Return List of Selected Diamond
-                      if ((diamondList.runtimeType == RxList<DiamondListModel>)) {
-                        con.diamondList.value = diamondList;
+                          /// GET NEW PRODUCT PRICE
+                          con.priceChangeAPI();
+                        }
+                      },
+                    ),
+                    (defaultPadding / 5).horizontalSpace,
 
-                        /// GET NEW PRODUCT PRICE
-                        con.priceChangeAPI();
-                      }
-                    },
-                    rubyOnChanged: (value) {
-                      /// Selected Diamond
-                      if ((value.runtimeType == DiamondModel)) {
-                        con.selectedDiamond.value = value;
-
-                        /// GET NEW PRODUCT PRICE
-                        con.priceChangeAPI();
-                      }
-                    },
-                  ),
-                  (defaultPadding / 5).horizontalSpace,
-
-                  /// Add Remark
-                  horizontalSelectorButton(
-                    context,
-                    remarkSelected: con.selectedRemark,
-                    selectableItemType: SelectableItemType.remarks,
-                    sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
-                    axisDirection: Axis.vertical,
-                    remarkOnChanged: (value) {
-                      con.selectedRemark.value = value;
-                    },
-                  ),
-                  (defaultPadding / 5).horizontalSpace,
-                  plusMinusTile(
-                    context,
-                    textValue: con.quantity,
-                    onTap: (value) {
-                      con.addToCartApi(quantity: value);
-                    },
-                    onIncrement: (value) {
-                      con.addToCartApi(quantity: value);
-                    },
-                    onDecrement: (value) {
-                      con.addToCartApi(quantity: value);
-                    },
-                  )
-                ],
+                    /// Add Remark
+                    horizontalSelectorButton(
+                      context,
+                      remarkSelected: con.selectedRemark,
+                      selectableItemType: SelectableItemType.remarks,
+                      sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
+                      axisDirection: Axis.vertical,
+                      remarkOnChanged: (value) {
+                        con.selectedRemark.value = value;
+                      },
+                    ),
+                    (defaultPadding / 5).horizontalSpace,
+                    plusMinusTile(
+                      context,
+                      textValue: con.quantity,
+                      onTap: (value) async {
+                        con.addToCartApi(quantity: value);
+                      },
+                      onIncrement: (value) async {
+                        con.addToCartApi(quantity: value);
+                      },
+                      onDecrement: (value) async {
+                        con.addToCartApi(quantity: value);
+                      },
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
     });
