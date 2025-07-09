@@ -18,6 +18,7 @@ import '../exports.dart';
 import '../res/app_dialog.dart';
 import '../res/app_network_image.dart';
 import '../res/pop_up_menu_button.dart';
+import '../utils/device_utils.dart';
 import '../view/cart/cart_controller.dart';
 import 'custom_check_box_tile.dart';
 import 'plus_minus_title/plus_minus_tile.dart';
@@ -185,7 +186,7 @@ class _ProductTileState extends State<ProductTile> {
   Widget productGridTile() {
     return Obx(() {
       return Container(
-        width: Get.width / 2 - defaultPadding * 1.5,
+        width: DeviceUtil.isTablet(Get.context!) ? (Get.width / 3 - (defaultPadding * 1.5)) : Get.width / 2 - defaultPadding * 1.5,
         margin: EdgeInsets.all(defaultPadding / 2),
         padding: EdgeInsets.all(defaultPadding / 6),
         decoration: BoxDecoration(
@@ -198,7 +199,7 @@ class _ProductTileState extends State<ProductTile> {
             Stack(
               children: [
                 SizedBox(
-                  height: Get.width / 2 - defaultPadding * 2.5,
+                  height: DeviceUtil.isTablet(Get.context!) ? (Get.width / 3 - defaultPadding * 2.5) : Get.width / 2 - defaultPadding * 2.5,
                   child: isValEmpty(widget.imageUrl)
                       ? productPlaceHolderImage()
                       : AppNetworkImage(

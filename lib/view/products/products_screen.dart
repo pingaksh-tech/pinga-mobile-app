@@ -12,6 +12,7 @@ import '../../exports.dart';
 import '../../res/app_bar.dart';
 import '../../res/app_dialog.dart';
 import '../../res/empty_element.dart';
+import '../../utils/device_utils.dart';
 import '../../widgets/product_tile.dart';
 import '../../widgets/pull_to_refresh_indicator.dart';
 import 'components/cart_icon_button.dart';
@@ -345,7 +346,7 @@ class ProductsScreen extends StatelessWidget {
                                 ),
                               ),
                             ]),
-                            if (con.paginationLoader.value) con.isProductViewChange.isTrue ? productGridShimmer(context) : productListShimmer(context)
+                            if (con.paginationLoader.value) con.isProductViewChange.isTrue ? productGridShimmer(context, length: 20) : productListShimmer(context, length: 20)
                           ],
                         )
                       ],
@@ -360,7 +361,7 @@ class ProductsScreen extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: Get.width / 2.5),
                   )
             : con.isProductViewChange.isTrue
-                ? productGridShimmer(context, length: 8)
+                ? productGridShimmer(context, length: DeviceUtil.isTablet(context) ? 20 : 8)
                 : productListShimmer(context, length: 8),
         floatingActionButton: FloatingActionButton(
           child: SvgPicture.asset(

@@ -31,22 +31,20 @@ class AddRemarkController extends GetxController {
     "Against Credit Note",
   ].obs;
 
-  void checkDisableButton() {
-    if (selectedRemark.isNotEmpty || remarkCon.value.text.isNotEmpty) {
-      disableButton.value = false;
-    } else {
-      disableButton.value = true;
-    }
+  void checkDisableButton({int? index}) {
+    disableButton.value = false;
   }
 
   @override
   void onInit() {
     super.onInit();
 
-    if (Get.arguments != null) {
+    if (Get.arguments != null && Get.arguments['remark'] != null) {
       if (Get.arguments['remark'].runtimeType == String) {
         selectedRemark.value = Get.arguments['remark'];
       }
+    } else {
+      selectedRemark.value = "";
     }
   }
 }

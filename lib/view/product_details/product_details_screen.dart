@@ -476,6 +476,7 @@ class ProductDetailsScreen extends StatelessWidget {
                         /// Selected Metal
                         if ((value.runtimeType == MetalModel)) {
                           con.selectedMetal.value = value;
+                          con.metalId.value = con.selectedMetal.value.id?.value ?? "";
 
                           /// GET NEW PRODUCT PRICE
                           con.priceChangeAPI();
@@ -507,6 +508,7 @@ class ProductDetailsScreen extends StatelessWidget {
                         /// Selected Diamond
                         if ((value.runtimeType == DiamondModel)) {
                           con.selectedDiamond.value = value;
+                          con.diamondClarity.value = value.id?.value ?? "";
 
                           /// GET NEW PRODUCT PRICE
                           con.priceChangeAPI();

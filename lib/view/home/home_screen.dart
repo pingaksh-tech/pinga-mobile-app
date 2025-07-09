@@ -213,6 +213,7 @@ class HomeScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.all(defaultPadding),
               child: Text(
+                // (category.name == "PINGAKSH" ? "GOLD" : category.name ?? AppStrings.defaultPingakshLogoURL),
                 (category.name ?? AppStrings.defaultPingakshLogoURL),
                 textAlign: TextAlign.center,
                 style: AppTextStyle.titleStyle(context).copyWith(

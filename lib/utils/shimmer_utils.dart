@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../exports.dart';
+import 'device_utils.dart';
 
 class ShimmerUtils {
   static Widget shimmer({
@@ -16,10 +17,8 @@ class ShimmerUtils {
       duration: const Duration(milliseconds: 300),
       child: isShowShimmer == true
           ? Shimmer.fromColors(
-              baseColor: baseColor ??
-                  Theme.of(Get.context!).primaryColor.withOpacity(1),
-              highlightColor: highlightColor?.withOpacity(0.1) ??
-                  Theme.of(Get.context!).scaffoldBackgroundColor,
+              baseColor: baseColor ?? Theme.of(Get.context!).primaryColor.withOpacity(1),
+              highlightColor: highlightColor?.withOpacity(0.1) ?? Theme.of(Get.context!).scaffoldBackgroundColor,
               child: child,
             )
           : child,
@@ -33,28 +32,19 @@ class ShimmerUtils {
     );
   }
 
-  static Widget shimmerContainer(
-          {double? height,
-          double? width,
-          BorderRadiusGeometry? borderRadius,
-          double? borderRadiusSize,
-          Widget? child,
-          Decoration? decoration}) =>
-      Container(
+  static Widget shimmerContainer({double? height, double? width, BorderRadiusGeometry? borderRadius, double? borderRadiusSize, Widget? child, Decoration? decoration}) => Container(
         height: height,
         width: width,
         decoration: decoration ??
             BoxDecoration(
-              borderRadius:
-                  borderRadius ?? BorderRadius.circular(borderRadiusSize ?? 50),
+              borderRadius: borderRadius ?? BorderRadius.circular(borderRadiusSize ?? 50),
               color: AppColors.primary.withOpacity(0.1),
             ),
       );
 
   static Widget loadingShimmerWidget() {
     return Padding(
-      padding: EdgeInsets.symmetric(
-          vertical: defaultPadding / 2, horizontal: defaultPadding),
+      padding: EdgeInsets.symmetric(vertical: defaultPadding / 2, horizontal: defaultPadding),
       child: Row(
         children: [
           ShimmerUtils.shimmer(
@@ -94,7 +84,7 @@ class ShimmerUtils {
     return ShimmerUtils.shimmer(
       child: ShimmerUtils.shimmerContainer(
         height: Get.height / 2.7,
-        width: Get.width / 2 - defaultPadding * 1.5,
+        width: DeviceUtil.isTablet(Get.context!) ? (Get.width / 3 - (defaultPadding * 1.5)) : Get.width / 2 - defaultPadding * 1.5,
         borderRadius: BorderRadius.circular(defaultRadius),
         child: Padding(
           padding: EdgeInsets.all(defaultPadding / 2),

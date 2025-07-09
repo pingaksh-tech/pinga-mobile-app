@@ -158,8 +158,14 @@ class ProductDetailsController extends GetxController with GetSingleTickerProvid
                 )
           : [],
     ).then((value) {
-      productDetailModel.value.priceBreaking?.total = value?.data?.inventoryTotalPrice;
+      // productDetailModel.value.priceBreaking?.total = value?.data?.inventoryTotalPrice;
       quantity.value = value?.data?.cartQty?.quantity ?? 0;
+      ProductRepository.getSingleProductAPI(inventoryId: inventoryId.value /*.substring(2)*/, sizeId: sizeId.value, metalId: metalId.value, diamondClarity: diamondClarity.value, diamondList: diamondList).then(
+        (value) {
+          predefinedValue();
+          // priceChangeAPI();
+        },
+      );
     });
   }
 
