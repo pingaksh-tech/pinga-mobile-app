@@ -38,10 +38,7 @@ class CartPopUpMenu extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(defaultRadius),
       ),
-      style: Theme.of(context)
-          .textTheme
-          .titleMedium
-          ?.copyWith(fontWeight: FontWeight.w500, fontSize: 15.sp),
+      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500, fontSize: 15.sp),
       menuList: const [
         // "Download cart items",
         "Add to Watchlist",
@@ -70,11 +67,10 @@ class CartPopUpMenu extends StatelessWidget {
                     validation: nameValidation.value,
                     errorMessage: nameError.value,
                     errorStyle: const TextStyle(color: Colors.red),
-                    titleStyle:
-                        Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontSize: 12.sp,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
+                    titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontSize: 12.sp,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                     padding: EdgeInsets.only(top: defaultPadding / 2),
                     hintText: "Enter new watchlist name",
                     contentPadding: EdgeInsets.symmetric(
@@ -96,22 +92,16 @@ class CartPopUpMenu extends StatelessWidget {
                     AppDialogs.cartAlertDialog(
                       context,
                       isCancelButtonShow: true,
-                      contentText:
-                          "Do you want to empty cart after items are added in watchList",
+                      contentText: "Do you want to empty cart after items are added in watchlist",
                       yesOnPressed: () async {
-                        await WatchListRepository.addCartToWatchlistAPI(
-                            watchlistName: nameCon.value.text.trim(),
-                            cartIds: cardIds);
-                        await CartRepository.multipleCartDelete(
-                            selectedCartIds: cardIds);
+                        await WatchListRepository.addCartToWatchlistAPI(watchlistName: nameCon.value.text.trim(), cartIds: cardIds);
+                        await CartRepository.multipleCartDelete(selectedCartIds: cardIds);
                         con.selectedList.clear();
                         con.calculateSelectedItemPrice();
                         con.calculateSelectedQue();
                       },
                       noOnPressed: () async {
-                        await WatchListRepository.addCartToWatchlistAPI(
-                            watchlistName: nameCon.value.text.trim(),
-                            cartIds: cardIds);
+                        await WatchListRepository.addCartToWatchlistAPI(watchlistName: nameCon.value.text.trim(), cartIds: cardIds);
                         con.selectedList.clear();
                         con.calculateSelectedItemPrice();
                         con.calculateSelectedQue();

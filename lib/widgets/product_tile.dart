@@ -858,6 +858,10 @@ class _ProductTileState extends State<ProductTile> {
           widget.productQuantity?.value = value;
           addOrUpdateCart(quantity: value);
         },
+        onTap: (value) {
+          widget.productQuantity?.value = value;
+          addOrUpdateCart(quantity: value);
+        },
       );
 
   Widget remarkSelector({bool isFlexible = false, Axis direction = Axis.horizontal}) => horizontalSelectorButton(

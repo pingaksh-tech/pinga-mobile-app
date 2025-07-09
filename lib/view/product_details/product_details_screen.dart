@@ -443,25 +443,25 @@ class ProductDetailsScreen extends StatelessWidget {
                 child: Row(
                   children: [
                     /// Size Selector
-                    if (!isValEmpty(con.productDetailModel.value.sizeId))
-                      horizontalSelectorButton(
-                        context,
-                        categoryId: con.productCategory.value,
-                        selectedSize: con.selectedSize,
-                        selectableItemType: SelectableItemType.size,
-                        sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
-                        axisDirection: Axis.vertical,
-                        sizeOnChanged: (value) async {
-                          /// Selected Size
-                          if ((value.runtimeType == DiamondModel)) {
-                            con.selectedSize.value = value;
-                            con.sizeId.value = value.id.toString();
+                    // if (!isValEmpty(con.productDetailModel.value.sizeId))
+                    horizontalSelectorButton(
+                      context,
+                      categoryId: con.productCategory.value,
+                      selectedSize: con.selectedSize,
+                      selectableItemType: SelectableItemType.size,
+                      sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
+                      axisDirection: Axis.vertical,
+                      sizeOnChanged: (value) async {
+                        /// Selected Size
+                        if ((value.runtimeType == DiamondModel)) {
+                          con.selectedSize.value = value;
+                          con.sizeId.value = value.id.toString();
 
-                            /// GET NEW PRODUCT PRICE
-                            con.priceChangeAPI();
-                          }
-                        },
-                      ),
+                          /// GET NEW PRODUCT PRICE
+                          con.priceChangeAPI();
+                        }
+                      },
+                    ),
                     (defaultPadding / 5).horizontalSpace,
 
                     /// Metal Selector
