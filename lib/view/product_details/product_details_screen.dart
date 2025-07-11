@@ -508,7 +508,7 @@ class ProductDetailsScreen extends StatelessWidget {
                         /// Selected Diamond
                         if ((value.runtimeType == DiamondModel)) {
                           con.selectedDiamond.value = value;
-                          con.diamondClarity.value = value.id?.value ?? "";
+                          con.diamondClarity.value = value.name ?? "";
 
                           /// GET NEW PRODUCT PRICE
                           con.priceChangeAPI();
