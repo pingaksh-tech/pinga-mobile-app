@@ -36,60 +36,48 @@ class LatestProductsTabView extends StatelessWidget {
                           itemBuilder: (context, index) => Column(
                             children: [
                               InkWell(
-                                // onTap: () => Get.toNamed(
-                                //   AppRoutes.productDetailsScreen,
-                                //   arguments: {
-                                //     "category": /*AppStrings.cartIdPrefixSlug +*/
-                                //         (con.latestProductList[index].category?.id ?? ''),
-                                //     'inventoryId': (con.latestProductList[index].inventoryIds ?? ""),
-                                //     'name': con.latestProductList[index].productName ?? "",
-                                //     "productsListTypeType": ProductsListType.normal,
-                                //   },
-                                // ),
                                 onTap: () {
-                                  // navigateToProductDetailsScreen(
-                                  //   productDetails: {
-                                  //     "productId": (con.latestProductList[index].id ?? ""),
-                                  //     "diamondClarity": con.inventoryProductList[index].isDiamondMultiple == true
-                                  //         ? ""
-                                  //         : (con.inventoryProductList[index].diamonds != null && con.inventoryProductList[index].diamonds!.isNotEmpty)
-                                  //             ? con.inventoryProductList[index].diamonds?.first.diamondClarity?.value ?? ""
-                                  //             : "",
-                                  //     "diamonds": con.inventoryProductList[index].isDiamondMultiple == true ? con.inventoryProductList[index].diamonds! : [],
-                                  //     "metalId": con.inventoryProductList[index].metalId!.value,
-                                  //     "sizeId": con.inventoryProductList[index].sizeId!.value,
-                                  //     "type": GlobalProductPrefixType.productDetails,
-                                  //   },
-                                  //   type: GlobalProductPrefixType.productDetails,
-                                  //   arguments: {
-                                  //     "category": /*AppStrings.cartIdPrefixSlug +*/
-                                  //         (con.latestProductList[index].category?.id ?? ''),
-                                  //     'isSize': !isValEmpty(con.inventoryProductList[index].sizeId),
-                                  //     'isFancy': con.inventoryProductList[index].isDiamondMultiple ?? false,
-                                  //     'inventoryId': /*AppStrings.productIdPrefixSlug +*/
-                                  //         (con.latestProductList[index].inventoryId ?? ""),
-                                  //     'name': con.latestProductList[index].productName,
-                                  //     "productsListTypeType": ProductsListType.normal,
-                                  //     // 'like': con.inventoryProductList[index].isWishlist,
-                                  //     "sizeId": con.inventoryProductList[index].sizeId!.value,
-                                  //     "remark": con.inventoryProductList[index].remark!.value,
-                                  //     "quantity": con.inventoryProductList[index].quantity!.value,
-                                  //
-                                  //     "diamondClarity": (con.inventoryProductList[index].diamonds != null && con.inventoryProductList[index].diamonds!.isNotEmpty) ? con.inventoryProductList[index].diamonds?.first.diamondClarity?.value ?? "" : "",
-                                  //
-                                  //     "metalId": con.inventoryProductList[index].metalId!.value,
-                                  //
-                                  //     "diamonds": con.inventoryProductList[index].isDiamondMultiple == true ? con.inventoryProductList[index].diamonds : [],
-                                  //   },
-                                  //   whenComplete: () {
-                                  //     if (isRegistered<BaseController>()) {
-                                  //       BaseController baseCon = Get.find<BaseController>();
-                                  //       if (baseCon.globalProductDetails.isNotEmpty) {
-                                  //         baseCon.globalProductDetails.removeLast();
-                                  //       }
-                                  //     }
-                                  //   },
-                                  // );
+                                  navigateToProductDetailsScreen(
+                                    productDetails: {
+                                      "productId": (con.latestProductList[index].id ?? ""),
+                                      "diamondClarity": con.latestProductList[index].isDiamondMultiple == true
+                                          ? ""
+                                          : (con.latestProductList[index].diamonds != null && con.latestProductList[index].diamonds!.isNotEmpty)
+                                              ? con.latestProductList[index].diamonds?.first.diamondClarity ?? ""
+                                              : "",
+                                      "diamonds": con.latestProductList[index].isDiamondMultiple == true ? con.latestProductList[index].diamonds! : [],
+                                      "metalId": con.latestProductList[index].metalId,
+                                      "sizeId": con.latestProductList[index].sizeId,
+                                      "type": GlobalProductPrefixType.productDetails,
+                                    },
+                                    type: GlobalProductPrefixType.productDetails,
+                                    arguments: {
+                                      "category": /*AppStrings.cartIdPrefixSlug +*/
+                                          (con.latestProductList[index].category?.id ?? ''),
+                                      'isSize': !isValEmpty(con.latestProductList[index].sizeId),
+                                      'isFancy': con.latestProductList[index].isDiamondMultiple ?? false,
+                                      'inventoryId': /*AppStrings.productIdPrefixSlug +*/
+                                          (con.latestProductList[index].inventoryId ?? ""),
+                                      'name': con.latestProductList[index].productName,
+                                      "productsListTypeType": ProductsListType.normal,
+                                      // 'like': con.inventoryProductList[index].isWishlist,
+                                      "sizeId": con.latestProductList[index].sizeId,
+
+                                      "diamondClarity": (con.latestProductList[index].diamonds != null && con.latestProductList[index].diamonds!.isNotEmpty) ? con.latestProductList[index].diamonds?.first.diamondClarity ?? "" : "",
+
+                                      "metalId": con.latestProductList[index].metalId,
+
+                                      "diamonds": con.latestProductList[index].isDiamondMultiple == true ? con.latestProductList[index].diamonds : [],
+                                    },
+                                    whenComplete: () {
+                                      if (isRegistered<BaseController>()) {
+                                        BaseController baseCon = Get.find<BaseController>();
+                                        if (baseCon.globalProductDetails.isNotEmpty) {
+                                          baseCon.globalProductDetails.removeLast();
+                                        }
+                                      }
+                                    },
+                                  );
                                 },
                                 highlightColor: Colors.transparent,
                                 splashColor: Colors.transparent,
