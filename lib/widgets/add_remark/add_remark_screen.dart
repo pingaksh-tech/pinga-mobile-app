@@ -33,6 +33,7 @@ class AddRemarkScreen extends StatelessWidget {
               title: con.remarkList[index],
               titleStyle: Theme.of(context).textTheme.titleMedium,
               isSelected: RxBool((con.selectedRemark.value == con.remarkList[index])),
+              isShowCheckBox: false,
               onChanged: (value) {
                 if (con.selectedRemark.value == con.remarkList[index]) {
                   con.selectedRemark.value = "";

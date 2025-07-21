@@ -1518,6 +1518,7 @@ class AppDialogs {
     String? contentText,
     String? buttonTitle,
     TextStyle? titleStyle,
+    RxBool? isLoading,
   }) {
     return Get.dialog(
       AlertDialog(
@@ -1556,16 +1557,27 @@ class AppDialogs {
           ),
 
           /// ADD
-          TextButton(
-            onPressed: onPressed,
-            child: Text(
-              buttonTitle2 ?? "YES",
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w500,
-                    color: Theme.of(context).colorScheme.primary,
+          Obx(
+            () => isLoading != null && isLoading.isFalse
+                ? TextButton(
+                    onPressed: onPressed,
+                    child: Text(
+                      buttonTitle2 ?? "YES",
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                    ),
+                  )
+                : SizedBox(
+                    height: 22.h,
+                    width: 28.h,
+                    child: CircularProgressIndicator(
+                      color: Theme.of(context).colorScheme.primary,
+                      strokeWidth: 2.5,
+                    ).paddingOnly(left: defaultPadding / 2),
                   ),
-            ),
           ),
         ],
       ),

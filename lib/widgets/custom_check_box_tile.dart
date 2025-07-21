@@ -13,6 +13,7 @@ class CustomCheckboxTile extends StatelessWidget {
     required this.isSelected,
     this.borderWidth,
     this.behavior,
+    this.isShowCheckBox = true,
   });
 
   final double? scale;
@@ -22,6 +23,7 @@ class CustomCheckboxTile extends StatelessWidget {
   final RxBool isSelected;
   final double? borderWidth;
   final HitTestBehavior? behavior;
+  final bool? isShowCheckBox;
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +36,11 @@ class CustomCheckboxTile extends StatelessWidget {
           ),
           side: BorderSide(color: AppColors.primary, width: borderWidth ?? 1),
           value: isSelected.value,
-          onChanged: (val) {
-            onTap();
-          },
+          onChanged: isShowCheckBox == true
+              ? (val) {
+                  onTap();
+                }
+              : null,
         ),
       ),
     );
@@ -44,14 +48,17 @@ class CustomCheckboxTile extends StatelessWidget {
     if (!isValEmpty(title)) {
       return GestureDetector(
         behavior: behavior ?? HitTestBehavior.translucent,
-        onTap: onTap,
+        onTap: isShowCheckBox == true ? onTap : null,
         child: Row(
           children: [
-            myCheckbox,
+            if (isShowCheckBox ?? true) myCheckbox,
             Flexible(
-              child: Text(
-                title ?? "",
-                style: titleStyle,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Text(
+                  title ?? "",
+                  style: titleStyle,
+                ),
               ),
             ),
           ],

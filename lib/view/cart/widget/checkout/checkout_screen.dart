@@ -137,6 +137,7 @@ class CheckoutScreen extends StatelessWidget {
                                       fontWeight: FontWeight.w600,
                                       color: Theme.of(context).primaryColor,
                                     ),
+                                isLoading: con.isLoading,
                                 onPressed: () {
                                   final List<Map<String, dynamic>> cartItems = con.cartList.map(
                                     (item) {
@@ -149,6 +150,7 @@ class CheckoutScreen extends StatelessWidget {
 
                                   /// Create Order Api
                                   OrdersRepository.createOrder(
+                                    loader: con.isLoading,
                                     retailerId: con.retailerId,
                                     orderType: con.orderTypeCon.value.text,
                                     quantity: con.quantity.value,

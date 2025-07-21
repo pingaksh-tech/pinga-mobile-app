@@ -146,7 +146,16 @@ class _ProductTileState extends State<ProductTile> {
       }
       //? Diamond value selection
       if (diamondList.isNotEmpty) {
-        int diamondIndex = diamondList.indexWhere((element) => element.shortName == widget.selectDiamondCart?.value);
+        // printYellow("Diamond List: ${diamondList.toJson()}");
+
+        int diamondIndex = diamondList.indexWhere((element) {
+          printYellow("Diamond selectDiamondCart  ${element.id}: ${element.shortName}");
+
+          return element.shortName == widget.selectDiamondCart?.value;
+        });
+
+        printYellow("Diamond selectDiamondCart: ${widget.selectDiamondCart?.value}");
+
         if (diamondIndex != -1) {
           diamondModel = diamondList[diamondIndex];
         } else {
