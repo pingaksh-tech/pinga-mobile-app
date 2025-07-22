@@ -181,7 +181,10 @@ class ProductDetailsController extends GetxController with GetSingleTickerProvid
 
       /// Selected Diamond
       if (diamondList.isNotEmpty) {
-        index = diamondList.indexWhere((element) => element.name == productDetailModel.value.diamonds?.first.diamondClarity?.value);
+        if (productDetailModel.value.diamonds != null && productDetailModel.value.diamonds!.isNotEmpty) {
+          index = diamondList.indexWhere((element) => element.name == productDetailModel.value.diamonds?.first.diamondClarity?.value);
+        }
+
         if (index != -1) {
           selectedDiamond.value = diamondList[index];
         } else {
