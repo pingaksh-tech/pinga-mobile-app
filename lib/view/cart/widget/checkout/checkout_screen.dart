@@ -122,6 +122,7 @@ class CheckoutScreen extends StatelessWidget {
                           AppButton(
                             padding: EdgeInsets.only(right: defaultPadding / 2),
                             flexibleHeight: true,
+                            loader: con.isLoading.value,
                             disableButton: con.disableButton.value,
                             title: "Check Out",
                             titleStyle: AppTextStyle.appButtonStyle(context).copyWith(
