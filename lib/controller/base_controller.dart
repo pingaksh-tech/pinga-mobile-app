@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:get/get.dart';
 // import 'package:no_screenshot/no_screenshot.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:screen_protector/screen_protector.dart';
 
 // import 'package:screen_protector/screen_protector.dart';
 
@@ -50,9 +51,9 @@ class BaseController extends GetxController {
     // if (AppEnvironment.environmentType == EnvironmentType.production) {
     // await NoScreenshot.instance.screenshotOff();
     if (Platform.isIOS) {
-      // await ScreenProtector.preventScreenshotOn();
+      await ScreenProtector.preventScreenshotOn();
     } else {
-      // await ScreenProtector.protectDataLeakageOn();
+      await ScreenProtector.protectDataLeakageOn();
     }
 
     // }
