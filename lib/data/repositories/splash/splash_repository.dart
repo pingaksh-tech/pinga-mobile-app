@@ -68,7 +68,7 @@ class SplashRepository {
                     LocalStorage.returnURL = appConfig.returnPolicy;
                   }
 
-                  if (isValEmpty(model.data!.appConfigData!.versions)) {
+                  if (!isValEmpty(model.data!.appConfigData!.versions)) {
                     /// Versions
 
                     /// CHECKING UPDATE
