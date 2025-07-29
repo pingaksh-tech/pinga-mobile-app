@@ -3,7 +3,6 @@ import 'dart:core';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
@@ -120,12 +119,7 @@ const Duration defaultSearchDebounceDuration = Duration(milliseconds: 400);
 
 bool isValEmpty(dynamic val) {
   String? value = val.toString();
-  return (val == null ||
-      value.isEmpty ||
-      value == "null" ||
-      value == "" ||
-      value == "NULL" ||
-      value == '');
+  return (val == null || value.isEmpty || value == "null" || value == "" || value == "NULL" || value == '');
 }
 
 bool isValZero(num? number) {
@@ -166,9 +160,7 @@ bool isRegistered<S>() {
   if (Get.isRegistered<S>()) {
     return true;
   } else {
-    printErrors(
-        type: "Function 'isRegistered' in utils:",
-        errText: "$S Controller not initialize");
+    printErrors(type: "Function 'isRegistered' in utils:", errText: "$S Controller not initialize");
     /* if (forcePut == true) {
       printData(key: "Force Putting", value: "Controller $S");
     } */
@@ -186,10 +178,8 @@ void deleteGetXController<S>() {
 ///                                DUPLICATE ROUTE ISSUE RESOLVER
 /// ***********************************************************************************
 
-addProductDetailsToGlobalList(Map productDetails,
-    {required GlobalProductPrefixType type}) {
-  if (isRegistered<BaseController>() &&
-      productDetails["productId"].length > 10) {
+addProductDetailsToGlobalList(Map productDetails, {required GlobalProductPrefixType type}) {
+  if (isRegistered<BaseController>() && productDetails["productId"].length > 10) {
     BaseController con = Get.find<BaseController>();
 
     con.globalProductDetails.add(productDetails);
@@ -210,18 +200,13 @@ removeProductDetailsToGlobalList() {
   }
 }
 
-void navigateToProductDetailsScreen(
-    {Map? arguments,
-    required Map productDetails,
-    required GlobalProductPrefixType type,
-    Function()? whenComplete}) {
+void navigateToProductDetailsScreen({Map? arguments, required Map productDetails, required GlobalProductPrefixType type, Function()? whenComplete}) {
   void apiCall({
     required Map productDetails,
   }) {
     /// API CALL
     try {
-      var productDetailsId =
-          addProductDetailsToGlobalList(productDetails, type: type);
+      var productDetailsId = addProductDetailsToGlobalList(productDetails, type: type);
 
       if (isRegistered<ProductDetailsController>()) {
         ProductDetailsController con = Get.find<ProductDetailsController>();
@@ -242,9 +227,7 @@ void navigateToProductDetailsScreen(
           );
         } else {
           // if (productDetailsId.isNotEmpty) {
-          CartRepository.getSingleCartItemAPI(
-                  cartId: productDetailsId["productId"], loader: con.loader)
-              .then(
+          CartRepository.getSingleCartItemAPI(cartId: productDetailsId["productId"], loader: con.loader).then(
             (value) {
               con.predefinedValue();
               // priceChangeAPI();
@@ -254,18 +237,14 @@ void navigateToProductDetailsScreen(
         }
       }
     } catch (e) {
-      printErrors(
-          type: "navigateToProductDetailsScreen",
-          errText: "PROD: ${productDetails["productId"]} $e");
+      printErrors(type: "navigateToProductDetailsScreen", errText: "PROD: ${productDetails["productId"]} $e");
     }
   }
 
   apiCall(
     productDetails: productDetails,
   );
-  Get.toNamed(AppRoutes.productDetailsScreen,
-          arguments: arguments, preventDuplicates: false)
-      ?.whenComplete(() {
+  Get.toNamed(AppRoutes.productDetailsScreen, arguments: arguments, preventDuplicates: false)?.whenComplete(() {
     if (whenComplete != null) {
       whenComplete();
     }
@@ -290,13 +269,11 @@ void navigateToCartScreen({Map? arguments, Function()? whenComplete}) {
       /// API CALL
       // String pId = addProductIdToGlobalList(productId, type: type);
 
-      if (isRegistered<ProductDetailsController>() &&
-          isRegistered<BaseController>()) {
+      if (isRegistered<ProductDetailsController>() && isRegistered<BaseController>()) {
         ProductDetailsController con = Get.find<ProductDetailsController>();
         BaseController baseCon = Get.find<BaseController>();
 
-        if (baseCon.lastProductDetails["type"] ==
-            GlobalProductPrefixType.productDetails) {
+        if (baseCon.lastProductDetails["type"] == GlobalProductPrefixType.productDetails) {
           ProductRepository.getSingleProductAPI(
             inventoryId: baseCon.lastProductDetails["productId"],
             loader: con.loader,
@@ -312,10 +289,7 @@ void navigateToCartScreen({Map? arguments, Function()? whenComplete}) {
           );
         } else {
           // if (baseCon.lastProductDetails.isNotEmpty) {
-          CartRepository.getSingleCartItemAPI(
-                  cartId: baseCon.lastProductDetails["productId"],
-                  loader: con.loader)
-              .then(
+          CartRepository.getSingleCartItemAPI(cartId: baseCon.lastProductDetails["productId"], loader: con.loader).then(
             (value) {
               con.predefinedValue();
               // priceChangeAPI();
@@ -355,15 +329,11 @@ void commonDebounce({
 List<ConnectivityResult> connectivityResults = [ConnectivityResult.none];
 final Connectivity connectivity = Connectivity();
 
-Future<bool> getConnectivityResult(
-    {bool showToast = true, RxBool? isLoader}) async {
+Future<bool> getConnectivityResult({bool showToast = true, RxBool? isLoader}) async {
   try {
     connectivityResults = await connectivity.checkConnectivity();
 
-    if (connectivityResults.contains(ConnectivityResult.wifi) ||
-        connectivityResults.contains(ConnectivityResult.mobile) ||
-        connectivityResults.contains(ConnectivityResult.ethernet) ||
-        connectivityResults.contains(ConnectivityResult.vpn)) {
+    if (connectivityResults.contains(ConnectivityResult.wifi) || connectivityResults.contains(ConnectivityResult.mobile) || connectivityResults.contains(ConnectivityResult.ethernet) || connectivityResults.contains(ConnectivityResult.vpn)) {
       return true;
     } else {
       if (showToast == true) {
@@ -382,32 +352,39 @@ Future<bool> getConnectivityResult(
 BoxBorder defaultBorder = Border.all(color: const Color(0xffE8E8E8));
 
 DateTime defaultDateTime = DateTime.parse("1999-01-01 12:00:00.974368");
-
-Future<void> storeDeviceInformation(fcmToken) async {
-  final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-  try {
-    if (Platform.isAndroid) {
-      AndroidDeviceInfo androidDeviceInfo =
-          (await deviceInfoPlugin.androidInfo);
-      await LocalStorage.storeDeviceInfo(
-        deviceID: androidDeviceInfo.id,
-        deviceTOKEN: fcmToken,
-        deviceTYPE: AppStrings.androidSlug,
-        deviceNAME: androidDeviceInfo.model,
-      );
-    } else if (Platform.isIOS) {
-      IosDeviceInfo iosDeviceInfo = (await deviceInfoPlugin.iosInfo);
-      await LocalStorage.storeDeviceInfo(
-        deviceID: iosDeviceInfo.identifierForVendor ?? "",
-        deviceTOKEN: fcmToken,
-        deviceTYPE: AppStrings.iOSSlug,
-        deviceNAME: iosDeviceInfo.utsname.machine,
-      );
-    }
-  } catch (k) {
-    debugPrint(k.toString());
-  }
-}
+//
+// Future<void> storeDeviceInformation(fcmToken) async {
+//   final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+//   try {
+//     if (Platform.isAndroid) {
+//       AndroidDeviceInfo androidDeviceInfo = (await deviceInfoPlugin.androidInfo);
+//
+//       String deviceId = androidDeviceInfo.isPhysicalDevice ? androidDeviceInfo.id : UiUtils.getRandomString(20);
+//
+//       await LocalStorage.storeDeviceInfo(
+//         deviceID: deviceId,
+//         deviceTOKEN: fcmToken,
+//         deviceTYPE: "Android",
+//         deviceNAME: androidDeviceInfo.model,
+//       );
+//     } else if (Platform.isIOS) {
+//       IosDeviceInfo iosDeviceInfo = (await deviceInfoPlugin.iosInfo);
+//
+//       String deviceId = iosDeviceInfo.isPhysicalDevice ? (iosDeviceInfo.identifierForVendor ?? "") : UiUtils.getRandomString(20);
+//
+//       await LocalStorage.storeDeviceInfo(
+//         deviceID: deviceId,
+//         deviceTOKEN: fcmToken,
+//         deviceTYPE: AppStrings.iOSSlug,
+//         deviceNAME: iosDeviceInfo.utsname.machine,
+//       );
+//     } else {
+//       throw platformUnsupportedError;
+//     }
+//   } catch (k) {
+//     printErrors(type: "storeDeviceInformation Function", errText: k);
+//   }
+// }
 
 Future<PackageInfo> getPackageInfo() async {
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -439,15 +416,7 @@ DateTime findFutureDate({DateTime? futureDate, required double totalMonths}) {
       month++;
     }
 
-    futureDate = DateTime(
-        year,
-        month,
-        futureDate.day,
-        futureDate.hour,
-        futureDate.minute,
-        futureDate.second,
-        futureDate.millisecond,
-        futureDate.microsecond);
+    futureDate = DateTime(year, month, futureDate.day, futureDate.hour, futureDate.minute, futureDate.second, futureDate.millisecond, futureDate.microsecond);
   }
 
   return futureDate!;
@@ -466,8 +435,7 @@ Future<File> createTempFile(Uint8List uint8List) async {
   return tempFile;
 }
 
-UnsupportedError get platformUnsupportedError => UnsupportedError(
-    "Sorry, this app is Android and iOS so it does not support another platform.");
+UnsupportedError get platformUnsupportedError => UnsupportedError("Sorry, this app is Android and iOS so it does not support another platform.");
 
 Future<void> deleteCacheDir() async {
   // final Directory cacheDir = await getTemporaryDirectory();
@@ -491,8 +459,7 @@ class Restart {
   /// This method communicates with the platform-specific code to perform the restart operation,
   /// and then checks the response. If the response is "ok", it returns true, signifying that
   /// the restart operation was successful. Otherwise, it returns false.
-  static Future<bool> restartApp({String? webOrigin}) async =>
-      (await _channel.invokeMethod('restartApp', webOrigin)) == "ok";
+  static Future<bool> restartApp({String? webOrigin}) async => (await _channel.invokeMethod('restartApp', webOrigin)) == "ok";
 }
 
 Future<void> pickImages(
@@ -516,8 +483,7 @@ Future<void> pickImages(
   final ImagePicker imagePicker = ImagePicker();
 
   if (isSingleImage) {
-    final XFile? image =
-        await imagePicker.pickImage(source: source ?? ImageSource.gallery);
+    final XFile? image = await imagePicker.pickImage(source: source ?? ImageSource.gallery);
 
     if (image != null && withCropper) {
       XFile? compressedFile = await _compressImage(image.path);
@@ -584,8 +550,7 @@ Future<CroppedFile?> singleImageCropper(
         hideBottomControls: false,
         cropFrameColor: Colors.grey,
         toolbarColor: Theme.of(context).primaryColor,
-        toolbarWidgetColor:
-            AppColors.getColorOnBackground(Theme.of(context).primaryColor),
+        toolbarWidgetColor: AppColors.getColorOnBackground(Theme.of(context).primaryColor),
         statusBarColor: Theme.of(context).primaryColor,
         activeControlsWidgetColor: Theme.of(context).primaryColor,
       ),
@@ -620,8 +585,7 @@ String convertToTitleCase(String input) {
       result.write(input[i].toUpperCase());
     } else {
       // If character is uppercase, add a space before it
-      if (input[i].toUpperCase() == input[i] &&
-          input[i].toLowerCase() != input[i]) {
+      if (input[i].toUpperCase() == input[i] && input[i].toLowerCase() != input[i]) {
         result.write(' ');
       }
       result.write(input[i]);
@@ -642,8 +606,7 @@ class CustomRangeTextInputFormatter extends TextInputFormatter {
   CustomRangeTextInputFormatter({required this.min, required this.max});
 
   @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
     if (newValue.text.isEmpty) {
       return newValue;
     }
@@ -662,8 +625,7 @@ Offset? getWidgetPosition(BuildContext context, {GlobalKey? widgetKey}) {
   final RenderBox renderBox = context.findRenderObject() as RenderBox;
   final position = renderBox.localToGlobal(Offset.zero);
 
-  final RenderBox? widgetRenderBox =
-      widgetKey?.currentContext?.findRenderObject() as RenderBox?;
+  final RenderBox? widgetRenderBox = widgetKey?.currentContext?.findRenderObject() as RenderBox?;
 
   if (widgetRenderBox != null) {
     return Offset(position.dx, position.dy + widgetRenderBox.size.height);
@@ -714,8 +676,7 @@ Map<String, String> convertStringMap(Map<String, dynamic> data) {
       stringMap[key] = data[key] as String;
     } else {
       // Handle non-string values (e.g., ignore, log a warning)
-      printYellow(
-          'Warning: Key "$key" in data has a non-string value. Ignoring.');
+      printYellow('Warning: Key "$key" in data has a non-string value. Ignoring.');
     }
   }
   return stringMap;

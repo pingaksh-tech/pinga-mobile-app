@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,6 +14,7 @@ import '../exports.dart';
 
 class UiUtils {
   UiUtils._();
+
   static double appButtonHeight = 48.w;
   static double bottomBarHeight = 85;
 
@@ -51,6 +53,7 @@ class UiUtils {
   }
 
   static late StreamSubscription<bool> keyboardSubscription;
+
   // Build a Widget tree and query KeyboardVisibilityProvider
   // for the visibility of the keyboard.
 
@@ -256,4 +259,17 @@ class UiUtils {
     }
     return convertedDate;
   }
+
+  /// Randoms
+  static String randomString = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+  static final Random random = Random();
+
+  static String getRandomString(int length) => String.fromCharCodes(
+        Iterable.generate(
+          length,
+          (_) => randomString.codeUnitAt(
+            random.nextInt(randomString.length),
+          ),
+        ),
+      );
 }

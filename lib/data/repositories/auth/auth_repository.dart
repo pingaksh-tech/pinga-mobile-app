@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 
 import '../../../exports.dart';
-import '../../api/api_utils.dart';
+import '../../firebase/firebase_utils.dart';
 import '../../model/user/user_model.dart';
 
 class AuthRepository {
@@ -90,14 +90,14 @@ class AuthRepository {
     if (await getConnectivityResult()) {
       try {
         loader?.value = true;
-        await ApiUtils.devicesInfo();
+        await FirebaseUtils.devicesInfo();
         await APIFunction.postApiCall(
           apiUrl: ApiUrls.verifyMobileOtpPOST,
           loader: loader,
           body: {
             "phone": mobileNumber,
             "otp": otp,
-            "device_info": await ApiUtils.devicesInfo(),
+            "device_info": await FirebaseUtils.devicesInfo(),
           },
         ).then(
           (response) async {
