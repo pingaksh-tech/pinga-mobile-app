@@ -262,6 +262,7 @@ class ProductsScreen extends StatelessWidget {
                                   children: [
                                     ProductTile(
                                       screenType: "isProductsScreen",
+                                      // screenType: con.productListType.value.name,
                                       category: RxString(con.inventoryProductList[index].subCategoryId ?? ""),
                                       isFancy: con.inventoryProductList[index].isDiamondMultiple ?? false,
                                       inventoryId: con.inventoryProductList[index].id,
@@ -337,6 +338,8 @@ class ProductsScreen extends StatelessWidget {
                                       selectMetalCart: con.inventoryProductList[index].metalId!.value.obs,
                                       selectDiamondCart: (con.inventoryProductList[index].diamonds != null && con.inventoryProductList[index].diamonds!.isNotEmpty) ? (con.inventoryProductList[index].diamonds?.first.diamondClarity?.value ?? "").obs : "".obs,
                                       diamonds: con.inventoryProductList[index].diamonds!,
+
+                                      // cartId: con.inventoryProductList[index].cartId,
                                     ),
                                     // if (con.paginationLoader.value &&
                                     //     index + 1 ==

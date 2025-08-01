@@ -213,7 +213,7 @@ Widget horizontalSelectorButton(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SvgPicture.asset(
-                      remarkSelected?.isNotEmpty ?? false ? selectableItemType.selectedIcon ?? '' : selectableItemType.icon,
+                      (remarkSelected?.isNotEmpty ?? false) ? (selectableItemType.selectedIcon ?? '') : selectableItemType.icon,
                       height: switch (sizeColorSelectorButtonType) {
                         SizeMetalSelectorButtonType.small => 11.h,
                         SizeMetalSelectorButtonType.medium => 14.h,

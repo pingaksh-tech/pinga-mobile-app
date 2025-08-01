@@ -33,6 +33,15 @@ class CartController extends GetxController {
 
   // final HomeController homeCon = Get.find<HomeController>();
   RxString categoryId = "".obs;
+  final currentRoute = ''.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    // ever(Get.routing, (routing) {
+    //   currentRoute.value = routing?.current ?? '';
+    // });
+  }
 
   @override
   void onReady() {

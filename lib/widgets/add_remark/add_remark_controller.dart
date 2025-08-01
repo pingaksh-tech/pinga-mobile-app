@@ -39,9 +39,13 @@ class AddRemarkController extends GetxController {
   void onInit() {
     super.onInit();
 
-    if (Get.arguments != null && Get.arguments['remark'] != null) {
+    if (Get.arguments != null) {
       if (Get.arguments['remark'].runtimeType == String) {
         selectedRemark.value = Get.arguments['remark'];
+
+        remarkCon.value.text = selectedRemark.value;
+
+        checkDisableButton();
       }
     } else {
       selectedRemark.value = "";

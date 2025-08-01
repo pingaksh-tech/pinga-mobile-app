@@ -15,7 +15,6 @@ import 'firebase_options.dart';
 import 'utils/custom_route_observer.dart';
 import 'utils/device_utils.dart';
 import 'utils/global_context.dart';
-
 // import 'view/cart/cart_controller.dart';
 // import 'view/home/home_controller.dart';
 import 'view/orders/widgets/order_filter/order_filter_controller.dart';
@@ -48,6 +47,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customObserver = CustomRouteObserver();
+    Get.put(customObserver); // Make it accessible via Get.find()
+
     LocalStorage.printLocalStorageData();
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -71,7 +73,7 @@ class MyApp extends StatelessWidget {
               scrollBehavior: ScrollBehaviorModified(),
               getPages: AppPages.pages,
               initialRoute: AppRoutes.splashScreen,
-              navigatorObservers: [CustomRouteObserver()],
+              navigatorObservers: [customObserver],
             );
           },
         );
