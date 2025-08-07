@@ -9,7 +9,7 @@ final Map<int, Route<dynamic>> routeMap = {};
 /// Custom Route Observer with reactive route tracking
 class CustomRouteObserver extends NavigatorObserver {
   /// Reactive current route name
-  final RxString currentRoute = ''.obs;
+  RxString currentRoute = ''.obs;
 
   void _logCurrentAndPreviousRoutes() {
     printTitle('Current and Previous Routes with Indices:');

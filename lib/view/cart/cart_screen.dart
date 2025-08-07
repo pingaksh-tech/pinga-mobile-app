@@ -20,7 +20,7 @@ class CartScreen extends StatelessWidget {
   CartScreen({super.key});
 
   final CartController con = Get.put(CartController());
-  CustomRouteObserver routeObserver = Get.find<CustomRouteObserver>();
+  final routeObserver = Get.find<CustomRouteObserver>();
 
   @override
   Widget build(BuildContext context) {

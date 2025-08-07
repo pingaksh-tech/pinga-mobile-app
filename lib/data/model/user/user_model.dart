@@ -141,6 +141,7 @@ class RoleId {
   final dynamic deletedAt;
   final bool? status;
   final DateTime? updatedAt;
+  final String? slug;
 
   RoleId({
     this.id,
@@ -150,6 +151,7 @@ class RoleId {
     this.deletedAt,
     this.status,
     this.updatedAt,
+    this.slug,
   });
 
   factory RoleId.fromJson(Map<String, dynamic> json) => RoleId(
@@ -160,6 +162,7 @@ class RoleId {
         deletedAt: json["deleted_at"],
         status: json["status"],
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+        slug: json["slug"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -170,6 +173,7 @@ class RoleId {
         "deleted_at": deletedAt,
         "status": status,
         "updatedAt": updatedAt?.toIso8601String(),
+        "slug": slug,
       };
 }
 
