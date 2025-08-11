@@ -17,6 +17,7 @@ class RetailerController extends GetxController {
   RxBool nextPageAvailable = true.obs;
   RxBool paginationLoader = false.obs;
   RxBool showCloseButton = false.obs;
+
   @override
   void onReady() {
     super.onReady();
@@ -31,6 +32,7 @@ class RetailerController extends GetxController {
         retailerId.value = Get.arguments["id"];
       }
     }
+    manageScrollController();
   }
 
   /// Pagination

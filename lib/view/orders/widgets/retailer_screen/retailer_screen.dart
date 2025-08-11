@@ -108,26 +108,30 @@ class RetailerScreen extends StatelessWidget {
                   child: con.isLoading.isFalse
                       ? con.retailerList.isNotEmpty
                           ? SingleChildScrollView(
+                              controller: con.scrollController,
                               child: Column(
                                 children: [
                                   ListView.separated(
                                     physics: const NeverScrollableScrollPhysics(),
                                     itemCount: con.retailerList.length,
                                     shrinkWrap: true,
-                                    controller: con.scrollController,
-                                    itemBuilder: (context, index) => ListTile(
-                                      title: Text(
-                                        "${con.retailerList[index].firstName ?? ''} ${con.retailerList[index].lastName ?? ''}",
-                                        // con.retailerList[index].businessName ?? '',
-                                        style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
-                                      ),
-                                      trailing: AppRadioButton(
-                                        isSelected: (con.retailerList[index].id?.value == con.retailerId.value).obs,
-                                      ),
-                                      onTap: () {
-                                        Get.back(result: con.retailerList[index]);
-                                      },
-                                    ),
+                                    // controller: con.scrollController,
+                                    itemBuilder: (context, index) {
+                                      printYellow(con.retailerList.length);
+                                      return ListTile(
+                                        title: Text(
+                                          "${con.retailerList[index].firstName ?? ''} ${con.retailerList[index].lastName ?? ''}",
+                                          // con.retailerList[index].businessName ?? '',
+                                          style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.font),
+                                        ),
+                                        trailing: AppRadioButton(
+                                          isSelected: (con.retailerList[index].id?.value == con.retailerId.value).obs,
+                                        ),
+                                        onTap: () {
+                                          Get.back(result: con.retailerList[index]);
+                                        },
+                                      );
+                                    },
                                     separatorBuilder: (context, index) => Divider(height: 1.h),
                                   ),
 

@@ -196,10 +196,15 @@ class OrdersRepository {
 
       try {
         loader?.value = true;
+        // if (isInitial) {
+        //   con.retailerList.clear();
+        //   con.page.value = 1;
+        //   con.nextPageAvailable.value = true;
+        // }
         if (isInitial) {
           con.retailerList.clear();
           con.page.value = 1;
-          con.nextPageAvailable.value = true;
+          con.nextPageAvailable.value;
         }
 
         /// API
@@ -217,10 +222,21 @@ class OrdersRepository {
               GetRetailerModel model = GetRetailerModel.fromJson(response);
 
               if (model.data != null) {
-                con.retailerList.addAll(model.data?.retailers ?? []);
-                int currentPage = (model.data!.page ?? 1);
-                con.nextPageAvailable.value = currentPage < (model.data!.totalPages ?? 0);
-                con.page.value += currentPage;
+                if (isInitial) {
+                  con.retailerList.assignAll(model.data?.retailers ?? []);
+                } else {
+                  con.retailerList.addAll(model.data?.retailers ?? []);
+                }
+
+                con.page.value++;
+                con.nextPageAvailable.value = model.data?.page != model.data?.totalPages;
+
+                loader?.value = false;
+
+                // con.retailerList.addAll(model.data?.retailers ?? []);
+                // int currentPage = (model.data!.page ?? 1);
+                // con.nextPageAvailable.value = currentPage < (model.data!.totalPages ?? 0);
+                // con.page.value += currentPage;
               }
               loader?.value = false;
             } else {
