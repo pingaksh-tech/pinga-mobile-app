@@ -83,4 +83,7 @@ class ApiUrls {
   static String downloadCatalogueGET({required String catalogueId, required String catalogueType}) => "mobile/catalogue/$catalogueType/$catalogueId";
 
   static String downloadWatchCatalogueGET({required String watchId}) => "mobile/watchlist/download/$watchId";
+
+  ///Set Global Rate
+  static String setGlobalRatePOST = "mobile/auth/update-user";
 }

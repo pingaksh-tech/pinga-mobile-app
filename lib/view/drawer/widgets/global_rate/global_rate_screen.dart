@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
+import '../../../../data/repositories/global_rate/global_rate_repositories.dart';
 import '../../../../exports.dart';
 import '../../../../res/app_bar.dart';
 import 'global_rate_controller.dart';
@@ -21,6 +22,26 @@ class GlobalRateScreen extends StatelessWidget {
         ),
         body: ListView(
           children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(top: defaultPadding),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Current Rate ",
+                    style: AppTextStyle.textFieldStyle(context),
+                  ),
+                  Text(
+                    "${con.rateCon.value.text.isEmpty ? "0" : con.rateCon.value.text} %",
+                    style: AppTextStyle.textFieldStyle(context).copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
             AppTextField(
               title: "Set Global Rate (%)",
               hintText: "Enter rate",
@@ -77,15 +98,23 @@ class GlobalRateScreen extends StatelessWidget {
           child: AppButton(
             title: "Update",
             disableButton: con.disableButton.value,
+            loader: con.isLoading.value,
             padding: EdgeInsets.all(defaultPadding).copyWith(bottom: MediaQuery.of(context).padding.bottom + defaultPadding),
             onPressed: () {
               FocusScope.of(context).unfocus();
-              Get.back();
-              // if (con.remarkCon.value.text.trim().isNotEmpty) {
-              //   con.selectedRemark.value = con.remarkCon.value.text.trim();
-              //   con.remarkCon.value.clear();
-              // }
-              Get.back();
+
+              if (con.checkValidation(con.rateCon.value.text.trim())) {
+                GlobalRateRepositories.updateRateApi(isLoader: con.isLoading, userRate: con.rateCon.value.text.trim()).then(
+                  (value) {
+                    Get.back();
+                    // if (con.remarkCon.value.text.trim().isNotEmpty) {
+                    //   con.selectedRemark.value = con.remarkCon.value.text.trim();
+                    //   con.remarkCon.value.clear();
+                    // }
+                    Get.back();
+                  },
+                );
+              }
             },
           ),
         ),

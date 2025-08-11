@@ -7,6 +7,7 @@ class GlobalRateController extends GetxController {
   RxString rateError = ''.obs;
 
   RxBool disableButton = true.obs;
+  RxBool isLoading = false.obs;
 
   checkValidation(String value) {
     if (num.parse(value) > 100) {
@@ -16,6 +17,8 @@ class GlobalRateController extends GetxController {
       rateError.value = '';
       rateValidation.value = true;
     }
+
+    return rateValidation.value;
   }
 
   checkDisableButton() {

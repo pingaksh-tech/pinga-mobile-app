@@ -84,24 +84,23 @@ class AppDrawer extends StatelessWidget {
                     ),
                     const Divider(height: 1),
 
-                    /*        // if (UserRoleEnum.fromSlug(LocalStorage.userModel.roleId?.slug ?? "") == UserRoleEnum.retailer)
-                    ListTile(
-                      leading: SvgPicture.asset(
-                        AppAssets.priceRateIcon,
-                        height: 16.h,
-                        colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                    if (UserRoleEnum.fromSlug(LocalStorage.userModel.roleId?.slug ?? "") == UserRoleEnum.retailer)
+                      ListTile(
+                        leading: SvgPicture.asset(
+                          AppAssets.priceRateIcon,
+                          height: 16.h,
+                          colorFilter: ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                        ),
+                        title: Text(
+                          "Global Rate",
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        onTap: () {
+                          Get.back();
+                          Get.toNamed(AppRoutes.globalRateScreen);
+                        },
                       ),
-                      title: Text(
-                        "Global Rate",
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      onTap: () {
-                        Get.back();
-                        Get.toNamed(AppRoutes.globalRateScreen);
-                      },
-                    ),
-                    // if (UserRoleEnum.fromSlug(LocalStorage.userModel.roleId?.slug ?? "") == UserRoleEnum.retailer)
-                    const Divider(height: 1),*/
+                    if (UserRoleEnum.fromSlug(LocalStorage.userModel.roleId?.slug ?? "") == UserRoleEnum.retailer) const Divider(height: 1),
 
                     /// Settings
                     /* ListTile(
