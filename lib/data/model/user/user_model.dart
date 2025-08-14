@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:get/get.dart';
+
 UserDataModel userDataModelFromJson(String str) => UserDataModel.fromJson(json.decode(str));
 
 String userDataModelToJson(UserDataModel data) => json.encode(data.toJson());
@@ -71,6 +73,7 @@ class UserModel {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
+  final RxInt? pricePercentage;
 
   UserModel({
     this.userImage,
@@ -90,6 +93,7 @@ class UserModel {
     this.createdAt,
     this.updatedAt,
     this.v,
+    this.pricePercentage,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -110,6 +114,7 @@ class UserModel {
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
         v: json["__v"],
+        pricePercentage: RxInt(json["price_percentage"] ?? 0),
       );
 
   Map<String, dynamic> toJson() => {
@@ -130,6 +135,7 @@ class UserModel {
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "__v": v,
+        "price_percentage": pricePercentage?.value,
       };
 }
 

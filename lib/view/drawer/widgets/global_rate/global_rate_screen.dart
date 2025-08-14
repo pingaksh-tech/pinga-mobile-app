@@ -32,7 +32,7 @@ class GlobalRateScreen extends StatelessWidget {
                     style: AppTextStyle.textFieldStyle(context),
                   ),
                   Text(
-                    "${con.rateCon.value.text.isEmpty ? "0" : con.rateCon.value.text} %",
+                    "${LocalStorage.priceRate} %",
                     style: AppTextStyle.textFieldStyle(context).copyWith(
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).colorScheme.primary,
@@ -107,10 +107,12 @@ class GlobalRateScreen extends StatelessWidget {
                 GlobalRateRepositories.updateRateApi(isLoader: con.isLoading, userRate: con.rateCon.value.text.trim()).then(
                   (value) {
                     Get.back();
-                    // if (con.remarkCon.value.text.trim().isNotEmpty) {
-                    //   con.selectedRemark.value = con.remarkCon.value.text.trim();
-                    //   con.remarkCon.value.clear();
-                    // }
+                    if (con.rateCon.value.text.trim().isNotEmpty) {
+                      LocalStorage.setPriceRate(
+                        priceRate: con.rateCon.value.text.trim(),
+                      );
+                      // LocalStorage.userModel.pricePercentage?.value = int.parse(con.rateCon.value.text.trim());
+                    }
                     Get.back();
                   },
                 );
