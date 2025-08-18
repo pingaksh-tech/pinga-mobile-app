@@ -18,7 +18,9 @@ class CartController extends GetxController {
   RxBool cartLoader = true.obs;
   ScrollController scrollController = ScrollController();
   RxInt page = 1.obs;
-  RxInt itemLimit = 20.obs;
+
+  //TODO: SET ITEM LIMIT BECAUSE CLIENT CHANGE IT
+  RxInt itemLimit = 100.obs;
   RxBool nextPageAvailable = true.obs;
   RxBool paginationLoader = false.obs;
 

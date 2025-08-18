@@ -58,6 +58,121 @@ class PriceBreakupDialog {
                     padding: EdgeInsets.zero,
                     shrinkWrap: true,
                     children: [
+                      if (priceBreakModel.colourStone != null)
+
+                        /// Body
+                        Text(
+                          "COLOR STONE",
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.primary),
+                        ),
+                      if (priceBreakModel.colourStone != null)
+                        Padding(
+                          padding: bodyPadding,
+                          child: Divider(height: 5.h, color: Theme.of(context).dividerColor.withOpacity(.2)),
+                        ),
+                      if (priceBreakModel.colourStone != null)
+
+                        /// Table View
+                        Padding(
+                          padding: bodyPadding.copyWith(bottom: defaultPadding),
+                          child: Table(
+                            columnWidths: const {
+                              0: FlexColumnWidth(1),
+                              1: FlexColumnWidth(1),
+                              2: FlexColumnWidth(1),
+                            },
+                            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                            children: [
+                              /// Title Row
+                              priceTableRow(context, value1: "Weight", value2: "Pieces", value3: "Total"),
+
+                              /// Value Row
+                              priceTableRow(
+                                context,
+                                isSubtitle: true,
+                                value1: "${priceBreakModel.colourStone?.colourStoneWeight} g",
+                                value2: UiUtils.amountFormat(priceBreakModel.colourStone?.colourStoneCount ?? 0, decimalDigits: 2),
+                                value3: UiUtils.amountFormat(priceBreakModel.colourStone?.colourStonePrice ?? 0, decimalDigits: 0),
+                              ),
+                            ],
+                          ),
+                        ),
+                      if (priceBreakModel.pearl != null)
+
+                        /// Body
+                        Text(
+                          "PEARL",
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.primary),
+                        ),
+                      if (priceBreakModel.pearl != null)
+                        Padding(
+                          padding: bodyPadding,
+                          child: Divider(height: 5.h, color: Theme.of(context).dividerColor.withOpacity(.2)),
+                        ),
+                      if (priceBreakModel.pearl != null)
+
+                        /// Table View
+                        Padding(
+                          padding: bodyPadding.copyWith(bottom: defaultPadding),
+                          child: Table(
+                            columnWidths: const {
+                              0: FlexColumnWidth(1),
+                              1: FlexColumnWidth(1),
+                              2: FlexColumnWidth(1),
+                            },
+                            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                            children: [
+                              /// Title Row
+                              priceTableRow(context, value1: "Weight", value2: "Pieces", value3: "Total"),
+
+                              /// Value Row
+                              priceTableRow(
+                                context,
+                                isSubtitle: true,
+                                value1: "${priceBreakModel.pearl?.pearlWeight} g",
+                                value2: UiUtils.amountFormat(priceBreakModel.pearl?.pearlCount ?? 0, decimalDigits: 2),
+                                value3: UiUtils.amountFormat(priceBreakModel.pearl?.pearlPrice ?? 0, decimalDigits: 0),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                      Text(
+                        "MINO",
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.primary),
+                      ),
+                      Padding(
+                        padding: bodyPadding,
+                        child: Divider(height: 5.h, color: Theme.of(context).dividerColor.withOpacity(.2)),
+                      ),
+
+                      /// Body
+                      Padding(
+                        padding: bodyPadding.copyWith(bottom: 0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Total",
+                              textAlign: TextAlign.start,
+                              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.font),
+                            ),
+                            Text(
+                              UiUtils.amountFormat(priceBreakModel.mino?.minoPrice ?? 0, decimalDigits: 2),
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12.sp, color: AppColors.subText),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: bodyPadding.copyWith(bottom: defaultPadding),
+                        child: Divider(height: 5.h, color: Theme.of(context).dividerColor.withOpacity(.2)),
+                      ),
+
                       /// Body
                       Text(
                         "METAL",

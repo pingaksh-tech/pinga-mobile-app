@@ -148,7 +148,7 @@ class ProductsController extends GetxController {
     ///  PRODUCTS
     scrollController.addListener(
       () async {
-        if (scrollController.position.maxScrollExtent == scrollController.position.pixels) {
+        if (scrollController.position.maxScrollExtent / 1.5 < scrollController.position.pixels) {
           if (nextPageAvailable.value && paginationLoader.isFalse) {
             /// GET PRODUCTS API
             await ProductRepository.getFilterProductsListAPI(

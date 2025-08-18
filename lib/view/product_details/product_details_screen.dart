@@ -11,7 +11,6 @@ import '../../data/repositories/wishlist/wishlist_repository.dart';
 import '../../exports.dart';
 import '../../packages/cached_network_image/cached_network_image.dart';
 import '../../res/app_bar.dart';
-import '../../res/app_dialog.dart';
 import '../../widgets/plus_minus_title/plus_minus_tile.dart';
 import '../../widgets/size_selector/size_selector_botton.dart';
 import '../../widgets/tab_bar.dart';
@@ -169,57 +168,44 @@ class ProductDetailsScreen extends StatelessWidget {
                         Padding(
                           padding: bodyPadding,
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Obx(
-                                () => Text(
-                                  UiUtils.amountFormat(con.productDetailModel.value.priceBreaking?.total?.value ?? 0),
-                                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                        fontWeight: FontWeight.w800,
-                                        color: Theme.of(context).primaryColor,
-                                      ),
-                                ),
-                              ),
-                              defaultPadding.horizontalSpace,
-
-                              /// PRICE BREAKUP
-                              AppButton(
-                                height: 15.h,
-                                margin: EdgeInsets.symmetric(horizontal: 10.w),
-                                borderRadius: BorderRadius.circular(5.r),
-                                flexibleWidth: true,
-                                title: "Price breakup",
-                                titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                      fontSize: 11.sp,
-                                      color: AppColors.background,
-                                      fontWeight: FontWeight.w500,
-                                      letterSpacing: .3,
+                              Row(
+                                children: [
+                                  Obx(
+                                    () => Text(
+                                      UiUtils.amountFormat(con.productDetailModel.value.priceBreaking?.total?.value ?? 0),
+                                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                            fontWeight: FontWeight.w800,
+                                            color: Theme.of(context).primaryColor,
+                                          ),
                                     ),
-                                onPressed: () {
-                                  PriceBreakupDialog.priceBreakupDialog(context, priceBreakModel: con.productDetailModel.value.priceBreaking ?? PriceBreaking());
-                                },
-                              )
-                            ],
-                          ),
-                        ),
-                        Divider(height: defaultPadding * 2, indent: defaultPadding, endIndent: defaultPadding),
+                                  ),
+                                  defaultPadding.horizontalSpace,
 
-                        Padding(
-                          padding: bodyPadding,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              /// Wear
-                              // CustomProductWatchButton(
-                              //   size: 58.h,
-                              //   icon: AppAssets.jewelleryWearIcon,
-                              //   title: "Wear",
-                              //   onPressed: () {},
-                              // ),
-                              /// Watch
+                                  /// PRICE BREAKUP
+                                  AppButton(
+                                    height: 15.h,
+                                    margin: EdgeInsets.symmetric(horizontal: 10.w),
+                                    borderRadius: BorderRadius.circular(5.r),
+                                    flexibleWidth: true,
+                                    title: "Price breakup",
+                                    titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                          fontSize: 11.sp,
+                                          color: AppColors.background,
+                                          fontWeight: FontWeight.w500,
+                                          letterSpacing: .3,
+                                        ),
+                                    onPressed: () {
+                                      PriceBreakupDialog.priceBreakupDialog(context, priceBreakModel: con.productDetailModel.value.priceBreaking ?? PriceBreaking());
+                                    },
+                                  ),
+                                ],
+                              ),
                               CustomProductWatchButton(
-                                size: 58.h,
+                                size: 30.h,
                                 icon: AppAssets.watchlistFilled,
-                                title: "Watch",
+                                // title: "Watch",
                                 onPressed: () {
                                   Get.toNamed(
                                     AppRoutes.addWatchListScreen,
@@ -235,30 +221,69 @@ class ProductDetailsScreen extends StatelessWidget {
                                   );
                                 },
                               ),
-                              defaultPadding.horizontalSpace,
-
-                              /// Add Metal
-                              CustomProductWatchButton(
-                                size: 58.h,
-                                title: "Add\nmetal",
-                                onPressed: () {
-                                  AppDialogs.addMetalDialog(
-                                    context,
-                                    metalWeight: con.productDetailModel.value.extraMetalWeight,
-                                    metalPrice: con.productDetailModel.value.priceBreaking?.metal?.pricePerGram ?? 0,
-                                  ).then(
-                                    (value) {
-                                      if (value != null) {
-                                        con.extraMetalPrice = value['price'];
-                                        con.extraMetalWt = value['wt'];
-                                      }
-                                    },
-                                  );
-                                },
-                              ),
                             ],
                           ),
                         ),
+                        //TODO: IF in future add this functionality then uncomment this code
+                        // Divider(height: defaultPadding * 2, indent: defaultPadding, endIndent: defaultPadding),
+                        //
+                        // Padding(
+                        //   padding: bodyPadding,
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.start,
+                        //     children: [
+                        //       /// Wear
+                        //       // CustomProductWatchButton(
+                        //       //   size: 58.h,
+                        //       //   icon: AppAssets.jewelleryWearIcon,
+                        //       //   title: "Wear",
+                        //       //   onPressed: () {},
+                        //       // ),
+                        //       /// Watch
+                        //       CustomProductWatchButton(
+                        //         size: 58.h,
+                        //         icon: AppAssets.watchlistFilled,
+                        //         title: "Watch",
+                        //         onPressed: () {
+                        //           Get.toNamed(
+                        //             AppRoutes.addWatchListScreen,
+                        //             arguments: {
+                        //               'inventoryId': con.inventoryId.value,
+                        //               'quantity': con.quantity.value,
+                        //               'sizeId': con.productDetailModel.value.sizeId,
+                        //               'metalId': con.productDetailModel.value.metalId,
+                        //               'diamondClarity': (con.productDetailModel.value.diamonds != null && con.productDetailModel.value.diamonds!.isNotEmpty) ? con.productDetailModel.value.diamonds?.first.diamondClarity?.value : "",
+                        //               "diamond": con.productDetailModel.value.diamonds,
+                        //               "isMultiDiamond": con.isMultipleDiamondSelection.value,
+                        //             },
+                        //           );
+                        //         },
+                        //       ),
+                        //
+                        //       defaultPadding.horizontalSpace,
+                        //
+                        //       /// Add Metal
+                        //       CustomProductWatchButton(
+                        //         size: 58.h,
+                        //         title: "Add\nmetal",
+                        //         onPressed: () {
+                        //           AppDialogs.addMetalDialog(
+                        //             context,
+                        //             metalWeight: con.productDetailModel.value.extraMetalWeight,
+                        //             metalPrice: con.productDetailModel.value.priceBreaking?.metal?.pricePerGram ?? 0,
+                        //           ).then(
+                        //             (value) {
+                        //               if (value != null) {
+                        //                 con.extraMetalPrice = value['price'];
+                        //                 con.extraMetalWt = value['wt'];
+                        //               }
+                        //             },
+                        //           );
+                        //         },
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
                         defaultPadding.verticalSpace,
                         Container(
                           color: AppColors.background,

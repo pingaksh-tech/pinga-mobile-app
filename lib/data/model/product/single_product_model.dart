@@ -96,6 +96,9 @@ class PriceBreaking {
   final Metal? metal;
   final PriceBreakingDiamond? diamond;
   final ManufacturingPrice? manufacturingPrice;
+  final ColourStone? colourStone;
+  final Pearl? pearl;
+  final Mino? mino;
   final Other? other;
   RxNum? total;
 
@@ -103,6 +106,9 @@ class PriceBreaking {
     this.metal,
     this.diamond,
     this.manufacturingPrice,
+    this.colourStone,
+    this.pearl,
+    this.mino,
     this.other,
     this.total,
   });
@@ -111,6 +117,9 @@ class PriceBreaking {
         metal: json["metal"] == null ? null : Metal.fromJson(json["metal"]),
         diamond: json["diamond"] == null ? null : PriceBreakingDiamond.fromJson(json["diamond"]),
         manufacturingPrice: json["manufacturing_price"] == null ? null : ManufacturingPrice.fromJson(json["manufacturing_price"]),
+        colourStone: json["colour_stone"] == null ? null : ColourStone.fromJson(json["colour_stone"]),
+        pearl: json["pearl"] == null ? null : Pearl.fromJson(json["pearl"]),
+        mino: json["mino"] == null ? null : Mino.fromJson(json["mino"]),
         other: json["other"] == null ? null : Other.fromJson(json["other"]),
         total: json["total"] == null ? null : RxNum(num.tryParse(json["total"].toString()) ?? 0),
       );
@@ -119,6 +128,9 @@ class PriceBreaking {
         "metal": metal?.toJson(),
         "diamond": diamond?.toJson(),
         "manufacturing_price": manufacturingPrice?.toJson(),
+        "colour_stone": colourStone?.toJson(),
+        "pearl": pearl?.toJson(),
+        "mino": mino?.toJson(),
         "other": other?.toJson(),
         "total": total?.value,
       };
@@ -145,6 +157,70 @@ class ManufacturingPrice {
         "metal_weight": metalWeight,
         "per_gram_labour": perGramLabour,
         "manufacturing_price": manufacturingPrice,
+      };
+}
+
+class ColourStone {
+  final num? colourStoneWeight;
+  final num? colourStonePrice;
+  final num? colourStoneCount;
+
+  ColourStone({
+    this.colourStoneWeight,
+    this.colourStonePrice,
+    this.colourStoneCount,
+  });
+
+  factory ColourStone.fromJson(Map<String, dynamic> json) => ColourStone(
+        colourStoneWeight: json["colour_stone_weight"]?.toDouble(),
+        colourStonePrice: json["colour_stone_price"],
+        colourStoneCount: json["colour_stone_count"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "colour_stone_weight": colourStoneWeight,
+        "colour_stone_price": colourStonePrice,
+        "colour_stone_count": colourStoneCount,
+      };
+}
+
+class Mino {
+  final num? minoPrice;
+
+  Mino({
+    this.minoPrice,
+  });
+
+  factory Mino.fromJson(Map<String, dynamic> json) => Mino(
+        minoPrice: json["mino_price"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "mino_price": minoPrice,
+      };
+}
+
+class Pearl {
+  final num? pearlWeight;
+  final num? pearlPrice;
+  final num? pearlCount;
+
+  Pearl({
+    this.pearlWeight,
+    this.pearlPrice,
+    this.pearlCount,
+  });
+
+  factory Pearl.fromJson(Map<String, dynamic> json) => Pearl(
+        pearlWeight: json["pearl_weight"],
+        pearlPrice: json["pearl_price"],
+        pearlCount: json["pearl_count"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "pearl_weight": pearlWeight,
+        "pearl_price": pearlPrice,
+        "pearl_count": pearlCount,
       };
 }
 
