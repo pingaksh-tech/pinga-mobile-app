@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../../../data/model/product/products_model.dart';
 import '../../../../data/model/watchlist/watchlist_model.dart';
 import '../../../../data/repositories/watchlist/watchlist_repository.dart';
+import '../../../../exports.dart';
 
 class AddWatchListController extends GetxController {
   Rx<TextEditingController> nameCon = TextEditingController().obs;
@@ -23,6 +24,10 @@ class AddWatchListController extends GetxController {
   RxString diamondClarity = "".obs;
   RxBool isMultiDiamond = false.obs;
   List<DiamondListModel> diamonds = [];
+
+  Rx<WatchListType> watchListType = WatchListType.normal.obs;
+
+  List<String> cartIds = [];
 
   @override
   void onInit() {
@@ -49,6 +54,13 @@ class AddWatchListController extends GetxController {
       }
       if (Get.arguments['isMultiDiamond'].runtimeType == bool) {
         isMultiDiamond.value = Get.arguments['isMultiDiamond'];
+      }
+      if (Get.arguments['watchListType'].runtimeType == WatchListType) {
+        watchListType.value = Get.arguments['watchListType'];
+      }
+     
+      if (Get.arguments['cartIds'].runtimeType == List<String>) {
+        cartIds = Get.arguments['cartIds'];
       }
     }
   }

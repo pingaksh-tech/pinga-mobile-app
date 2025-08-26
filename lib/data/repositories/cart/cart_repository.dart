@@ -81,7 +81,7 @@ class CartRepository {
           apiUrl: ApiUrls.getAllCartGET,
           params: {
             "page": con.page.value,
-            "limit": con.itemLimit.value,
+            // "limit": con.itemLimit.value,
           },
           loader: loader,
         ).then(

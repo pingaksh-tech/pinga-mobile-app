@@ -25,6 +25,8 @@ class WatchListRepository {
     required String diamondClarity,
     String? remark,
     List<Map<String, dynamic>>? diamonds,
+    required WatchListType watchListType,
+    List<String>? cartIds,
     RxBool? loader,
   }) async {
     if (await getConnectivityResult()) {
@@ -34,16 +36,21 @@ class WatchListRepository {
         /// API
         await APIFunction.postApiCall(
           apiUrl: ApiUrls.createAndGetWatchlistAPI,
-          body: {
-            "name": watchlistName,
-            "inventory_id": inventoryId,
-            "quantity": quantity,
-            "metal_id": metalId,
-            "size_id": sizeId,
-            if (!isValEmpty(diamondClarity)) "diamond_clarity": diamondClarity,
-            if (!isValEmpty(diamonds)) "diamonds": diamonds,
-            if (!isValEmpty(remark)) "remark": remark,
-          },
+          body: watchListType == WatchListType.normal
+              ? {
+                  "name": watchlistName,
+                  "inventory_id": inventoryId,
+                  "quantity": quantity,
+                  "metal_id": metalId,
+                  "size_id": sizeId,
+                  if (!isValEmpty(diamondClarity)) "diamond_clarity": diamondClarity,
+                  if (!isValEmpty(diamonds)) "diamonds": diamonds,
+                  if (!isValEmpty(remark)) "remark": remark,
+                }
+              : {
+                  "name": watchlistName,
+                  "cartIds": cartIds,
+                },
           loader: loader,
         ).then(
           (response) async {
@@ -228,6 +235,7 @@ class WatchListRepository {
   }
 
   static CancelToken cancelToken = CancelToken();
+
   // Method to cancel the request
   static void cancelDownloadRequest() {
     if (!cancelToken.isCancelled) {

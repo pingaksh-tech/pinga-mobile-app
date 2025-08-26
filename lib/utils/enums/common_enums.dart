@@ -109,6 +109,8 @@ enum SizeMetalSelectorButtonType { small, medium, large }
 ///* PRODUCT LIST TYPE
 enum ProductsListType { normal, watchlist, wishlist, cart }
 
+enum WatchListType { normal, cart }
+
 ///* PRODUCT TILE TYPE
 enum ProductTileType { grid, list, variant, cartTile }
 
