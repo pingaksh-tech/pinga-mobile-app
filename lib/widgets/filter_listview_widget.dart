@@ -39,6 +39,7 @@ class _FilterListViewWidgetState extends State<FilterListViewWidget> {
         FilterItemType.mrp => 0,
         FilterItemType.available => 0,
         FilterItemType.gender => 0,
+        FilterItemType.retailers => 0,
       },
       itemBuilder: (context, index) => CustomCheckboxTile(
         scale: 1,
@@ -52,6 +53,7 @@ class _FilterListViewWidgetState extends State<FilterListViewWidget> {
           FilterItemType.mrp => "",
           FilterItemType.available => "",
           FilterItemType.gender => "",
+          FilterItemType.retailers => "",
         },
         isSelected: switch (widget.type) {
           FilterItemType.diamond => RxBool(filterCon.selectedDiamonds.contains(widget.diamondList?[index].name)),
@@ -63,6 +65,7 @@ class _FilterListViewWidgetState extends State<FilterListViewWidget> {
           FilterItemType.mrp => false.obs,
           FilterItemType.available => false.obs,
           FilterItemType.gender => false.obs,
+          FilterItemType.retailers => false.obs,
         },
         onChanged: (val) {
           switch (widget.type) {
@@ -127,6 +130,8 @@ class _FilterListViewWidgetState extends State<FilterListViewWidget> {
               break;
 
             case FilterItemType.gender:
+              break;
+            case FilterItemType.retailers:
               break;
           }
 

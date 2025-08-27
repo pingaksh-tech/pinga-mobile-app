@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
+import '../../../../data/model/cart/retailer_model.dart';
 import '../../../../data/model/filter/gender_model.dart';
 import '../../../../data/model/filter/mrp_model.dart';
 import '../../../../data/model/filter/stock_available_model.dart';
@@ -68,9 +69,20 @@ class FilterController extends GetxController {
 
   RxBool isPlatinumBrand = false.obs;
 
+  RxList<RetailerModel> retailerList = <RetailerModel>[].obs;
+
+  Rx<RetailerModel>? selectedRetailer = RetailerModel().obs;
+
   @override
   void onInit() {
     super.onInit();
+
+    if (UserRoleEnum.fromSlug(LocalStorage.userModel.roleId?.slug ?? "") != UserRoleEnum.salesman) {
+      filterOptions.value = FilterItemType.values; // Show all filters for other roles
+    } else {
+      filterOptions.value = FilterItemType.values.where((filter) => filter != FilterItemType.retailers).toList().obs; // Exclude retailers filter for salesman role
+    }
+
     applyFilterCounts.addAll(List.generate(filterOptions.length, (index) => 0));
 
     if (Get.arguments != null) {
@@ -90,10 +102,13 @@ class FilterController extends GetxController {
     }
   }
 
+  RxInt page = 1.obs;
+  RxInt itemLimit = 1000.obs; //TODO: nikunj bhai said to set static limit for now in future he will change in api
   @override
   void onReady() async {
     super.onReady();
     await FilterRepository.stockAvailableList();
+    await FilterRepository.getRetailerApi();
     addRangeValueFromVariableToController();
   }
 
@@ -133,7 +148,7 @@ class FilterController extends GetxController {
     selectedCollections.clear();
     selectedGender.clear();
     selectMrp.value = MrpModel();
-
+    selectedRetailer?.value = RetailerModel();
     selectSeller.value = "";
     selectLatestDesign.value = "";
     count = 0;

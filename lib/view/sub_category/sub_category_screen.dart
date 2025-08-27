@@ -1,11 +1,9 @@
-import 'dart:async';
+// import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-import '../../data/repositories/sub_category/sub_category_repository.dart';
 import '../../exports.dart';
 import '../../res/app_bar.dart';
 import '../../res/tab_bar.dart';
@@ -73,7 +71,7 @@ class SubCategoryScreen extends StatelessWidget {
                       child: AppTextField(
                         hintText: "Search",
                         controller: con.searchTEC.value,
-                        focusNode: con.searchFocusNode.value,
+                        // focusNode: con.searchFocusNode.value,
                         padding: EdgeInsets.only(left: defaultPadding, right: defaultPadding),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(
@@ -81,47 +79,61 @@ class SubCategoryScreen extends StatelessWidget {
                           ),
                           borderSide: BorderSide.none,
                         ),
-                        textInputAction: TextInputAction.search,
+                        readOnly: true,
+                        // textInputAction: TextInputAction.search,
                         contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.3, horizontal: defaultPadding),
                         onTap: () {
-                          con.tabController.animateTo(0);
-                        },
-                        suffixIcon: con.showCloseButton.isTrue
-                            ? Center(
-                                child: SvgPicture.asset(
-                                  AppAssets.crossIcon,
-                                  color: Theme.of(context).primaryColor, // ignore: deprecated_member_use
-                                ),
-                              )
-                            : null,
-                        suffixOnTap: con.showCloseButton.isTrue
-                            ? () async {
-                                FocusScope.of(context).unfocus();
-                                con.showCloseButton.value = false;
-                                con.searchTEC.value.clear();
-
-                                /// CLEAR SEARCH API
-                                await SubCategoryRepository.getSubCategoriesAPI(loader: con.loaderSubCategory, searchText: con.getSearchText);
-                              }
-                            : null,
-                        onChanged: (value) {
-                          if (con.searchTEC.value.text.isNotEmpty) {
-                            con.showCloseButton.value = true;
-                          } else {
-                            con.showCloseButton.value = false;
-                          }
-
-                          /// DEBOUNCE
-                          if (con.searchDebounce?.isActive ?? false) {
-                            con.searchDebounce?.cancel();
-                          }
-                          con.searchDebounce = Timer(
-                            defaultSearchDebounceDuration,
-                            () async {
-                              /// Search API
-                              await SubCategoryRepository.getSubCategoriesAPI(loader: con.loaderSubCategory, searchText: con.getSearchText);
+                          FocusScope.of(context).unfocus();
+                          Get.toNamed(
+                            AppRoutes.productScreen,
+                            arguments: {
+                              "isSearch": true,
                             },
                           );
+                          FocusScope.of(context).unfocus();
+                          // con.tabController.animateTo(0);
+                        },
+                        prefixIcon: UiUtils.textFiledIcon(
+                          AppAssets.search,
+                          color: ColorFilter.mode(Colors.grey.shade400, BlendMode.srcIn),
+                        ),
+                        // suffixIcon: con.showCloseButton.isTrue
+                        //     ? Center(
+                        //         child: SvgPicture.asset(
+                        //           AppAssets.crossIcon,
+                        //           color: Theme.of(context).primaryColor, // ignore: deprecated_member_use
+                        //         ),
+                        //       )
+                        //     : null,
+                        // suffixOnTap: con.showCloseButton.isTrue
+                        //     ? () async {
+                        //         FocusScope.of(context).unfocus();
+                        //         con.showCloseButton.value = false;
+                        //         con.searchTEC.value.clear();
+                        //
+                        //         /// CLEAR SEARCH API
+                        //         await SubCategoryRepository.getSubCategoriesAPI(loader: con.loaderSubCategory, searchText: con.getSearchText);
+                        //       }
+                        //     : null,
+                        onChanged: (value) {
+                          //TODO: Based on new requirements, when tap on field it will redirect on product listing screen
+                          // if (con.searchTEC.value.text.isNotEmpty) {
+                          //   con.showCloseButton.value = true;
+                          // } else {
+                          //   con.showCloseButton.value = false;
+                          // }
+                          //
+                          // /// DEBOUNCE
+                          // if (con.searchDebounce?.isActive ?? false) {
+                          //   con.searchDebounce?.cancel();
+                          // }
+                          // con.searchDebounce = Timer(
+                          //   defaultSearchDebounceDuration,
+                          //   () async {
+                          //     /// Search API
+                          //     await SubCategoryRepository.getSubCategoriesAPI(loader: con.loaderSubCategory, searchText: con.getSearchText);
+                          //   },
+                          // );
                         },
                       ),
                     ),

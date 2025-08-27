@@ -115,21 +115,19 @@ class UiUtils {
   /// ***********************************************************************************
   ///                                 TEXT FIELD ICON
   /// ***********************************************************************************
-  static Widget textFiledIcon(String svgIconPath, {double? width, double? imageHeight, RxBool? isValid}) {
-    return SizedBox(
-      width: width ?? 40,
-      child: UiUtils.fadeSwitcherWidget(
-        child: Center(
-          key: ValueKey<RxBool?>(isValid),
-          child: SvgPicture.asset(
-            svgIconPath,
-            height: imageHeight ?? 20,
-            colorFilter: isValid?.value == false ? ColorFilter.mode(Theme.of(Get.context!).colorScheme.error, BlendMode.srcIn) : null,
+  static Widget textFiledIcon(String svgIconPath, {double? width, double? imageHeight, RxBool? isValid, ColorFilter? color}) => SizedBox(
+        width: width ?? 40,
+        child: UiUtils.fadeSwitcherWidget(
+          child: Center(
+            key: ValueKey<RxBool?>(isValid),
+            child: SvgPicture.asset(
+              svgIconPath,
+              height: imageHeight ?? 16,
+              colorFilter: color ?? (isValid?.value == false ? ColorFilter.mode(Theme.of(Get.context!).colorScheme.error, BlendMode.srcIn) : null),
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 
   /// ***********************************************************************************
   ///                                 SECURE PASSWORD EYE

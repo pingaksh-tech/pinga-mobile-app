@@ -245,6 +245,7 @@ class SortingBottomSheet extends StatelessWidget {
                               deliveryList: filterCon.selectedDelivery,
                               productionNameList: filterCon.selectedProductNames,
                               collectionList: filterCon.selectedCollections,
+                              retailerModel: filterCon.selectedRetailer?.value,
                             );
 
                             Get.back();

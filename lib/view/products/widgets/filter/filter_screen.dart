@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../../../controller/predefine_value_controller.dart';
+import '../../../../data/model/cart/retailer_model.dart';
 import '../../../../data/model/common/splash_model.dart';
 import '../../../../data/model/filter/mrp_model.dart';
 import '../../../../data/repositories/product/product_repository.dart';
@@ -454,7 +455,32 @@ class FilterScreen extends StatelessWidget {
                       onSelect: () {
                         con.applyFilterCounts[8] = con.selectedCollections.length;
                       },
-                    )
+                    ),
+                  // TODO: Handle this case.
+                  FilterItemType.retailers => ListView.separated(
+                      physics: const RangeMaintainingScrollPhysics(),
+                      padding: EdgeInsets.symmetric(vertical: defaultPadding / 2),
+                      itemCount: con.retailerList.length,
+                      separatorBuilder: (context, index) => separateDivider,
+                      itemBuilder: (context, index) => Obx(() {
+                        return CustomCheckboxTile(
+                          scale: 1,
+                          title: "${con.retailerList[index].firstName ?? ''} ${con.retailerList[index].lastName ?? ''}",
+                          isSelected: RxBool(con.selectedRetailer?.value == con.retailerList[index]),
+                          onChanged: (val) {
+                            if (val == true) {
+                              con.selectedRetailer?.value = con.retailerList[index];
+                              con.count = 1; // Ensure only one retailer is counted
+                            } else {
+                              con.selectedRetailer?.value = RetailerModel();
+                              con.count = 0;
+                            }
+
+                            con.applyFilterCounts[9] = con.selectedRetailer?.value.id != null ? 1 : 0;
+                          },
+                        );
+                      }),
+                    ),
                 },
               ),
             ],
@@ -509,6 +535,7 @@ class FilterScreen extends StatelessWidget {
                         deliveryList: con.selectedDelivery,
                         productionNameList: con.selectedProductNames,
                         collectionList: con.selectedCollections,
+                        retailerModel: con.selectedRetailer?.value,
                         sortBy: [
                           if (filterCon.selectPrice.value.isNotEmpty) "inventory_total_price:${filterCon.selectPrice.value.split("/").last}",
                           if (!isValEmpty(filterCon.selectNewestOrOldest.value)) "createdAt:${filterCon.selectNewestOrOldest.value.split("/").last}",

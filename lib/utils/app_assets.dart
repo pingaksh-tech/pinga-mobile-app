@@ -133,6 +133,7 @@ class AppAssets {
   static const String availableSVG = '${svgPath}available_icon.svg';
   static const String collectionSVG = '${svgPath}collection_icon.svg';
   static const String genderSVG = '${svgPath}gender_icon.svg';
+  static const String retailersSVG = '${svgPath}retailers_icon.svg';
   static const String ktSVG = '${svgPath}KT_icon.svg';
   static const String mrpSVG = '${svgPath}mrp_icon.svg';
   static const String productNameSVG = '${svgPath}product_name_icon.svg';

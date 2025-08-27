@@ -6,7 +6,9 @@ import '../../../view/drawer/widgets/wishlist/wishlist_controller.dart';
 import '../../../view/product_details/product_details_controller.dart';
 import '../../../view/product_details/widgets/variants/variants_tab_controller.dart';
 import '../../../view/products/products_controller.dart';
+import '../../../view/products/widgets/filter/filter_controller.dart';
 import '../../../view/products/widgets/variant/variant_controller.dart';
+import '../../model/cart/retailer_model.dart';
 import '../../model/product/product_price_model.dart';
 import '../../model/product/products_model.dart';
 import '../../model/product/single_product_model.dart';
@@ -60,6 +62,7 @@ class ProductRepository {
     bool isPullToRefresh = false,
     RxBool? loader,
     String? searchText,
+    RetailerModel? retailerModel,
   }) async {
     final ProductsController con = Get.find<ProductsController>();
 
@@ -101,6 +104,7 @@ class ProductRepository {
             if (deliveryList != null && deliveryList.isNotEmpty) "delivery": deliveryList,
             if (productionNameList != null && productionNameList.isNotEmpty) "production_name": productionNameList,
             if (collectionList != null && collectionList.isNotEmpty) "collection": collectionList,
+            if (retailerModel?.id?.value != null) "retailer_id": retailerModel?.id?.value ?? "",
           },
           loader: loader,
         ).then(
@@ -177,6 +181,7 @@ class ProductRepository {
             if (!isValEmpty(sizeId)) "size_id": sizeId,
             if (!isValEmpty(diamondClarity)) "diamond_clarity": diamondClarity,
             if (diamonds != null && diamonds.isNotEmpty) "diamonds": diamonds,
+            if (Get.isRegistered<FilterController>() && Get.find<FilterController>().selectedRetailer?.value.id?.value != null) "retailer_id": Get.find<FilterController>().selectedRetailer?.value.id?.value ?? "",
           },
           loader: loader,
         ).then(
@@ -356,6 +361,7 @@ class ProductRepository {
             if (!isValEmpty(sizeId)) "size_id": sizeId,
             if (!isValEmpty(diamondClarity)) "diamond_clarity": diamondClarity,
             if (diamonds.isNotEmpty) "diamonds": diamonds,
+            if (Get.isRegistered<FilterController>() && Get.find<FilterController>().selectedRetailer?.value.id?.value != null) "retailer_id": Get.find<FilterController>().selectedRetailer?.value.id?.value ?? "",
           },
           loader: loader,
         ).then(

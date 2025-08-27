@@ -153,7 +153,7 @@ class OrdersRepository {
     if (await getConnectivityResult() && isRegistered<OrderDetailController>()) {
       final OrderDetailController con = Get.find<OrderDetailController>();
 
-      // try {
+      try {
       loader?.value = true;
 
       /// API
@@ -175,10 +175,10 @@ class OrdersRepository {
           return response;
         },
       );
-      // } catch (e) {
-      //   loader?.value = false;
-      //   printErrors(type: "getSingleOrderAPI", errText: e);
-      // }
+      } catch (e) {
+        loader?.value = false;
+        printErrors(type: "getSingleOrderAPI", errText: e);
+      }
     } else {}
   }
 

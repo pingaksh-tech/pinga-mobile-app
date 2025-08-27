@@ -278,14 +278,9 @@ class _AppTextFieldState extends State<AppTextField> {
                 child: DefaultTextStyle(style: textFormFieldStyle, child: widget.prefixIcon!),
               )
             : widget.textInputAction == TextInputAction.search
-                ? Padding(
-                    padding: EdgeInsets.all(defaultPadding),
-                    child: SvgPicture.asset(
-                      AppAssets.search,
-                      height: 18,
-                      width: 18,
-                      color: isFieldActive ? Theme.of(context).primaryColor : Colors.grey.shade400, // ignore: deprecated_member_use
-                    ),
+                ? UiUtils.textFiledIcon(
+                    AppAssets.search,
+                    color: ColorFilter.mode(isFieldActive ? Theme.of(context).primaryColor : Colors.grey.shade400, BlendMode.srcIn),
                   )
                 : null,
         suffixIcon: widget.showNormalSuffixIcon ? widget.suffixIcon : getSuffixIcon,
@@ -303,7 +298,7 @@ class _AppTextFieldState extends State<AppTextField> {
             OutlineInputBorder(
               borderRadius: filedBorderRadius,
               borderSide: BorderSide(
-                color: widget.readOnly == true || (widget.textFieldType != TextFieldType.normal && widget.textFieldType != TextFieldType.search) ? defaultBorderColor : (Theme.of(context).primaryColor),
+                color: widget.readOnly == true || (widget.textFieldType != TextFieldType.normal && widget.textFieldType != TextFieldType.search) ? Colors.transparent : (Theme.of(context).primaryColor),
               ),
             ),
         focusedErrorBorder: widget.focusedErrorBorder ??

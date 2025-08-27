@@ -246,6 +246,12 @@ enum FilterItemType {
     label: "Collection",
     slug: "collection",
     icon: AppAssets.collectionSVG,
+  ),
+  retailers(
+    id: 11,
+    label: "Retailers",
+    slug: "retailers",
+    icon: AppAssets.retailersSVG,
   );
 
   final int id;

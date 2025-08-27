@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -54,68 +56,135 @@ class ProductsScreen extends StatelessWidget {
 
           /// SORTING AND FILTERS
           bottom: PreferredSize(
-            preferredSize: Size.fromHeight(30.h),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: defaultPadding),
-              child: Row(
-                children: [
-                  SortAndFilterButton(
-                    title: "Sort",
-                    isFilterButton: false,
-                    image: AppAssets.sortIcon,
-                    iconSize: 16.5.sp,
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (context) => SortingBottomSheet(
-                          watchlistId: con.watchlistId.value,
-                          productsListType: con.productListType.value,
-                        ),
+            preferredSize: Size.fromHeight(90.h),
+            child: Column(
+              children: [
+                /// Search Field
+                Container(
+                  margin: EdgeInsets.only(top: defaultPadding / 2),
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(color: Theme.of(context).primaryColor.withOpacity(0.02), blurRadius: 4, spreadRadius: 3),
+                    ],
+                  ),
+                  child: AppTextField(
+                    hintText: "Search products...",
+                    controller: con.searchTEC.value,
+                    focusNode: con.searchFocusNode.value,
+                    padding: EdgeInsets.only(left: defaultPadding, right: defaultPadding),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(defaultRadius),
+                      ),
+                      borderSide: BorderSide.none,
+                    ),
+                    textInputAction: TextInputAction.search,
+                    contentPadding: EdgeInsets.symmetric(vertical: defaultPadding / 1.3, horizontal: defaultPadding),
+                    suffixIcon: con.showCloseButton.isTrue
+                        ? Center(
+                            child: SvgPicture.asset(
+                              AppAssets.crossIcon,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          )
+                        : null,
+                    suffixOnTap: con.showCloseButton.isTrue
+                        ? () async {
+                            FocusScope.of(context).unfocus();
+                            con.showCloseButton.value = false;
+                            con.searchTEC.value.clear();
+
+                            /// CLEAR SEARCH API
+                            await con.getProductList(loader: con.loader);
+                          }
+                        : null,
+                    onChanged: (value) {
+                      if (con.searchTEC.value.text.isNotEmpty) {
+                        con.showCloseButton.value = true;
+                      } else {
+                        con.showCloseButton.value = false;
+                      }
+
+                      /// DEBOUNCE
+                      if (con.searchDebounce?.isActive ?? false) {
+                        con.searchDebounce?.cancel();
+                      }
+                      con.searchDebounce = Timer(
+                        defaultSearchDebounceDuration,
+                        () async {
+                          /// Search API
+                          await con.getProductList(loader: con.loader);
+                        },
                       );
                     },
                   ),
-                  SizedBox(
-                    height: 20.h,
-                    child: const VerticalDivider(
-                      thickness: 1.5,
-                    ),
-                  ),
-                  SortAndFilterButton(
-                    title: "Filter ${filterCon.count != 0 ? "(${filterCon.count})" : ""}",
-                    image: AppAssets.filter,
-                    onTap: () {
-                      if (isRegistered<FilterController>()) {
-                        FilterController filterCon = Get.find<FilterController>();
-                        filterCon.isPlatinumBrand.value = con.isPlatinumBrand.value;
-                      }
+                ),
+                (defaultPadding / 2).verticalSpace,
 
-                      Get.toNamed(AppRoutes.filterScreen, arguments: {
-                        "subCategoryId": con.subCategory.value.id,
-                        "categoryId": con.categoryId.value,
-                        "watchlistId": con.watchlistId.value,
-                        "productListType": con.productListType.value,
-                        "isPlatinumBrand": con.isPlatinumBrand.value,
-                      });
-                    },
+                /// Sort and Filter Buttons
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                  child: Row(
+                    children: [
+                      SortAndFilterButton(
+                        title: "Sort",
+                        isFilterButton: false,
+                        image: AppAssets.sortIcon,
+                        iconSize: 16.5.sp,
+                        onTap: () {
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (context) => SortingBottomSheet(
+                              watchlistId: con.watchlistId.value,
+                              productsListType: con.productListType.value,
+                            ),
+                          );
+                        },
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                        child: const VerticalDivider(
+                          thickness: 1.5,
+                        ),
+                      ),
+                      SortAndFilterButton(
+                        title: "Filter ${filterCon.count != 0 ? "(${filterCon.count})" : ""}",
+                        image: AppAssets.filter,
+                        onTap: () {
+                          if (isRegistered<FilterController>()) {
+                            FilterController filterCon = Get.find<FilterController>();
+                            filterCon.isPlatinumBrand.value = con.isPlatinumBrand.value;
+                          }
+
+                          Get.toNamed(AppRoutes.filterScreen, arguments: {
+                            "subCategoryId": con.subCategory.value.id,
+                            "categoryId": con.categoryId.value,
+                            "watchlistId": con.watchlistId.value,
+                            "productListType": con.productListType.value,
+                            "isPlatinumBrand": con.isPlatinumBrand.value,
+                          });
+                        },
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                        child: const VerticalDivider(
+                          thickness: 1.5,
+                        ),
+                      ),
+                      AppIconButton(
+                        icon: SvgPicture.asset(
+                          con.isProductViewChange.isFalse ? AppAssets.appIcon : AppAssets.listIcon,
+                          color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(.55),
+                          height: 18.sp,
+                        ),
+                        onPressed: () {
+                          con.isProductViewChange.value = !con.isProductViewChange.value;
+                        },
+                      ),
+                    ],
                   ),
-                  SizedBox(
-                    height: 20.h,
-                    child: const VerticalDivider(
-                      thickness: 1.5,
-                    ),
-                  ),
-                  AppIconButton(
-                    icon: SvgPicture.asset(
-                      con.isProductViewChange.isFalse ? AppAssets.appIcon : AppAssets.listIcon,
-                      color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(.55), // ignore: deprecated_member_use
-                      height: 18.sp,
-                    ),
-                    onPressed: () {
-                      con.isProductViewChange.value = !con.isProductViewChange.value;
-                    },
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
