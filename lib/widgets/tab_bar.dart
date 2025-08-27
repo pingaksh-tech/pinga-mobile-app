@@ -13,6 +13,7 @@ class MySlideTabBar extends StatelessWidget {
   final TabAlignment? tabAlignment;
   final TabController? controller;
   final BoxBorder? border;
+  final void Function(int)? onTap;
 
   const MySlideTabBar({
     super.key,
@@ -24,6 +25,7 @@ class MySlideTabBar extends StatelessWidget {
     this.backgroundColor,
     this.labelColor,
     this.border,
+    this.onTap,
   });
 
   @override
@@ -43,6 +45,7 @@ class MySlideTabBar extends StatelessWidget {
             ),
         unselectedLabelColor: AppColors.subText,
         tabs: tabs,
+        onTap: onTap,
       ),
     );
   }

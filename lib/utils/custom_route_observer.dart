@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import '../exports.dart';
+import '../exports.dart'; // Keep your existing import
 
+/// Global route map tracking by index
 final Map<int, Route<dynamic>> routeMap = {};
 
+/// Custom Route Observer with reactive route tracking
 class CustomRouteObserver extends NavigatorObserver {
+  /// Reactive current route name
+  RxString currentRoute = ''.obs;
+
   void _logCurrentAndPreviousRoutes() {
     printTitle('Current and Previous Routes with Indices:');
     routeMap.forEach((index, route) {
@@ -16,6 +22,7 @@ class CustomRouteObserver extends NavigatorObserver {
   void didPush(Route route, Route? previousRoute) {
     super.didPush(route, previousRoute);
     routeMap[routeMap.length] = route;
+    _updateCurrentRoute(route);
     _logCurrentAndPreviousRoutes();
   }
 
@@ -23,6 +30,9 @@ class CustomRouteObserver extends NavigatorObserver {
   void didPop(Route route, Route? previousRoute) {
     super.didPop(route, previousRoute);
     _removeRoute(route);
+    if (previousRoute != null) {
+      _updateCurrentRoute(previousRoute);
+    }
     _logCurrentAndPreviousRoutes();
   }
 
@@ -37,7 +47,10 @@ class CustomRouteObserver extends NavigatorObserver {
   void didReplace({Route? newRoute, Route? oldRoute}) {
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
     if (oldRoute != null) _removeRoute(oldRoute);
-    if (newRoute != null) routeMap[routeMap.length] = newRoute;
+    if (newRoute != null) {
+      routeMap[routeMap.length] = newRoute;
+      _updateCurrentRoute(newRoute);
+    }
     _logCurrentAndPreviousRoutes();
   }
 
@@ -68,20 +81,13 @@ class CustomRouteObserver extends NavigatorObserver {
   Route<dynamic>? getRouteAtIndex(int index) {
     return routeMap[index];
   }
+
+  /// Update the current route observable
+  void _updateCurrentRoute(Route route) {
+    final routeName = route.settings.name ?? '';
+
+    currentRoute.value = routeName;
+
+    printOkStatus(currentRoute.value);
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

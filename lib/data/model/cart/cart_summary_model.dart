@@ -101,8 +101,8 @@ class TotalDeliverySummary {
 }
 
 class TotalWeightSummary {
-  final int? totalMetalWeight;
-  final double? totalDiamondWeight;
+  final num? totalMetalWeight;
+  final num? totalDiamondWeight;
 
   TotalWeightSummary({
     this.totalMetalWeight,
@@ -122,7 +122,7 @@ class TotalWeightSummary {
 
 class WeightSummaryModel {
   final String? id;
-  final int? metalWeight;
+  final num? metalWeight;
   final double? diamondWeight;
 
   WeightSummaryModel({

@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:screen_protector/screen_protector.dart';
 
+// import 'package:screen_protector/screen_protector.dart';
+
 import '../exports.dart';
 
 class BaseBinding implements Bindings {
@@ -25,6 +27,7 @@ class BaseController extends GetxController {
   late PackageInfo packageInfo;
 
   List<Map> globalProductDetails = <Map>[].obs;
+
   get lastProductDetails => globalProductDetails.isNotEmpty ? globalProductDetails.last : "";
 
   @override

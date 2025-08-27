@@ -46,7 +46,7 @@ class CatalogPdfModel {
         name: json["name"],
         price: json["price"],
         size: json["size"],
-        diamondClarity: json["diamond_clarity"] == null ? [] : List<String>.from(json["diamond_clarity"]!.map((x) => x)),
+        diamondClarity: json["diamond_clarity"] == null ? [] : List<String>.from(json["diamond_clarity"]!.map((x) => x ?? "")),
         metal: json["metal"],
       );
 

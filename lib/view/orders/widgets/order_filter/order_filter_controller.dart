@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import '../../orders_controller.dart';
 
 import '../../../../data/model/cart/retailer_model.dart';
 import '../../../../data/repositories/orders/orders_repository.dart';
 import '../../../../exports.dart';
+import '../../orders_controller.dart';
 
 class OrderFilterController extends GetxController {
   Rx<OrderFilterType> filterType = OrderFilterType.type.obs;
@@ -29,13 +29,12 @@ class OrderFilterController extends GetxController {
   RxBool startDateValidation = true.obs;
   RxBool endDateValidation = true.obs;
   RxString dateError = "".obs;
+
   bool validateDates() {
-    if (startDateCon.value.text.trim().isNotEmpty &&
-        endDateCon.value.text.trim().isEmpty) {
+    if (startDateCon.value.text.trim().isNotEmpty && endDateCon.value.text.trim().isEmpty) {
       dateError.value = "Please select end date";
       endDateValidation.value = false;
-    } else if (endDateCon.value.text.trim().isNotEmpty &&
-        startDateCon.value.text.trim().isEmpty) {
+    } else if (endDateCon.value.text.trim().isNotEmpty && startDateCon.value.text.trim().isEmpty) {
       dateError.value = "Please select start date";
       startDateValidation.value = false;
     } else {
@@ -48,15 +47,13 @@ class OrderFilterController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    applyFilterCounts
-        .addAll(List.generate(OrderFilterType.values.length, (index) => 0));
+    applyFilterCounts.addAll(List.generate(OrderFilterType.values.length, (index) => 0));
   }
 
   void countAppliedFilters() {
     int count = 0;
     if (retailerCon.value.text.isNotEmpty) count++;
-    if (endDateCon.value.text.isNotEmpty &&
-        startDateCon.value.text.isNotEmpty) {
+    if (endDateCon.value.text.isNotEmpty && startDateCon.value.text.isNotEmpty) {
       count++;
     }
     filterCount.value = count;
@@ -65,22 +62,21 @@ class OrderFilterController extends GetxController {
   void clearFilter() {
     final OrdersController ordersController = Get.find<OrdersController>();
 
-    OrdersRepository.getAllOrdersAPI(
-            loader: ordersController.isLoading, isInitial: true)
-        .then(
+    OrdersRepository.getAllOrdersAPI(loader: ordersController.isLoading, isInitial: true).then(
       (value) {
         Get.back();
       },
     );
     startDateCon.value.clear();
+    startDate.value = DateTime.now();
     endDateCon.value.clear();
+    endDate.value = DateTime.now();
     retailerCon.value.clear();
     retailerId = "";
     startDateValidation.value = true;
     endDateValidation.value = true;
     dateError.value = "";
     countAppliedFilters();
-    applyFilterCounts.value =
-        (List.generate(OrderFilterType.values.length, (index) => 0));
+    applyFilterCounts.value = (List.generate(OrderFilterType.values.length, (index) => 0));
   }
 }

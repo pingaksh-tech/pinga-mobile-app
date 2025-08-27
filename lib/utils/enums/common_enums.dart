@@ -109,6 +109,8 @@ enum SizeMetalSelectorButtonType { small, medium, large }
 ///* PRODUCT LIST TYPE
 enum ProductsListType { normal, watchlist, wishlist, cart }
 
+enum WatchListType { normal, cart }
+
 ///* PRODUCT TILE TYPE
 enum ProductTileType { grid, list, variant, cartTile }
 
@@ -259,6 +261,36 @@ enum FilterItemType {
 
   static FilterItemType fromSlug(String slug) {
     return FilterItemType.values.firstWhere((e) => e.slug == slug);
+  }
+}
+
+enum UserRoleEnum {
+  admin(id: 1, label: "Admin", slug: "Admin"),
+  seller(id: 2, label: "Seller", slug: "seller"),
+  retailer(id: 3, label: "Retailer", slug: "retailer"),
+  salesman(id: 4, label: "Salesman", slug: "salesman"),
+  salesHead(id: 5, label: "Sales Head", slug: "sales-head"),
+  stateSalesHead(id: 6, label: "State Sales Head", slug: "state-sales-head"),
+  regionalSalesHead(id: 7, label: "Regional Sales Head", slug: "regional-sales-head"),
+  salesSupport(id: 8, label: "Sales Support", slug: "sales-support"),
+  retailerSalesman(id: 9, label: "Retailer Salesman", slug: "retailer-salesman");
+
+  final int id;
+  final String label;
+  final String slug;
+
+  const UserRoleEnum({
+    required this.id,
+    required this.label,
+    required this.slug,
+  });
+
+  static UserRoleEnum fromId(int id) {
+    return UserRoleEnum.values.firstWhere((e) => e.id == id);
+  }
+
+  static UserRoleEnum fromSlug(String slug) {
+    return UserRoleEnum.values.firstWhere((e) => e.slug == slug);
   }
 }
 

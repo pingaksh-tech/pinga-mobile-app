@@ -19,9 +19,10 @@ class FamilyProductTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return productList.isNotEmpty
         ? ListView(
-            physics: const RangeMaintainingScrollPhysics(),
-            padding: EdgeInsets.all(defaultPadding / 2)
-                .copyWith(top: 52, bottom: defaultPadding * 5),
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            // physics: const RangeMaintainingScrollPhysics(),
+            padding: EdgeInsets.all(defaultPadding / 2).copyWith(bottom: defaultPadding * 5),
             children: [
               Wrap(
                 children: List.generate(
@@ -38,21 +39,10 @@ class FamilyProductTab extends StatelessWidget {
                           navigateToProductDetailsScreen(
                             productDetails: {
                               "productId": productList[index].id ?? "",
-                              "diamondClarity":
-                                  productList[index].isDiamondMultiple == false
-                                      ? productList[index]
-                                              .diamonds
-                                              ?.first
-                                              .diamondClarity
-                                              ?.value ??
-                                          ""
-                                      : "",
+                              "diamondClarity": productList[index].isDiamondMultiple == false ? productList[index].diamonds?.first.diamondClarity?.value ?? "" : "",
                               "metalId": productList[index].metalId!.value,
                               "sizeId": productList[index].sizeId!.value,
-                              "diamonds":
-                                  productList[index].isDiamondMultiple == true
-                                      ? productList[index].diamonds!
-                                      : [],
+                              "diamonds": productList[index].isDiamondMultiple == true ? productList[index].diamonds! : [],
                               "type": GlobalProductPrefixType.productDetails,
                             },
                             type: GlobalProductPrefixType.productDetails,
@@ -60,8 +50,7 @@ class FamilyProductTab extends StatelessWidget {
                               "category": /*AppStrings.cartIdPrefixSlug +*/
                                   (productList[index].subCategoryId ?? ''),
                               'isSize': !isValEmpty(productList[index].sizeId),
-                              'isFancy':
-                                  productList[index].isDiamondMultiple ?? false,
+                              'isFancy': productList[index].isDiamondMultiple ?? false,
                               'inventoryId': /*AppStrings.productIdPrefixSlug +*/
                                   (productList[index].id ?? ""),
                               'name': productList[index].name,
@@ -71,21 +60,10 @@ class FamilyProductTab extends StatelessWidget {
                               "remark": productList[index].remark!.value,
                               "quantity": productList[index].quantity!.value,
 
-                              "diamondClarity":
-                                  productList[index].isDiamondMultiple == false
-                                      ? productList[index]
-                                              .diamonds
-                                              ?.first
-                                              .diamondClarity
-                                              ?.value ??
-                                          ""
-                                      : "",
+                              "diamondClarity": productList[index].isDiamondMultiple == false ? productList[index].diamonds?.first.diamondClarity?.value ?? "" : "",
 
                               "metalId": productList[index].metalId!.value,
-                              "diamonds":
-                                  productList[index].isDiamondMultiple == true
-                                      ? productList[index].diamonds
-                                      : [],
+                              "diamonds": productList[index].isDiamondMultiple == true ? productList[index].diamonds : [],
                             },
                             whenComplete: () {
                               // removeLastProductIdFromGlobalList();
@@ -94,11 +72,7 @@ class FamilyProductTab extends StatelessWidget {
                         },
                         diamondOnChanged: (value) {
                           if (value!.isNotEmpty) {
-                            productList[index]
-                                .diamonds
-                                ?.first
-                                .diamondClarity
-                                ?.value = value;
+                            productList[index].diamonds?.first.diamondClarity?.value = value;
                           }
                         },
                         sizeOnChanged: (value) {
@@ -113,20 +87,9 @@ class FamilyProductTab extends StatelessWidget {
                         isLike: productList[index].isWishlist,
                         imageUrl: productList[index].singleInvImage ?? "",
                         productName: productList[index].name ?? "",
-                        productPrice:
-                            productList[index].inventoryTotalPrice.toString(),
+                        productPrice: productList[index].inventoryTotalPrice.toString(),
                         productQuantity: productList[index].quantity,
-                        selectDiamondCart:
-                            (productList[index].diamonds != null &&
-                                    productList[index].diamonds!.isNotEmpty)
-                                ? (productList[index]
-                                            .diamonds
-                                            ?.first
-                                            .diamondClarity
-                                            ?.value ??
-                                        "")
-                                    .obs
-                                : "".obs,
+                        selectDiamondCart: (productList[index].diamonds != null && productList[index].diamonds!.isNotEmpty) ? (productList[index].diamonds?.first.diamondClarity?.value ?? "").obs : "".obs,
                         diamonds: productList[index].diamonds),
                   ),
                 ),

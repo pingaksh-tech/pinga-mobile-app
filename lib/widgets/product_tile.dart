@@ -18,6 +18,7 @@ import '../exports.dart';
 import '../res/app_dialog.dart';
 import '../res/app_network_image.dart';
 import '../res/pop_up_menu_button.dart';
+import '../utils/device_utils.dart';
 import '../view/cart/cart_controller.dart';
 import 'custom_check_box_tile.dart';
 import 'plus_minus_title/plus_minus_tile.dart';
@@ -109,6 +110,8 @@ class _ProductTileState extends State<ProductTile> {
   CartModel cart = CartModel();
   List<String> menuList = [/*AppStrings.variants,*/ AppStrings.addToWatchlist];
 
+  late RxInt productQuantity;
+
   /// Set Default Select Value Of Product
   Future<void> predefinedValue() async {
     if (isRegistered<PreDefinedValueController>()) {
@@ -143,7 +146,16 @@ class _ProductTileState extends State<ProductTile> {
       }
       //? Diamond value selection
       if (diamondList.isNotEmpty) {
-        int diamondIndex = diamondList.indexWhere((element) => element.shortName == widget.selectDiamondCart?.value);
+        // printYellow("Diamond List: ${diamondList.toJson()}");
+
+        int diamondIndex = diamondList.indexWhere((element) {
+          printYellow("Diamond selectDiamondCart  ${element.id}: ${element.shortName}");
+
+          return element.shortName == widget.selectDiamondCart?.value;
+        });
+
+        printYellow("Diamond selectDiamondCart: ${widget.selectDiamondCart?.value}");
+
         if (diamondIndex != -1) {
           diamondModel = diamondList[diamondIndex];
         } else {
@@ -156,6 +168,7 @@ class _ProductTileState extends State<ProductTile> {
   @override
   void initState() {
     super.initState();
+    productQuantity = widget.productQuantity ?? RxInt(0);
     predefinedValue();
   }
 
@@ -182,7 +195,7 @@ class _ProductTileState extends State<ProductTile> {
   Widget productGridTile() {
     return Obx(() {
       return Container(
-        width: Get.width / 2 - defaultPadding * 1.5,
+        width: DeviceUtil.isTablet(Get.context!) ? (Get.width / 3 - (defaultPadding * 1.5)) : Get.width / 2 - defaultPadding * 1.5,
         margin: EdgeInsets.all(defaultPadding / 2),
         padding: EdgeInsets.all(defaultPadding / 6),
         decoration: BoxDecoration(
@@ -195,7 +208,7 @@ class _ProductTileState extends State<ProductTile> {
             Stack(
               children: [
                 SizedBox(
-                  height: Get.width / 2 - defaultPadding * 2.5,
+                  height: DeviceUtil.isTablet(Get.context!) ? (Get.width / 3 - defaultPadding * 2.5) : Get.width / 2 - defaultPadding * 2.5,
                   child: isValEmpty(widget.imageUrl)
                       ? productPlaceHolderImage()
                       : AppNetworkImage(
@@ -288,7 +301,7 @@ class _ProductTileState extends State<ProductTile> {
               child: Row(
                 children: [
                   /// Size
-                  if (!isValEmpty(widget.selectSize?.value)) sizeSelector(category: widget.category?.value),
+                  if (widget.isSizeAvailable) sizeSelector(category: widget.category?.value),
                   (defaultPadding / 4).horizontalSpace,
 
                   /// Diamond
@@ -855,6 +868,10 @@ class _ProductTileState extends State<ProductTile> {
           widget.productQuantity?.value = value;
           addOrUpdateCart(quantity: value);
         },
+        onTap: (value) {
+          widget.productQuantity?.value = value;
+          addOrUpdateCart(quantity: value);
+        },
       );
 
   Widget remarkSelector({bool isFlexible = false, Axis direction = Axis.horizontal}) => horizontalSelectorButton(
@@ -1072,7 +1089,7 @@ class _ProductTileState extends State<ProductTile> {
                 (defaultPadding / 2).verticalSpace,
                 Row(
                   children: [
-                    if (!isValEmpty(widget.selectSize))
+                    if (widget.isSizeAvailable)
                       sizeSelector(
                         direction: Axis.vertical,
                         isFlexible: true,

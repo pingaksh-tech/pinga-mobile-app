@@ -14,6 +14,7 @@ import '../view/dashboard/dashboard_screen.dart';
 import '../view/drawer/widgets/catalog/catalogue_screen.dart';
 import '../view/drawer/widgets/feedback/feedback_history/feedback_history_screen.dart';
 import '../view/drawer/widgets/feedback/feedback_screen.dart';
+import '../view/drawer/widgets/global_rate/global_rate_screen.dart';
 import '../view/drawer/widgets/pdf_preview/pdf_preview_screen.dart';
 import '../view/drawer/widgets/pdf_viewer/pdf_viewer.dart';
 import '../view/drawer/widgets/settings/settings_screen.dart';
@@ -71,5 +72,6 @@ class AppPages {
     _getPage(name: AppRoutes.orderDetailScreen, page: () => OrderDetailScreen()),
     _getPage(name: AppRoutes.retailerScreen, page: () => RetailerScreen()),
     _getPage(name: AppRoutes.pdfPreviewScreen, page: () => PdfPreviewScreen()),
+    _getPage(name: AppRoutes.globalRateScreen, page: () => GlobalRateScreen()),
   ];
 }

@@ -6,6 +6,7 @@ import '../../../../data/model/cart/retailer_model.dart';
 
 class CheckoutController extends GetxController {
   RxBool disableButton = true.obs;
+  RxBool isLoading = false.obs;
 
   RxInt quantity = 0.obs;
   RxInt totalItems = 0.obs;

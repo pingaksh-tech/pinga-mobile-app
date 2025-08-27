@@ -101,6 +101,7 @@ class InventoryModel {
   final List<CollectionModel>? collection;
   final List<dynamic>? watchlist;
   RxBool? isWishlist;
+  bool? isShowSize;
 
   InventoryModel({
     this.id,
@@ -141,6 +142,7 @@ class InventoryModel {
     this.quantity,
     this.isWishlist,
     this.isDiamondMultiple,
+    this.isShowSize,
   });
 
   factory InventoryModel.fromJson(Map<String, dynamic> json) => InventoryModel(
@@ -182,6 +184,7 @@ class InventoryModel {
         collection: json["collection"] == null ? [] : List<CollectionModel>.from(json["collection"]!.map((x) => CollectionModel.fromJson(x))),
         watchlist: json["watchlist"] == null ? [] : List<dynamic>.from(json["watchlist"]!.map((x) => x)),
         isWishlist: RxBool(json["isWishList"] ?? false),
+        isShowSize: json["show_size_option"] ?? false,
       );
 
   Map<String, dynamic> toJson() => {
@@ -223,6 +226,7 @@ class InventoryModel {
         "collection": collection == null ? [] : List<dynamic>.from(collection!.map((x) => x.toJson())),
         "watchlist": watchlist == null ? [] : List<dynamic>.from(watchlist!.map((x) => x)),
         "isWishList": isWishlist?.value,
+        "show_size_option": isShowSize,
       };
 }
 

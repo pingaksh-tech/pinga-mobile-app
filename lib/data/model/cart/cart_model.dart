@@ -8,8 +8,7 @@ import 'package:get/get.dart';
 
 import '../product/products_model.dart';
 
-GetCartModel getCartModelFromJson(String str) =>
-    GetCartModel.fromJson(json.decode(str));
+GetCartModel getCartModelFromJson(String str) => GetCartModel.fromJson(json.decode(str));
 
 String getCartModelToJson(GetCartModel data) => json.encode(data.toJson());
 
@@ -24,9 +23,7 @@ class GetCartModel {
 
   factory GetCartModel.fromJson(Map<String, dynamic> json) => GetCartModel(
         message: json["message"],
-        data: json["data"] == null
-            ? null
-            : GetCartDataModel.fromJson(json["data"]),
+        data: json["data"] == null ? null : GetCartDataModel.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -50,18 +47,12 @@ class GetCartDataModel {
     this.cartList,
   });
 
-  factory GetCartDataModel.fromJson(Map<String, dynamic> json) =>
-      GetCartDataModel(
-        cartsDetails: json["cartsDetails"] == null
-            ? null
-            : CartsDetails.fromJson(json["cartsDetails"]),
+  factory GetCartDataModel.fromJson(Map<String, dynamic> json) => GetCartDataModel(
+        cartsDetails: json["cartsDetails"] == null ? null : CartsDetails.fromJson(json["cartsDetails"]),
         totalCount: json["totalCount"],
         page: json["page"],
         totalPages: json["totalPages"],
-        cartList: json["cartList"] == null
-            ? []
-            : List<CartModel>.from(
-                json["cartList"]!.map((x) => CartModel.fromJson(x))),
+        cartList: json["cartList"] == null ? [] : List<CartModel>.from(json["cartList"]!.map((x) => CartModel.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -69,9 +60,7 @@ class GetCartDataModel {
         "totalCount": totalCount,
         "page": page,
         "totalPages": totalPages,
-        "cartList": cartList == null
-            ? []
-            : List<dynamic>.from(cartList!.map((x) => x.toJson())),
+        "cartList": cartList == null ? [] : List<dynamic>.from(cartList!.map((x) => x.toJson())),
       };
 }
 
@@ -117,18 +106,13 @@ class CartModel {
         sizeId: RxString(json["size_id"].toString()),
         userId: json["user_id"],
         categoryId: json["category_id"],
-        diamonds: json["diamonds"] == null
-            ? []
-            : List<DiamondListModel>.from(
-                json["diamonds"]!.map((x) => DiamondListModel.fromJson(x))),
+        diamonds: json["diamonds"] == null ? [] : List<DiamondListModel>.from(json["diamonds"]!.map((x) => DiamondListModel.fromJson(x))),
         quantity: json["quantity"],
-        remark: RxString(json["remark"].toString()),
+        remark: RxString(json["remark"] ?? ""),
         inventoryId: json["inventory_id"],
         subCategoryId: json["sub_category_id"],
         inventoryName: json["inventory_name"],
-        inventoryImage: json["inventory_image"] == null
-            ? []
-            : List<String>.from(json["inventory_image"]!.map((x) => x)),
+        inventoryImage: json["inventory_image"] == null ? [] : List<String>.from(json["inventory_image"]!.map((x) => x)),
         inventoryTotalPrice: json["inventory_total_price"]?.toDouble(),
         isDiamondMultiple: json["isDiamondMultiple"],
       );
@@ -140,17 +124,13 @@ class CartModel {
         "size_id": sizeId.obs,
         "user_id": userId,
         "category_id": categoryId,
-        "diamonds": diamonds == null
-            ? []
-            : List<dynamic>.from(diamonds!.map((x) => x.toJson())),
+        "diamonds": diamonds == null ? [] : List<dynamic>.from(diamonds!.map((x) => x.toJson())),
         "quantity": quantity,
         "remark": remark.obs,
         "inventory_id": inventoryId,
         "sub_category_id": subCategoryId,
         "inventory_name": inventoryName,
-        "inventory_image": inventoryImage == null
-            ? []
-            : List<dynamic>.from(inventoryImage!.map((x) => x)),
+        "inventory_image": inventoryImage == null ? [] : List<dynamic>.from(inventoryImage!.map((x) => x)),
         "inventory_total_price": inventoryTotalPrice,
         "isDiamondMultiple": isDiamondMultiple,
       };

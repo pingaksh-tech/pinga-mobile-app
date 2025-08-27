@@ -93,8 +93,11 @@ class OrderFilterScreen extends StatelessWidget {
                           suffixOnTap: con.retailerCon.value.text.isNotEmpty
                               ? () async {
                                   FocusScope.of(context).unfocus();
-                                  con.retailerCon.value.clear();
-                                  con.retailerId = "";
+                                  if (con.retailerCon.value.text.isNotEmpty) {
+                                    con.applyFilterCounts[0] = 0;
+                                    con.retailerCon.value.clear();
+                                    con.retailerId = "";
+                                  }
                                 }
                               : null,
                           onTap: () {
@@ -183,8 +186,12 @@ class OrderFilterScreen extends StatelessWidget {
                           suffixOnTap: con.startDateCon.value.text.isNotEmpty
                               ? () {
                                   FocusScope.of(context).unfocus();
-                                  con.startDateCon.value.clear();
-                                  con.startDateValidation.value = true;
+                                  if (con.startDateCon.value.text.isNotEmpty) {
+                                    con.applyFilterCounts[1] = 0;
+                                    con.startDate.value = DateTime.now();
+                                    con.startDateCon.value.clear();
+                                    con.startDateValidation.value = true;
+                                  }
                                 }
                               : null,
                           onDateOrTimeChange: (value) {
@@ -221,8 +228,12 @@ class OrderFilterScreen extends StatelessWidget {
                           suffixOnTap: con.endDateCon.value.text.isNotEmpty
                               ? () {
                                   FocusScope.of(context).unfocus();
-                                  con.endDateCon.value.clear();
-                                  con.endDateValidation.value = true;
+                                  if (con.endDateCon.value.text.isNotEmpty) {
+                                    con.applyFilterCounts[1] = 0;
+                                    con.endDate.value = DateTime.now();
+                                    con.endDateCon.value.clear();
+                                    con.endDateValidation.value = true;
+                                  }
                                 }
                               : null,
                           onDateOrTimeChange: (value) {

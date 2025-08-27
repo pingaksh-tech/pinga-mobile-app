@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:get/get.dart';
+
 UserDataModel userDataModelFromJson(String str) => UserDataModel.fromJson(json.decode(str));
 
 String userDataModelToJson(UserDataModel data) => json.encode(data.toJson());
@@ -62,7 +64,8 @@ class UserModel {
   final String? email;
   final String? phone;
   final String? password;
-  final int? otp;
+
+  // final String? otp;
   final RoleId? roleId;
   final bool? status;
   final String? refreshToken;
@@ -70,6 +73,7 @@ class UserModel {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
+  final RxInt? pricePercentage;
 
   UserModel({
     this.userImage,
@@ -81,7 +85,7 @@ class UserModel {
     this.email,
     this.phone,
     this.password,
-    this.otp,
+    // this.otp,
     this.roleId,
     this.status,
     this.refreshToken,
@@ -89,6 +93,7 @@ class UserModel {
     this.createdAt,
     this.updatedAt,
     this.v,
+    this.pricePercentage,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -101,7 +106,7 @@ class UserModel {
         email: json["email"],
         phone: json["phone"],
         password: json["password"],
-        otp: json["otp"],
+        // otp: json["otp"],
         roleId: json["role_id"] == null ? null : RoleId.fromJson(json["role_id"]),
         status: json["status"],
         refreshToken: json["refresh_token"],
@@ -109,6 +114,7 @@ class UserModel {
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
         v: json["__v"],
+        pricePercentage: RxInt(json["price_percentage"] ?? 0),
       );
 
   Map<String, dynamic> toJson() => {
@@ -121,7 +127,7 @@ class UserModel {
         "email": email,
         "phone": phone,
         "password": password,
-        "otp": otp,
+        // "otp": otp,
         "role_id": roleId?.toJson(),
         "status": status,
         "refresh_token": refreshToken,
@@ -129,6 +135,7 @@ class UserModel {
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "__v": v,
+        "price_percentage": pricePercentage?.value,
       };
 }
 
@@ -140,6 +147,7 @@ class RoleId {
   final dynamic deletedAt;
   final bool? status;
   final DateTime? updatedAt;
+  final String? slug;
 
   RoleId({
     this.id,
@@ -149,6 +157,7 @@ class RoleId {
     this.deletedAt,
     this.status,
     this.updatedAt,
+    this.slug,
   });
 
   factory RoleId.fromJson(Map<String, dynamic> json) => RoleId(
@@ -159,6 +168,7 @@ class RoleId {
         deletedAt: json["deleted_at"],
         status: json["status"],
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+        slug: json["slug"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -169,6 +179,7 @@ class RoleId {
         "deleted_at": deletedAt,
         "status": status,
         "updatedAt": updatedAt?.toIso8601String(),
+        "slug": slug,
       };
 }
 

@@ -15,8 +15,7 @@ class CheckoutScreen extends StatelessWidget {
   CheckoutScreen({super.key});
 
   final CheckoutController con = Get.put(CheckoutController());
-  final PreDefinedValueController preCon =
-      Get.find<PreDefinedValueController>();
+  final PreDefinedValueController preCon = Get.find<PreDefinedValueController>();
 
   @override
   Widget build(BuildContext context) {
@@ -24,15 +23,14 @@ class CheckoutScreen extends StatelessWidget {
       () => Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: MyAppBar(
-          title: "My CheckOut",
+          title: "My Checkout",
         ),
         body: ListView(
           padding: EdgeInsets.symmetric(horizontal: defaultPadding),
           children: [
             Text(
               "Order For",
-              style: AppTextStyle.titleStyle(context).copyWith(
-                  fontSize: 15.sp, color: Theme.of(context).primaryColor),
+              style: AppTextStyle.titleStyle(context).copyWith(fontSize: 15.sp, color: Theme.of(context).primaryColor),
             ),
             Divider(color: AppColors.primary, height: defaultPadding / 2),
             AppTextField(
@@ -41,19 +39,15 @@ class CheckoutScreen extends StatelessWidget {
               readOnly: true,
               controller: con.retailerCon.value,
               hintText: "Select Retailers",
-              padding: EdgeInsets.only(
-                  bottom: defaultPadding, top: defaultPadding / 2),
+              padding: EdgeInsets.only(bottom: defaultPadding, top: defaultPadding / 2),
               suffixIcon: SvgPicture.asset(AppAssets.downArrow, height: 10),
               onTap: () {
-                Get.toNamed(AppRoutes.retailerScreen,
-                    arguments: {"id": con.retailerId})?.then(
+                Get.toNamed(AppRoutes.retailerScreen, arguments: {"id": con.retailerId})?.then(
                   (value) {
                     if (value != null && (value.runtimeType == RetailerModel)) {
-                      final RetailerModel retailerModel =
-                          (value as RetailerModel);
+                      final RetailerModel retailerModel = (value as RetailerModel);
                       con.retailerModel.value = retailerModel;
-                      con.retailerCon.value.text =
-                          "${con.retailerModel.value.firstName ?? ""} ${con.retailerModel.value.lastName ?? ''}";
+                      con.retailerCon.value.text = "${con.retailerModel.value.firstName ?? ""} ${con.retailerModel.value.lastName ?? ''}";
                       con.retailerId = con.retailerModel.value.id?.value ?? "";
                       con.checkButtonDisableStatus();
                     }
@@ -64,8 +58,7 @@ class CheckoutScreen extends StatelessWidget {
             defaultPadding.verticalSpace,
             Text(
               "Order Type",
-              style: AppTextStyle.titleStyle(context).copyWith(
-                  fontSize: 15.sp, color: Theme.of(context).primaryColor),
+              style: AppTextStyle.titleStyle(context).copyWith(fontSize: 15.sp, color: Theme.of(context).primaryColor),
             ),
             Divider(color: AppColors.primary, height: defaultPadding / 2),
             AppTextField(
@@ -74,8 +67,7 @@ class CheckoutScreen extends StatelessWidget {
               readOnly: true,
               controller: con.orderTypeCon.value,
               hintText: "Select Order Type",
-              padding: EdgeInsets.only(
-                  bottom: defaultPadding, top: defaultPadding / 2),
+              padding: EdgeInsets.only(bottom: defaultPadding, top: defaultPadding / 2),
               suffixIcon: SvgPicture.asset(AppAssets.downArrow, height: 10),
               onTap: () {
                 AppDialogs.orderSelect(
@@ -98,10 +90,7 @@ class CheckoutScreen extends StatelessWidget {
           child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 350),
               child: Container(
-                padding: EdgeInsets.only(
-                    top: defaultPadding,
-                    bottom:
-                        MediaQuery.of(context).padding.bottom + defaultPadding),
+                padding: EdgeInsets.only(top: defaultPadding, bottom: MediaQuery.of(context).padding.bottom + defaultPadding),
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor.withAlpha(20),
                   borderRadius: BorderRadius.vertical(
@@ -127,36 +116,31 @@ class CheckoutScreen extends StatelessWidget {
                           cartSummaryItem(
                             context,
                             title: "Total Payment",
-                            price: UiUtils.amountFormat(con.totalPrice.value,
-                                decimalDigits: 2),
+                            price: UiUtils.amountFormat(con.totalPrice.value, decimalDigits: 2),
                           ),
                           (defaultPadding / 2).verticalSpace,
                           AppButton(
                             padding: EdgeInsets.only(right: defaultPadding / 2),
                             flexibleHeight: true,
+                            loader: con.isLoading.value,
                             disableButton: con.disableButton.value,
                             title: "Check Out",
-                            titleStyle:
-                                AppTextStyle.appButtonStyle(context).copyWith(
+                            titleStyle: AppTextStyle.appButtonStyle(context).copyWith(
                               color: Theme.of(context).colorScheme.surface,
                             ),
                             onPressed: () {
                               AppDialogs.cartDialog(
                                 context,
-                                contentText:
-                                    "Are you sure? You want to check out this item",
+                                contentText: "Are you sure? You want to check out this item",
                                 buttonTitle2: "OK",
-                                titleStyle: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium
-                                    ?.copyWith(
+                                titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
                                       fontSize: 17.sp,
                                       fontWeight: FontWeight.w600,
                                       color: Theme.of(context).primaryColor,
                                     ),
+                                isLoading: con.isLoading,
                                 onPressed: () {
-                                  final List<Map<String, dynamic>> cartItems =
-                                      con.cartList.map(
+                                  final List<Map<String, dynamic>> cartItems = con.cartList.map(
                                     (item) {
                                       return {
                                         "cartId": item.id,
@@ -167,6 +151,7 @@ class CheckoutScreen extends StatelessWidget {
 
                                   /// Create Order Api
                                   OrdersRepository.createOrder(
+                                    loader: con.isLoading,
                                     retailerId: con.retailerId,
                                     orderType: con.orderTypeCon.value.text,
                                     quantity: con.quantity.value,
@@ -188,26 +173,19 @@ class CheckoutScreen extends StatelessWidget {
     );
   }
 
-  Widget cartSummaryItem(BuildContext context,
-      {required String title, required String price}) {
+  Widget cartSummaryItem(BuildContext context, {required String title, required String price}) {
     return Container(
       padding: EdgeInsets.only(bottom: defaultPadding / 2),
       child: Row(
         children: [
           Text(
             title,
-            style: Theme.of(Get.context!)
-                .textTheme
-                .titleMedium
-                ?.copyWith(fontSize: 14.sp, fontWeight: FontWeight.w500),
+            style: Theme.of(Get.context!).textTheme.titleMedium?.copyWith(fontSize: 14.sp, fontWeight: FontWeight.w500),
           ),
           const Spacer(),
           Text(
             price,
-            style: Theme.of(Get.context!)
-                .textTheme
-                .titleMedium
-                ?.copyWith(fontSize: 14.sp, fontWeight: FontWeight.w500),
+            style: Theme.of(Get.context!).textTheme.titleMedium?.copyWith(fontSize: 14.sp, fontWeight: FontWeight.w500),
           ),
         ],
       ),

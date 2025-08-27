@@ -122,16 +122,18 @@ class WatchListScreen extends StatelessWidget {
                                       noOfItem: con.watchList[index].watchListItemCount ?? 0,
                                       createdBy: "${LocalStorage.userModel.firstName ?? ""} ${LocalStorage.userModel.lastName ?? ""}",
                                       downloadOnPressed: () async {
-                                        WatchListRepository.resetDownloadRequest();
+                                        if (con.watchList[index].watchListItemCount != 0) {
+                                          WatchListRepository.resetDownloadRequest();
 
-                                        Get.toNamed(
-                                          AppRoutes.pdfPreviewScreen,
-                                          arguments: {
-                                            "title": con.watchList[index].name,
-                                            "isFromCatalog":false,
-                                            "catalogueId": con.watchList[index].id?.value ?? "",
-                                          },
-                                        );
+                                          Get.toNamed(
+                                            AppRoutes.pdfPreviewScreen,
+                                            arguments: {
+                                              "title": con.watchList[index].name,
+                                              "isFromCatalog": false,
+                                              "catalogueId": con.watchList[index].id?.value ?? "",
+                                            },
+                                          );
+                                        }
                                         /*   Get.toNamed(
                                           AppRoutes.watchpdfViewerScreen,
                                           arguments: {

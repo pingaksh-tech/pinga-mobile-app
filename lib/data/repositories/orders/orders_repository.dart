@@ -49,8 +49,7 @@ class OrdersRepository {
 
               if (isRegistered<CartController>()) {
                 final CartController con = Get.find<CartController>();
-                con.cartList
-                    .removeWhere((item) => con.selectedList.contains(item));
+                con.cartList.removeWhere((item) => con.selectedList.contains(item));
                 con.selectedList.clear();
               }
               do {
@@ -109,8 +108,7 @@ class OrdersRepository {
           params: {
             "page": con.page.value,
             "limit": con.itemLimit.value,
-            if (!isValEmpty(startDate))
-              "start_date": startDate?.toIso8601String(),
+            if (!isValEmpty(startDate)) "start_date": startDate?.toIso8601String(),
             if (!isValEmpty(endDate)) "end_date": endDate?.toIso8601String(),
             if (!isValEmpty(retailerId)) "retailer_id": retailerId,
           },
@@ -126,11 +124,9 @@ class OrdersRepository {
                 } else {
                   con.orderList.addAll(model.data?.orders ?? []);
                 }
-                con.orderCounts.value =
-                    model.data?.orderCounts ?? OrderCounts();
+                con.orderCounts.value = model.data?.orderCounts ?? OrderCounts();
                 int currentPage = (model.data!.page ?? 1);
-                con.nextPageAvailable.value =
-                    currentPage < (model.data!.totalPages ?? 0);
+                con.nextPageAvailable.value = currentPage < (model.data!.totalPages ?? 0);
                 con.page.value += currentPage;
               }
               loader?.value = false;
@@ -152,11 +148,9 @@ class OrdersRepository {
   ///                                 GET ORDER DETAIL
   /// ***********************************************************************************
 
-  static Future<dynamic> getSingleOrderAPI(
-      {RxBool? loader, required String orderId}) async {
+  static Future<dynamic> getSingleOrderAPI({RxBool? loader, required String orderId}) async {
     ///
-    if (await getConnectivityResult() &&
-        isRegistered<OrderDetailController>()) {
+    if (await getConnectivityResult() && isRegistered<OrderDetailController>()) {
       final OrderDetailController con = Get.find<OrderDetailController>();
 
       // try {
@@ -169,8 +163,7 @@ class OrdersRepository {
       ).then(
         (response) async {
           if (response != null) {
-            GetSingleOrderDetailModel model =
-                GetSingleOrderDetailModel.fromJson(response);
+            GetSingleOrderDetailModel model = GetSingleOrderDetailModel.fromJson(response);
 
             if (model.data != null) {
               con.orderDetailModel.value = model.data!;
@@ -203,10 +196,15 @@ class OrdersRepository {
 
       try {
         loader?.value = true;
+        // if (isInitial) {
+        //   con.retailerList.clear();
+        //   con.page.value = 1;
+        //   con.nextPageAvailable.value = true;
+        // }
         if (isInitial) {
           con.retailerList.clear();
           con.page.value = 1;
-          con.nextPageAvailable.value = true;
+          con.nextPageAvailable.value;
         }
 
         /// API
@@ -224,11 +222,21 @@ class OrdersRepository {
               GetRetailerModel model = GetRetailerModel.fromJson(response);
 
               if (model.data != null) {
-                con.retailerList.addAll(model.data?.retailers ?? []);
-                int currentPage = (model.data!.page ?? 1);
-                con.nextPageAvailable.value =
-                    currentPage < (model.data!.totalPages ?? 0);
-                con.page.value += currentPage;
+                if (isInitial) {
+                  con.retailerList.assignAll(model.data?.retailers ?? []);
+                } else {
+                  con.retailerList.addAll(model.data?.retailers ?? []);
+                }
+
+                con.page.value++;
+                con.nextPageAvailable.value = model.data?.page != model.data?.totalPages;
+
+                loader?.value = false;
+
+                // con.retailerList.addAll(model.data?.retailers ?? []);
+                // int currentPage = (model.data!.page ?? 1);
+                // con.nextPageAvailable.value = currentPage < (model.data!.totalPages ?? 0);
+                // con.page.value += currentPage;
               }
               loader?.value = false;
             } else {

@@ -35,14 +35,61 @@ class LatestProductsTabView extends StatelessWidget {
                           padding: EdgeInsets.all(defaultPadding),
                           itemBuilder: (context, index) => Column(
                             children: [
-                              AspectRatio(
-                                aspectRatio: AppAspectRatios.r16_5,
-                                child: AppNetworkImage(
-                                  width: double.infinity,
-                                  imageUrl: con.latestProductList[index].productImage ?? "",
-                                  fit: BoxFit.cover,
-                                  boxShadow: defaultShadowAllSide,
-                                  borderRadius: BorderRadius.circular(defaultRadius),
+                              InkWell(
+                                onTap: () {
+                                  navigateToProductDetailsScreen(
+                                    productDetails: {
+                                      "productId": (con.latestProductList[index].id ?? ""),
+                                      "diamondClarity": con.latestProductList[index].isDiamondMultiple == true
+                                          ? ""
+                                          : (con.latestProductList[index].diamonds != null && con.latestProductList[index].diamonds!.isNotEmpty)
+                                              ? con.latestProductList[index].diamonds?.first.diamondClarity ?? ""
+                                              : "",
+                                      "diamonds": con.latestProductList[index].isDiamondMultiple == true ? con.latestProductList[index].diamonds! : [],
+                                      "metalId": con.latestProductList[index].metalId,
+                                      "sizeId": con.latestProductList[index].sizeId,
+                                      "type": GlobalProductPrefixType.productDetails,
+                                    },
+                                    type: GlobalProductPrefixType.productDetails,
+                                    arguments: {
+                                      "category": /*AppStrings.cartIdPrefixSlug +*/
+                                          (con.latestProductList[index].category?.id ?? ''),
+                                      'isSize': !isValEmpty(con.latestProductList[index].sizeId),
+                                      'isFancy': con.latestProductList[index].isDiamondMultiple ?? false,
+                                      'inventoryId': /*AppStrings.productIdPrefixSlug +*/
+                                          (con.latestProductList[index].inventoryId ?? ""),
+                                      'name': con.latestProductList[index].productName,
+                                      "productsListTypeType": ProductsListType.normal,
+                                      // 'like': con.inventoryProductList[index].isWishlist,
+                                      "sizeId": con.latestProductList[index].sizeId,
+
+                                      "diamondClarity": (con.latestProductList[index].diamonds != null && con.latestProductList[index].diamonds!.isNotEmpty) ? con.latestProductList[index].diamonds?.first.diamondClarity ?? "" : "",
+
+                                      "metalId": con.latestProductList[index].metalId,
+
+                                      "diamonds": con.latestProductList[index].isDiamondMultiple == true ? con.latestProductList[index].diamonds : [],
+                                    },
+                                    whenComplete: () {
+                                      if (isRegistered<BaseController>()) {
+                                        BaseController baseCon = Get.find<BaseController>();
+                                        if (baseCon.globalProductDetails.isNotEmpty) {
+                                          baseCon.globalProductDetails.removeLast();
+                                        }
+                                      }
+                                    },
+                                  );
+                                },
+                                highlightColor: Colors.transparent,
+                                splashColor: Colors.transparent,
+                                child: AspectRatio(
+                                  aspectRatio: AppAspectRatios.r16_5,
+                                  child: AppNetworkImage(
+                                    width: double.infinity,
+                                    imageUrl: con.latestProductList[index].productImage ?? "",
+                                    fit: BoxFit.cover,
+                                    boxShadow: defaultShadowAllSide,
+                                    borderRadius: BorderRadius.circular(defaultRadius),
+                                  ),
                                 ),
                               ),
 

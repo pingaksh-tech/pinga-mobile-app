@@ -86,6 +86,7 @@ class AppAssets {
   static const String customerCareIcon = '${svgPath}customer_care.svg';
   static const String settingIcon = '${svgPath}settings.svg';
   static const String catalogIcon = '${svgPath}catalog.svg';
+  static const String priceRateIcon = '${svgPath}price_rate.svg';
   static const String boxIcon = '${svgPath}detail_box.svg';
   static const String deleteIcon = '${svgPath}delete_icon.svg';
   static const String stockIcon = '${svgPath}stock_icon.svg';
@@ -140,6 +141,7 @@ class AppAssets {
   static const String dateSVG = '${svgPath}date_icon.svg';
   static const String typeSVG = '${svgPath}type_icon.svg';
   static const String logOutSVG = '${svgPath}logout_icon.svg';
+  static const String labelIconSVG = '${svgPath}lable_icon.svg';
   static const String productPlaceholderSVG = '${svgPath}product_placeholder.svg';
 
   /// ***********************************************************************************

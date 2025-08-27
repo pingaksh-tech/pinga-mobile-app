@@ -39,7 +39,7 @@ class ProductsController extends GetxController {
   /// PAGINATION
   ScrollController scrollController = ScrollController();
   RxInt page = 1.obs;
-  RxInt itemLimit = 10.obs;
+  RxInt itemLimit = 20.obs;
   RxBool nextPageAvailable = true.obs;
   RxBool paginationLoader = false.obs;
   RxBool loader = true.obs;
@@ -129,7 +129,7 @@ class ProductsController extends GetxController {
     ///  PRODUCTS
     scrollController.addListener(
       () async {
-        if (scrollController.position.maxScrollExtent == scrollController.position.pixels) {
+        if (scrollController.position.maxScrollExtent / 1.5 < scrollController.position.pixels) {
           if (nextPageAvailable.value && paginationLoader.isFalse) {
             /// GET PRODUCTS API
             await ProductRepository.getFilterProductsListAPI(

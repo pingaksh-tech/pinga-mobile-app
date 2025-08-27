@@ -89,4 +89,5 @@ class AppRoutes {
   static const String pdfViewerScreen = '/pdf-viewer-screen';
   static const String watchpdfViewerScreen = '/watch-pdf-viewer-screen';
   static const String pdfPreviewScreen = '/pdf-preview-screen';
+  static const String globalRateScreen = '/global-rate-screen';
 }

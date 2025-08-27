@@ -11,7 +11,7 @@ import '../../data/repositories/cart/cart_repository.dart';
 import '../../data/repositories/product/product_repository.dart';
 import '../../exports.dart';
 
-class ProductDetailsController extends GetxController {
+class ProductDetailsController extends GetxController with GetSingleTickerProviderStateMixin {
   /// DUPLICATE CONTROLLER RESOLVER
   var productIdStack = <String>[].obs;
 
@@ -22,6 +22,7 @@ class ProductDetailsController extends GetxController {
   Rx<PageController> imagesPageController = PageController().obs;
 
   RxBool isLike = false.obs;
+
   // RxBool isSizeAvailable = true.obs;
   RxBool isMultipleDiamondSelection = false.obs;
 
@@ -32,6 +33,9 @@ class ProductDetailsController extends GetxController {
   RxString selectedRemark = "".obs;
   RxString productCategory = "".obs;
   RxInt quantity = 0.obs;
+  RxInt selectedIndex = 0.obs;
+
+  RxDouble height = 200.0.obs;
 
   Rx<SingleProductModel> productDetailModel = SingleProductModel().obs;
   RxString inventoryId = "".obs;
@@ -47,11 +51,15 @@ class ProductDetailsController extends GetxController {
   ProductsListType productsListTypeType = ProductsListType.normal;
 
   RxBool loader = true.obs;
+
   // RxMap<String, String> diamonds = <String, String>{}.obs;
+
+  late TabController tabController;
 
   @override
   void onInit() {
     super.onInit();
+    tabController = TabController(length: 3, vsync: this);
     if (Get.arguments != null) {
       if (Get.arguments['category'].runtimeType == String) {
         productCategory.value = Get.arguments['category'];
@@ -73,8 +81,7 @@ class ProductDetailsController extends GetxController {
       if (Get.arguments['name'].runtimeType == String) {
         productName.value = Get.arguments['name'];
       }
-      if (Get.arguments['productsListTypeType'].runtimeType ==
-          ProductsListType) {
+      if (Get.arguments['productsListTypeType'].runtimeType == ProductsListType) {
         productsListTypeType = Get.arguments['productsListTypeType'];
       }
       // isLike = Get.arguments['like'] ?? false.obs;
@@ -113,23 +120,14 @@ class ProductDetailsController extends GetxController {
     super.onReady();
 
     if (isValEmpty(cartId)) {
-      ProductRepository.getSingleProductAPI(
-              inventoryId: inventoryId.value /*.substring(2)*/,
-              sizeId: sizeId.value,
-              metalId: metalId.value,
-              diamondClarity: diamondClarity.value,
-              diamondList: diamondList,
-              loader: loader)
-          .then(
+      ProductRepository.getSingleProductAPI(inventoryId: inventoryId.value /*.substring(2)*/, sizeId: sizeId.value, metalId: metalId.value, diamondClarity: diamondClarity.value, diamondList: diamondList, loader: loader).then(
         (value) {
           predefinedValue();
           // priceChangeAPI();
         },
       );
     } else {
-      CartRepository.getSingleCartItemAPI(
-              cartId: cartId.value /*.substring(2)*/, loader: loader)
-          .then(
+      CartRepository.getSingleCartItemAPI(cartId: cartId.value /*.substring(2)*/, loader: loader).then(
         (value) {
           predefinedValue();
           // priceChangeAPI();
@@ -144,37 +142,30 @@ class ProductDetailsController extends GetxController {
       inventoryId: inventoryId.value,
       sizeId: selectedSize.value.id?.value ?? "",
       metalId: selectedMetal.value.id?.value ?? "",
-      diamondClarity: isMultipleDiamondSelection.value == false
-          ? selectedDiamond.value.name ?? ""
-          : "",
+      diamondClarity: isMultipleDiamondSelection.value == false ? selectedDiamond.value.name ?? "" : "",
       diamonds: isMultipleDiamondSelection.value == true
           ? productDetailModel.value.diamonds!.isEmpty
               ? []
               : List.generate(
-                  productDetailModel.value.diamonds != null
-                      ? productDetailModel.value.diamonds!.length
-                      : 0,
+                  productDetailModel.value.diamonds != null ? productDetailModel.value.diamonds!.length : 0,
                   (index) => {
-                    "diamond_clarity": productDetailModel
-                            .value.diamonds?[index].diamondClarity?.value ??
-                        "",
-                    "diamond_shape": productDetailModel
-                            .value.diamonds?[index].diamondShape ??
-                        "",
-                    "diamond_size":
-                        productDetailModel.value.diamonds?[index].diamondSize ??
-                            "",
-                    "diamond_count": productDetailModel
-                            .value.diamonds?[index].diamondCount ??
-                        0,
+                    "diamond_clarity": productDetailModel.value.diamonds?[index].diamondClarity?.value ?? "",
+                    "diamond_shape": productDetailModel.value.diamonds?[index].diamondShape ?? "",
+                    "diamond_size": productDetailModel.value.diamonds?[index].diamondSize ?? "",
+                    "diamond_count": productDetailModel.value.diamonds?[index].diamondCount ?? 0,
                     "_id": productDetailModel.value.diamonds?[index].id ?? "",
                   },
                 )
           : [],
     ).then((value) {
-      productDetailModel.value.priceBreaking?.total =
-          value?.data?.inventoryTotalPrice;
+      // productDetailModel.value.priceBreaking?.total = value?.data?.inventoryTotalPrice;
       quantity.value = value?.data?.cartQty?.quantity ?? 0;
+      ProductRepository.getSingleProductAPI(inventoryId: inventoryId.value /*.substring(2)*/, sizeId: sizeId.value, metalId: metalId.value, diamondClarity: diamondClarity.value, diamondList: diamondList).then(
+        (value) {
+          predefinedValue();
+          // priceChangeAPI();
+        },
+      );
     });
   }
 
@@ -183,17 +174,17 @@ class ProductDetailsController extends GetxController {
     inventoryId.value = productDetailModel.value.inventoryId ?? "";
     int index = 0;
     if (isRegistered<PreDefinedValueController>()) {
-      final PreDefinedValueController preValueCon =
-          Get.find<PreDefinedValueController>();
+      final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
       List<MetalModel> metalList = preValueCon.metalsList;
       List<CategoryWiseSize> allSizes = preValueCon.categoryWiseSizesList;
       List<DiamondModel> diamondList = preValueCon.diamondsList;
 
       /// Selected Diamond
       if (diamondList.isNotEmpty) {
-        index = diamondList.indexWhere((element) =>
-            element.name ==
-            productDetailModel.value.diamonds?.first.diamondClarity?.value);
+        if (productDetailModel.value.diamonds != null && productDetailModel.value.diamonds!.isNotEmpty) {
+          index = diamondList.indexWhere((element) => element.name == productDetailModel.value.diamonds?.first.diamondClarity?.value);
+        }
+
         if (index != -1) {
           selectedDiamond.value = diamondList[index];
         } else {
@@ -206,8 +197,7 @@ class ProductDetailsController extends GetxController {
 
       /// Selected Metal
       if (metalList.isNotEmpty) {
-        index = metalList.indexWhere(
-            (element) => element.id?.value == productDetailModel.value.metalId);
+        index = metalList.indexWhere((element) => element.id?.value == productDetailModel.value.metalId);
         if (index != -1) {
           selectedMetal.value = metalList[index];
         } else {
@@ -223,12 +213,10 @@ class ProductDetailsController extends GetxController {
         RxList<DiamondModel> sizeList = <DiamondModel>[].obs;
 
         for (var element in allSizes) {
-          if (element.id?.value == productCategory.value &&
-              element.data != null) {
+          if (element.id?.value == productCategory.value && element.data != null) {
             sizeList = element.data!.obs;
 
-            index = sizeList.indexWhere((element) =>
-                element.id?.value == productDetailModel.value.sizeId);
+            index = sizeList.indexWhere((element) => element.id?.value == productDetailModel.value.sizeId);
             if (index != -1) {
               selectedSize.value = sizeList[index];
             } else {
@@ -246,6 +234,7 @@ class ProductDetailsController extends GetxController {
   }
 
   Timer? cartDebounce;
+
   void addToCartApi({required int quantity}) {
     if (cartDebounce?.isActive ?? false) cartDebounce?.cancel();
     cartDebounce = Timer(defaultSearchDebounceDuration, () async {
@@ -257,30 +246,26 @@ class ProductDetailsController extends GetxController {
         extraMetalWeight: extraMetalWt != 0.0 ? extraMetalWt : null,
         metalId: selectedMetal.value.id?.value ?? "",
         sizeId: selectedSize.value.id?.value ?? "",
-        diamondClarity: isMultipleDiamondSelection.isFalse
-            ? selectedDiamond.value.shortName ?? ""
-            : "",
+        diamondClarity: isMultipleDiamondSelection.isFalse ? selectedDiamond.value.shortName ?? "" : "",
         diamonds: isMultipleDiamondSelection.isTrue
             ? List.generate(
                 productDetailModel.value.diamonds?.length ?? 0,
                 (index) => {
-                  "diamond_clarity": productDetailModel
-                          .value.diamonds?[index].diamondClarity?.value ??
-                      "",
-                  "diamond_shape":
-                      productDetailModel.value.diamonds?[index].diamondShape ??
-                          "",
-                  "diamond_size":
-                      productDetailModel.value.diamonds?[index].diamondSize ??
-                          "",
-                  "diamond_count":
-                      productDetailModel.value.diamonds?[index].diamondCount ??
-                          0,
+                  "diamond_clarity": productDetailModel.value.diamonds?[index].diamondClarity?.value ?? "",
+                  "diamond_shape": productDetailModel.value.diamonds?[index].diamondShape ?? "",
+                  "diamond_size": productDetailModel.value.diamonds?[index].diamondSize ?? "",
+                  "diamond_count": productDetailModel.value.diamonds?[index].diamondCount ?? 0,
                   "_id": productDetailModel.value.diamonds?[index].id ?? "",
                 },
               )
             : null,
       );
     });
+  }
+
+  @override
+  void onClose() {
+    tabController.dispose();
+    super.onClose();
   }
 }

@@ -9,29 +9,29 @@ import 'notification_helper.dart';
 class FirebaseNotificationService {
   static Future<void> initialise() async {
     await requestNotificationPermission();
-    String? fcmToken = await getFCMToken();
-    if (!isValEmpty(fcmToken)) {
-      printOkStatus("FCM: $fcmToken");
-    }
+    // String? fcmToken = await getFCMToken();
+    // if (!isValEmpty(fcmToken)) {
+    //   printOkStatus("FCM: $fcmToken");
+    // }
     firebaseMessagingForegroundHandler();
   }
 
-  static Future<String?> getFCMToken() async {
-    return await FirebaseMessaging.instance.requestPermission().then(
-      (_) {
-        try {
-          return FirebaseMessaging.instance.getToken().then(
-            (token) {
-              storeDeviceInformation(token);
-              return token;
-            },
-          );
-        } catch (e) {
-          return null;
-        }
-      },
-    );
-  }
+  // static Future<String?> getFCMToken() async {
+  //   return await FirebaseMessaging.instance.requestPermission().then(
+  //     (_) {
+  //       try {
+  //         return FirebaseMessaging.instance.getToken().then(
+  //           (token) {
+  //             storeDeviceInformation(token);
+  //             return token;
+  //           },
+  //         );
+  //       } catch (e) {
+  //         return null;
+  //       }
+  //     },
+  //   );
+  // }
 
   static Future<void> requestNotificationPermission() async {
     FirebaseMessaging messaging = FirebaseMessaging.instance;

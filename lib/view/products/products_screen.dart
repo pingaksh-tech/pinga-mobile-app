@@ -10,6 +10,7 @@ import '../../exports.dart';
 import '../../res/app_bar.dart';
 import '../../res/app_dialog.dart';
 import '../../res/empty_element.dart';
+import '../../utils/device_utils.dart';
 import '../../widgets/product_tile.dart';
 import '../../widgets/pull_to_refresh_indicator.dart';
 import 'components/cart_icon_button.dart';
@@ -192,6 +193,7 @@ class ProductsScreen extends StatelessWidget {
                                   children: [
                                     ProductTile(
                                       screenType: "isProductsScreen",
+                                      // screenType: con.productListType.value.name,
                                       category: RxString(con.inventoryProductList[index].subCategoryId ?? ""),
                                       isFancy: con.inventoryProductList[index].isDiamondMultiple ?? false,
                                       inventoryId: con.inventoryProductList[index].id,
@@ -262,11 +264,13 @@ class ProductsScreen extends StatelessWidget {
                                       productName: con.inventoryProductList[index].name ?? "",
                                       productPrice: con.inventoryProductList[index].inventoryTotalPrice.toString(),
                                       productQuantity: con.inventoryProductList[index].quantity,
-                                      isSizeAvailable: !isValEmpty(con.inventoryProductList[index].sizeId),
+                                      isSizeAvailable: con.inventoryProductList[index].isShowSize ?? false,
                                       selectSize: con.inventoryProductList[index].sizeId!.value.obs,
                                       selectMetalCart: con.inventoryProductList[index].metalId!.value.obs,
                                       selectDiamondCart: (con.inventoryProductList[index].diamonds != null && con.inventoryProductList[index].diamonds!.isNotEmpty) ? (con.inventoryProductList[index].diamonds?.first.diamondClarity?.value ?? "").obs : "".obs,
                                       diamonds: con.inventoryProductList[index].diamonds!,
+
+                                      // cartId: con.inventoryProductList[index].cartId,
                                     ),
                                     // if (con.paginationLoader.value &&
                                     //     index + 1 ==
@@ -276,7 +280,7 @@ class ProductsScreen extends StatelessWidget {
                                 ),
                               ),
                             ]),
-                            if (con.paginationLoader.value) con.isProductViewChange.isTrue ? productGridShimmer(context) : productListShimmer(context)
+                            if (con.paginationLoader.value) con.isProductViewChange.isTrue ? productGridShimmer(context, length: 20) : productListShimmer(context, length: 20)
                           ],
                         )
                       ],
@@ -291,7 +295,7 @@ class ProductsScreen extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: Get.width / 2.5),
                   )
             : con.isProductViewChange.isTrue
-                ? productGridShimmer(context, length: 8)
+                ? productGridShimmer(context, length: DeviceUtil.isTablet(context) ? 20 : 8)
                 : productListShimmer(context, length: 8),
         floatingActionButton: FloatingActionButton(
           child: SvgPicture.asset(

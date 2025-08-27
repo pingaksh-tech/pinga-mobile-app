@@ -50,7 +50,7 @@ class PdfPreviewController extends GetxController {
         title: pdfTitle.value,
         catalogueType: CatalogueType.grid,
         onSuccess: () {
-          downloadPDF();
+          // downloadPDF();
         },
       );
     } else {

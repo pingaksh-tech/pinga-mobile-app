@@ -70,7 +70,16 @@ class SplashController extends GetxController {
                 },
               );
             } else if (Platform.isAndroid) {
-              await checkAndroidAppUpdate(forceUpdate: true, softUpdate: false);
+              AppDialogs.materialAppUpdateDialog(
+                Get.context!,
+                isLoader: isUpdating,
+                isForceUpdate: true,
+                onLater: () => ApiUtils.splashNavigation(),
+                onUpdate: () async {
+                  launchUrlFunction(Uri.parse(AppStrings.playStoreURL));
+                },
+              );
+              // await checkAndroidAppUpdate(forceUpdate: true, softUpdate: false);
             } else {
               throw platformUnsupportedError;
             }
@@ -90,7 +99,16 @@ class SplashController extends GetxController {
                 },
               );
             } else if (Platform.isAndroid) {
-              await checkAndroidAppUpdate(forceUpdate: false, softUpdate: true);
+              AppDialogs.materialAppUpdateDialog(
+                Get.context!,
+                isLoader: isUpdating,
+                isForceUpdate: false,
+                onLater: () => ApiUtils.splashNavigation(),
+                onUpdate: () async {
+                  launchUrlFunction(Uri.parse(AppStrings.playStoreURL));
+                },
+              );
+              // await checkAndroidAppUpdate(forceUpdate: false, softUpdate: true);
             } else {
               throw platformUnsupportedError;
             }

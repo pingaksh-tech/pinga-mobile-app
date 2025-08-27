@@ -26,8 +26,7 @@ class AddWatchListScreen extends StatelessWidget {
       body: Obx(
         () {
           return PullToRefreshIndicator(
-            onRefresh: () =>
-                WatchListRepository.getWatchListAPI(isPullToRefresh: true),
+            onRefresh: () => WatchListRepository.getWatchListAPI(isPullToRefresh: true),
             child: ListView(
               padding: EdgeInsets.all(defaultPadding),
               children: [
@@ -44,32 +43,24 @@ class AddWatchListScreen extends StatelessWidget {
                             itemBuilder: (context, index) => Obx(() {
                               return WatchlistTile(
                                 name: watchlistCon.watchList[index].name,
-                                noOfItem: watchlistCon
-                                        .watchList[index].watchListItemCount ??
-                                    0,
+                                noOfItem: watchlistCon.watchList[index].watchListItemCount ?? 0,
                                 createdBy: LocalStorage.userModel.firstName,
                                 isShowButtons: false,
-                                selected: (con.watchlistId.value.id?.value ==
-                                        watchlistCon.watchList[index].id?.value)
-                                    .obs,
+                                selected: (con.watchlistId.value.id?.value == watchlistCon.watchList[index].id?.value).obs,
                                 onPressed: () {
-                                  if (con.watchlistId.value.id?.value ==
-                                      watchlistCon.watchList[index].id?.value) {
+                                  if (con.watchlistId.value.id?.value == watchlistCon.watchList[index].id?.value) {
                                     con.watchlistId.value = WatchList();
                                   } else {
-                                    con.watchlistId.value =
-                                        watchlistCon.watchList[index];
+                                    con.watchlistId.value = watchlistCon.watchList[index];
                                   }
 
                                   con.checkDisableButton();
                                 },
                                 onChanged: (_) {
-                                  if (con.watchlistId.value.id ==
-                                      watchlistCon.watchList[index].id) {
+                                  if (con.watchlistId.value.id == watchlistCon.watchList[index].id) {
                                     con.watchlistId.value = WatchList();
                                   } else {
-                                    con.watchlistId.value =
-                                        watchlistCon.watchList[index];
+                                    con.watchlistId.value = watchlistCon.watchList[index];
                                   }
 
                                   con.checkDisableButton();
@@ -80,8 +71,7 @@ class AddWatchListScreen extends StatelessWidget {
                         : Center(
                             child: EmptyElement(
                               title: "Watchlist not available",
-                              padding: EdgeInsets.symmetric(
-                                  vertical: Get.width / 2.5),
+                              padding: EdgeInsets.symmetric(vertical: Get.width / 2.5),
                             ),
                           )
                     : ListView.separated(
@@ -119,8 +109,7 @@ class AddWatchListScreen extends StatelessWidget {
                 title: "Add Watch List",
                 hintText: "Enter watchlist name",
                 contentPadding: EdgeInsets.all(defaultPadding / 1.2),
-                padding: EdgeInsets.symmetric(horizontal: defaultPadding)
-                    .copyWith(top: defaultPadding),
+                padding: EdgeInsets.symmetric(horizontal: defaultPadding).copyWith(top: defaultPadding),
                 textInputAction: TextInputAction.done,
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(
@@ -138,44 +127,32 @@ class AddWatchListScreen extends StatelessWidget {
               AppButton(
                 title: "Add",
                 disableButton: con.disableButton.value,
-                padding: EdgeInsets.all(defaultPadding).copyWith(
-                    bottom:
-                        MediaQuery.of(context).padding.bottom + defaultPadding),
+                padding: EdgeInsets.all(defaultPadding).copyWith(bottom: MediaQuery.of(context).padding.bottom + defaultPadding),
                 onPressed: () {
                   FocusScope.of(context).unfocus();
-                  if (con.nameCon.value.text.trim().isNotEmpty ||
-                      (con.watchlistId.value.id != null &&
-                          con.watchlistId.value.id!.isNotEmpty)) {
+                  if (con.nameCon.value.text.trim().isNotEmpty || (con.watchlistId.value.id != null && con.watchlistId.value.id!.isNotEmpty)) {
                     // con.watchList.add(
                     //   WatchlistModel(id: con.watchList.length.toString(), name: con.nameCon.value.text.trim(), noOfItem: 45, createdBy: "Guest"),
                     // );
                     /// CREATE WATCHLIST
                     WatchListRepository.createWatchlistAPI(
                       productListType: ProductsListType.normal,
-                      watchlistName: (con.watchlistId.value.id != null &&
-                              con.watchlistId.value.id!.isNotEmpty)
-                          ? con.watchlistId.value.name ?? ""
-                          : con.nameCon.value.text.trim(),
+                      cartIds: con.cartIds,
+                      watchListType: con.watchListType.value,
+                      watchlistName: (con.watchlistId.value.id != null && con.watchlistId.value.id!.isNotEmpty) ? con.watchlistId.value.name ?? "" : con.nameCon.value.text.trim(),
                       inventoryId: con.inventoryId.value,
                       sizeId: con.sizeId.value,
                       metalId: con.metalId.value,
                       quantity: con.quantity.value,
-                      diamondClarity: con.isMultiDiamond.isFalse
-                          ? con.diamondClarity.value
-                          : "",
+                      diamondClarity: con.isMultiDiamond.isFalse ? con.diamondClarity.value : "",
                       diamonds: con.isMultiDiamond.isTrue
                           ? List.generate(
                               con.diamonds.length,
                               (index) => {
-                                "diamond_clarity":
-                                    con.diamonds[index].diamondClarity?.value ??
-                                        "",
-                                "diamond_shape":
-                                    con.diamonds[index].diamondShape ?? "",
-                                "diamond_size":
-                                    con.diamonds[index].diamondSize ?? "",
-                                "diamond_count":
-                                    con.diamonds[index].diamondCount ?? 0,
+                                "diamond_clarity": con.diamonds[index].diamondClarity?.value ?? "",
+                                "diamond_shape": con.diamonds[index].diamondShape ?? "",
+                                "diamond_size": con.diamonds[index].diamondSize ?? "",
+                                "diamond_count": con.diamonds[index].diamondCount ?? 0,
                                 "_id": con.diamonds[index].id ?? "",
                               },
                             )

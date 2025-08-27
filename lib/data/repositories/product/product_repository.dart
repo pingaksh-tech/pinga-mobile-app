@@ -59,6 +59,7 @@ class ProductRepository {
     bool isInitial = true,
     bool isPullToRefresh = false,
     RxBool? loader,
+    String? searchText,
   }) async {
     final ProductsController con = Get.find<ProductsController>();
 
@@ -83,6 +84,7 @@ class ProductRepository {
             "page": con.page.value.toString(),
             "limit": con.itemLimit.value.toString(),
             if (!isValEmpty(sortBy)) "sortBy": sortBy,
+            if (!isValEmpty(searchText)) "search": searchText,
             if ((!isValEmpty(minMetal) && !isValEmpty(maxMetal)))
               "range": {
                 if ((!isValEmpty(minMetal) && !isValEmpty(maxMetal))) "metal_wt": {"min": minMetal, "max": maxMetal},

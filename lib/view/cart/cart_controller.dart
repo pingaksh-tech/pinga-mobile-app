@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import '../../data/model/cart/cart_model.dart';
 import '../../data/model/sub_category/sub_category_model.dart';
 import '../../data/repositories/cart/cart_repository.dart';
-import '../home/home_controller.dart';
 
 class CartController extends GetxController {
   Rx<SubCategoryModel> category = SubCategoryModel().obs;
@@ -19,7 +18,9 @@ class CartController extends GetxController {
   RxBool cartLoader = true.obs;
   ScrollController scrollController = ScrollController();
   RxInt page = 1.obs;
-  RxInt itemLimit = 20.obs;
+
+  //TODO: SET ITEM LIMIT BECAUSE CLIENT CHANGE IT
+  // RxInt itemLimit = 100.obs;
   RxBool nextPageAvailable = true.obs;
   RxBool paginationLoader = false.obs;
 
@@ -31,8 +32,18 @@ class CartController extends GetxController {
   RxDouble selectedPrice = 0.0.obs;
   Timer? updateCartDebounce;
   RxBool isCartItemSelected = false.obs;
-  final HomeController homeCon = Get.find<HomeController>();
+
+  // final HomeController homeCon = Get.find<HomeController>();
   RxString categoryId = "".obs;
+  final currentRoute = ''.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    // ever(Get.routing, (routing) {
+    //   currentRoute.value = routing?.current ?? '';
+    // });
+  }
 
   @override
   void onReady() {
@@ -47,13 +58,11 @@ class CartController extends GetxController {
   void manageScrollController() async {
     scrollController.addListener(
       () {
-        if (scrollController.position.maxScrollExtent ==
-            scrollController.position.pixels) {
+        if (scrollController.position.maxScrollExtent == scrollController.position.pixels) {
           if (nextPageAvailable.value && paginationLoader.isFalse) {
             /// PAGINATION CALL
             /// GET CATEGORIES API
-            CartRepository.getCartApi(
-                isInitial: false, loader: paginationLoader);
+            CartRepository.getCartApi(isInitial: false, loader: paginationLoader);
           }
         }
       },
@@ -61,10 +70,8 @@ class CartController extends GetxController {
   }
 
   num calculateTotalPrice() {
-    List<num> priceList =
-        cartList.map((element) => (element.inventoryTotalPrice ?? 1)).toList();
-    List<int> quantityList =
-        cartList.map((element) => (element.quantity ?? 1)).toList();
+    List<num> priceList = cartList.map((element) => (element.inventoryTotalPrice ?? 1)).toList();
+    List<int> quantityList = cartList.map((element) => (element.quantity ?? 1)).toList();
     num totalPrices = 0;
     for (int i = 0; i < priceList.length; i++) {
       totalPrices = totalPrices + quantityList[i] * priceList[i];
@@ -74,11 +81,8 @@ class CartController extends GetxController {
   }
 
   num calculateSelectedItemPrice() {
-    List<num> priceList = selectedList
-        .map((element) => (element.inventoryTotalPrice ?? 1))
-        .toList();
-    List<int> quantityList =
-        selectedList.map((element) => (element.quantity ?? 1)).toList();
+    List<num> priceList = selectedList.map((element) => (element.inventoryTotalPrice ?? 1)).toList();
+    List<int> quantityList = selectedList.map((element) => (element.quantity ?? 1)).toList();
     num price = 0;
     for (int i = 0; i < priceList.length; i++) {
       price = price + quantityList[i] * priceList[i];
@@ -88,8 +92,7 @@ class CartController extends GetxController {
   }
 
   int calculateQuantity() {
-    List<int> quantityList =
-        cartList.map((element) => (element.quantity ?? 1)).toList();
+    List<int> quantityList = cartList.map((element) => (element.quantity ?? 1)).toList();
     num quantity = 0;
     for (int i = 0; i < quantityList.length; i++) {
       quantity = quantity + quantityList[i];
@@ -99,8 +102,7 @@ class CartController extends GetxController {
   }
 
   int calculateSelectedQue() {
-    List<int> quantityList =
-        selectedList.map((element) => (element.quantity ?? 1)).toList();
+    List<int> quantityList = selectedList.map((element) => (element.quantity ?? 1)).toList();
     num selectQuantity = 0;
     for (int i = 0; i < quantityList.length; i++) {
       selectQuantity = selectQuantity + quantityList[i];
@@ -127,12 +129,7 @@ class CartController extends GetxController {
     }
   }
 
-  void updateCart(
-      {required int index,
-      String? metalId,
-      String? sizeId,
-      String? diamondClarity,
-      int? quantity}) {
+  void updateCart({required int index, String? metalId, String? sizeId, String? diamondClarity, int? quantity}) {
     CartRepository.addOrUpdateCartApi(
       cartId: cartList[index].id ?? "",
       remark: cartList[index].remark!.value,

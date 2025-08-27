@@ -1,4 +1,3 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 
 import '../../exports.dart';
@@ -49,39 +48,39 @@ class ApiUtils {
     //     },
     //   );
   }
-
-  static Future<String?> getFCMToken() async {
-    return await FirebaseMessaging.instance.requestPermission().then(
-          (_) {
-        try {
-          return FirebaseMessaging.instance.getToken().then(
-                (token) {
-              storeDeviceInformation(token);
-              return token;
-            },
-          );
-        } catch (e) {
-          return null;
-        }
-      },
-    );
-  }
-
-  static Future<Map<String, dynamic>> devicesInfo() async {
-    if (LocalStorage.deviceId.isEmpty || LocalStorage.deviceType.isEmpty) {
-      if (LocalStorage.deviceToken.isEmpty) {
-        await getFCMToken();
-      } else {
-        await storeDeviceInformation(LocalStorage.deviceToken);
-      }
-    }
-
-    return {
-      "platform": AppStrings.appSlug,
-      // "device_name": LocalStorage.deviceName,
-      "device_id": LocalStorage.deviceId,
-      "device_type": LocalStorage.deviceType,
-      "device_token": LocalStorage.deviceToken,
-    };
-  }
+//
+// static Future<String?> getFCMToken() async {
+//   return await FirebaseMessaging.instance.requestPermission().then(
+//     (_) {
+//       try {
+//         return FirebaseMessaging.instance.getToken().then(
+//           (token) {
+//             storeDeviceInformation(token);
+//             return token;
+//           },
+//         );
+//       } catch (e) {
+//         return null;
+//       }
+//     },
+//   );
+// }
+//
+// static Future<Map<String, dynamic>> devicesInfo() async {
+//   if (LocalStorage.deviceId.isEmpty || LocalStorage.deviceType.isEmpty) {
+//     if (LocalStorage.deviceToken.isEmpty) {
+//       await getFCMToken();
+//     } else {
+//       await storeDeviceInformation(LocalStorage.deviceToken);
+//     }
+//   }
+//
+//   return {
+//     "platform": AppStrings.appSlug,
+//     // "device_name": LocalStorage.deviceName,
+//     "device_id": LocalStorage.deviceId,
+//     "device_type": LocalStorage.deviceType,
+//     "device_token": LocalStorage.deviceToken,
+//   };
+// }
 }
