@@ -77,10 +77,10 @@ class FilterController extends GetxController {
   void onInit() {
     super.onInit();
 
-    if (UserRoleEnum.fromSlug(LocalStorage.userModel.roleId?.slug ?? "") != UserRoleEnum.salesman) {
-      filterOptions.value = FilterItemType.values; // Show all filters for other roles
+    if ([UserRoleEnum.seller, UserRoleEnum.salesHead, UserRoleEnum.stateSalesHead, UserRoleEnum.salesman, UserRoleEnum.regionalSalesHead].contains(UserRoleEnum.fromSlug(LocalStorage.userModel.roleId?.slug ?? ""))) {
+      filterOptions.value = FilterItemType.values; // Show all filters for salesman role
     } else {
-      filterOptions.value = FilterItemType.values.where((filter) => filter != FilterItemType.retailers).toList().obs; // Exclude retailers filter for salesman role
+      filterOptions.value = FilterItemType.values.where((filter) => filter != FilterItemType.retailers).toList().obs; // Exclude retailers filter for other role
     }
 
     applyFilterCounts.addAll(List.generate(filterOptions.length, (index) => 0));
