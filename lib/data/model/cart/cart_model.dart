@@ -67,7 +67,7 @@ class GetCartDataModel {
 class CartModel {
   final String? id;
   final RxString? metalId;
-  final String? diamondClarity;
+  final RxString? diamondClarity;
   final RxString? sizeId;
   final String? userId;
   final String? categoryId;
@@ -102,7 +102,7 @@ class CartModel {
   factory CartModel.fromJson(Map<String, dynamic> json) => CartModel(
         id: json["_id"],
         metalId: RxString(json["metal_id"].toString()),
-        diamondClarity: json["diamond_clarity"],
+        diamondClarity: RxString(json["diamond_clarity"]),
         sizeId: RxString(json["size_id"].toString()),
         userId: json["user_id"],
         categoryId: json["category_id"],
@@ -120,7 +120,7 @@ class CartModel {
   Map<String, dynamic> toJson() => {
         "_id": id,
         "metal_id": metalId.obs,
-        "diamond_clarity": diamondClarity,
+        "diamond_clarity": diamondClarity.obs,
         "size_id": sizeId.obs,
         "user_id": userId,
         "category_id": categoryId,

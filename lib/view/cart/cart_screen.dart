@@ -112,10 +112,11 @@ class CartScreen extends StatelessWidget {
                                     isFancy: con.cartList[index].isDiamondMultiple ?? false,
                                     cartId: con.cartList[index].id,
                                     inventoryId: con.cartList[index].inventoryId,
-                                    productsListTypeType: ProductsListType.cart,
+                                    productTileType: ProductTileType.cartTile,
                                     selectMetalCart: (con.cartList[index].metalId!.value).obs,
+                                    selectSizeCart: (con.cartList[index].sizeId!.value).obs,
                                     diamonds: con.cartList[index].diamonds,
-                                    selectDiamondCart: (con.cartList[index].diamonds != null && con.cartList[index].diamonds!.isNotEmpty) ? (con.cartList[index].diamonds?.first.diamondClarity?.value ?? "").obs : "".obs,
+                                    selectDiamondCart: (con.cartList[index].diamondClarity!.value).obs,
                                     diamondOnChanged: (value) {
                                       //   printBlue(value);
                                       //   if (value!.isNotEmpty) {
@@ -130,7 +131,6 @@ class CartScreen extends StatelessWidget {
                                     item: con.cartList[index],
                                     category: RxString(con.cartList[index].subCategoryId ?? ""),
                                     isSizeAvailable: !isValEmpty(con.cartList[index].sizeId!.value),
-                                    productTileType: ProductTileType.cartTile,
                                     diamondList: RxList(con.cartList[index].diamonds ?? []),
                                     isCartSelected: RxBool(
                                       con.selectedList.contains(

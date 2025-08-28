@@ -137,7 +137,7 @@ class CartController extends GetxController {
       quantity: quantity ?? cartList[index].quantity ?? 0,
       metalId: metalId ?? cartList[index].metalId!.value,
       sizeId: sizeId ?? cartList[index].sizeId!.value,
-      diamondClarity: diamondClarity ?? cartList[index].diamondClarity ?? "",
+      diamondClarity: diamondClarity ?? cartList[index].diamondClarity?.value ?? "",
     );
   }
 }

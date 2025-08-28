@@ -1,5 +1,4 @@
-import 'dart:convert';
-import 'dart:developer';
+
 
 import 'package:get/get.dart';
 
@@ -88,7 +87,7 @@ class CartRepository {
           (response) async {
             if (response != null) {
               GetCartModel model = GetCartModel.fromJson(response);
-              log(jsonEncode(response));
+              // log(jsonEncode(response));
               if (model.data != null) {
                 if (isPullToRefresh) {
                   con.cartList.value = model.data?.cartList ?? [];
