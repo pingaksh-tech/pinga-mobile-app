@@ -52,6 +52,7 @@ class ProductTile extends StatefulWidget {
   final CartModel? item;
   final List<DiamondListModel>? diamonds;
   RxString? selectSize;
+  RxString? selectSizeCart;
   RxString? selectMetalCart;
   RxString? selectDiamondCart;
   String? cartId;
@@ -83,6 +84,7 @@ class ProductTile extends StatefulWidget {
     this.diamonds,
     required this.screenType,
     this.productsListTypeType = ProductsListType.normal,
+    this.selectSizeCart,
     this.selectMetalCart,
     this.selectDiamondCart,
     this.cartId,
@@ -752,7 +754,7 @@ class _ProductTileState extends State<ProductTile> {
   Widget diamondSelector({
     bool isFlexible = false,
     Axis direction = Axis.horizontal,
-    String? selectDiamondCart,
+    RxString? selectDiamondCart,
     double? width,
   }) =>
       horizontalSelectorButton(
@@ -762,7 +764,7 @@ class _ProductTileState extends State<ProductTile> {
         categoryId: diamondModel.id?.value ?? "",
         selectedDiamond: diamondModel.obs,
         diamondsList: RxList(widget.diamonds ?? []),
-        selectDiamondCart: RxString(selectDiamondCart ?? ""),
+        selectDiamondCart: selectDiamondCart,
         isFancy: widget.isFancy,
         sizeColorSelectorButtonType: SizeMetalSelectorButtonType.small,
         selectableItemType: SelectableItemType.diamond,
@@ -899,10 +901,39 @@ class _ProductTileState extends State<ProductTile> {
         productName: widget.productName.obs,
       );
 
+  assignValue() {
+    if (isRegistered<PreDefinedValueController>()) {
+      final PreDefinedValueController preValueCon = Get.find<PreDefinedValueController>();
+      RxList<CategoryWiseSize> allSizeList = preValueCon.categoryWiseSizesList;
+      RxList<DiamondModel> sizeList = <DiamondModel>[].obs;
+      RxList<MetalModel> metalList = preValueCon.metalsList;
+
+      for (var element in allSizeList) {
+        if (element.id?.value == widget.category?.value && element.data != null) {
+          sizeList = element.data!.obs;
+          int index = sizeList.indexWhere((element) => element.id?.value == widget.selectSizeCart?.value);
+          if (index != -1) {
+            widget.selectSizeCart?.value = sizeList[index].shortName ?? "";
+            sizeModel.value = sizeList[index];
+          }
+        }
+      }
+
+      if (metalList.isNotEmpty) {
+        int index = metalList.indexWhere((element) => element.id?.value == widget.selectMetalCart?.value);
+        if (index != -1) {
+          widget.selectMetalCart?.value = metalList[index].shortName ?? "";
+          metalModel = metalList[index];
+        }
+      }
+    }
+  }
+
   Widget productCartTile() {
     return Obx(
       () {
         final CartController cartCon = Get.find<CartController>();
+        assignValue();
         return GestureDetector(
           onTap: widget.onTap,
           child: Container(
@@ -1093,7 +1124,7 @@ class _ProductTileState extends State<ProductTile> {
                       sizeSelector(
                         direction: Axis.vertical,
                         isFlexible: true,
-                        selectedSizeCart: widget.selectSize,
+                        selectedSizeCart: RxString(widget.selectSizeCart?.value ?? ""),
                         category: widget.category?.value,
                       ),
                     (defaultPadding / 4).horizontalSpace,
@@ -1107,7 +1138,7 @@ class _ProductTileState extends State<ProductTile> {
                       direction: Axis.vertical,
                       isFlexible: true,
                       width: widget.isFancy ? 30.w : null,
-                      selectDiamondCart: widget.selectDiamondCart?.value,
+                      selectDiamondCart: RxString(widget.selectDiamondCart?.value ?? ""),
                     ),
                     (defaultPadding / 4).horizontalSpace,
                     remarkSelector(

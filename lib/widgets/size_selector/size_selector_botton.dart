@@ -54,7 +54,7 @@ Widget horizontalSelectorButton(
               }
 
               /// Size Selector
-              AppDialogs.sizeSelector(context, sizeList: sizeList, selectedSize: selectedSizeCart ?? selectedSize?.value.id ?? "".obs)?.then(
+              AppDialogs.sizeSelector(context, sizeList: sizeList, selectedSize: /*selectedSizeCart ?? */ selectedSize?.value.id ?? "".obs)?.then(
                 (value) {
                   if (value != null && (value.runtimeType == DiamondModel)) {
                     final DiamondModel sizeModel = (value as DiamondModel);
@@ -80,7 +80,7 @@ Widget horizontalSelectorButton(
               RxList<MetalModel> metalList = preValueCon.metalsList;
 
               /// Metal Selector
-              AppDialogs.metalSelector(context, metalList: metalList, selectedMetal: selectMetalCart ?? selectedMetal?.value.id ?? "".obs)?.then(
+              AppDialogs.metalSelector(context, metalList: metalList, selectedMetal: /*selectMetalCart ??*/ selectedMetal?.value.id ?? "".obs)?.then(
                 (value) {
                   if (value != null && (value.runtimeType == MetalModel)) {
                     final MetalModel metalModel = (value as MetalModel);
@@ -183,13 +183,15 @@ Widget horizontalSelectorButton(
                     (defaultPadding / 5).horizontalSpace,
                     Text(
                       switch (selectableItemType) {
-                        SelectableItemType.size => ("Size ${isValEmpty(selectedSize?.value.shortName) ? "(0)" : "(${selectedSize?.value.shortName})"}"),
-                        SelectableItemType.metal => ("Metal ${isValEmpty(selectedMetal?.value.shortName) ? "(-)" : "(${selectedMetal?.value.shortName})"}"),
+                        SelectableItemType.size => ("Size ${isValEmpty(selectedSizeCart) ? isValEmpty(selectedSize?.value.shortName) ? "(0)" : "(${selectedSize?.value.shortName})" : "(${selectedSizeCart?.value})"}"),
+                        SelectableItemType.metal => ("Metal ${isValEmpty(selectMetalCart) ? isValEmpty(selectedMetal?.value.shortName) ? "(-)" : "(${selectedMetal?.value.shortName})" : "(${selectMetalCart?.value})"}"),
                         SelectableItemType.diamond => isFancy
                             ? "(${diamondsList?.length})"
-                            : isValEmpty(selectedDiamond?.value.shortName)
-                                ? "-"
-                                : selectedDiamond?.value.shortName ?? '',
+                            : isValEmpty(selectDiamondCart)
+                                ? isValEmpty(selectedDiamond?.value.shortName)
+                                    ? "-"
+                                    : selectedDiamond?.value.shortName ?? ''
+                                : selectDiamondCart?.value ?? '',
                         SelectableItemType.remarks => "Remark",
                         SelectableItemType.stock => "Stock",
                       },
@@ -224,13 +226,15 @@ Widget horizontalSelectorButton(
                     MarqueeWidget(
                       child: Text(
                         switch (selectableItemType) {
-                          SelectableItemType.size => ("Size ${isValEmpty(selectedSize?.value.shortName) ? "(0)" : "(${selectedSize?.value.shortName})"}"),
-                          SelectableItemType.metal => ("Metal ${isValEmpty(selectedMetal?.value.shortName) ? "(-)" : "(${selectedMetal?.value.shortName?.split(" ").first})"}"),
+                          SelectableItemType.size => ("Size ${isValEmpty(selectedSizeCart) ? isValEmpty(selectedSize?.value.shortName) ? "(0)" : "(${selectedSize?.value.shortName})" : "(${selectedSizeCart?.value})"}"),
+                          SelectableItemType.metal => ("Metal ${isValEmpty(selectMetalCart) ? isValEmpty(selectedMetal?.value.shortName) ? "(-)" : "(${selectedMetal?.value.shortName})" : "(${selectMetalCart?.value})"}"),
                           SelectableItemType.diamond => isFancy
                               ? "(${diamondsList?.length})"
-                              : isValEmpty(selectedDiamond?.value.shortName)
-                                  ? "-"
-                                  : selectedDiamond?.value.shortName ?? '',
+                              : isValEmpty(selectDiamondCart)
+                                  ? isValEmpty(selectedDiamond?.value.shortName)
+                                      ? "-"
+                                      : selectedDiamond?.value.shortName ?? ''
+                                  : selectDiamondCart?.value ?? '',
                           SelectableItemType.remarks => "Remark",
                           SelectableItemType.stock => "Stock",
                         },
