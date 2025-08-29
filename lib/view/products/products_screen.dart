@@ -253,6 +253,7 @@ class ProductsScreen extends StatelessWidget {
                           shrinkWrap: true,
                           children: [
                             /// PRODUCTS
+
                             Wrap(children: [
                               ...List.generate(
                                 con.inventoryProductList.length,

@@ -151,12 +151,12 @@ class _ProductTileState extends State<ProductTile> {
         // printYellow("Diamond List: ${diamondList.toJson()}");
 
         int diamondIndex = diamondList.indexWhere((element) {
-          printYellow("Diamond selectDiamondCart  ${element.id}: ${element.shortName}");
+          // printYellow("Diamond selectDiamondCart  ${element.id}: ${element.shortName}");
 
           return element.shortName == widget.selectDiamondCart?.value;
         });
 
-        printYellow("Diamond selectDiamondCart: ${widget.selectDiamondCart?.value}");
+        // printYellow("Diamond selectDiamondCart: ${widget.selectDiamondCart?.value}");
 
         if (diamondIndex != -1) {
           diamondModel = diamondList[diamondIndex];
