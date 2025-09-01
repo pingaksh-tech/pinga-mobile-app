@@ -77,6 +77,8 @@ dependencies:
   pdf: ^3.11.0
   printing: ^5.13.3
   screen_protector: ^1.4.2+1
+  firebase_crashlytics: ^4.3.8
+  firebase_analytics: ^11.5.2
 
 flutter_native_splash:
   color: "#ffffff"

@@ -8,12 +8,14 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'controller/predefine_value_controller.dart';
+import 'data/services/crash_analytics/crash_analytics_manager.dart';
 import 'data/services/notification/firebase_notification_service.dart';
 import 'exports.dart';
 import 'firebase_options.dart';
 import 'utils/custom_route_observer.dart';
 import 'utils/device_utils.dart';
 import 'utils/global_context.dart';
+
 // import 'view/cart/cart_controller.dart';
 // import 'view/home/home_controller.dart';
 import 'view/orders/widgets/order_filter/order_filter_controller.dart';
@@ -35,6 +37,10 @@ void main() async {
   ]);
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  /// Initialize Crash Analytics to track errors and performance.
+  CrashAnalyticsManager.initialise();
+
   // await NotificationsHelper.init();
   await FirebaseNotificationService.initialise();
   FirebaseMessaging.onBackgroundMessage(FirebaseNotificationService.firebaseMessagingBackgroundHandler);
