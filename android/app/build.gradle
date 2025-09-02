@@ -81,3 +81,8 @@ android {
 flutter {
     source = "../.."
 }
+dependencies {
+
+    // Ensure Guava’s optional J2ObjC annotations are available to R8
+    implementation "com.google.j2objc:j2objc-annotations:1.3"
+}

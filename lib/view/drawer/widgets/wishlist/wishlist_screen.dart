@@ -22,6 +22,7 @@ class WishlistScreen extends StatelessWidget {
         body: Obx(
           () {
             return ListView(
+              controller: con.scrollController,
               padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2).copyWith(bottom: defaultPadding),
               children: [
                 /// PRODUCTS

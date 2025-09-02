@@ -82,7 +82,7 @@ class ProductRepository {
             if (!isValEmpty(categoryId)) "category_id": categoryId,
             if (!isValEmpty(subCategoryId)) "sub_category_id": subCategoryId,
             "page": con.page.value.toString(),
-            "limit": con.itemLimit.value.toString(),
+            "limit": "4" /*con.itemLimit.value.toString()*/,
             if (!isValEmpty(sortBy)) "sortBy": sortBy,
             if (!isValEmpty(searchText)) "search": searchText,
             if ((!isValEmpty(minMetal) && !isValEmpty(maxMetal)))
