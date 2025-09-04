@@ -253,6 +253,7 @@ class ProductsScreen extends StatelessWidget {
                           shrinkWrap: true,
                           children: [
                             /// PRODUCTS
+
                             Wrap(children: [
                               ...List.generate(
                                 con.inventoryProductList.length,
@@ -349,7 +350,7 @@ class ProductsScreen extends StatelessWidget {
                                 ),
                               ),
                             ]),
-                            if (con.paginationLoader.value) con.isProductViewChange.isTrue ? productGridShimmer(context, length: 20) : productListShimmer(context, length: 20)
+                            if (con.paginationLoader.value) con.isProductViewChange.isTrue ? productGridShimmer(context, length: DeviceUtil.isTablet(context) ? 20 : 8) : productListShimmer(context, length: 20)
                           ],
                         )
                       ],

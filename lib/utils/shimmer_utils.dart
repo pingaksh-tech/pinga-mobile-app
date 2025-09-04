@@ -84,7 +84,7 @@ class ShimmerUtils {
     return ShimmerUtils.shimmer(
       child: ShimmerUtils.shimmerContainer(
         height: Get.height / 2.7,
-        width: DeviceUtil.isTablet(Get.context!) ? (Get.width / 3 - (defaultPadding * 1.5)) : Get.width / 2 - defaultPadding * 1.5,
+        width: DeviceUtil.isTablet(Get.context!) ? (Get.width / 4 - (defaultPadding * 1.3)) : Get.width / 2 - defaultPadding * 1.5,
         borderRadius: BorderRadius.circular(defaultRadius),
         child: Padding(
           padding: EdgeInsets.all(defaultPadding / 2),

@@ -3,11 +3,9 @@ import 'package:get/get.dart';
 
 import '../../../../data/repositories/wishlist/wishlist_repository.dart';
 import '../../../../exports.dart';
-import '../../../../res/app_bar.dart';
 import '../../../../res/empty_element.dart';
 import '../../../../widgets/product_tile.dart';
 import '../../../../widgets/pull_to_refresh_indicator.dart';
-import '../../../products/components/cart_icon_button.dart';
 import 'wishlist_controller.dart';
 
 class WishlistScreen extends StatelessWidget {
@@ -21,31 +19,11 @@ class WishlistScreen extends StatelessWidget {
       onRefresh: () => WishlistRepository.getWishlistAPI(isPullToRefresh: true),
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
-        appBar: MyAppBar(
-          title: "My Wishlist",
-          actions: [
-            CartIconButton(
-              onPressed: () {
-                // Get.back();
-                // if (isRegistered<BottomBarController>()) {
-                //   BottomBarController bottomCon =
-                //       Get.find<BottomBarController>();
-                //   bottomCon.currentBottomIndex.value = 2;
-                // }
-                Get.offAllNamed(
-                  AppRoutes.cartScreen,
-                  predicate: (route) =>
-                      route.settings.name == AppRoutes.wishlistScreen,
-                );
-              },
-            )
-          ],
-        ),
         body: Obx(
           () {
             return ListView(
-              padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2)
-                  .copyWith(bottom: defaultPadding),
+              controller: con.scrollController,
+              padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2).copyWith(bottom: defaultPadding),
               children: [
                 /// PRODUCTS
                 con.loader.isFalse
@@ -57,72 +35,40 @@ class WishlistScreen extends StatelessWidget {
                                 children: [
                                   ProductTile(
                                     screenType: "isWishlistScreen",
-                                    category: RxString(con.productsList[index]
-                                            .inventory?.subCategoryId ??
-                                        ""),
-                                    inventoryId:
-                                        con.productsList[index].inventory?.id ??
-                                            "",
-                                    productsListTypeType:
-                                        ProductsListType.wishlist,
-                                    selectSize: (con.productsList[index]
-                                                .inventory?.sizeId ??
-                                            "")
-                                        .obs,
+                                    category: RxString(con.productsList[index].inventory?.subCategoryId ?? ""),
+                                    inventoryId: con.productsList[index].inventory?.id ?? "",
+                                    productsListTypeType: ProductsListType.wishlist,
+                                    selectSize: (con.productsList[index].inventory?.sizeId ?? "").obs,
                                     productTileType: ProductTileType.grid,
-                                    isFancy: con.productsList[index].inventory
-                                            ?.isDiamondMultiple ??
-                                        false,
+                                    isFancy: con.productsList[index].inventory?.isDiamondMultiple ?? false,
                                     onTap: () => Get.toNamed(
                                       AppRoutes.productDetailsScreen,
                                       arguments: {
                                         "category": /*AppStrings.cartIdPrefixSlug +*/
-                                            (con.productsList[index].inventory
-                                                    ?.subCategoryId ??
-                                                ''),
+                                            (con.productsList[index].inventory?.subCategoryId ?? ''),
                                         'inventoryId': /*AppStrings.productIdPrefixSlug +*/
-                                            (con.productsList[index].inventory
-                                                    ?.id ??
-                                                ""),
-                                        'name': con.productsList[index]
-                                                .inventory?.name ??
-                                            "",
-                                        "productsListTypeType":
-                                            ProductsListType.wishlist
+                                            (con.productsList[index].inventory?.id ?? ""),
+                                        'name': con.productsList[index].inventory?.name ?? "",
+                                        "productsListTypeType": ProductsListType.wishlist
                                       },
                                     ),
                                     isLike: true.obs,
-                                    diamondList: RxList(con.productsList[index]
-                                            .inventory?.diamonds ??
-                                        []),
-                                    diamonds: con.productsList[index].inventory
-                                            ?.diamonds ??
-                                        [],
-                                    imageUrl: con.productsList[index].inventory
-                                            ?.singleInvImage ??
-                                        "",
-                                    productName: con.productsList[index]
-                                            .inventory?.name ??
-                                        "",
-                                    productPrice: con.productsList[index]
-                                            .inventory?.inventoryTotalPrice
-                                            .toString() ??
-                                        "",
-                                    productQuantity: con.productsList[index]
-                                        .inventory?.quantity,
+                                    diamondList: RxList(con.productsList[index].inventory?.diamonds ?? []),
+                                    diamonds: con.productsList[index].inventory?.diamonds ?? [],
+                                    imageUrl: con.productsList[index].inventory?.singleInvImage ?? "",
+                                    productName: con.productsList[index].inventory?.name ?? "",
+                                    productPrice: con.productsList[index].inventory?.inventoryTotalPrice.toString() ?? "",
+                                    productQuantity: con.productsList[index].inventory?.quantity,
                                     likeOnChanged: (value) {},
                                   ),
-                                  if (con.paginationLoader.value &&
-                                      index + 1 == con.productsList.length)
-                                    productShimmer(context)
+                                  if (con.paginationLoader.value && index + 1 == con.productsList.length) productShimmer(context)
                                 ],
                               ),
                             ),
                           )
                         : EmptyElement(
                             title: "Wishlist not available",
-                            padding:
-                                EdgeInsets.symmetric(vertical: Get.width / 2.5),
+                            padding: EdgeInsets.symmetric(vertical: Get.width / 2.5),
                           )
                     : productShimmer(context, length: 6),
               ],
