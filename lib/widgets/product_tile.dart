@@ -197,7 +197,7 @@ class _ProductTileState extends State<ProductTile> {
   Widget productGridTile() {
     return Obx(() {
       return Container(
-        width: DeviceUtil.isTablet(Get.context!) ? (Get.width / 3 - (defaultPadding * 1.5)) : Get.width / 2 - defaultPadding * 1.5,
+        width: DeviceUtil.isTablet(Get.context!) ? (Get.width / 4 - (defaultPadding * 1.3)) : Get.width / 2 - defaultPadding * 1.5,
         margin: EdgeInsets.all(defaultPadding / 2),
         padding: EdgeInsets.all(defaultPadding / 6),
         decoration: BoxDecoration(
