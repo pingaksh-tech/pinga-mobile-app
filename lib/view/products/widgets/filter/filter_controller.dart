@@ -76,11 +76,12 @@ class FilterController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
-    if ([UserRoleEnum.seller, UserRoleEnum.salesHead, UserRoleEnum.stateSalesHead, UserRoleEnum.salesman, UserRoleEnum.regionalSalesHead].contains(UserRoleEnum.fromSlug(LocalStorage.userModel.roleId?.slug ?? ""))) {
-      filterOptions.value = FilterItemType.values; // Show all filters for salesman role
-    } else {
-      filterOptions.value = FilterItemType.values.where((filter) => filter != FilterItemType.retailers).toList().obs; // Exclude retailers filter for other role
+    if (LocalStorage.userModel.roleId?.slug != null && LocalStorage.userModel.roleId?.slug != "") {
+      if ([UserRoleEnum.seller, UserRoleEnum.salesHead, UserRoleEnum.stateSalesHead, UserRoleEnum.salesman, UserRoleEnum.regionalSalesHead].contains(UserRoleEnum.fromSlug(LocalStorage.userModel.roleId?.slug ?? ""))) {
+        filterOptions.value = FilterItemType.values; // Show all filters for salesman role
+      } else {
+        filterOptions.value = FilterItemType.values.where((filter) => filter != FilterItemType.retailers).toList().obs; // Exclude retailers filter for other role
+      }
     }
 
     applyFilterCounts.addAll(List.generate(filterOptions.length, (index) => 0));
