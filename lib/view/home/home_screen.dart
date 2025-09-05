@@ -54,7 +54,7 @@ class HomeScreen extends StatelessWidget {
                           ? List.generate(
                               con.bannersList.length,
                               (index) => Container(
-                                margin: EdgeInsets.all(defaultPadding).copyWith(bottom: defaultPadding / 2, top: 0),
+                                margin: EdgeInsets.all(defaultPadding).copyWith(bottom: defaultPadding, top: 0),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(defaultRadius),
                                   boxShadow: defaultShadow(context),
@@ -158,7 +158,7 @@ class HomeScreen extends StatelessWidget {
         ));
       } else {
         rows.add(Padding(
-          padding: EdgeInsets.only(bottom: defaultPadding / 2),
+          padding: EdgeInsets.only(bottom: defaultPadding),
           child: Row(
             children: [
               Expanded(child: buildCategoryItem(context, categories[i])),

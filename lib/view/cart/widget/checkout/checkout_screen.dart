@@ -76,6 +76,7 @@ class CheckoutScreen extends StatelessWidget {
                   selectedOrder: RxString(con.orderTypeCon.value.text),
                 )?.then(
                   (value) {
+                    if (value == null || value.isEmpty) return;
                     con.orderTypeCon.value.text = value;
                     con.checkButtonDisableStatus();
                   },

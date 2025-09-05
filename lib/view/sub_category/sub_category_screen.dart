@@ -88,6 +88,8 @@ class SubCategoryScreen extends StatelessWidget {
                             AppRoutes.productScreen,
                             arguments: {
                               "isSearch": true,
+                              "categoryId": con.categoryId.value,
+                              "type": ProductsListType.normal,
                             },
                           );
                           FocusScope.of(context).unfocus();
