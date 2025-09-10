@@ -456,31 +456,34 @@ class FilterScreen extends StatelessWidget {
                         con.applyFilterCounts[8] = con.selectedCollections.length;
                       },
                     ),
-                  // TODO: Handle this case.
-                  FilterItemType.retailers => ListView.separated(
-                      physics: const RangeMaintainingScrollPhysics(),
-                      padding: EdgeInsets.symmetric(vertical: defaultPadding / 2),
-                      itemCount: con.retailerList.length,
-                      separatorBuilder: (context, index) => separateDivider,
-                      itemBuilder: (context, index) => Obx(() {
-                        return CustomCheckboxTile(
-                          scale: 1,
-                          title: "${con.retailerList[index].firstName ?? ''} ${con.retailerList[index].lastName ?? ''}",
-                          isSelected: RxBool(con.selectedRetailer?.value == con.retailerList[index]),
-                          onChanged: (val) {
-                            if (val == true) {
-                              con.selectedRetailer?.value = con.retailerList[index];
-                              con.count = 1; // Ensure only one retailer is counted
-                            } else {
-                              con.selectedRetailer?.value = RetailerModel();
-                              con.count = 0;
-                            }
+                  FilterItemType.retailers => Obx(() {
+                      return ListView.separated(
+                        physics: const RangeMaintainingScrollPhysics(),
+                        padding: EdgeInsets.symmetric(vertical: defaultPadding / 2),
+                        itemCount: con.retailerList.length,
+                        separatorBuilder: (context, index) => separateDivider,
+                        itemBuilder: (context, index) => Obx(() {
+                          return CustomCheckboxTile(
+                            scale: 1,
+                            title: "${con.retailerList[index].firstName ?? ''} ${con.retailerList[index].lastName ?? ''}",
+                            isSelected: RxBool(con.selectedRetailer?.value == con.retailerList[index]),
+                            onChanged: (val) {
+                              if (val == true) {
+                                con.selectedRetailer?.value = con.retailerList[index];
+                                con.count++; // Ensure only one retailer is counted
+                              } else {
+                                con.selectedRetailer?.value = RetailerModel();
+                                con.count--;
+                              }
 
-                            con.applyFilterCounts[9] = con.selectedRetailer?.value.id != null ? 1 : 0;
-                          },
-                        );
-                      }),
-                    ),
+                              con.applyFilterCounts[9] = con.selectedRetailer?.value.id != null ? 1 : 0;
+
+                              printYellow(con.applyFilterCounts.length);
+                            },
+                          );
+                        }),
+                      );
+                    }),
                 },
               ),
             ],
@@ -501,6 +504,7 @@ class FilterScreen extends StatelessWidget {
                         watchListId: con.watchlistId,
                         categoryId: con.categoryId,
                         subCategoryId: con.subCategoryId,
+                        searchText: Get.find<ProductsController>().getSearchText,
                         inStock: con.isAvailable.value,
                       ).then((value) => Get.back());
                     },
@@ -518,6 +522,7 @@ class FilterScreen extends StatelessWidget {
                       /// GET FILTER PRODUCT
                       await ProductRepository.getFilterProductsListAPI(
                         watchListId: con.watchlistId,
+                        searchText: Get.find<ProductsController>().getSearchText,
                         productsListType: con.productsListType,
                         loader: con.isLoader,
                         categoryId: con.categoryId,

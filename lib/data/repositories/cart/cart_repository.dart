@@ -1,5 +1,3 @@
-
-
 import 'package:get/get.dart';
 
 import '../../../controller/predefine_value_controller.dart';
@@ -11,6 +9,7 @@ import '../../../view/product_details/product_details_controller.dart';
 import '../../model/cart/cart_model.dart';
 import '../../model/cart/cart_summary_model.dart';
 import '../../model/cart/product_detail_model.dart';
+import '../../model/cart/retailer_model.dart';
 import '../../model/cart/stock_model.dart';
 import '../../model/product/single_product_model.dart';
 
@@ -270,6 +269,7 @@ class CartRepository {
     required String sizeId,
     required String diamondClarity,
     required String remark,
+    RetailerModel? retailerModel,
     num? extraMetalWeight,
     List<Map<String, dynamic>>? diamonds,
   }) async {
@@ -288,6 +288,7 @@ class CartRepository {
             if (!isValEmpty(diamondClarity)) "diamond_clarity": diamondClarity,
             if (!isValEmpty(diamonds)) "diamonds": diamonds,
             if (!isValEmpty(extraMetalWeight)) "extra_metal_weight": extraMetalWeight,
+            if (retailerModel?.id?.value != null) "retailer_id": retailerModel?.id?.value ?? "",
           },
         ).then(
           (response) async {

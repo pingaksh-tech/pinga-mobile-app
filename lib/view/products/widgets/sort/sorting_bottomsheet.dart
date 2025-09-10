@@ -205,6 +205,7 @@ class SortingBottomSheet extends StatelessWidget {
                             categoryId: con.categoryId.value,
                             subCategoryId: con.subCategory.value.id ?? "",
                             loader: con.loader,
+                            searchText: con.getSearchText,
                           );
                         }
                         con.sortList.clear();
@@ -227,6 +228,7 @@ class SortingBottomSheet extends StatelessWidget {
                               productsListType: con.productListType.value,
                               categoryId: con.categoryId.value,
                               subCategoryId: con.subCategory.value.id ?? "",
+                              searchText: con.getSearchText,
                               loader: con.loader,
                               sortBy: [
                                 if (con.selectPrice.value.isNotEmpty) "inventory_total_price:${con.selectPrice.value.split("/").last}",

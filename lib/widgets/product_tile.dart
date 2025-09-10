@@ -20,6 +20,7 @@ import '../res/app_network_image.dart';
 import '../res/pop_up_menu_button.dart';
 import '../utils/device_utils.dart';
 import '../view/cart/cart_controller.dart';
+import '../view/products/widgets/filter/filter_controller.dart';
 import 'custom_check_box_tile.dart';
 import 'plus_minus_title/plus_minus_tile.dart';
 import 'size_selector/size_selector_botton.dart';
@@ -630,6 +631,7 @@ class _ProductTileState extends State<ProductTile> {
         /// Add to cart api
         await CartRepository.addOrUpdateCartApi(
           cartId: widget.cartId,
+          retailerModel: Get.find<FilterController>().selectedRetailer?.value,
           inventoryId: inventoryId ?? widget.inventoryId ?? "",
           quantity: quantity ?? widget.productQuantity?.value ?? 0,
           metalId: metalId ?? metalModel.id?.value ?? "",

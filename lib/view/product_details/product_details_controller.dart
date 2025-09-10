@@ -10,6 +10,7 @@ import '../../data/model/product/single_product_model.dart';
 import '../../data/repositories/cart/cart_repository.dart';
 import '../../data/repositories/product/product_repository.dart';
 import '../../exports.dart';
+import '../products/widgets/filter/filter_controller.dart';
 
 class ProductDetailsController extends GetxController with GetSingleTickerProviderStateMixin {
   /// DUPLICATE CONTROLLER RESOLVER
@@ -242,6 +243,7 @@ class ProductDetailsController extends GetxController with GetSingleTickerProvid
       await CartRepository.addOrUpdateCartApi(
         inventoryId: inventoryId.value,
         quantity: quantity,
+        retailerModel: Get.find<FilterController>().selectedRetailer?.value,
         remark: selectedRemark.value,
         extraMetalWeight: extraMetalWt != 0.0 ? extraMetalWt : null,
         metalId: selectedMetal.value.id?.value ?? "",

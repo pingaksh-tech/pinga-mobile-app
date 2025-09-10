@@ -202,6 +202,7 @@ class ProductsScreen extends StatelessWidget {
                         watchListId: con.watchlistId.value,
                         subCategoryId: con.subCategory.value.id ?? "",
                         inStock: filterCon.isAvailable.value,
+                        searchText: con.getSearchText,
 
                         /// Filter
                         minMetal: filterCon.minMetalWt.value,
@@ -210,7 +211,7 @@ class ProductsScreen extends StatelessWidget {
                         maxDiamond: filterCon.maxDiamondWt.value,
                         minMrp: filterCon.selectMrp.value.label == "customs".obs ? int.parse(filterCon.mrpFromCon.value.text) : filterCon.selectMrp.value.min?.value,
                         maxMrp: filterCon.selectMrp.value.label == "customs".obs ? int.parse(filterCon.mrpToCon.value.text) : filterCon.selectMrp.value.max?.value,
-
+                        retailerModel: filterCon.selectedRetailer?.value,
                         genderList: filterCon.selectedGender,
                         diamondList: filterCon.selectedDiamonds,
                         ktList: filterCon.selectedKt,

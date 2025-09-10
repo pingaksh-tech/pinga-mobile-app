@@ -120,6 +120,8 @@ class ProductsController extends GetxController {
 
   /// API
   Future<void> getProductList({RxBool? loader}) async {
+    final FilterController con = Get.find<FilterController>();
+
     /// GET ALL PRODUCTS
     await ProductRepository.getFilterProductsListAPI(
       loader: loader,
@@ -129,6 +131,25 @@ class ProductsController extends GetxController {
       subCategoryId: subCategory.value.id ?? "",
       inStock: filterCon.isAvailable.value,
       searchText: getSearchText,
+
+      /// Filter
+      minMetal: con.minMetalWt.value,
+      retailerModel: con.selectedRetailer?.value,
+      maxMetal: con.maxMetalWt.value,
+      minDiamond: con.minDiamondWt.value,
+      maxDiamond: con.maxDiamondWt.value,
+      minMrp: con.selectMrp.value.label == "customs".obs ? int.parse(con.mrpFromCon.value.text) : con.selectMrp.value.min?.value,
+      maxMrp: con.selectMrp.value.label == "customs".obs ? int.parse(con.mrpToCon.value.text) : con.selectMrp.value.max?.value,
+      genderList: con.selectedGender,
+      diamondList: con.selectedDiamonds,
+      ktList: con.selectedKt,
+      deliveryList: con.selectedDelivery,
+      productionNameList: con.selectedProductNames,
+      collectionList: con.selectedCollections,
+      sortBy: [
+        if (selectPrice.value.isNotEmpty) "inventory_total_price:${selectPrice.value.split("/").last}",
+        if (!isValEmpty(selectNewestOrOldest.value)) "createdAt:${selectNewestOrOldest.value.split("/").last}",
+      ],
     );
 
     // int index = homeCon.categoriesList.indexWhere((element) => element.id == categoryId.value);
@@ -148,7 +169,7 @@ class ProductsController extends GetxController {
     ///  PRODUCTS
     scrollController.addListener(
       () async {
-        if (scrollController.position.maxScrollExtent ==/*/ 1.5 <*/ scrollController.position.pixels) {
+        if (scrollController.position.maxScrollExtent == /*/ 1.5 <*/ scrollController.position.pixels) {
           if (nextPageAvailable.value && paginationLoader.isFalse) {
             /// GET PRODUCTS API
             await ProductRepository.getFilterProductsListAPI(
@@ -165,6 +186,7 @@ class ProductsController extends GetxController {
               maxMetal: con.maxMetalWt.value,
               minDiamond: con.minDiamondWt.value,
               maxDiamond: con.maxDiamondWt.value,
+              retailerModel: con.selectedRetailer?.value,
               minMrp: con.selectMrp.value.label == "customs".obs ? int.parse(con.mrpFromCon.value.text) : con.selectMrp.value.min?.value,
               maxMrp: con.selectMrp.value.label == "customs".obs ? int.parse(con.mrpToCon.value.text) : con.selectMrp.value.max?.value,
               inStock: con.isAvailable.value,

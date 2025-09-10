@@ -101,6 +101,7 @@ class FilterController extends GetxController {
         isPlatinumBrand.value = Get.arguments["isPlatinumBrand"] ?? false;
       }
     }
+    FilterRepository.getRetailerApi();
   }
 
   RxInt page = 1.obs;
@@ -109,7 +110,6 @@ class FilterController extends GetxController {
   void onReady() async {
     super.onReady();
     await FilterRepository.stockAvailableList();
-    await FilterRepository.getRetailerApi();
     addRangeValueFromVariableToController();
   }
 
