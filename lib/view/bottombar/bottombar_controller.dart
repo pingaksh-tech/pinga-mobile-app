@@ -7,9 +7,9 @@ import '../../data/model/bottombar/bottombar_model.dart';
 import '../../exports.dart';
 import '../cart/cart_screen.dart';
 import '../collections/watch_list/watch_list_screen.dart';
+import '../drawer/widgets/wishlist/wishlist_screen.dart';
 import '../home/home_screen.dart';
 import '../orders/orders_screen.dart';
-import '../profile/profile_screen.dart';
 
 class BottomBarController extends GetxController {
   RxInt currentBottomIndex = 0.obs;
@@ -46,11 +46,11 @@ class BottomBarController extends GetxController {
       screenWidget: OrdersScreen(),
     ),
     BottomBarModel(
-      screenName: "Profile",
+      screenName: "Wishlist",
       bottomItem: BottomItem(
-        selectedImage: AppAssets.profile,
+        selectedImage: AppAssets.like,
       ),
-      screenWidget: ProfileScreen(),
+      screenWidget: WishlistScreen(),
     ),
   ].obs;
 
@@ -71,7 +71,7 @@ class BottomBarController extends GetxController {
         // await OrderRepository.orderProductApi(isInitial: true);
       }
       if (i == 4) {
-        // await ProfileRepository().profileApi();
+        // Wishlist functionality
       }
     }
   }
