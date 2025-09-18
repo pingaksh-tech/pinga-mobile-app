@@ -347,6 +347,7 @@ class ProductRepository {
               "diamond_clarity": diamondList[i].diamondClarity?.value ?? "",
               "diamond_shape": diamondList[i].diamondShape ?? "",
               "diamond_size": diamondList[i].diamondSize ?? "",
+              "diamond_weight": diamondList[i].diamondWeight ?? "",
               "diamond_count": diamondList[i].diamondCount ?? 0,
               "_id": diamondList[i].id ?? "",
             });
