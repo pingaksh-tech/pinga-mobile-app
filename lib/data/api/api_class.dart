@@ -13,6 +13,7 @@ import 'api_utils.dart';
 
 class HttpUtil {
   static const Duration defaultTimeoutDuration = Duration(seconds: 15);
+  static const Duration orderCreateAPITimeOut = Duration(seconds: 30);
   static bool showErrorToast = true;
 
   // Method to refresh tokens

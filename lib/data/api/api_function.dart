@@ -9,39 +9,20 @@ class APIFunction {
   ///                                    OPTIONS & HEADER
   /// ***********************************************************************************
 
-  static getOptionsAndHeader(
-      {Duration? receiveTimeout, bool useRefreshToken = false}) {
+  static getOptionsAndHeader({Duration? sendTimeout, Duration? receiveTimeout, bool useRefreshToken = false}) {
     return Options(
       receiveTimeout: receiveTimeout ?? HttpUtil.defaultTimeoutDuration,
+      sendTimeout: sendTimeout ?? HttpUtil.defaultTimeoutDuration,
       headers: {
         "Content-Type": "application/json",
-        "Authorization":
-            "Bearer ${useRefreshToken ? LocalStorage.refreshToken : LocalStorage.accessToken}",
+        "Authorization": "Bearer ${useRefreshToken ? LocalStorage.refreshToken : LocalStorage.accessToken}",
       },
     );
   }
 
-  static Future<dynamic> getApiCall(
-      {required String apiUrl,
-      dynamic body,
-      bool? isDecode,
-      dynamic params,
-      Options? options,
-      Duration? receiveTimeout,
-      bool withBaseUrl = false,
-      bool showErrorToast = true,
-      RxBool? loader,
-      CancelToken? cancelToken}) async {
+  static Future<dynamic> getApiCall({required String apiUrl, dynamic body, bool? isDecode, dynamic params, Options? options, Duration? receiveTimeout, bool withBaseUrl = false, bool showErrorToast = true, RxBool? loader, CancelToken? cancelToken}) async {
     if (await getConnectivityResult()) {
-      dynamic response = await HttpUtil(errorToast: showErrorToast).get(
-          withBaseUrl == true ? (ApiUrls.baseUrl + apiUrl) : apiUrl,
-          body: body,
-          queryParameters: params,
-          isDecode: isDecode ?? false,
-          options:
-              options ?? getOptionsAndHeader(receiveTimeout: receiveTimeout),
-          loader: loader,
-          cancelTokens: cancelToken);
+      dynamic response = await HttpUtil(errorToast: showErrorToast).get(withBaseUrl == true ? (ApiUrls.baseUrl + apiUrl) : apiUrl, body: body, queryParameters: params, isDecode: isDecode ?? false, options: options ?? getOptionsAndHeader(receiveTimeout: receiveTimeout), loader: loader, cancelTokens: cancelToken);
       return response;
     }
   }
@@ -52,6 +33,7 @@ class APIFunction {
     dynamic body,
     bool? isDecode,
     Duration? receiveTimeout,
+    Duration? sendTimeout,
     bool withBaseUrl = true,
     bool showErrorToast = true,
     bool useRefreshToken = false,
@@ -63,8 +45,7 @@ class APIFunction {
         isDecode: isDecode ?? false,
         body: body,
         queryParameters: params,
-        options: getOptionsAndHeader(
-            receiveTimeout: receiveTimeout, useRefreshToken: useRefreshToken),
+        options: getOptionsAndHeader(sendTimeout: sendTimeout, receiveTimeout: receiveTimeout, useRefreshToken: useRefreshToken),
         loader: loader,
       );
       return response;

@@ -6,6 +6,7 @@ import '../../../view/cart/cart_controller.dart';
 import '../../../view/orders/orders_controller.dart';
 import '../../../view/orders/widgets/order_detail/order_detail_controller.dart';
 import '../../../view/orders/widgets/retailer_screen/retailer_controller.dart';
+import '../../api/api_class.dart';
 import '../../model/cart/retailer_model.dart';
 import '../../model/order/order_list_model.dart';
 import '../../model/order/single_order_model.dart';
@@ -30,6 +31,8 @@ class OrdersRepository {
         /// API
         await APIFunction.postApiCall(
           apiUrl: ApiUrls.createOrGetOrder,
+          receiveTimeout: HttpUtil.orderCreateAPITimeOut,
+          sendTimeout: HttpUtil.orderCreateAPITimeOut,
           body: {
             "retailer_id": retailerId,
             "order_type": orderType,
@@ -154,27 +157,27 @@ class OrdersRepository {
       final OrderDetailController con = Get.find<OrderDetailController>();
 
       try {
-      loader?.value = true;
+        loader?.value = true;
 
-      /// API
-      await APIFunction.getApiCall(
-        apiUrl: ApiUrls.getSingleOrderDetailGET(orderId: orderId),
-        loader: loader,
-      ).then(
-        (response) async {
-          if (response != null) {
-            GetSingleOrderDetailModel model = GetSingleOrderDetailModel.fromJson(response);
+        /// API
+        await APIFunction.getApiCall(
+          apiUrl: ApiUrls.getSingleOrderDetailGET(orderId: orderId),
+          loader: loader,
+        ).then(
+          (response) async {
+            if (response != null) {
+              GetSingleOrderDetailModel model = GetSingleOrderDetailModel.fromJson(response);
 
-            if (model.data != null) {
-              con.orderDetailModel.value = model.data!;
+              if (model.data != null) {
+                con.orderDetailModel.value = model.data!;
+              }
+              loader?.value = false;
+            } else {
+              loader?.value = false;
             }
-            loader?.value = false;
-          } else {
-            loader?.value = false;
-          }
-          return response;
-        },
-      );
+            return response;
+          },
+        );
       } catch (e) {
         loader?.value = false;
         printErrors(type: "getSingleOrderAPI", errText: e);
