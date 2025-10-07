@@ -117,12 +117,12 @@ class OrderDetailScreen extends StatelessWidget {
                                         orderDetailsKeyValuePairWidget(
                                           context,
                                           title: "Metal",
-                                          subtitleText: "${con.orderDetailModel.value.productItems?[index].productInfo?.metal} - ${con.orderDetailModel.value.productItems?[index].productInfo?.karatage}",
+                                          subtitleText: "${con.orderDetailModel.value.productItems?[index].productInfo?.metal} - ${con.orderDetailModel.value.productItems?[index].productInfo?.metalWt}",
                                         ),
                                         orderDetailsKeyValuePairWidget(
                                           context,
                                           title: "Diamond",
-                                          subtitleText: !isValEmpty(con.orderDetailModel.value.productItems?[index].diamonds) ? (con.orderDetailModel.value.productItems?[index].diamonds?.first.diamondClarity ?? "") : "",
+                                          subtitleText: !isValEmpty(con.orderDetailModel.value.productItems?[index].diamonds) ? ("${con.orderDetailModel.value.productItems?[index].diamonds?.first.diamondClarity ?? ""} - ${con.orderDetailModel.value.productItems?[index].priceBreaking?.diamond?.diamondWeight}") : "",
                                         ),
                                       ],
                                     ),

@@ -183,7 +183,7 @@ class HomeScreen extends StatelessWidget {
         },
       ),
       child: Container(
-        height: 150.h,
+        // height: 150.h,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(defaultRadius),
           boxShadow: defaultShadow(context),
@@ -192,12 +192,15 @@ class HomeScreen extends StatelessWidget {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            AppNetworkImage(
-              height: double.infinity,
-              width: double.infinity,
-              imageUrl: category.categoryImage ?? "",
-              borderRadius: BorderRadius.circular(defaultRadius),
-              fit: BoxFit.cover,
+            AspectRatio(
+              aspectRatio: fullWidth ? 2 / 1 : 1 / 1,
+              child: AppNetworkImage(
+                height: double.infinity,
+                width: double.infinity,
+                imageUrl: category.categoryImage ?? "",
+                borderRadius: BorderRadius.circular(defaultRadius),
+                fit: BoxFit.cover,
+              ),
             ),
             Positioned.fill(
               child: ClipRRect(
