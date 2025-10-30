@@ -546,7 +546,7 @@ Future<CroppedFile?> singleImageCropper(
         toolbarTitle: toolbarTitle,
         initAspectRatio: CropAspectRatioPreset.original,
         cropGridColor: Colors.grey,
-        cropStyle: isCircleCrop ? CropStyle.circle : CropStyle.rectangle,
+        // cropStyle: isCircleCrop ? CropStyle.circle : CropStyle.rectangle,
         hideBottomControls: false,
         cropFrameColor: Colors.grey,
         toolbarColor: Theme.of(context).primaryColor,

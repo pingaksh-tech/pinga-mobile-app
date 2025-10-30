@@ -84,15 +84,15 @@ class SplashRepository {
             },
           );
         } catch (e) {
-          navigation();
+          // navigation();
           isLoader?.value = false;
           printErrors(type: "getSplashDataAPI", errText: e);
         }
       } else {
-        navigation();
+        // navigation();
       }
     } else {
-      navigation();
+      // navigation();
     }
   }
 
