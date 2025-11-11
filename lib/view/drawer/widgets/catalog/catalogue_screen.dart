@@ -56,6 +56,7 @@ class CatalogueScreen extends StatelessWidget {
                                         AppRoutes.pdfPreviewScreen,
                                         arguments: {
                                           "title": con.catalogueList[index].name?.value,
+                                          "isFromCatalog":true,
                                           "catalogueId": con.catalogueList[index].id ?? "",
                                         },
                                       );

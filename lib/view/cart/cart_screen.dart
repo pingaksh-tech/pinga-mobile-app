@@ -64,9 +64,8 @@ class CartScreen extends StatelessWidget {
                 : null,
             body: con.cartLoader.isFalse
                 ? (con.cartList.isNotEmpty
-                    ? ListView(
-                        controller: con.scrollController,
-                        physics: const AlwaysScrollableScrollPhysics(),
+                    ? Column(
+                        // physics: const NeverScrollableScrollPhysics(),
                         children: [
                           Container(
                             margin: EdgeInsets.symmetric(horizontal: defaultPadding / 1.2),
@@ -97,142 +96,142 @@ class CartScreen extends StatelessWidget {
                                   con.calculateSelectedQue();
                                 }).paddingOnly(left: defaultPadding),
                           ),
-                          Column(
-                            children: [
-                              ListView.separated(
-                                padding: EdgeInsets.symmetric(vertical: defaultPadding),
-                                itemCount: con.cartList.length,
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
-                                itemBuilder: (context, index) {
-                                  printYellow(con.cartList[index].remark?.value ?? "");
-                                  return ProductTile(
-                                    screenType: "isCartScreen",
-                                    isFancy: con.cartList[index].isDiamondMultiple ?? false,
-                                    cartId: con.cartList[index].id,
-                                    inventoryId: con.cartList[index].inventoryId,
-                                    productTileType: ProductTileType.cartTile,
-                                    selectMetalCart: (con.cartList[index].metalId!.value).obs,
-                                    selectSizeCart: (con.cartList[index].sizeId!.value).obs,
-                                    diamonds: con.cartList[index].diamonds,
-                                    selectDiamondCart: (con.cartList[index].diamondClarity!.value).obs,
-                                    diamondOnChanged: (value) {
-                                      //   printBlue(value);
-                                      //   if (value!.isNotEmpty) {
-                                      //     con
-                                      //         .cartList[index]
-                                      //         .diamonds
-                                      //         ?.first
-                                      //         .diamondClarity
-                                      //         ?.value = value.toString();
-                                      //   }
-                                    },
-                                    item: con.cartList[index],
-                                    category: RxString(con.cartList[index].subCategoryId ?? ""),
-                                    isSizeAvailable: !isValEmpty(con.cartList[index].sizeId!.value),
-                                    diamondList: RxList(con.cartList[index].diamonds ?? []),
-                                    isCartSelected: RxBool(
-                                      con.selectedList.contains(
-                                        con.cartList[index],
-                                      ),
-                                    ),
-                                    remark: RxString(con.cartList[index].remark?.value ?? ""),
-                                    imageUrl: (con.cartList[index].inventoryImage != null && con.cartList[index].inventoryImage!.isNotEmpty) ? con.cartList[index].inventoryImage![0] : "",
-                                    productName: (con.cartList[index].inventoryName ?? ""),
-                                    productPrice: con.cartList[index].inventoryTotalPrice.toString(),
-                                    brandName: con.cartList[index].inventoryName ?? "Unknown",
-                                    productQuantity: RxInt(con.cartList[index].quantity ?? 0),
-                                    selectSize: (con.cartList[index].sizeId!.value).obs,
-                                    deleteOnTap: () {
-                                      //? CART DELETE API
-                                      CartRepository.deleteCartAPi(cartId: con.cartList[index].id);
-                                      con.calculateSelectedItemPrice();
-                                      con.calculateSelectedQue();
-                                      Get.back();
-                                    },
-                                    onChanged: (_) {
-                                      if (!con.selectedList.contains(con.cartList[index])) {
-                                        con.selectedList.add(con.cartList[index]);
-                                        con.calculateSelectedQue();
-                                      } else {
-                                        con.selectedList.remove(con.cartList[index]);
-                                      }
-                                      con.calculateSelectedItemPrice();
-                                      con.calculateSelectedQue();
-                                    },
-                                    metalOnChanged: (value) {
-                                      con.cartList[index].metalId!.value = value;
-                                    },
-                                    remarkOnChanged: (value) {
-                                      con.cartList[index].remark!.value = value;
-                                    },
-                                    sizeOnChanged: (value) {
-                                      con.cartList[index].sizeId!.value = value;
-                                    },
-                                    onTap: () {
-                                      // addProductIdToGlobalList((con.cartList[index].id ?? ""), type: GlobalProductPrefixType.cart);
-                                      navigateToProductDetailsScreen(
-                                        productDetails: {
-                                          "productId": (con.cartList[index].id ?? ""),
-                                          "diamondClarity": con.cartList[index].isDiamondMultiple == false
-                                              ? (con.cartList[index].diamonds != null && con.cartList[index].diamonds!.isNotEmpty)
-                                                  ? con.cartList[index].diamonds?.first.diamondClarity?.value ?? ""
-                                                  : ""
-                                              : "",
-                                          "metalId": con.cartList[index].metalId!.value,
-                                          "sizeId": con.cartList[index].sizeId!.value,
-                                          "diamonds": con.cartList[index].isDiamondMultiple == true ? con.cartList[index].diamonds! : [],
-                                          "type": GlobalProductPrefixType.productDetails,
-                                        },
-                                        type: GlobalProductPrefixType.productDetails,
-                                        // arguments: {
-                                        //   "category": con.cartList[index].subCategoryId ?? '',
-                                        //   'isFancy': con.cartList[index].isDiamondMultiple,
-                                        //   'cartId': /*AppStrings.cartIdPrefixSlug +*/
-                                        //       (con.cartList[index].id ?? ""),
-                                        //   "inventoryId": /*AppStrings.cartIdPrefixSlug +*/
-                                        //       (con.cartList[index].inventoryId ?? ""),
-                                        //   'name': con.cartList[index].inventoryName,
-                                        // },
-                                        arguments: {
-                                          "category": /*AppStrings.cartIdPrefixSlug +*/
-                                              (con.cartList[index].subCategoryId ?? ''),
-                                          'isSize': !isValEmpty(con.cartList[index].sizeId),
-                                          'isFancy': con.cartList[index].isDiamondMultiple ?? false,
-                                          'cartId': /*AppStrings.cartIdPrefixSlug +*/
-                                              (con.cartList[index].id ?? ""),
-                                          'inventoryId': /*AppStrings.productIdPrefixSlug +*/
-                                              (con.cartList[index].inventoryId ?? ""),
-                                          'name': con.cartList[index].inventoryName,
-                                          "productsListTypeType": ProductsListType.normal,
-                                          "sizeId": con.cartList[index].sizeId!.value,
-                                          "remark": con.cartList[index].remark!.value,
-                                          "diamondClarity": (con.cartList[index].diamonds != null && con.cartList[index].diamonds!.isNotEmpty) ? con.cartList[index].diamonds?.first.diamondClarity?.value ?? "" : "",
-                                          "metalId": con.cartList[index].metalId!.value,
-                                          "diamonds": con.cartList[index].isDiamondMultiple == true ? con.cartList[index].diamonds : [],
-                                        },
-                                      );
-                                    },
-                                  );
-                                },
-                              ),
-
-                              /// PAGINATION LOADER
-                              Visibility(
-                                visible: con.paginationLoader.isTrue,
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding / 2).copyWith(top: 0),
-                                  child: ShimmerUtils.shimmer(
-                                    child: ShimmerUtils.shimmerContainer(
-                                      borderRadiusSize: defaultRadius,
-                                      height: Get.width / 3,
-                                      width: Get.width,
+                          Expanded(
+                            child: ListView.separated(
+                              controller: con.scrollController,
+                              padding: EdgeInsets.symmetric(vertical: defaultPadding),
+                              itemCount: con.cartList.length,
+                              shrinkWrap: true,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              // physics: const N(),
+                              separatorBuilder: (context, index) => SizedBox(height: defaultPadding),
+                              itemBuilder: (context, index) {
+                                // printYellow(con.cartList[index].remark?.value ?? "");
+                                return ProductTile(
+                                  screenType: "isCartScreen",
+                                  isFancy: con.cartList[index].isDiamondMultiple ?? false,
+                                  cartId: con.cartList[index].id,
+                                  inventoryId: con.cartList[index].inventoryId,
+                                  productTileType: ProductTileType.cartTile,
+                                  selectMetalCart: (con.cartList[index].metalId!.value).obs,
+                                  selectSizeCart: (con.cartList[index].sizeId!.value).obs,
+                                  diamonds: con.cartList[index].diamonds,
+                                  selectDiamondCart: (con.cartList[index].diamondClarity!.value).obs,
+                                  diamondOnChanged: (value) {
+                                    //   printBlue(value);
+                                    //   if (value!.isNotEmpty) {
+                                    //     con
+                                    //         .cartList[index]
+                                    //         .diamonds
+                                    //         ?.first
+                                    //         .diamondClarity
+                                    //         ?.value = value.toString();
+                                    //   }
+                                  },
+                                  item: con.cartList[index],
+                                  category: RxString(con.cartList[index].subCategoryId ?? ""),
+                                  isSizeAvailable: !isValEmpty(con.cartList[index].sizeId!.value),
+                                  diamondList: RxList(con.cartList[index].diamonds ?? []),
+                                  isCartSelected: RxBool(
+                                    con.selectedList.contains(
+                                      con.cartList[index],
                                     ),
                                   ),
+                                  remark: RxString(con.cartList[index].remark?.value ?? ""),
+                                  imageUrl: (con.cartList[index].inventoryImage != null && con.cartList[index].inventoryImage!.isNotEmpty) ? con.cartList[index].inventoryImage![0] : "",
+                                  productName: (con.cartList[index].inventoryName ?? ""),
+                                  productPrice: con.cartList[index].inventoryTotalPrice.toString(),
+                                  brandName: con.cartList[index].inventoryName ?? "Unknown",
+                                  productQuantity: RxInt(con.cartList[index].quantity ?? 0),
+                                  selectSize: (con.cartList[index].sizeId!.value).obs,
+                                  deleteOnTap: () {
+                                    //? CART DELETE API
+                                    CartRepository.deleteCartAPi(cartId: con.cartList[index].id);
+                                    con.calculateSelectedItemPrice();
+                                    con.calculateSelectedQue();
+                                    Get.back();
+                                  },
+                                  onChanged: (_) {
+                                    if (!con.selectedList.contains(con.cartList[index])) {
+                                      con.selectedList.add(con.cartList[index]);
+                                      con.calculateSelectedQue();
+                                    } else {
+                                      con.selectedList.remove(con.cartList[index]);
+                                    }
+                                    con.calculateSelectedItemPrice();
+                                    con.calculateSelectedQue();
+                                  },
+                                  metalOnChanged: (value) {
+                                    con.cartList[index].metalId!.value = value;
+                                  },
+                                  remarkOnChanged: (value) {
+                                    con.cartList[index].remark!.value = value;
+                                  },
+                                  sizeOnChanged: (value) {
+                                    con.cartList[index].sizeId!.value = value;
+                                  },
+                                  onTap: () {
+                                    // addProductIdToGlobalList((con.cartList[index].id ?? ""), type: GlobalProductPrefixType.cart);
+                                    navigateToProductDetailsScreen(
+                                      productDetails: {
+                                        "productId": (con.cartList[index].id ?? ""),
+                                        "diamondClarity": con.cartList[index].isDiamondMultiple == false
+                                            ? (con.cartList[index].diamonds != null && con.cartList[index].diamonds!.isNotEmpty)
+                                                ? con.cartList[index].diamonds?.first.diamondClarity?.value ?? ""
+                                                : ""
+                                            : "",
+                                        "metalId": con.cartList[index].metalId!.value,
+                                        "sizeId": con.cartList[index].sizeId!.value,
+                                        "diamonds": con.cartList[index].isDiamondMultiple == true ? con.cartList[index].diamonds! : [],
+                                        "type": GlobalProductPrefixType.productDetails,
+                                      },
+                                      type: GlobalProductPrefixType.productDetails,
+                                      // arguments: {
+                                      //   "category": con.cartList[index].subCategoryId ?? '',
+                                      //   'isFancy': con.cartList[index].isDiamondMultiple,
+                                      //   'cartId': /*AppStrings.cartIdPrefixSlug +*/
+                                      //       (con.cartList[index].id ?? ""),
+                                      //   "inventoryId": /*AppStrings.cartIdPrefixSlug +*/
+                                      //       (con.cartList[index].inventoryId ?? ""),
+                                      //   'name': con.cartList[index].inventoryName,
+                                      // },
+                                      arguments: {
+                                        "category": /*AppStrings.cartIdPrefixSlug +*/
+                                            (con.cartList[index].subCategoryId ?? ''),
+                                        'isSize': !isValEmpty(con.cartList[index].sizeId),
+                                        'isFancy': con.cartList[index].isDiamondMultiple ?? false,
+                                        'cartId': /*AppStrings.cartIdPrefixSlug +*/
+                                            (con.cartList[index].id ?? ""),
+                                        'inventoryId': /*AppStrings.productIdPrefixSlug +*/
+                                            (con.cartList[index].inventoryId ?? ""),
+                                        'name': con.cartList[index].inventoryName,
+                                        "productsListTypeType": ProductsListType.normal,
+                                        "sizeId": con.cartList[index].sizeId!.value,
+                                        "remark": con.cartList[index].remark!.value,
+                                        "diamondClarity": (con.cartList[index].diamonds != null && con.cartList[index].diamonds!.isNotEmpty) ? con.cartList[index].diamonds?.first.diamondClarity?.value ?? "" : "",
+                                        "metalId": con.cartList[index].metalId!.value,
+                                        "diamonds": con.cartList[index].isDiamondMultiple == true ? con.cartList[index].diamonds : [],
+                                      },
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+
+                          /// PAGINATION LOADER
+                          Visibility(
+                            visible: con.paginationLoader.isTrue,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: defaultPadding, vertical: defaultPadding / 2).copyWith(top: 0),
+                              child: ShimmerUtils.shimmer(
+                                child: ShimmerUtils.shimmerContainer(
+                                  borderRadiusSize: defaultRadius,
+                                  height: Get.width / 3,
+                                  width: Get.width,
                                 ),
-                              )
-                            ],
+                              ),
+                            ),
                           )
                         ],
                       )
